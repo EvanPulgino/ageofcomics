@@ -1,7 +1,7 @@
 {
   "name": "ageofcomics",
   "version": "1.0.0",
-  "description": "BoardGameArena implmentation of Age of Comics",
+  "description": "BoardGameArena implmentation of Age of Comics: The Golden Years",
   "main": "ageofcomics.js",
   "scripts": {
     "build:ts": "tsc",
