@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
@@ -8,8 +7,24 @@
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * ageofcomics.scss
+ * define.ts
  *
  */
-@import url(../../../css/csslayer.css); /* Note: you must not use any @import directive other than this one */
-/********* You can start writing your CSS below this line: **********/
+
+// @ts-nocheck
+define([
+  "dojo",
+  "dojo/_base/declare",
+  "ebg/core/gamegui",
+  "ebg/counter",
+  "ebg/stock",
+], function (
+  dojo: any,
+  declare: (arg0: string, arg1: any, arg2: GameBody) => any
+) {
+  return declare(
+    "bgagame.ageofcomics",
+    ebg.core.gamegui,
+    new GameBody()
+  );
+});
