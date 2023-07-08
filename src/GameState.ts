@@ -7,20 +7,17 @@
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * define.ts
+ * GameState.ts
  *
  */
 
-// @ts-nocheck
-define([
-  "dojo",
-  "dojo/_base/declare",
-  "ebg/core/gamegui",
-  "ebg/counter",
-  "ebg/stock",
-], function (
-  dojo: any,
-  declare: (arg0: string, arg1: any, arg2: GameBody) => any
-) {
-  return declare("bgagame.ageofcomics", ebg.core.gamegui, new GameBody());
-});
+class GameState {
+  gameEnd: State;
+  gameSetup: State;
+  playerSetup: State;
+  constructor() {
+    this.gameEnd = new GameEnd();
+    this.gameSetup = new GameSetup();
+    this.playerSetup = new PlayerSetup();
+  }
+}

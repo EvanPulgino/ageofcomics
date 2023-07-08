@@ -1,5 +1,7 @@
+# modules
+
 This directory is meant to hold PHP / js files for inclusion in your
-<gamename>.game.php / gamename.js if needed.
+ageofcomics.game.php / gamename.js if needed.
 
 It is recommended to name your files starting with a trigram of your game name.
 For example if you have a class to manage pathfinding in the game

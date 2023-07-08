@@ -16,8 +16,6 @@ class GameBody extends GameBasics {
   states: any;
   constructor() {
     super();
-    this.states = {};
-    console.log("states", this.states);
   }
 
   /**
@@ -38,38 +36,6 @@ class GameBody extends GameBasics {
    */
   onButtonClick(event: any): void {
     this.debug("onButtonClick", event);
-  }
-
-  /**
-   * Handles changes when entering a new state
-   *
-   * @param stateName
-   * @param args
-   */
-  enterState(stateName: string, args: any): void {
-    this.debug("enterState", stateName, args);
-    // this.states[stateName].onEnteringState(args);
-  }
-
-  /**
-   * Handles changes when leaving a state
-   *
-   * @param stateName
-   */
-  leaveState(stateName: string): void {
-    this.debug("leaveState", stateName);
-    this.states[stateName].onLeavingState();
-  }
-
-  /**
-   * Handles update action buttons on state change
-   *
-   * @param stateName
-   * @param args
-   */
-  updateActionButtons(stateName: string, args: any): void {
-    this.debug("updateActionButtons", stateName, args);
-    this.states[stateName].onUpdateActionButtons(this, args);
   }
 
   /**

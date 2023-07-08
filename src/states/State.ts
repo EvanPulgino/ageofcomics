@@ -7,20 +7,12 @@
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * define.ts
+ * State.ts
  *
  */
 
-// @ts-nocheck
-define([
-  "dojo",
-  "dojo/_base/declare",
-  "ebg/core/gamegui",
-  "ebg/counter",
-  "ebg/stock",
-], function (
-  dojo: any,
-  declare: (arg0: string, arg1: any, arg2: GameBody) => any
-) {
-  return declare("bgagame.ageofcomics", ebg.core.gamegui, new GameBody());
-});
+interface State {
+    onEnteringState(stateArgs: any): void;
+    onLeavingState(): void;
+    onUpdateActionButtons(stateArgs: any): void;
+}

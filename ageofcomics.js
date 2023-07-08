@@ -43,6 +43,7 @@ var GameBasics = /** @class */ (function (_super) {
         _this.curstate = null;
         _this.pendingUpdate = false;
         _this.currentPlayerWasActive = false;
+        _this.gameState = new GameState();
         return _this;
     }
     /**
@@ -78,7 +79,7 @@ var GameBasics = /** @class */ (function (_super) {
         this.curstate = stateName;
         // Call appropriate method
         args = args ? args.args : null; // this method has extra wrapper for args for some reason
-        this.callfn("enterState", stateName, args);
+        this.gameState[stateName].onEnteringState(args);
         if (this.pendingUpdate) {
             this.onUpdateActionButtons(stateName, args);
             this.pendingUpdate = false;
@@ -92,7 +93,7 @@ var GameBasics = /** @class */ (function (_super) {
     GameBasics.prototype.onLeavingState = function (stateName) {
         this.debug("onLeavingState: " + stateName, this.debugStateInfo());
         this.currentPlayerWasActive = false;
-        this.callfn("leaveState", stateName);
+        this.gameState[stateName].onLeavingState();
     };
     /**
      * Builds action buttons on state change
@@ -112,7 +113,7 @@ var GameBasics = /** @class */ (function (_super) {
             this.debug("onUpdateActionButtons: " + stateName, args, this.debugStateInfo());
             this.currentPlayerWasActive = true;
             // Call appropriate method
-            this.callfn("updateActionButtons", stateName, args);
+            this.gameState[stateName].onUpdateActionButtons(args);
         }
         else {
             this.currentPlayerWasActive = false;
@@ -231,10 +232,7 @@ var GameBasics = /** @class */ (function (_super) {
 var GameBody = /** @class */ (function (_super) {
     __extends(GameBody, _super);
     function GameBody() {
-        var _this = _super.call(this) || this;
-        _this.states = {};
-        console.log("states", _this.states);
-        return _this;
+        return _super.call(this) || this;
     }
     /**
      * UI setup entry point
@@ -253,35 +251,6 @@ var GameBody = /** @class */ (function (_super) {
      */
     GameBody.prototype.onButtonClick = function (event) {
         this.debug("onButtonClick", event);
-    };
-    /**
-     * Handles changes when entering a new state
-     *
-     * @param stateName
-     * @param args
-     */
-    GameBody.prototype.enterState = function (stateName, args) {
-        this.debug("enterState", stateName, args);
-        // this.states[stateName].onEnteringState(args);
-    };
-    /**
-     * Handles changes when leaving a state
-     *
-     * @param stateName
-     */
-    GameBody.prototype.leaveState = function (stateName) {
-        this.debug("leaveState", stateName);
-        this.states[stateName].onLeavingState();
-    };
-    /**
-     * Handles update action buttons on state change
-     *
-     * @param stateName
-     * @param args
-     */
-    GameBody.prototype.updateActionButtons = function (stateName, args) {
-        this.debug("updateActionButtons", stateName, args);
-        this.states[stateName].onUpdateActionButtons(this, args);
     };
     /**
      * Setups and subscribes to notifications
@@ -312,6 +281,26 @@ var GameBody = /** @class */ (function (_super) {
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
+ * GameState.ts
+ *
+ */
+var GameState = /** @class */ (function () {
+    function GameState() {
+        this.gameEnd = new GameEnd();
+        this.gameSetup = new GameSetup();
+        this.playerSetup = new PlayerSetup();
+    }
+    return GameState;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
  * define.ts
  *
  */
@@ -325,3 +314,75 @@ define([
 ], function (dojo, declare) {
     return declare("bgagame.ageofcomics", ebg.core.gamegui, new GameBody());
 });
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * GameEnd.ts
+ *
+ */
+var GameEnd = /** @class */ (function () {
+    function GameEnd() {
+    }
+    GameEnd.prototype.onEnteringState = function (stateArgs) { };
+    GameEnd.prototype.onLeavingState = function () { };
+    GameEnd.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return GameEnd;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * GameSetup.ts
+ *
+ */
+var GameSetup = /** @class */ (function () {
+    function GameSetup() {
+    }
+    GameSetup.prototype.onEnteringState = function (stateArgs) { };
+    GameSetup.prototype.onLeavingState = function () { };
+    GameSetup.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return GameSetup;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * PlayerSetup.ts
+ *
+ */
+var PlayerSetup = /** @class */ (function () {
+    function PlayerSetup() {
+    }
+    PlayerSetup.prototype.onEnteringState = function (stateArgs) { };
+    PlayerSetup.prototype.onLeavingState = function () { };
+    PlayerSetup.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return PlayerSetup;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * State.ts
+ *
+ */
