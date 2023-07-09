@@ -68,6 +68,8 @@ $gameinfos = [
         "Most printed comics. If still tied, highest total value of printed comics. If still tied, victory is shared."
     ),
 
+    "tie_breaker_split" => array(100, 1),
+
     // If in the game, all losers are equal (no score to rank them or explicit in the rules that losers are not ranked between them), set this to true
     // The game end result will display "Winner" for the 1st player and "Loser" for all other players
     "losers_not_ranked" => false,

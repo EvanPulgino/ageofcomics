@@ -22,7 +22,8 @@
 --   `card_location_arg` int(11) NOT NULL,
 --   PRIMARY KEY (`card_id`)
 -- ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
+ALTER TABLE `player`
+ADD `player_turn_order` INT UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `player`
 ADD `player_money` INT UNSIGNED NOT NULL DEFAULT '5';
 ALTER TABLE `player`

@@ -55,6 +55,7 @@ class AOCPlayerManager extends APP_GameClass {
             $players,
             $gameInfos["player_colors"]
         );
+        $this->setTurnOrderToNaturalOrder();
         $this->game->reloadPlayersBasicInfos();
     }
 
@@ -65,7 +66,7 @@ class AOCPlayerManager extends APP_GameClass {
      */
     public function getPlayers($playerIds = null) {
         $query =
-            "SELECT player_id id, player_no naturalOrder, player_name name, player_color color, player_score score, player_score_aux scoreAux, player_money money, player_crime_ideas crimeIdeas, player_horror_ideas horrorIdeas, player_romance_ideas romanceIdeas, player_scifi_ideas scifiIdeas, player_superhero_ideas superheroIdeas, player_western_ideas westernIdeas, player_is_multiactive multiActive FROM player";
+            "SELECT player_id id, player_no naturalOrder, player_turn_order turnOrder, player_name name, player_color color, player_score score, player_score_aux scoreAux, player_money money, player_crime_ideas crimeIdeas, player_horror_ideas horrorIdeas, player_romance_ideas romanceIdeas, player_scifi_ideas scifiIdeas, player_superhero_ideas superheroIdeas, player_western_ideas westernIdeas, player_is_multiactive multiActive FROM player";
         if ($playerIds) {
             $query .= " WHERE player_id IN (" . implode(",", $playerIds) . ")";
         }
@@ -90,5 +91,16 @@ class AOCPlayerManager extends APP_GameClass {
             $uiData[] = $player->getUiData();
         }
         return $uiData;
+    }
+
+    /**
+     * Syncs player turn order with randomly assigned natural order
+     * This is only useful on game setup
+     * @return void
+     */
+    private function setTurnOrderToNaturalOrder() {
+        $sql =
+            "UPDATE player SET player_turn_order = player_no WHERE player_no IS NOT NULL";
+        self::DbQuery($sql);
     }
 }

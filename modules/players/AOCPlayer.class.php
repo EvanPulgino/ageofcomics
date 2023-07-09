@@ -19,6 +19,7 @@ class AOCPlayer {
     private $game;
     private int $id;
     private int $naturalOrder;
+    private int $turnOrder;
     private string $name;
     private string $color;
     private int $score;
@@ -36,6 +37,7 @@ class AOCPlayer {
         $this->game = $game;
         $this->id = (int) $row["id"];
         $this->naturalOrder = (int) $row["naturalOrder"];
+        $this->turnOrder = (int) $row["turnOrder"];
         $this->name = $row["name"];
         $this->color = $row["color"];
         $this->score = $row["score"];
@@ -55,6 +57,9 @@ class AOCPlayer {
     }
     public function getNaturalOrder() {
         return $this->naturalOrder;
+    }
+    public function getTurnOrder() {
+        return $this->turnOrder;
     }
     public function getName() {
         return $this->name;
@@ -97,6 +102,7 @@ class AOCPlayer {
         return [
             "id" => $this->id,
             "naturalOrder" => $this->naturalOrder,
+            "turnOrder" => $this->turnOrder,
             "name" => $this->name,
             "color" => $this->color,
             "score" => $this->score,
