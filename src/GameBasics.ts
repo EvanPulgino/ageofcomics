@@ -9,6 +9,8 @@
  *
  * GameBasics.ts
  *
+ * Class that extends default bga core game class with more functionality
+ *
  */
 
 // @ts-ignore
@@ -18,8 +20,6 @@ GameGui = /** @class */ (function () {
   return GameGui;
 })();
 
-/** Class that extends default bga core game class with more functionality
- */
 class GameBasics extends GameGui {
   isDebug: boolean;
   debug: any;
@@ -179,6 +179,7 @@ class GameBasics extends GameGui {
    *
    * @param {string} divstr - div to create
    * @param {string=} location - parent node to insert div into
+   * @returns div element
    */
   createHtml(divstr: string, location?: string) {
     const tempHolder = document.createElement("div");
@@ -189,6 +190,13 @@ class GameBasics extends GameGui {
     return div;
   }
 
+  /**
+   * Creates a div and inserts it into the DOM
+   * @param {string=} id - id of div
+   * @param {string=} classes - classes to add to div
+   * @param {string=} location - parent node to insert div into
+   * @returns div element
+   */
   createDiv(id?: string | undefined, classes?: string, location?: string) {
     const div = document.createElement("div");
     if (id) div.id = id;

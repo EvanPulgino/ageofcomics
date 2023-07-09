@@ -9,6 +9,8 @@
  *
  * GameBody.ts
  *
+ * Main game logic
+ *
  */
 
 // @ts-ignore
@@ -21,7 +23,7 @@ class GameBody extends GameBasics {
   /**
    * UI setup entry point
    *
-   * @param {object} gamedatas
+   * @param {object} gamedata - current game data used to initialize UI
    */
   setup(gamedata: any) {
     super.setup(gamedata);
@@ -32,7 +34,7 @@ class GameBody extends GameBasics {
   /**
    * Handle button click events
    *
-   * @param {object} event
+   * @param {object} event - event triggered
    */
   onButtonClick(event: any): void {
     this.debug("onButtonClick", event);

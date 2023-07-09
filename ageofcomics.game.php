@@ -18,7 +18,9 @@
 
 require_once APP_GAMEMODULE_PATH . "module/table/table.game.php";
 require_once "modules/AOCConstants.inc.php";
-
+require_once "modules/actions/AOCGameStateActions.class.php";
+require_once "modules/actions/AOCPlayerActions.class.php";
+require_once "modules/players/AOCPlayerManager.class.php";
 class AgeOfComics extends Table {
     function __construct() {
         // Your global variables labels:
@@ -30,13 +32,16 @@ class AgeOfComics extends Table {
         parent::__construct();
 
         self::initGameStateLabels([
-            //    "my_first_global_variable" => 10,
-            //    "my_second_global_variable" => 11,
-            //      ...
-            //    "my_first_game_variant" => 100,
-            //    "my_second_game_variant" => 101,
-            //      ...
+            TOTAL_TURNS => 10,
+            TURNS_TAKEN => 11,
         ]);
+
+        // Initialize action managers
+        $this->gameStateActions = new AOCGameStateActions($this);
+        $this->playerActions = new AOCPlayerActions($this);
+
+        // Initialize player manager
+        $this->playerManager = new AOCPlayerManager($this);
     }
 
     protected function getGameName() {
@@ -52,42 +57,14 @@ class AgeOfComics extends Table {
         the game is ready to be played.
     */
     protected function setupNewGame($players, $options = []) {
-        // Set the colors of the players with HTML color code
-        // The default below is red/green/blue/orange/brown
-        // The number of colors defined here must correspond to the maximum number of players allowed for the gams
-        $gameinfos = self::getGameinfos();
-        $default_colors = $gameinfos["player_colors"];
-
-        // Create players
-        // Note: if you added some extra field on "player" table in the database (dbmodel.sql), you can initialize it there.
-        $sql =
-            "INSERT INTO player (player_id, player_color, player_canal, player_name, player_avatar) VALUES ";
-        $values = [];
-        foreach ($players as $player_id => $player) {
-            $color = array_shift($default_colors);
-            $values[] =
-                "('" .
-                $player_id .
-                "','$color','" .
-                $player["player_canal"] .
-                "','" .
-                addslashes($player["player_name"]) .
-                "','" .
-                addslashes($player["player_avatar"]) .
-                "')";
-        }
-        $sql .= implode(",", $values);
-        self::DbQuery($sql);
-        self::reattributeColorsBasedOnPreferences(
-            $players,
-            $gameinfos["player_colors"]
-        );
-        self::reloadPlayersBasicInfos();
+        // Setup players
+        $this->playerManager->setupNewGame($players);
 
         /************ Start the game initialization *****/
 
         // Init global values with their initial values
-        //self::setGameStateInitialValue( 'my_first_global_variable', 0 );
+        self::setGameStateInitialValue(TOTAL_TURNS, sizeof($players) * 20);
+        self::setGameStateInitialValue(TURNS_TAKEN, 0);
 
         // Init game statistics
         // (note: statistics used in this file must be defined in your stats.inc.php file)
@@ -112,18 +89,14 @@ class AgeOfComics extends Table {
         _ when a player refreshes the game page (F5)
     */
     protected function getAllDatas() {
-        $result = [];
-
         $current_player_id = self::getCurrentPlayerId(); // !! We must only return informations visible by this player !!
 
-        // Get information about players
-        // Note: you can retrieve some extra field you added for "player" table in "dbmodel.sql" if you need it.
-        $sql = "SELECT player_id id, player_score score FROM player ";
-        $result["players"] = self::getCollectionFromDb($sql);
+        $gamedata = [
+            "constants" => get_defined_constants(true)["user"],
+            "playerInfo" => $this->playerManager->getPlayersUiData(),
+        ];
 
-        // TODO: Gather all information about current game situation (visible by player $current_player_id).
-
-        return $result;
+        return $gamedata;
     }
 
     /*
@@ -137,18 +110,22 @@ class AgeOfComics extends Table {
         (see states.inc.php)
     */
     function getGameProgression() {
-        // TODO: compute and return the game progression
-
-        return 0;
+        return (self::getGameStateValue(TURNS_TAKEN) /
+            self::getGameStateValue(TOTAL_TURNS)) *
+            100;
     }
 
     //////////////////////////////////////////////////////////////////////////////
     //////////// Utility functions
     ////////////
 
-    /*
-        In this space, you can put any utility methods useful for your game logic
-    */
+    /**
+     * Public wrapper for getCurrentPlayerId()
+     * @return mixed
+     */
+    function getViewingPlayerId() {
+        return self::getCurrentPlayerId();
+    }
 
     //////////////////////////////////////////////////////////////////////////////
     //////////// Player actions

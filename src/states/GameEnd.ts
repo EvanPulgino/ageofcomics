@@ -9,6 +9,8 @@
  *
  * GameEnd.ts
  *
+ * AgeOfComics game end state
+ *
  */
 
 class GameEnd implements State {

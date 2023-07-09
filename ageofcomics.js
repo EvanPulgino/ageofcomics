@@ -9,6 +9,8 @@
  *
  * GameBasics.ts
  *
+ * Class that extends default bga core game class with more functionality
+ *
  */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -31,8 +33,6 @@ GameGui = /** @class */ (function () {
     function GameGui() { }
     return GameGui;
 })();
-/** Class that extends default bga core game class with more functionality
- */
 var GameBasics = /** @class */ (function (_super) {
     __extends(GameBasics, _super);
     function GameBasics() {
@@ -166,6 +166,7 @@ var GameBasics = /** @class */ (function (_super) {
      *
      * @param {string} divstr - div to create
      * @param {string=} location - parent node to insert div into
+     * @returns div element
      */
     GameBasics.prototype.createHtml = function (divstr, location) {
         var tempHolder = document.createElement("div");
@@ -176,6 +177,13 @@ var GameBasics = /** @class */ (function (_super) {
             parentNode.appendChild(div);
         return div;
     };
+    /**
+     * Creates a div and inserts it into the DOM
+     * @param {string=} id - id of div
+     * @param {string=} classes - classes to add to div
+     * @param {string=} location - parent node to insert div into
+     * @returns div element
+     */
     GameBasics.prototype.createDiv = function (id, classes, location) {
         var _a;
         var div = document.createElement("div");
@@ -227,6 +235,8 @@ var GameBasics = /** @class */ (function (_super) {
  *
  * GameBody.ts
  *
+ * Main game logic
+ *
  */
 // @ts-ignore
 var GameBody = /** @class */ (function (_super) {
@@ -237,7 +247,7 @@ var GameBody = /** @class */ (function (_super) {
     /**
      * UI setup entry point
      *
-     * @param {object} gamedatas
+     * @param {object} gamedata - current game data used to initialize UI
      */
     GameBody.prototype.setup = function (gamedata) {
         _super.prototype.setup.call(this, gamedata);
@@ -247,7 +257,7 @@ var GameBody = /** @class */ (function (_super) {
     /**
      * Handle button click events
      *
-     * @param {object} event
+     * @param {object} event - event triggered
      */
     GameBody.prototype.onButtonClick = function (event) {
         this.debug("onButtonClick", event);
@@ -282,6 +292,8 @@ var GameBody = /** @class */ (function (_super) {
  * -----
  *
  * GameState.ts
+ *
+ * Class that holds all game states
  *
  */
 var GameState = /** @class */ (function () {
@@ -325,6 +337,8 @@ define([
  *
  * GameEnd.ts
  *
+ * AgeOfComics game end state
+ *
  */
 var GameEnd = /** @class */ (function () {
     function GameEnd() {
@@ -344,6 +358,8 @@ var GameEnd = /** @class */ (function () {
  * -----
  *
  * GameSetup.ts
+ *
+ * AgeOfComics game setup state
  *
  */
 var GameSetup = /** @class */ (function () {
@@ -365,6 +381,8 @@ var GameSetup = /** @class */ (function () {
  *
  * PlayerSetup.ts
  *
+ * AgeOfComics player setup state
+ *
  */
 var PlayerSetup = /** @class */ (function () {
     function PlayerSetup() {
@@ -384,5 +402,7 @@ var PlayerSetup = /** @class */ (function () {
  * -----
  *
  * State.ts
+ *
+ * Interface for a game state
  *
  */

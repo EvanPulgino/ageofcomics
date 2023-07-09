@@ -22,5 +22,18 @@
 --   `card_location_arg` int(11) NOT NULL,
 --   PRIMARY KEY (`card_id`)
 -- ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
--- Example 2: add a custom field to the standard "player" table
--- ALTER TABLE `player` ADD `player_my_custom_field` INT UNSIGNED NOT NULL DEFAULT '0';
+
+ALTER TABLE `player`
+ADD `player_money` INT UNSIGNED NOT NULL DEFAULT '5';
+ALTER TABLE `player`
+ADD `player_crime_ideas` INT UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE `player`
+ADD `player_horror_ideas` INT UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE `player`
+ADD `player_romance_ideas` INT UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE `player`
+ADD `player_scifi_ideas` INT UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE `player`
+ADD `player_superhero_ideas` INT UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE `player`
+ADD `player_western_ideas` INT UNSIGNED NOT NULL DEFAULT '0';

@@ -1,3 +1,5 @@
+<?php
+
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
@@ -7,19 +9,15 @@
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * GameState.ts
+ * AOCGameStateActions.php
  * 
- * Class that holds all game states
+ * All actions initiated by the game
  *
  */
 
-class GameState {
-  gameEnd: State;
-  gameSetup: State;
-  playerSetup: State;
-  constructor() {
-    this.gameEnd = new GameEnd();
-    this.gameSetup = new GameSetup();
-    this.playerSetup = new PlayerSetup();
-  }
+class AOCGameStateActions {
+    private $game;
+    public function __construct($game) {
+        $this->game = $game;
+    }
 }

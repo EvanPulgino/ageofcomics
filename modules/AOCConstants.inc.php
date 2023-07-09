@@ -17,6 +17,10 @@
 define("GAME_ACTION_GAME_END", "stGameEnd");
 define("GAME_ACTION_GAME_SETUP", "stGameSetup");
 
+/** Global Variables */
+define("TOTAL_TURNS", "total_turns");
+define("TURNS_TAKEN", "turns_taken");
+
 /** State Args */
 define("STATE_ARG_GAME_END", "argGameEnd");
 

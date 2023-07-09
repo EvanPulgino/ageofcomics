@@ -8,6 +8,8 @@
  * -----
  *
  * State.ts
+ * 
+ * Interface for a game state
  *
  */
 

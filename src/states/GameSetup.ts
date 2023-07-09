@@ -8,6 +8,8 @@
  * -----
  *
  * GameSetup.ts
+ * 
+ * AgeOfComics game setup state
  *
  */
 

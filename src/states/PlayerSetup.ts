@@ -9,10 +9,12 @@
  *
  * PlayerSetup.ts
  *
+ * AgeOfComics player setup state
+ *
  */
 
 class PlayerSetup implements State {
-    onEnteringState(stateArgs: any): void {}
-    onLeavingState(): void {}
-    onUpdateActionButtons(stateArgs: any): void {}
+  onEnteringState(stateArgs: any): void {}
+  onLeavingState(): void {}
+  onUpdateActionButtons(stateArgs: any): void {}
 }
