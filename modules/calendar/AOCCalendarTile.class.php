@@ -21,6 +21,7 @@ class AOCCalendarTile {
     private string $genre;
     private int $round;
     private int $position;
+    private string $cssClass;
 
     public function __construct($row) {
         $this->id = (int) $row["id"];
@@ -28,6 +29,7 @@ class AOCCalendarTile {
         $this->genre = $this->getGenreName($this->genreId);
         $this->round = (int) $row["round"];
         $this->position = (int) $row["position"];
+        $this->cssClass = $row["class"];
     }
 
     public function getId() {
@@ -45,6 +47,9 @@ class AOCCalendarTile {
     public function getPosition() {
         return $this->position;
     }
+    public function getCssClass() {
+        return $this->cssClass;
+    }
 
     public function getUiData() {
         return [
@@ -52,7 +57,8 @@ class AOCCalendarTile {
             "genreId" => $this->genreId,
             "genre" => $this->genre,
             "round" => $this->round,
-            "position" => $this->position
+            "position" => $this->position,
+            "cssClass" => $this->cssClass,
         ];
     }
 

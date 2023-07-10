@@ -22,13 +22,24 @@
 --   `card_location_arg` int(11) NOT NULL,
 --   PRIMARY KEY (`card_id`)
 -- ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
 CREATE TABLE IF NOT EXISTS `calendar_tile` (
     `calendar_tile_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     `calendar_tile_genre` INT(11) NOT NULL,
     `calendar_tile_round` INT(11) NOT NULL,
     `calendar_tile_position` INT(11) NOT NULL,
+    `calendar_tile_class` VARCHAR(100) NOT NULL,
     PRIMARY KEY (`calendar_tile_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+CREATE TABLE IF NOT EXISTS `editor` (
+    `editor_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `editor_owner` INT(11) NOT NULL,
+    `editor_location` INT(11) NOT NULL,
+    `editor_class` VARCHAR(100) NOT NULL,
+    PRIMARY KEY (`editor_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
 ALTER TABLE `player`
 ADD `player_turn_order` INT UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `player`

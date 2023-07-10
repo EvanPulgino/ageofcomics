@@ -21,6 +21,7 @@ require_once "modules/AOCConstants.inc.php";
 require_once "modules/actions/AOCGameStateActions.class.php";
 require_once "modules/actions/AOCPlayerActions.class.php";
 require_once "modules/calendar/AOCCalendarManager.class.php";
+require_once "modules/editors/AOCEditorManager.class.php";
 require_once "modules/players/AOCPlayerManager.class.php";
 class AgeOfComics extends Table {
     function __construct() {
@@ -53,6 +54,7 @@ class AgeOfComics extends Table {
 
         // Initialize component managers
         $this->calendarManager = new AOCCalendarManager($this);
+        $this->editorManager = new AOCEditorManager($this);
     }
 
     protected function getGameName() {
@@ -70,6 +72,8 @@ class AgeOfComics extends Table {
     protected function setupNewGame($players, $options = []) {
         // Setup players
         $this->playerManager->setupNewGame($players);
+        // Get player objects for rest of setup
+        $aocPlayers = $this->playerManager->getPlayers();
 
         /************ Start the game initialization *****/
 
@@ -91,6 +95,7 @@ class AgeOfComics extends Table {
 
         // Setup the initial game situation here
         $this->calendarManager->setupNewGame();
+        $this->editorManager->setupNewGame($aocPlayers);
 
         // Activate first player (which is in general a good idea :) )
         $this->activeNextPlayer();
@@ -113,6 +118,7 @@ class AgeOfComics extends Table {
         $gamedata = [
             "calendarTiles" => $this->calendarManager->getCalendarTilesUiData(),
             "constants" => get_defined_constants(true)["user"],
+            "editors" => $this->editorManager->getEditorsUiData(),
             "playerInfo" => $this->playerManager->getPlayersUiData(),
         ];
 

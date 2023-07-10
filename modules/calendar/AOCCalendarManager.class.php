@@ -41,7 +41,7 @@ class AOCCalendarManager extends APP_GameClass {
         foreach ($calendarPositions as $position) {
             $genre = array_shift($genres);
             $round = floor($position / 10);
-            $sql = "INSERT INTO calendar_tile (calendar_tile_genre, calendar_tile_round, calendar_tile_position) VALUES ($genre, $round, $position)";
+            $sql = "INSERT INTO calendar_tile (calendar_tile_genre, calendar_tile_round, calendar_tile_position, calendar_tile_class) VALUES ($genre, $round, $position, 'calendar-tile-facedown')";
             self::DbQuery($sql);
         }
     }
@@ -52,7 +52,7 @@ class AOCCalendarManager extends APP_GameClass {
      */
     public function getCalendarTiles() {
         $sql =
-            "SELECT calendar_tile_id id, calendar_tile_genre genre, calendar_tile_round round, calendar_tile_position position FROM calendar_tile";
+            "SELECT calendar_tile_id id, calendar_tile_genre genre, calendar_tile_round round, calendar_tile_position position, calendar_tile_class class FROM calendar_tile";
         $rows = self::getObjectListFromDB($sql);
 
         $tiles = [];

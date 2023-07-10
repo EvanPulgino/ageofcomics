@@ -44,6 +44,27 @@ define("IDEAS_SPACE_WESTERN", "ideas_space_western");
 define("TOTAL_TURNS", "total_turns");
 define("TURNS_TAKEN", "turns_taken");
 
+/** Locations */
+define("LOCATION_PLAYER", 1);
+define("LOCATION_ACTION_SPACE_1", 1);
+define("LOCATION_ACTION_SPACE_2", 2);
+define("LOCATION_ACTION_SPACE_3", 3);
+define("LOCATION_ACTION_SPACE_4", 4);
+define("LOCATION_ACTION_SPACE_5", 5);
+define("LOCATION_ACTION_HIRE", 10);
+define("LOCATION_ACTION_DEVELOP", 20);
+define("LOCATION_ACTION_IDEAS", 30);
+define("LOCATION_ACTION_PRINT", 40);
+define("LOCATION_ACTION_ROYALTIES", 50);
+define("LOCATION_ACTION_SALES", 60);
+define("LOCATION_EXTRA_EDITOR", 9999);
+
+/** Player Colors */
+define("PLAYER_COLOR_BROWN", "7d4b48");
+define("PLAYER_COLOR_SALMON", "ec9b7c");
+define("PLAYER_COLOR_TEAL", "5fa7a3");
+define("PLAYER_COLOR_YELLOW", "f7c96d");
+
 /** State Args */
 define("STATE_ARG_GAME_END", "argGameEnd");
 
