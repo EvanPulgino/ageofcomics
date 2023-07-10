@@ -60,6 +60,61 @@ class AOCPlayerManager extends APP_GameClass {
     }
 
     /**
+     * Activate the next player in turn order
+     * @return void
+     */
+    public function activateNextPlayer() {
+        $playerCount = $this->getPlayerCount();
+        $activePlayer = $this->getActivePlayer();
+        if ($activePlayer->getTurnOrder() == $playerCount) {
+            $nextPlayerId = $this->getPlayerIdByTurnOrder(1);
+        } else {
+            $nextPlayerId = $this->getPlayerIdByTurnOrder(
+                $activePlayer->getTurnOrder() + 1
+            );
+        }
+
+        $this->game->gamestate->changeActivePlayer($nextPlayerId);
+    }
+
+    /**
+     * Gets the active player as an AOCPlayer object
+     * @return AOCPlayer The active player
+     */
+    public function getActivePlayer() {
+        return $this->getPlayer($this->game->getActivePlayerId());
+    }
+
+    /**
+     * Returns the number of players
+     * @return int Number of players in the game
+     */
+    public function getPlayerCount() {
+        return intval(
+            self::getUniqueValueFromDB("SELECT COUNT(*) FROM player")
+        );
+    }
+
+    /**
+     * Gets an AOCPlayer object for the specified player ID
+     * @param mixed $playerId
+     * @return AOCPlayer Player object
+     */
+    public function getPlayer($playerId) {
+        return $this->getPlayers([$playerId])[0];
+    }
+
+    /**
+     * Gets the player ID for the specified turn order
+     * @param int $turnOrder The turn order of the player
+     * @return int The player ID
+     */
+    public function getPlayerIdByTurnOrder($turnOrder) {
+        $query = "SELECT player_id FROM player WHERE player_turn_order = $turnOrder";
+        return intval(self::getUniqueValueFromDB($query));
+    }
+
+    /**
      * Returns an array of AOCPlayer objects for all/specified player IDs
      * @param array<int> $playerIds An array of player IDs from database
      * @return array<AOCPlayer> An array of AOCPlayer objects
