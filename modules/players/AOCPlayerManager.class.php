@@ -110,8 +110,8 @@ class AOCPlayerManager extends APP_GameClass {
      * @return int The player ID
      */
     public function getPlayerIdByTurnOrder($turnOrder) {
-        $query = "SELECT player_id FROM player WHERE player_turn_order = $turnOrder";
-        return intval(self::getUniqueValueFromDB($query));
+        $sql = "SELECT player_id FROM player WHERE player_turn_order = $turnOrder";
+        return intval(self::getUniqueValueFromDB($sql));
     }
 
     /**
@@ -120,16 +120,16 @@ class AOCPlayerManager extends APP_GameClass {
      * @return array<AOCPlayer> An array of AOCPlayer objects
      */
     public function getPlayers($playerIds = null) {
-        $query =
+        $sql =
             "SELECT player_id id, player_no naturalOrder, player_turn_order turnOrder, player_name name, player_color color, player_score score, player_score_aux scoreAux, player_money money, player_crime_ideas crimeIdeas, player_horror_ideas horrorIdeas, player_romance_ideas romanceIdeas, player_scifi_ideas scifiIdeas, player_superhero_ideas superheroIdeas, player_western_ideas westernIdeas, player_is_multiactive multiActive FROM player";
         if ($playerIds) {
-            $query .= " WHERE player_id IN (" . implode(",", $playerIds) . ")";
+            $sql .= " WHERE player_id IN (" . implode(",", $playerIds) . ")";
         }
-        $rows = self::getObjectListFromDB($query);
+        $rows = self::getObjectListFromDB($sql);
 
         $players = [];
         foreach ($rows as $row) {
-            $players[] = new AOCPlayer($this->game, $row);
+            $players[] = new AOCPlayer($row);
         }
         return $players;
     }

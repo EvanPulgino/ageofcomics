@@ -20,6 +20,7 @@ require_once APP_GAMEMODULE_PATH . "module/table/table.game.php";
 require_once "modules/AOCConstants.inc.php";
 require_once "modules/actions/AOCGameStateActions.class.php";
 require_once "modules/actions/AOCPlayerActions.class.php";
+require_once "modules/calendar/AOCCalendarManager.class.php";
 require_once "modules/players/AOCPlayerManager.class.php";
 class AgeOfComics extends Table {
     function __construct() {
@@ -34,6 +35,7 @@ class AgeOfComics extends Table {
         self::initGameStateLabels([
             TOTAL_TURNS => 10,
             TURNS_TAKEN => 11,
+            CURRENT_ROUND => 12,
         ]);
 
         // Initialize action managers
@@ -42,6 +44,9 @@ class AgeOfComics extends Table {
 
         // Initialize player manager
         $this->playerManager = new AOCPlayerManager($this);
+
+        // Initialize component managers
+        $this->calendarManager = new AOCCalendarManager($this);
     }
 
     protected function getGameName() {
@@ -65,13 +70,15 @@ class AgeOfComics extends Table {
         // Init global values with their initial values
         self::setGameStateInitialValue(TOTAL_TURNS, sizeof($players) * 20);
         self::setGameStateInitialValue(TURNS_TAKEN, 0);
+        self::setGameStateInitialValue(CURRENT_ROUND, 0);
 
         // Init game statistics
         // (note: statistics used in this file must be defined in your stats.inc.php file)
         //self::initStat( 'table', 'table_teststat1', 0 );    // Init a table statistics
         //self::initStat( 'player', 'player_teststat1', 0 );  // Init a player statistics (for all players)
 
-        // TODO: setup the initial game situation here
+        // Setup the initial game situation here
+        $this->calendarManager->setupNewGame();
 
         // Activate first player (which is in general a good idea :) )
         $this->activeNextPlayer();
@@ -92,6 +99,7 @@ class AgeOfComics extends Table {
         $current_player_id = self::getCurrentPlayerId(); // !! We must only return informations visible by this player !!
 
         $gamedata = [
+            "calendarTiles" => $this->calendarManager->getCalendarTilesUiData(),
             "constants" => get_defined_constants(true)["user"],
             "playerInfo" => $this->playerManager->getPlayersUiData(),
         ];

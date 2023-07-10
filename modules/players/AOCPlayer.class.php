@@ -16,7 +16,6 @@
  */
 
 class AOCPlayer {
-    private $game;
     private int $id;
     private int $naturalOrder;
     private int $turnOrder;
@@ -33,8 +32,7 @@ class AOCPlayer {
     private int $westernIdeas;
     private bool $multiActive;
 
-    public function __construct($game, $row) {
-        $this->game = $game;
+    public function __construct($row) {
         $this->id = (int) $row["id"];
         $this->naturalOrder = (int) $row["naturalOrder"];
         $this->turnOrder = (int) $row["turnOrder"];

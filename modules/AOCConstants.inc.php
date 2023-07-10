@@ -17,7 +17,24 @@
 define("GAME_ACTION_GAME_END", "stGameEnd");
 define("GAME_ACTION_GAME_SETUP", "stGameSetup");
 
+/** Genre Keys */
+define("GENRE_CRIME", 10);
+define("GENRE_HORROR", 20);
+define("GENRE_ROMANCE", 30);
+define("GENRE_SCIFI", 40);
+define("GENRE_SUPERHERO", 50);
+define("GENRE_WESTERN", 60);
+
+/** Genre Names */
+define("CRIME", "crime");
+define("HORROR", "horror");
+define("ROMANCE", "romance");
+define("SCIFI", "scifi");
+define("SUPERHERO", "superhero");
+define("WESTERN", "western");
+
 /** Global Variables */
+define("CURRENT_ROUND", "current_round");
 define("TOTAL_TURNS", "total_turns");
 define("TURNS_TAKEN", "turns_taken");
 
