@@ -36,6 +36,12 @@ class AgeOfComics extends Table {
             TOTAL_TURNS => 10,
             TURNS_TAKEN => 11,
             CURRENT_ROUND => 12,
+            IDEAS_SPACE_CRIME => 13,
+            IDEAS_SPACE_HORROR => 14,
+            IDEAS_SPACE_ROMANCE => 15,
+            IDEAS_SPACE_SCIFI => 16,
+            IDEAS_SPACE_SUPERHERO => 17,
+            IDEAS_SPACE_WESTERN => 18,
         ]);
 
         // Initialize action managers
@@ -71,6 +77,12 @@ class AgeOfComics extends Table {
         self::setGameStateInitialValue(TOTAL_TURNS, sizeof($players) * 20);
         self::setGameStateInitialValue(TURNS_TAKEN, 0);
         self::setGameStateInitialValue(CURRENT_ROUND, 0);
+        self::setGameStateInitialValue(IDEAS_SPACE_CRIME, 1);
+        self::setGameStateInitialValue(IDEAS_SPACE_HORROR, 1);
+        self::setGameStateInitialValue(IDEAS_SPACE_ROMANCE, 1);
+        self::setGameStateInitialValue(IDEAS_SPACE_SCIFI, 1);
+        self::setGameStateInitialValue(IDEAS_SPACE_SUPERHERO, 1);
+        self::setGameStateInitialValue(IDEAS_SPACE_WESTERN, 1);
 
         // Init game statistics
         // (note: statistics used in this file must be defined in your stats.inc.php file)
