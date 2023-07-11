@@ -46,7 +46,15 @@ class AgeOfComics extends Table {
             IDEAS_SPACE_WESTERN => 18,
         ]);
 
-        $this->genres = [GENRE_CRIME, GENRE_HORROR, GENRE_ROMANCE, GENRE_SCIFI, GENRE_SUPERHERO, GENRE_WESTERN];
+        // Genres in the game
+        $this->genres = [
+            GENRE_CRIME,
+            GENRE_HORROR,
+            GENRE_ROMANCE,
+            GENRE_SCIFI,
+            GENRE_SUPERHERO,
+            GENRE_WESTERN,
+        ];
 
         // Initialize action managers
         $this->gameStateActions = new AOCGameStateActions($this);
@@ -82,7 +90,7 @@ class AgeOfComics extends Table {
         /************ Start the game initialization *****/
 
         // Init global values with their initial values
-        self::setGameStateInitialValue(TOTAL_TURNS, sizeof($players) * 20);
+        self::setGameStateInitialValue(TOTAL_TURNS, sizeof($aocPlayers) * 20);
         self::setGameStateInitialValue(TURNS_TAKEN, 0);
         self::setGameStateInitialValue(CURRENT_ROUND, 0);
         self::setGameStateInitialValue(IDEAS_SPACE_CRIME, 1);

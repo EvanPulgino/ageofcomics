@@ -77,6 +77,27 @@ class AOCPlayerManager extends APP_GameClass {
         $this->game->gamestate->changeActivePlayer($nextPlayerId);
     }
 
+    public function adjustPlayerIdeas($playerId, $ideas, $type) {
+        $sql =
+            "UPDATE player SET player_" .
+            $type .
+            "_ideas = player_" .
+            $type .
+            "_ideas + $ideas WHERE player_id = $playerId";
+        self::DbQuery($sql);
+    }
+
+    public function adjustPlayerMoney($playerId, $money) {
+        $sql =
+            "UPDATE player SET player_money = player_money + $money WHERE player_id = $playerId";
+        self::DbQuery($sql);
+    }
+
+    public function adjustPlayerScore($playerId, $score) {
+        $sql =
+            "UPDATE player SET player_score = player_score + $score WHERE player_id = $playerId";
+        self::DbQuery($sql);
+    }
     /**
      * Gets the active player as an AOCPlayer object
      * @return AOCPlayer The active player
