@@ -28,18 +28,11 @@ class AOCCalendarManager extends APP_GameClass {
      */
     public function setupNewGame() {
         $calendarPositions = [10, 20, 31, 32, 40, 50];
-        $genres = [
-            GENRE_CRIME,
-            GENRE_HORROR,
-            GENRE_ROMANCE,
-            GENRE_SCIFI,
-            GENRE_SUPERHERO,
-            GENRE_WESTERN,
-        ];
-        shuffle($genres);
+        $calendarGenres = $this->game->genres;
+        shuffle($calendarGenres);
 
         foreach ($calendarPositions as $position) {
-            $genre = array_shift($genres);
+            $genre = array_shift($calendarGenres);
             $round = floor($position / 10);
             $sql = "INSERT INTO calendar_tile (calendar_tile_genre, calendar_tile_round, calendar_tile_position, calendar_tile_class) VALUES ($genre, $round, $position, 'calendar-tile-facedown')";
             self::DbQuery($sql);

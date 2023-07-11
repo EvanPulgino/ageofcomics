@@ -24,7 +24,7 @@
 -- ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `calendar_tile` (
-    `calendar_tile_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `calendar_tile_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     `calendar_tile_genre` INT(11) NOT NULL,
     `calendar_tile_round` INT(11) NOT NULL,
     `calendar_tile_position` INT(11) NOT NULL,
@@ -33,11 +33,19 @@ CREATE TABLE IF NOT EXISTS `calendar_tile` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `editor` (
-    `editor_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `editor_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     `editor_owner` INT(11) NOT NULL,
     `editor_location` INT(11) NOT NULL,
     `editor_class` VARCHAR(100) NOT NULL,
     PRIMARY KEY (`editor_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+CREATE TABLE IF NOT EXISTS `mastery_token` (
+    `mastery_token_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `mastery_token_genre` INT(11) NOT NULL,
+    `mastery_token_owner` INT(11) DEFAULT NULL,
+    `mastery_token_comic_count` INT(11) NOT NULL DEFAULT '0',
+    PRIMARY KEY (`mastery_token_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 ALTER TABLE `player`

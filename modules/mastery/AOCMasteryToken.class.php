@@ -1,4 +1,5 @@
 <?php
+
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
@@ -8,45 +9,51 @@
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * AOCEditor.class.php
+ * AOCMasteryToken.class.php
  *
- * Editor meeple class
+ * Object for mastery tokens
  *
  */
 
- require_once __DIR__ . "/../AOCObject.class.php";
-class AOCEditor extends AOCObject {
+require_once __DIR__ . "/../AOCObject.class.php";
+class AOCMasteryToken extends AOCObject {
     private int $id;
+    private int $genreId;
+    private string $genre;
     private int $playerId;
-    private int $locationId;
-    private string $cssClass;
+    private int $comicCount;
 
     public function __construct($row) {
         $this->id = (int) $row["id"];
-        $this->playerId = (int) $row["owner"];
-        $this->locationId = (int) $row["location"];
-        $this->cssClass = $row["class"];
+        $this->genreId = (int) $row["genre"];
+        $this->genre = $this->getGenreName($this->genreId);
+        $this->playerId = (int) $row["playerId"];
+        $this->comicCount = (int) $row["comicCount"];
     }
 
     public function getId() {
         return $this->id;
     }
+    public function getGenreId() {
+        return $this->genreId;
+    }
+    public function getGenre() {
+        return $this->genre;
+    }
     public function getPlayerId() {
         return $this->playerId;
     }
-    public function getLocationId() {
-        return $this->locationId;
-    }
-    public function getCssClass() {
-        return $this->cssClass;
+    public function getComicCount() {
+        return $this->comicCount;
     }
 
     public function getUiData() {
         return [
             "id" => $this->id,
+            "genreId" => $this->genreId,
+            "genre" => $this->genre,
             "playerId" => $this->playerId,
-            "locationId" => $this->locationId,
-            "cssClass" => $this->cssClass,
+            "comicCount" => $this->comicCount,
         ];
     }
 }

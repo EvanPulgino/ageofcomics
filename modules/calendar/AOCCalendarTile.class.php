@@ -14,8 +14,8 @@
  * Calendar tile class
  *
  */
-
-class AOCCalendarTile {
+require_once __DIR__ . "/../AOCObject.class.php";
+class AOCCalendarTile extends AOCObject {
     private int $id;
     private int $genreId;
     private string $genre;
@@ -60,24 +60,5 @@ class AOCCalendarTile {
             "position" => $this->position,
             "cssClass" => $this->cssClass,
         ];
-    }
-
-    private function getGenreName($key) {
-        switch ($key) {
-            case GENRE_CRIME:
-                return clienttranslate(CRIME);
-            case GENRE_HORROR:
-                return clienttranslate(HORROR);
-            case GENRE_ROMANCE:
-                return clienttranslate(ROMANCE);
-            case GENRE_SCIFI:
-                return clienttranslate(SCIFI);
-            case GENRE_SUPERHERO:
-                return clienttranslate(SUPERHERO);
-            case GENRE_WESTERN:
-                return clienttranslate(WESTERN);
-            default:
-                return "";
-        }
     }
 }

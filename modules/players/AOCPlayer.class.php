@@ -15,7 +15,8 @@
  *
  */
 
-class AOCPlayer {
+require_once __DIR__ . "/../AOCObject.class.php";
+class AOCPlayer extends AOCObject {
     private int $id;
     private int $naturalOrder;
     private int $turnOrder;

@@ -22,6 +22,7 @@ require_once "modules/actions/AOCGameStateActions.class.php";
 require_once "modules/actions/AOCPlayerActions.class.php";
 require_once "modules/calendar/AOCCalendarManager.class.php";
 require_once "modules/editors/AOCEditorManager.class.php";
+require_once "modules/mastery/AOCMasteryManager.class.php";
 require_once "modules/players/AOCPlayerManager.class.php";
 class AgeOfComics extends Table {
     function __construct() {
@@ -45,6 +46,8 @@ class AgeOfComics extends Table {
             IDEAS_SPACE_WESTERN => 18,
         ]);
 
+        $this->genres = [GENRE_CRIME, GENRE_HORROR, GENRE_ROMANCE, GENRE_SCIFI, GENRE_SUPERHERO, GENRE_WESTERN];
+
         // Initialize action managers
         $this->gameStateActions = new AOCGameStateActions($this);
         $this->playerActions = new AOCPlayerActions($this);
@@ -55,6 +58,7 @@ class AgeOfComics extends Table {
         // Initialize component managers
         $this->calendarManager = new AOCCalendarManager($this);
         $this->editorManager = new AOCEditorManager($this);
+        $this->masteryManager = new AOCMasteryManager($this);
     }
 
     protected function getGameName() {
@@ -96,6 +100,7 @@ class AgeOfComics extends Table {
         // Setup the initial game situation here
         $this->calendarManager->setupNewGame();
         $this->editorManager->setupNewGame($aocPlayers);
+        $this->masteryManager->setupNewGame();
 
         // Activate first player (which is in general a good idea :) )
         $this->activeNextPlayer();
@@ -120,6 +125,7 @@ class AgeOfComics extends Table {
             "constants" => get_defined_constants(true)["user"],
             "editors" => $this->editorManager->getEditorsUiData(),
             "playerInfo" => $this->playerManager->getPlayersUiData(),
+            "mastery" => $this->masteryManager->getMasteryTokensUiData(),
         ];
 
         return $gamedata;
