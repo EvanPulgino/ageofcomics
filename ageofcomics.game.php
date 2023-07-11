@@ -23,6 +23,7 @@ require_once "modules/actions/AOCPlayerActions.class.php";
 require_once "modules/calendar/AOCCalendarManager.class.php";
 require_once "modules/editors/AOCEditorManager.class.php";
 require_once "modules/mastery/AOCMasteryManager.class.php";
+require_once "modules/salesorders/AOCSalesOrderManager.class.php";
 require_once "modules/players/AOCPlayerManager.class.php";
 class AgeOfComics extends Table {
     function __construct() {
@@ -67,6 +68,7 @@ class AgeOfComics extends Table {
         $this->calendarManager = new AOCCalendarManager($this);
         $this->editorManager = new AOCEditorManager($this);
         $this->masteryManager = new AOCMasteryManager($this);
+        $this->salesOrderManager = new AOCSalesOrderManager($this);
     }
 
     protected function getGameName() {
@@ -109,6 +111,7 @@ class AgeOfComics extends Table {
         $this->calendarManager->setupNewGame();
         $this->editorManager->setupNewGame($aocPlayers);
         $this->masteryManager->setupNewGame();
+        $this->salesOrderManager->setupNewGame(sizeof($aocPlayers));
 
         // Activate first player (which is in general a good idea :) )
         $this->activeNextPlayer();
@@ -134,6 +137,7 @@ class AgeOfComics extends Table {
             "editors" => $this->editorManager->getEditorsUiData(),
             "playerInfo" => $this->playerManager->getPlayersUiData(),
             "mastery" => $this->masteryManager->getMasteryTokensUiData(),
+            "salesOrders" => $this->salesOrderManager->getSalesOrdersUiData(),
         ];
 
         return $gamedata;
