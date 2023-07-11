@@ -40,6 +40,17 @@ class AOCCalendarManager extends APP_GameClass {
     }
 
     /**
+     * Flip a calendar tile
+     * @param AOCCalendarTile $tile The tile to flip
+     * @return void
+     */
+    public function flipCalendarTile(AOCCalendarTile $tile) {
+        $cssClass = $this->getCssClassByGenre($tile->getGenreId());
+        $sql = "UPDATE calendar_tile SET calendar_tile_class = '$cssClass' WHERE calendar_tile_id = {$tile->getId()}";
+        self::DbQuery($sql);
+    }
+
+    /**
      * Get all calendar tiles
      * @return array An array of calendar tiles
      */
@@ -66,5 +77,29 @@ class AOCCalendarManager extends APP_GameClass {
             $uiData[] = $tile->getUiData();
         }
         return $uiData;
+    }
+
+    /**
+     * Get a calendar tiles css value by its genre
+     * @param int $genre The id of the genre
+     * @return string The calendar tile's css class
+     */
+    public function getCssClassByGenre($genre) {
+        switch ($genre) {
+            case GENRE_CRIME:
+                return "calendar-tile-crime";
+            case GENRE_HORROR:
+                return "calendar-tile-horror";
+            case GENRE_ROMANCE:
+                return "calendar-tile-romance";
+            case GENRE_SCIFI:
+                return "calendar-tile-scifi";
+            case GENRE_SUPERHERO:
+                return "calendar-tile-superhero";
+            case GENRE_WESTERN:
+                return "calendar-tile-western";
+            default:
+                return "calendar-tile-facedown";
+        }
     }
 }
