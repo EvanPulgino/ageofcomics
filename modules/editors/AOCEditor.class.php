@@ -14,7 +14,6 @@
  *
  */
 
-require_once __DIR__ . "/../AOCObject.class.php";
 class AOCEditor extends AOCObject {
     private int $id;
     private int $playerId;

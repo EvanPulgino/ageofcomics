@@ -15,7 +15,6 @@
  *
  */
 
-require_once __DIR__ . "/../AOCObject.class.php";
 class AOCSalesOrder extends AOCObject {
     private int $id;
     private int $genreId;
