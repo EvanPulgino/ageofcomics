@@ -82,6 +82,7 @@ class AOCPlayerManager extends APP_GameClass {
      * @param int $playerId The player's ID
      * @param int $ideas The number of ideas to adjust by
      * @param string $type The type of ideas to adjust
+     * @return void
      */
     public function adjustPlayerIdeas($playerId, $ideas, $type) {
         $sql =
@@ -97,10 +98,10 @@ class AOCPlayerManager extends APP_GameClass {
      * Adjust how much money a player has
      * @param int $playerId The player's ID
      * @param int $money The amount of money to adjust by
+     * @return void
      */
     public function adjustPlayerMoney($playerId, $money) {
-        $sql =
-            "UPDATE player SET player_money = player_money + $money WHERE player_id = $playerId";
+        $sql = "UPDATE player SET player_money = player_money + $money WHERE player_id = $playerId";
         self::DbQuery($sql);
     }
 
@@ -108,10 +109,10 @@ class AOCPlayerManager extends APP_GameClass {
      * Adjust how many points a player has
      * @param int $playerId The player's ID
      * @param int $score The number of points to adjust by
+     * @return void
      */
     public function adjustPlayerScore($playerId, $score) {
-        $sql =
-            "UPDATE player SET player_score = player_score + $score WHERE player_id = $playerId";
+        $sql = "UPDATE player SET player_score = player_score + $score WHERE player_id = $playerId";
         self::DbQuery($sql);
     }
     /**

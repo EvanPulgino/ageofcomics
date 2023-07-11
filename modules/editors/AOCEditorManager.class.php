@@ -23,12 +23,21 @@ class AOCEditorManager extends APP_GameClass {
         $this->game = $game;
     }
 
+    /**
+     * Setup editors for a new game
+     * @param AOCPlayer[] $players An array of players
+     * @return void
+     */
     public function setupNewGame(array $players) {
         foreach ($players as $player) {
             $this->createPlayerEditors($player);
         }
     }
 
+    /**
+     * Get all editors
+     * @return AOCEditor[]
+     */
     public function getEditors() {
         $sql =
             "SELECT editor_id id, editor_owner owner, editor_location location, editor_class class FROM editor";
@@ -41,6 +50,10 @@ class AOCEditorManager extends APP_GameClass {
         return $editors;
     }
 
+    /**
+     * Get uiData for all editors
+     * @return array
+     */
     public function getEditorsUiData() {
         $editors = $this->getEditors();
         $uiData = [];
@@ -50,6 +63,21 @@ class AOCEditorManager extends APP_GameClass {
         return $uiData;
     }
 
+    /**
+     * Move an editor to a new location
+     * @param int $editorId - editor to move
+     * @param int $newLocation - new location
+     */
+    public function moveEditor($editorId, $newLocation) {
+        $sql = "UPDATE editor SET editor_location = $newLocation WHERE editor_id = $editorId";
+        self::DbQuery($sql);
+    }
+
+    /**
+     * Create editor meeple for a player
+     * @param AOCPlayer $player
+     * @return void
+     */
     private function createPlayerEditors(AOCPlayer $player) {
         $playerId = $player->getId();
         $cssClass = $this->getEditorCssFromPlayerColor($player->getColor());
@@ -64,6 +92,11 @@ class AOCEditorManager extends APP_GameClass {
         self::DbQuery($sql);
     }
 
+    /**
+     * Get css class for editor based on player color
+     * @param int $playerColor
+     * @return string
+     */
     private function getEditorCssFromPlayerColor($playerColor) {
         switch ($playerColor) {
             case PLAYER_COLOR_BROWN:

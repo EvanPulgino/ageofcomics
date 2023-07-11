@@ -23,6 +23,10 @@ class AOCMasteryManager extends APP_GameClass {
         $this->game = $game;
     }
 
+    /**
+     * Setup mastery tokens for a new game
+     * @return void
+     */
     public function setupNewGame() {
         $masteryGenres = $this->game->genres;
 
@@ -31,6 +35,19 @@ class AOCMasteryManager extends APP_GameClass {
                 "INSERT INTO mastery_token (mastery_token_genre) VALUES ($genre)"
             );
         }
+    }
+
+    /**
+     * Claim a mastery token
+     * @param int $playerId The player claiming the token
+     * @param int $genre The genre of the mastery token
+     * @param int $comicCount The number of comics the player has in the genre
+     * @return void
+     */
+    public function claimMasteryToken($playerId, $genre, $comicCount) {
+        $this->game->DbQuery(
+            "UPDATE mastery_token SET mastery_token_owner = $playerId, mastery_token_comic_count = $comicCount WHERE mastery_token_genre = $genre"
+        );
     }
 
     /**

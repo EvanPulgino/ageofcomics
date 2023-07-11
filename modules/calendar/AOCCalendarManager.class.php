@@ -52,7 +52,7 @@ class AOCCalendarManager extends APP_GameClass {
 
     /**
      * Get all calendar tiles
-     * @return array An array of calendar tiles
+     * @return AOCCalendarTile[] An array of calendar tiles
      */
     public function getCalendarTiles() {
         $sql =
