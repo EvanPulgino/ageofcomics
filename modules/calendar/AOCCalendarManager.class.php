@@ -13,8 +13,6 @@
  * Calendar manager class
  *
  */
-
-require_once "AOCCalendarTile.class.php";
 class AOCCalendarManager extends APP_GameClass {
     private $game;
 

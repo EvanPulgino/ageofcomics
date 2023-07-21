@@ -16,15 +16,9 @@
  *
  */
 
+include "modules/autoload.php";
 require_once APP_GAMEMODULE_PATH . "module/table/table.game.php";
 require_once "modules/AOCConstants.inc.php";
-require_once "modules/actions/AOCGameStateActions.class.php";
-require_once "modules/actions/AOCPlayerActions.class.php";
-require_once "modules/calendar/AOCCalendarManager.class.php";
-require_once "modules/editors/AOCEditorManager.class.php";
-require_once "modules/mastery/AOCMasteryManager.class.php";
-require_once "modules/salesorders/AOCSalesOrderManager.class.php";
-require_once "modules/players/AOCPlayerManager.class.php";
 class AgeOfComics extends Table {
     function __construct() {
         // Your global variables labels:

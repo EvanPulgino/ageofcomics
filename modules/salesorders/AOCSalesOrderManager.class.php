@@ -15,7 +15,6 @@
  *
  */
 
-require_once "AOCSalesOrder.class.php";
 class AOCSalesOrderManager extends APP_GameClass {
     private $game;
 
@@ -62,5 +61,11 @@ class AOCSalesOrderManager extends APP_GameClass {
                 $this->game->DbQuery($sql);
             }
         }
+    }
+
+    private function distributeSalesOrderTiles($playerCount) {
+        $salesOrderTiles = $this->getSalesOrders();
+        $salesOrderConnections = SALES_ORDER_CONNECTIONS[$playerCount];
+        shuffle($salesOrderTiles);
     }
 }

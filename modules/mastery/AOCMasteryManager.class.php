@@ -15,7 +15,6 @@
  *
  */
 
-require_once "AOCMasteryToken.class.php";
 class AOCMasteryManager extends APP_GameClass {
     private $game;
 

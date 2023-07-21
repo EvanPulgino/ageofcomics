@@ -15,7 +15,6 @@
  *
  */
 
-require_once "AOCPlayer.class.php";
 class AOCPlayerManager extends APP_GameClass {
     private $game;
 

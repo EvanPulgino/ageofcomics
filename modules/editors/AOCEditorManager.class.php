@@ -14,8 +14,6 @@
  *
  */
 
-require_once "AOCEditor.class.php";
-require_once __DIR__ . "/../players/AOCPlayer.class.php";
 class AOCEditorManager extends APP_GameClass {
     private $game;
 

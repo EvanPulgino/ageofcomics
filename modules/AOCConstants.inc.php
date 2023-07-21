@@ -58,6 +58,30 @@ define("LOCATION_ACTION_IDEAS", 30);
 define("LOCATION_ACTION_PRINT", 40);
 define("LOCATION_ACTION_ROYALTIES", 50);
 define("LOCATION_ACTION_SALES", 60);
+define("LOCATION_AGENT_SPACE_1_1", 101);
+define("LOCATION_AGENT_SPACE_1_2", 102);
+define("LOCATION_AGENT_SPACE_1_3", 103);
+define("LOCATION_AGENT_SPACE_1_4", 104);
+define("LOCATION_AGENT_SPACE_2_1", 201);
+define("LOCATION_AGENT_SPACE_2_2", 202);
+define("LOCATION_AGENT_SPACE_2_3", 203);
+define("LOCATION_AGENT_SPACE_2_4", 204);
+define("LOCATION_AGENT_SPACE_3_1", 301);
+define("LOCATION_AGENT_SPACE_3_2", 302);
+define("LOCATION_AGENT_SPACE_3_3", 303);
+define("LOCATION_AGENT_SPACE_3_4", 304);
+define("LOCATION_AGENT_SPACE_4_1", 401);
+define("LOCATION_AGENT_SPACE_4_2", 402);
+define("LOCATION_AGENT_SPACE_4_3", 403);
+define("LOCATION_AGENT_SPACE_4_4", 404);
+define("LOCATION_AGENT_SPACE_5_1", 501);
+define("LOCATION_AGENT_SPACE_5_2", 502);
+define("LOCATION_AGENT_SPACE_5_3", 503);
+define("LOCATION_AGENT_SPACE_5_4", 504);
+define("LOCATION_AGENT_SPACE_6_1", 601);
+define("LOCATION_AGENT_SPACE_6_2", 602);
+define("LOCATION_AGENT_SPACE_6_3", 603);
+define("LOCATION_AGENT_SPACE_6_4", 604);
 define("LOCATION_ORDER_SPACE_1_5", 105);
 define("LOCATION_ORDER_SPACE_2_3", 203);
 define("LOCATION_ORDER_SPACE_2_5", 205);
@@ -107,6 +131,368 @@ define("PLAYER_COLOR_BROWN", "7d4b48");
 define("PLAYER_COLOR_SALMON", "ec9b7c");
 define("PLAYER_COLOR_TEAL", "5fa7a3");
 define("PLAYER_COLOR_YELLOW", "f7c96d");
+
+/** Sales Order Connections by Player Count */
+define("SALES_ORDER_CONNECTIONS", [
+    2 => [
+        LOCATION_AGENT_SPACE_1_2 => [
+            LOCATION_ORDER_SPACE_2_5,
+            LOCATION_ORDER_SPACE_3_4,
+        ],
+        LOCATION_AGENT_SPACE_1_3 => [
+            LOCATION_ORDER_SPACE_2_5,
+            LOCATION_ORDER_SPACE_3_6,
+        ],
+        LOCATION_AGENT_SPACE_2_1 => [
+            LOCATION_ORDER_SPACE_4_3,
+            LOCATION_ORDER_SPACE_5_2,
+        ],
+        LOCATION_AGENT_SPACE_2_2 => [
+            LOCATION_ORDER_SPACE_3_4,
+            LOCATION_ORDER_SPACE_4_3,
+            LOCATION_ORDER_SPACE_4_5,
+            LOCATION_ORDER_SPACE_5_4,
+        ],
+        LOCATION_AGENT_SPACE_2_3 => [
+            LOCATION_ORDER_SPACE_3_6,
+            LOCATION_ORDER_SPACE_4_5,
+            LOCATION_ORDER_SPACE_4_7,
+            LOCATION_ORDER_SPACE_5_6,
+        ],
+        LOCATION_AGENT_SPACE_2_4 => [
+            LOCATION_ORDER_SPACE_4_7,
+            LOCATION_ORDER_SPACE_5_8,
+        ],
+        LOCATION_AGENT_SPACE_3_1 => [
+            LOCATION_ORDER_SPACE_5_2,
+            LOCATION_ORDER_SPACE_6_3,
+            LOCATION_ORDER_SPACE_7_2,
+        ],
+        LOCATION_AGENT_SPACE_3_2 => [
+            LOCATION_ORDER_SPACE_5_4,
+            LOCATION_ORDER_SPACE_6_3,
+            LOCATION_ORDER_SPACE_6_5,
+            LOCATION_ORDER_SPACE_7_4,
+        ],
+        LOCATION_AGENT_SPACE_3_3 => [
+            LOCATION_ORDER_SPACE_5_6,
+            LOCATION_ORDER_SPACE_6_5,
+            LOCATION_ORDER_SPACE_6_7,
+            LOCATION_ORDER_SPACE_7_6,
+        ],
+        LOCATION_AGENT_SPACE_3_4 => [
+            LOCATION_ORDER_SPACE_5_8,
+            LOCATION_ORDER_SPACE_6_7,
+            LOCATION_ORDER_SPACE_7_8,
+        ],
+        LOCATION_AGENT_SPACE_4_1 => [
+            LOCATION_ORDER_SPACE_7_2,
+            LOCATION_ORDER_SPACE_8_3,
+            LOCATION_ORDER_SPACE_9_2,
+        ],
+        LOCATION_AGENT_SPACE_4_2 => [
+            LOCATION_ORDER_SPACE_7_4,
+            LOCATION_ORDER_SPACE_8_3,
+            LOCATION_ORDER_SPACE_8_5,
+            LOCATION_ORDER_SPACE_9_4,
+        ],
+        LOCATION_AGENT_SPACE_4_3 => [
+            LOCATION_ORDER_SPACE_7_6,
+            LOCATION_ORDER_SPACE_8_5,
+            LOCATION_ORDER_SPACE_8_7,
+            LOCATION_ORDER_SPACE_9_6,
+        ],
+        LOCATION_AGENT_SPACE_4_4 => [
+            LOCATION_ORDER_SPACE_7_8,
+            LOCATION_ORDER_SPACE_8_7,
+            LOCATION_ORDER_SPACE_9_8,
+        ],
+        LOCATION_AGENT_SPACE_5_1 => [
+            LOCATION_ORDER_SPACE_9_2,
+            LOCATION_ORDER_SPACE_10_3,
+        ],
+        LOCATION_AGENT_SPACE_5_2 => [
+            LOCATION_ORDER_SPACE_9_4,
+            LOCATION_ORDER_SPACE_10_3,
+            LOCATION_ORDER_SPACE_10_5,
+            LOCATION_ORDER_SPACE_11_4,
+        ],
+        LOCATION_AGENT_SPACE_5_3 => [
+            LOCATION_ORDER_SPACE_9_6,
+            LOCATION_ORDER_SPACE_10_5,
+            LOCATION_ORDER_SPACE_10_7,
+            LOCATION_ORDER_SPACE_11_6,
+        ],
+        LOCATION_AGENT_SPACE_5_4 => [
+            LOCATION_ORDER_SPACE_9_8,
+            LOCATION_ORDER_SPACE_10_7,
+        ],
+        LOCATION_AGENT_SPACE_6_2 => [
+            LOCATION_ORDER_SPACE_11_4,
+            LOCATION_ORDER_SPACE_12_5,
+        ],
+        LOCATION_AGENT_SPACE_6_3 => [
+            LOCATION_ORDER_SPACE_11_6,
+            LOCATION_ORDER_SPACE_12_5,
+        ],
+    ],
+    3 => [
+        LOCATION_AGENT_SPACE_1_1 => [
+            LOCATION_ORDER_SPACE_2_3,
+            LOCATION_ORDER_SPACE_3_2,
+        ],
+        LOCATION_AGENT_SPACE_1_2 => [
+            LOCATION_ORDER_SPACE_2_3,
+            LOCATION_ORDER_SPACE_3_4,
+        ],
+        LOCATION_AGENT_SPACE_1_3 => [
+            LOCATION_ORDER_SPACE_2_7,
+            LOCATION_ORDER_SPACE_3_6,
+        ],
+        LOCATION_AGENT_SPACE_1_4 => [
+            LOCATION_ORDER_SPACE_2_7,
+            LOCATION_ORDER_SPACE_3_8,
+        ],
+        LOCATION_AGENT_SPACE_2_1 => [
+            LOCATION_ORDER_SPACE_3_2,
+            LOCATION_ORDER_SPACE_4_3,
+            LOCATION_ORDER_SPACE_5_2,
+        ],
+        LOCATION_AGENT_SPACE_2_2 => [
+            LOCATION_ORDER_SPACE_3_4,
+            LOCATION_ORDER_SPACE_4_3,
+            LOCATION_ORDER_SPACE_4_5,
+            LOCATION_ORDER_SPACE_5_4,
+        ],
+        LOCATION_AGENT_SPACE_2_3 => [
+            LOCATION_ORDER_SPACE_3_6,
+            LOCATION_ORDER_SPACE_4_5,
+            LOCATION_ORDER_SPACE_4_7,
+            LOCATION_ORDER_SPACE_5_6,
+        ],
+        LOCATION_AGENT_SPACE_2_4 => [
+            LOCATION_ORDER_SPACE_3_8,
+            LOCATION_ORDER_SPACE_4_7,
+            LOCATION_ORDER_SPACE_5_8,
+        ],
+        LOCATION_AGENT_SPACE_3_1 => [
+            LOCATION_ORDER_SPACE_5_2,
+            LOCATION_ORDER_SPACE_6_3,
+            LOCATION_ORDER_SPACE_7_2,
+        ],
+        LOCATION_AGENT_SPACE_3_2 => [
+            LOCATION_ORDER_SPACE_5_4,
+            LOCATION_ORDER_SPACE_6_3,
+            LOCATION_ORDER_SPACE_6_5,
+            LOCATION_ORDER_SPACE_7_4,
+        ],
+        LOCATION_AGENT_SPACE_3_3 => [
+            LOCATION_ORDER_SPACE_5_6,
+            LOCATION_ORDER_SPACE_6_5,
+            LOCATION_ORDER_SPACE_6_7,
+            LOCATION_ORDER_SPACE_7_6,
+        ],
+        LOCATION_AGENT_SPACE_3_4 => [
+            LOCATION_ORDER_SPACE_5_8,
+            LOCATION_ORDER_SPACE_6_7,
+            LOCATION_ORDER_SPACE_7_8,
+        ],
+        LOCATION_AGENT_SPACE_4_1 => [
+            LOCATION_ORDER_SPACE_7_2,
+            LOCATION_ORDER_SPACE_8_3,
+            LOCATION_ORDER_SPACE_9_2,
+        ],
+        LOCATION_AGENT_SPACE_4_2 => [
+            LOCATION_ORDER_SPACE_7_4,
+            LOCATION_ORDER_SPACE_8_3,
+            LOCATION_ORDER_SPACE_8_5,
+            LOCATION_ORDER_SPACE_9_4,
+        ],
+        LOCATION_AGENT_SPACE_4_3 => [
+            LOCATION_ORDER_SPACE_7_6,
+            LOCATION_ORDER_SPACE_8_5,
+            LOCATION_ORDER_SPACE_8_7,
+            LOCATION_ORDER_SPACE_9_6,
+        ],
+        LOCATION_AGENT_SPACE_4_4 => [
+            LOCATION_ORDER_SPACE_7_8,
+            LOCATION_ORDER_SPACE_8_7,
+            LOCATION_ORDER_SPACE_9_8,
+        ],
+        LOCATION_AGENT_SPACE_5_1 => [
+            LOCATION_ORDER_SPACE_9_2,
+            LOCATION_ORDER_SPACE_10_3,
+            LOCATION_ORDER_SPACE_11_2,
+        ],
+        LOCATION_AGENT_SPACE_5_2 => [
+            LOCATION_ORDER_SPACE_9_4,
+            LOCATION_ORDER_SPACE_10_3,
+            LOCATION_ORDER_SPACE_10_5,
+            LOCATION_ORDER_SPACE_11_4,
+        ],
+        LOCATION_AGENT_SPACE_5_3 => [
+            LOCATION_ORDER_SPACE_9_6,
+            LOCATION_ORDER_SPACE_10_5,
+            LOCATION_ORDER_SPACE_10_7,
+            LOCATION_ORDER_SPACE_11_6,
+        ],
+        LOCATION_AGENT_SPACE_5_4 => [
+            LOCATION_ORDER_SPACE_9_8,
+            LOCATION_ORDER_SPACE_10_7,
+            LOCATION_ORDER_SPACE_11_8,
+        ],
+        LOCATION_AGENT_SPACE_6_1 => [
+            LOCATION_ORDER_SPACE_11_2,
+            LOCATION_ORDER_SPACE_12_3,
+        ],
+        LOCATION_AGENT_SPACE_6_2 => [
+            LOCATION_ORDER_SPACE_11_4,
+            LOCATION_ORDER_SPACE_12_3,
+        ],
+        LOCATION_AGENT_SPACE_6_3 => [
+            LOCATION_ORDER_SPACE_11_6,
+            LOCATION_ORDER_SPACE_12_7,
+        ],
+        LOCATION_AGENT_SPACE_6_4 => [
+            LOCATION_ORDER_SPACE_11_8,
+            LOCATION_ORDER_SPACE_12_7,
+        ],
+    ],
+    4 => [
+        LOCATION_AGENT_SPACE_1_1 => [
+            LOCATION_ORDER_SPACE_2_3,
+            LOCATION_ORDER_SPACE_3_2,
+        ],
+        LOCATION_AGENT_SPACE_1_2 => [
+            LOCATION_ORDER_SPACE_1_5,
+            LOCATION_ORDER_SPACE_2_3,
+            LOCATION_ORDER_SPACE_2_5,
+            LOCATION_ORDER_SPACE_3_4,
+        ],
+        LOCATION_AGENT_SPACE_1_3 => [
+            LOCATION_ORDER_SPACE_1_5,
+            LOCATION_ORDER_SPACE_2_5,
+            LOCATION_ORDER_SPACE_2_7,
+            LOCATION_ORDER_SPACE_3_6,
+        ],
+        LOCATION_AGENT_SPACE_1_4 => [
+            LOCATION_ORDER_SPACE_2_7,
+            LOCATION_ORDER_SPACE_3_8,
+        ],
+        LOCATION_AGENT_SPACE_2_1 => [
+            LOCATION_ORDER_SPACE_3_2,
+            LOCATION_ORDER_SPACE_4_3,
+            LOCATION_ORDER_SPACE_5_2,
+        ],
+        LOCATION_AGENT_SPACE_2_2 => [
+            LOCATION_ORDER_SPACE_3_4,
+            LOCATION_ORDER_SPACE_4_3,
+            LOCATION_ORDER_SPACE_4_5,
+            LOCATION_ORDER_SPACE_5_4,
+        ],
+        LOCATION_AGENT_SPACE_2_3 => [
+            LOCATION_ORDER_SPACE_3_6,
+            LOCATION_ORDER_SPACE_4_5,
+            LOCATION_ORDER_SPACE_4_7,
+            LOCATION_ORDER_SPACE_5_6,
+        ],
+        LOCATION_AGENT_SPACE_2_4 => [
+            LOCATION_ORDER_SPACE_3_8,
+            LOCATION_ORDER_SPACE_4_7,
+            LOCATION_ORDER_SPACE_5_8,
+        ],
+        LOCATION_AGENT_SPACE_3_1 => [
+            LOCATION_ORDER_SPACE_5_2,
+            LOCATION_ORDER_SPACE_6_3,
+            LOCATION_ORDER_SPACE_7_1,
+            LOCATION_ORDER_SPACE_7_2,
+        ],
+        LOCATION_AGENT_SPACE_3_2 => [
+            LOCATION_ORDER_SPACE_5_4,
+            LOCATION_ORDER_SPACE_6_3,
+            LOCATION_ORDER_SPACE_6_5,
+            LOCATION_ORDER_SPACE_7_4,
+        ],
+        LOCATION_AGENT_SPACE_3_3 => [
+            LOCATION_ORDER_SPACE_5_6,
+            LOCATION_ORDER_SPACE_6_5,
+            LOCATION_ORDER_SPACE_6_7,
+            LOCATION_ORDER_SPACE_7_6,
+        ],
+        LOCATION_AGENT_SPACE_3_4 => [
+            LOCATION_ORDER_SPACE_5_8,
+            LOCATION_ORDER_SPACE_6_7,
+            LOCATION_ORDER_SPACE_7_8,
+            LOCATION_ORDER_SPACE_7_9,
+        ],
+        LOCATION_AGENT_SPACE_4_1 => [
+            LOCATION_ORDER_SPACE_7_1,
+            LOCATION_ORDER_SPACE_7_2,
+            LOCATION_ORDER_SPACE_8_3,
+            LOCATION_ORDER_SPACE_9_2,
+        ],
+        LOCATION_AGENT_SPACE_4_2 => [
+            LOCATION_ORDER_SPACE_7_4,
+            LOCATION_ORDER_SPACE_8_3,
+            LOCATION_ORDER_SPACE_8_5,
+            LOCATION_ORDER_SPACE_9_4,
+        ],
+        LOCATION_AGENT_SPACE_4_3 => [
+            LOCATION_ORDER_SPACE_7_6,
+            LOCATION_ORDER_SPACE_8_5,
+            LOCATION_ORDER_SPACE_8_7,
+            LOCATION_ORDER_SPACE_9_6,
+        ],
+        LOCATION_AGENT_SPACE_4_4 => [
+            LOCATION_ORDER_SPACE_7_8,
+            LOCATION_ORDER_SPACE_7_9,
+            LOCATION_ORDER_SPACE_8_7,
+            LOCATION_ORDER_SPACE_9_8,
+        ],
+        LOCATION_AGENT_SPACE_5_1 => [
+            LOCATION_ORDER_SPACE_9_2,
+            LOCATION_ORDER_SPACE_10_3,
+            LOCATION_ORDER_SPACE_11_2,
+        ],
+        LOCATION_AGENT_SPACE_5_2 => [
+            LOCATION_ORDER_SPACE_9_4,
+            LOCATION_ORDER_SPACE_10_3,
+            LOCATION_ORDER_SPACE_10_5,
+            LOCATION_ORDER_SPACE_11_4,
+        ],
+        LOCATION_AGENT_SPACE_5_3 => [
+            LOCATION_ORDER_SPACE_9_6,
+            LOCATION_ORDER_SPACE_10_5,
+            LOCATION_ORDER_SPACE_10_7,
+            LOCATION_ORDER_SPACE_11_6,
+        ],
+        LOCATION_AGENT_SPACE_5_4 => [
+            LOCATION_ORDER_SPACE_9_8,
+            LOCATION_ORDER_SPACE_10_7,
+            LOCATION_ORDER_SPACE_11_8,
+        ],
+        LOCATION_AGENT_SPACE_6_1 => [
+            LOCATION_ORDER_SPACE_11_2,
+            LOCATION_ORDER_SPACE_12_3,
+        ],
+        LOCATION_AGENT_SPACE_6_2 => [
+            LOCATION_ORDER_SPACE_11_4,
+            LOCATION_ORDER_SPACE_12_3,
+            LOCATION_ORDER_SPACE_12_5,
+            LOCATION_ORDER_SPACE_13_5,
+        ],
+        LOCATION_AGENT_SPACE_6_3 => [
+            LOCATION_ORDER_SPACE_11_6,
+            LOCATION_ORDER_SPACE_12_5,
+            LOCATION_ORDER_SPACE_12_7,
+            LOCATION_ORDER_SPACE_13_5,
+        ],
+        LOCATION_AGENT_SPACE_6_4 => [
+            LOCATION_ORDER_SPACE_11_8,
+            LOCATION_ORDER_SPACE_12_7,
+        ],
+    ],
+]);
 
 /** State Args */
 define("STATE_ARG_GAME_END", "argGameEnd");
