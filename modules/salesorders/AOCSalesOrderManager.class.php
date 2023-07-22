@@ -30,6 +30,7 @@ class AOCSalesOrderManager extends APP_GameClass {
 
     public function setupNewGame($playerCount) {
         $this->createSalesOrderTiles($playerCount);
+        $this->distributeSalesOrderTiles($playerCount);
     }
 
     public function getSalesOrders() {
@@ -65,7 +66,38 @@ class AOCSalesOrderManager extends APP_GameClass {
 
     private function distributeSalesOrderTiles($playerCount) {
         $salesOrderTiles = $this->getSalesOrders();
-        $salesOrderConnections = SALES_ORDER_CONNECTIONS[$playerCount];
+        $salesOrderSpaces = SALES_ORDER_SPACES[$playerCount];
+        $placedSalesOrders = [];
+
+        // Shuffle the sales order tiles and place on the board
         shuffle($salesOrderTiles);
+        foreach ($salesOrderSpaces as $space) {
+            $placedSalesOrders[$space] = array_pop($salesOrderTiles);
+        }
+
+        // Validate that no connection has 3 or more of 1 genre
+        $salesOrderConnections = SALES_ORDER_CONNECTIONS[$playerCount];
+        foreach ($salesOrderConnections as $connection) {
+            $genres = [];
+            foreach ($connection as $space) {
+                $genres[] = $placedSalesOrders[$space]->getGenreId();
+            }
+
+            $genreCounts = array_count_values($genres);
+            foreach ($genreCounts as $genreCount) {
+                if ($genreCount >= 3) {
+                    $this->distributeSalesOrderTiles($playerCount);
+                    break;
+                }
+            }
+        }
+
+        // If valid, save the sales order tiles to the database
+        foreach ($placedSalesOrders as $space => $salesOrder) {
+            $sql =
+                "UPDATE sales_order SET sales_order_location = $space WHERE sales_order_id = " .
+                $salesOrder->getId();
+            $this->game->DbQuery($sql);
+        }
     }
 }
