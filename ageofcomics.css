@@ -16,3 +16,11 @@ html {
   background-image: url(./img/aoc_table.jpg);
   font-size: calc(15px + 0.390625vw);
 }
+
+.player-board {
+  background-color: #f5ead6 !important;
+}
+
+#page-title {
+  background-color: #f5ead6 !important;
+}
