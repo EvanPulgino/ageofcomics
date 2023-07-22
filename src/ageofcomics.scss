@@ -13,4 +13,7 @@
 
 @import url(../../../css/csslayer.css); /* Note: you must not use any @import directive other than this one */
 
-/********* You can start writing your CSS below this line: **********/
+html {
+    background-image: url(./img/aoc_table.jpg);
+    font-size: calc(15px + 0.390625vw);
+}
