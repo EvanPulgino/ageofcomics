@@ -39,6 +39,10 @@ class AOCCardManager extends APP_GameClass {
         // Deal starting cards
         $this->dealStartingCreative(CARD_TYPE_ARTIST, $players);
         $this->dealStartingCreative(CARD_TYPE_WRITER, $players);
+
+        // Shuffle decks
+        $this->shuffleStartingDeck(CARD_TYPE_ARTIST);
+        $this->shuffleStartingDeck(CARD_TYPE_WRITER);
     }
 
     public function getArtistCards() {
@@ -198,5 +202,34 @@ class AOCCardManager extends APP_GameClass {
     private function saveCard($card) {
         $sql = "UPDATE card SET card_location = {$card->getLocation()}, card_location_arg = {$card->getLocationArg()}, card_owner = {$card->getPlayerId()}, card_class = '{$card->getCssClass()}' WHERE card_id = {$card->getId()}";
         self::DbQuery($sql);
+    }
+
+    private function saveCards($cards) {
+        foreach ($cards as $card) {
+            $this->saveCard($card);
+        }
+    }
+
+    private function shuffleStartingDeck($cardType) {
+        $rows = $this->getCardsByType($cardType);
+
+        $cards = [];
+        foreach ($rows as $row) {
+            $cards[] = new AOCCard($row);
+        }
+
+        $cardsInDeck = array_filter($cards, function ($card) {
+            return $card->getLocation() == LOCATION_DECK;
+        });
+
+        shuffle($cardsInDeck);
+
+        $locationArg = 0;
+        foreach ($cardsInDeck as $card) {
+            $card->setLocationArg($locationArg);
+            $locationArg++;
+        }
+
+        $this->saveCards($cardsInDeck);
     }
 }
