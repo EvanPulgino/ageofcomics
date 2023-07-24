@@ -23,6 +23,7 @@ class AOCSalesOrder {
     private int $fans;
     private int $playerId;
     private int $location;
+    private int $flipped;
     private string $cssClass;
 
     public function __construct($row) {
@@ -33,7 +34,8 @@ class AOCSalesOrder {
         $this->fans = (int) $row["fans"];
         $this->playerId = (int) $row["playerId"];
         $this->location = (int) $row["location"];
-        $this->cssClass = $row["class"];
+        $this->flipped = (int) $row["flipped"];
+        $this->cssClass = $this->deriveCssClass();
     }
 
     public function getId() {
@@ -54,9 +56,22 @@ class AOCSalesOrder {
     public function getPlayerId() {
         return $this->playerId;
     }
+    public function setPlayerId($playerId) {
+        $this->playerId = $playerId;
+    }
     public function getLocation() {
         return $this->location;
     }
+    public function setLocation($location) {
+        $this->location = $location;
+    }
+    public function isFlipped() {
+        return $this->flipped;
+    }
+    public function setFlipped($flipped) {
+        $this->flipped = $flipped;
+    }
+
     public function getCssClass() {
         return $this->cssClass;
     }
@@ -70,7 +85,17 @@ class AOCSalesOrder {
             "fans" => $this->fans,
             "playerId" => $this->playerId,
             "location" => $this->location,
+            "flipped" => $this->flipped,
             "cssClass" => $this->cssClass,
         ];
+    }
+
+    private function deriveCssClass() {
+        $cssClass = "salesorder-" . $this->genre;
+        if ($this->flipped) {
+            return $cssClass .= "-" . $this->value;
+        } else {
+            return $cssClass .= "-facedown";
+        }
     }
 }

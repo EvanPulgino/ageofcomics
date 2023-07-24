@@ -17,14 +17,16 @@
 class AOCEditor {
     private int $id;
     private int $playerId;
+    private string $color;
     private int $locationId;
     private string $cssClass;
 
     public function __construct($row) {
         $this->id = (int) $row["id"];
         $this->playerId = (int) $row["owner"];
+        $this->color = $row["color"];
         $this->locationId = (int) $row["location"];
-        $this->cssClass = $row["class"];
+        $this->cssClass = $this->deriveCssClass();
     }
 
     public function getId() {
@@ -32,6 +34,9 @@ class AOCEditor {
     }
     public function getPlayerId() {
         return $this->playerId;
+    }
+    public function getColor() {
+        return $this->color;
     }
     public function getLocationId() {
         return $this->locationId;
@@ -44,8 +49,23 @@ class AOCEditor {
         return [
             "id" => $this->id,
             "playerId" => $this->playerId,
+            "color" => $this->color,
             "locationId" => $this->locationId,
             "cssClass" => $this->cssClass,
         ];
+    }
+
+    private function deriveCssClass() {
+        $cssClass = "editor-";
+        switch ($this->color) {
+            case PLAYER_COLOR_BROWN:
+                return $cssClass .= "brown";
+            case PLAYER_COLOR_SALMON:
+                return $cssClass .= "salmon";
+            case PLAYER_COLOR_TEAL:
+                return $cssClass .= "teal";
+            case PLAYER_COLOR_YELLOW:
+                return $cssClass .= "yellow";
+        }
     }
 }

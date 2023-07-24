@@ -35,7 +35,7 @@ class AOCSalesOrderManager extends APP_GameClass {
 
     public function getSalesOrders() {
         $sql =
-            "SELECT sales_order_id id, sales_order_genre genre, sales_order_value value, sales_order_fans fans, sales_order_owner playerId, sales_order_location location, sales_order_class class FROM sales_order";
+            "SELECT sales_order_id id, sales_order_genre genre, sales_order_value value, sales_order_fans fans, sales_order_owner playerId, sales_order_location location, sales_order_flipped flipped FROM sales_order";
         $rows = self::getCollectionFromDb($sql);
         $salesOrders = [];
         foreach ($rows as $row) {
@@ -57,7 +57,7 @@ class AOCSalesOrderManager extends APP_GameClass {
         $salesOrderValues = $this->salesOrdersForPlayerCount[$playerCount];
         foreach (GENRE_KEYS as $genre) {
             foreach ($salesOrderValues as $value) {
-                $sql = "INSERT INTO sales_order (sales_order_genre, sales_order_value, sales_order_fans, sales_order_location, sales_order_class) VALUES ($genre, $value, $value-2, 2, 'salesorder_facedown_$genre')";
+                $sql = "INSERT INTO sales_order (sales_order_genre, sales_order_value, sales_order_fans, sales_order_location) VALUES ($genre, $value, $value-2, 2)";
                 $this->game->DbQuery($sql);
             }
         }

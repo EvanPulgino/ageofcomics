@@ -37,8 +37,8 @@ CREATE TABLE IF NOT EXISTS `card` (
 CREATE TABLE IF NOT EXISTS `editor` (
     `editor_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     `editor_owner` INT(10) NOT NULL,
+    `editor_color` VARCHAR(12) NOT NULL,
     `editor_location` INT(10) NOT NULL,
-    `editor_class` VARCHAR(100) NOT NULL,
     PRIMARY KEY (`editor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `sales_order` (
     `sales_order_fans` INT(10) NOT NULL,
     `sales_order_owner` INT(10) DEFAULT NULL,
     `sales_order_location` INT(10) NOT NULL,
-    `sales_order_class` VARCHAR(100) NOT NULL,
+    `sales_order_flipped` TINYINT DEFAULT 0,
     PRIMARY KEY (`sales_order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
