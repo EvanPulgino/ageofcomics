@@ -125,8 +125,6 @@ class AgeOfComics extends Table {
         _ when a player refreshes the game page (F5)
     */
     protected function getAllDatas() {
-        $current_player_id = self::getCurrentPlayerId(); // !! We must only return informations visible by this player !!
-
         $gamedata = [
             "artistCards" => $this->cardManager->getCardsUiData(
                 CARD_TYPE_ARTIST
