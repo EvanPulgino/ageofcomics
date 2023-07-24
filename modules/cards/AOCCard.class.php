@@ -34,7 +34,6 @@ class AOCCard {
         $this->location = (int) $row["location"];
         $this->locationArg = (int) $row["locationArg"];
         $this->playerId = (int) $row["playerId"];
-        $this->cssClass = $row["class"];
     }
 
     public function getId() {
@@ -70,18 +69,12 @@ class AOCCard {
     public function setPlayerId($playerId) {
         $this->playerId = $playerId;
     }
-    public function getCssClass() {
-        return $this->cssClass;
-    }
-    public function setCssClass($cssClass) {
-        $this->cssClass = $cssClass;
-    }
 
     /**
      * Get uiData for this card
      * @return array
      */
-    public function getUiData() {
+    public function getUiData($currentPlayerId) {
         return [
             "id" => $this->id,
             "typeId" => $this->typeId,
@@ -91,8 +84,11 @@ class AOCCard {
             "location" => $this->location,
             "locationArg" => $this->locationArg,
             "playerId" => $this->playerId,
-            "cssClass" => $this->cssClass,
         ];
+    }
+
+    private function deriveCssClass($currentPlayerId) {
+        return;
     }
 
     /**

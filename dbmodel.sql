@@ -23,6 +23,15 @@
 --   PRIMARY KEY (`card_id`)
 -- ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+CREATE TABLE IF NOT EXISTS `calendar_tile` (
+    `calendar_tile_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `calendar_tile_genre` INT(10) NOT NULL,
+    `calendar_tile_round` INT(10) NOT NULL,
+    `calendar_tile_position` INT(10) NOT NULL,
+    `calendar_tile_flipped` TINYINT DEFAULT 0,
+    PRIMARY KEY (`calendar_tile_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
 CREATE TABLE IF NOT EXISTS `card` (
     `card_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     `card_type` INT(10) NOT NULL,
@@ -31,17 +40,7 @@ CREATE TABLE IF NOT EXISTS `card` (
     `card_location` INT(10) NOT NULL,
     `card_location_arg` INT(10) DEFAULT NULL,
     `card_owner` INT(10) DEFAULT NULL,
-    `card_class` VARCHAR(100) NOT NULL,
     PRIMARY KEY (`card_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-
-CREATE TABLE IF NOT EXISTS `calendar_tile` (
-    `calendar_tile_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `calendar_tile_genre` INT(10) NOT NULL,
-    `calendar_tile_round` INT(10) NOT NULL,
-    `calendar_tile_position` INT(10) NOT NULL,
-    `calendar_tile_class` VARCHAR(100) NOT NULL,
-    PRIMARY KEY (`calendar_tile_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `editor` (

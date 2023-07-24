@@ -18,12 +18,18 @@ class AOCComicCard extends AOCCard {
     private int $bonus;
     private int $fans;
     private string $name;
+    private string $baseClass;
+    private string $facedownClass;
 
     public function __construct($row) {
         parent::__construct($row);
         $this->bonus = (int) $row["typeArg"];
         $this->fans = $this->bonus == PLUS_ONE_FAN ? 2 : 1;
         $this->name = COMIC_CARDS[$this->getGenreId()][$this->bonus];
+        $this->baseClass =
+            $this->getType() . "-" . $this->getGenre() . "-" . $this->bonus;
+        $this->facedownClass =
+            $this->getType() . "-" . $this->getGenre() . "-facedown";
     }
 
     public function getBonus() {
@@ -36,7 +42,7 @@ class AOCComicCard extends AOCCard {
         return $this->name;
     }
 
-    public function getUiData() {
+    public function getUiData($currentPlayerId) {
         return [
             "id" => $this->getId(),
             "typeId" => $this->getTypeId(),
@@ -46,10 +52,31 @@ class AOCComicCard extends AOCCard {
             "location" => $this->getLocation(),
             "locationArg" => $this->getLocationArg(),
             "playerId" => $this->getPlayerId(),
-            "cssClass" => $this->getCssClass(),
             "bonus" => $this->getBonus(),
             "fans" => $this->getFans(),
             "name" => $this->getName(),
+            "cssClass" => $this->deriveCssClass($currentPlayerId),
         ];
+    }
+
+    private function deriveCssClass($currentPlayerId) {
+        switch ($this->getLocation()) {
+            case LOCATION_DISCARD:
+                return $this->baseClass;
+            case LOCATION_SUPPLY:
+                return $this->baseClass;
+            case LOCATION_PLAYER_MAT:
+                return $this->baseClass;
+            case LOCATION_HYPE:
+                return $this->baseClass;
+            case LOCATION_HAND:
+                if ($this->getPlayerId() == $currentPlayerId) {
+                    return $this->baseClass;
+                } else {
+                    return $this->facedownClass;
+                }
+            default:
+                return $this->facedownClass;
+        }
     }
 }

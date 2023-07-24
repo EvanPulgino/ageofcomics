@@ -20,6 +20,7 @@ class AOCCalendarTile {
     private string $genre;
     private int $round;
     private int $position;
+    private int $flipped;
     private string $cssClass;
 
     public function __construct($row) {
@@ -28,7 +29,8 @@ class AOCCalendarTile {
         $this->genre = GENRES[$this->genreId];
         $this->round = (int) $row["round"];
         $this->position = (int) $row["position"];
-        $this->cssClass = $row["class"];
+        $this->flipped = (int) $row["flipped"];
+        $this->cssClass = $this->deriveCssClass();
     }
 
     public function getId() {
@@ -46,8 +48,14 @@ class AOCCalendarTile {
     public function getPosition() {
         return $this->position;
     }
+    public function isFlipped() {
+        return $this->flipped;
+    }
     public function getCssClass() {
         return $this->cssClass;
+    }
+    public function setCssClass($cssClass) {
+        $this->cssClass = $cssClass;
     }
 
     public function getUiData() {
@@ -57,7 +65,16 @@ class AOCCalendarTile {
             "genre" => $this->genre,
             "round" => $this->round,
             "position" => $this->position,
+            "flipped" => $this->flipped,
             "cssClass" => $this->cssClass,
         ];
+    }
+
+    private function deriveCssClass() {
+        $cssClass = "calendar-tile";
+        if ($this->flipped) {
+            $cssClass .= "-" . $this->genre;
+        }
+        return $cssClass .= "-facedown";
     }
 }

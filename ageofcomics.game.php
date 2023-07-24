@@ -114,31 +114,49 @@ class AgeOfComics extends Table {
         _ when a player refreshes the game page (F5)
     */
     protected function getAllDatas() {
+        $currentPlayerId = self::getCurrentPlayerId();
+
         $gamedata = [
             "artistCards" => $this->cardManager->getCardsUiData(
-                CARD_TYPE_ARTIST
+                CARD_TYPE_ARTIST,
+                $currentPlayerId
             ),
-            "artistDeck" => $this->cardManager->getDeckUiData(CARD_TYPE_ARTIST),
+            "artistDeck" => $this->cardManager->getDeckUiData(
+                CARD_TYPE_ARTIST,
+                $currentPlayerId
+            ),
             "calendarTiles" => $this->calendarManager->getCalendarTilesUiData(),
-            "comicCards" => $this->cardManager->getCardsUiData(CARD_TYPE_COMIC),
-            "comicDeck" => $this->cardManager->getDeckUiData(CARD_TYPE_COMIC),
+            "comicCards" => $this->cardManager->getCardsUiData(
+                CARD_TYPE_COMIC,
+                $currentPlayerId
+            ),
+            "comicDeck" => $this->cardManager->getDeckUiData(
+                CARD_TYPE_COMIC,
+                $currentPlayerId
+            ),
             "constants" => get_defined_constants(true)["user"],
             "editors" => $this->editorManager->getEditorsUiData(),
             "ideasSpaceContents" => $this->getIdeasSpaceContents(),
             "mastery" => $this->masteryManager->getMasteryTokensUiData(),
             "miniComics" => $this->miniComicManager->getMiniComicsUiData(),
             "playerHands" => $this->cardManager->getPlayerHandsUiData(
-                $this->playerManager->getPlayers()
+                $this->playerManager->getPlayers(),
+                $currentPlayerId
             ),
             "playerInfo" => $this->playerManager->getPlayersUiData(),
             "ripoffCards" => $this->cardManager->getCardsUiData(
-                CARD_TYPE_RIPOFF
+                CARD_TYPE_RIPOFF,
+                $currentPlayerId
             ),
             "salesOrders" => $this->salesOrderManager->getSalesOrdersUiData(),
             "writerCards" => $this->cardManager->getCardsUiData(
-                CARD_TYPE_WRITER
+                CARD_TYPE_WRITER,
+                $currentPlayerId
             ),
-            "writerDeck" => $this->cardManager->getDeckUiData(CARD_TYPE_WRITER),
+            "writerDeck" => $this->cardManager->getDeckUiData(
+                CARD_TYPE_WRITER,
+                $currentPlayerId
+            ),
         ];
 
         return $gamedata;

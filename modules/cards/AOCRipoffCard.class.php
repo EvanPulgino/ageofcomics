@@ -17,11 +17,17 @@
 class AOCRipoffCard extends AOCCard {
     private int $ripoffKey;
     private string $name;
+    private string $baseClass;
+    private string $facedownClass;
 
     public function __construct($row) {
         parent::__construct($row);
         $this->ripoffKey = (int) $row["typeArg"];
         $this->name = RIPOFF_CARDS[$this->getGenreId()][$this->ripoffKey];
+        $this->baseClass =
+            $this->getType() . "-" . $this->getGenre() . "-" . $this->ripoffKey;
+        $this->facedownClass =
+            $this->getType() . "-" . $this->getGenre() . "-facedown";
     }
 
     public function getRipoffKey() {
@@ -31,7 +37,7 @@ class AOCRipoffCard extends AOCCard {
         return $this->name;
     }
 
-    public function getUiData() {
+    public function getUiData($currentPlayerId) {
         return [
             "id" => $this->getId(),
             "typeId" => $this->getTypeId(),
@@ -41,9 +47,16 @@ class AOCRipoffCard extends AOCCard {
             "location" => $this->getLocation(),
             "locationArg" => $this->getLocationArg(),
             "playerId" => $this->getPlayerId(),
-            "cssClass" => $this->getCssClass(),
             "ripoffKey" => $this->getRipoffKey(),
             "name" => $this->getName(),
+            "cssClass" => $this->deriveCssClass($currentPlayerId),
         ];
+    }
+
+    private function deriveCssClass($currentPlayerId) {
+        if ($this->getLocation() == LOCATION_PLAYER_MAT) {
+            return $this->baseClass;
+        }
+        return $this->facedownClass;
     }
 }

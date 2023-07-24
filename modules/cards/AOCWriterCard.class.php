@@ -15,17 +15,37 @@
  */
 
 class AOCWriterCard extends AOCCard {
+    private int $creativeKey;
     private int $value;
     private int $fans;
     private int $ideas;
+    private string $baseClass;
+    private string $facedownClass;
 
     public function __construct($row) {
         parent::__construct($row);
-        $this->value = (int) $row["typeArg"];
+        $this->creativeKey = (int) $row["typeArg"];
+        $this->value = floor($this->creativeKey / 10);
         $this->fans = 1;
         $this->ideas = $this->value == 1 ? 1 : 0;
+        $this->baseClass =
+            $this->getType() .
+            "-" .
+            $this->getGenre() .
+            "-" .
+            $this->creativeKey;
+        $this->facedownClass =
+            $this->getType() .
+            "-" .
+            $this->getGenre() .
+            "-" .
+            $this->value .
+            "-facedown";
     }
 
+    public function getCreativeKey() {
+        return $this->creativeKey;
+    }
     public function getValue() {
         return $this->value;
     }
@@ -36,7 +56,7 @@ class AOCWriterCard extends AOCCard {
         return $this->ideas;
     }
 
-    public function getUiData() {
+    public function getUiData($currentPlayerId) {
         return [
             "id" => $this->getId(),
             "typeId" => $this->getTypeId(),
@@ -46,10 +66,27 @@ class AOCWriterCard extends AOCCard {
             "location" => $this->getLocation(),
             "locationArg" => $this->getLocationArg(),
             "playerId" => $this->getPlayerId(),
-            "cssClass" => $this->getCssClass(),
             "value" => $this->getValue(),
             "fans" => $this->getFans(),
             "ideas" => $this->getIdeas(),
+            "cssClass" => $this->deriveCssClass($currentPlayerId),
         ];
+    }
+
+    private function deriveCssClass($currentPlayerId) {
+        switch ($this->getLocation()) {
+            case LOCATION_SUPPLY:
+                return $this->baseClass;
+            case LOCATION_DISCARD:
+                return $this->baseClass;
+            case LOCATION_PLAYER_MAT:
+                return $this->baseClass;
+            case LOCATION_HAND:
+                return $this->getPlayerId() == $currentPlayerId
+                    ? $this->baseClass
+                    : $this->facedownClass;
+            default:
+                return $this->facedownClass;
+        }
     }
 }

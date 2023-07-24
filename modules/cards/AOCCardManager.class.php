@@ -116,7 +116,7 @@ class AOCCardManager extends APP_GameClass {
 
     public function getPlayerHand($playerId) {
         $sql =
-            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId, card_class class FROM card WHERE card_owner = " .
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_owner = " .
             $playerId .
             " AND card_location = " .
             LOCATION_HAND;
@@ -142,7 +142,7 @@ class AOCCardManager extends APP_GameClass {
         return $cards;
     }
 
-    public function getCardsUiData($cardType) {
+    public function getCardsUiData($cardType, $currentPlayerId) {
         $cards = [];
         switch ($cardType) {
             case CARD_TYPE_ARTIST:
@@ -160,12 +160,12 @@ class AOCCardManager extends APP_GameClass {
         }
         $uiData = [];
         foreach ($cards as $card) {
-            $uiData[] = $card->getUiData();
+            $uiData[] = $card->getUiData($currentPlayerId);
         }
         return $uiData;
     }
 
-    public function getDeckUiData($cardType) {
+    public function getDeckUiData($cardType, $currentPlayerId) {
         $cards = [];
         switch ($cardType) {
             case CARD_TYPE_ARTIST:
@@ -180,40 +180,43 @@ class AOCCardManager extends APP_GameClass {
         }
         $uiData = [];
         foreach ($cards as $card) {
-            $uiData[] = $card->getUiData();
+            $uiData[] = $card->getUiData($currentPlayerId);
         }
         return $uiData;
     }
 
-    public function getHandUiData($playerId) {
+    public function getHandUiData($playerId, $currentPlayerId) {
         $cards = $this->getPlayerHand($playerId);
         $uiData = [];
         foreach ($cards as $card) {
-            $uiData[] = $card->getUiData();
+            $uiData[] = $card->getUiData($currentPlayerId);
         }
         return $uiData;
     }
 
-    public function getPlayerHandsUiData($players) {
+    public function getPlayerHandsUiData($players, $currentPlayerId) {
         $uiData = [];
         foreach ($players as $player) {
-            $uiData[$player->getId()] = $this->getHandUiData($player->getId());
+            $uiData[$player->getId()] = $this->getHandUiData(
+                $player->getId(),
+                $currentPlayerId
+            );
         }
         return $uiData;
     }
 
     private function createCreativeCards($creativeType) {
         $sql =
-            "INSERT INTO card (card_type, card_type_arg, card_genre, card_location, card_class) VALUES ";
+            "INSERT INTO card (card_type, card_type_arg, card_genre, card_location) VALUES ";
         $values = [];
 
         $typeName = $creativeType == CARD_TYPE_ARTIST ? ARTIST : WRITER;
 
         foreach ($this->genres as $genreKey) {
-            $values[] = "({$creativeType}, 1, {$genreKey}, 0, '$typeName-1-back')";
-            $values[] = "({$creativeType}, 2, {$genreKey}, 0, '$typeName-2a-back')";
-            $values[] = "({$creativeType}, 2, {$genreKey}, 0, '$typeName-2b-back')";
-            $values[] = "({$creativeType}, 3, {$genreKey}, 0, '$typeName-3-back')";
+            $values[] = "({$creativeType}, 10, {$genreKey}, 0)";
+            $values[] = "({$creativeType}, 21, {$genreKey}, 0)";
+            $values[] = "({$creativeType}, 22, {$genreKey}, 0)";
+            $values[] = "({$creativeType}, 30, {$genreKey}, 0)";
         }
 
         $sql .= implode(", ", $values);
@@ -222,14 +225,12 @@ class AOCCardManager extends APP_GameClass {
 
     private function createComicCards() {
         $sql =
-            "INSERT INTO card (card_type, card_type_arg, card_genre, card_location, card_class) VALUES ";
+            "INSERT INTO card (card_type, card_type_arg, card_genre, card_location) VALUES ";
         $values = [];
         foreach (COMIC_CARDS as $genreKey => $comics) {
             foreach ($comics as $bonusKey => $bonus) {
                 $values[] =
-                    "(" .
-                    CARD_TYPE_COMIC .
-                    ", {$bonusKey}, {$genreKey}, 0, 'comic-{$genreKey}-back')";
+                    "(" . CARD_TYPE_COMIC . ", {$bonusKey}, {$genreKey}, 0)";
             }
         }
 
@@ -239,14 +240,12 @@ class AOCCardManager extends APP_GameClass {
 
     private function createRipoffCards() {
         $sql =
-            "INSERT INTO card (card_type, card_type_arg, card_genre, card_location, card_class) VALUES ";
+            "INSERT INTO card (card_type, card_type_arg, card_genre, card_location) VALUES ";
         $values = [];
         foreach (RIPOFF_CARDS as $genreKey => $ripoffs) {
             foreach ($ripoffs as $ripoffKey => $ripoff) {
                 $values[] =
-                    "(" .
-                    CARD_TYPE_RIPOFF .
-                    ", {$ripoffKey}, {$genreKey}, 0, 'ripoff-{$genreKey}-back')";
+                    "(" . CARD_TYPE_RIPOFF . ", {$ripoffKey}, {$genreKey}, 0)";
             }
         }
 
@@ -274,11 +273,9 @@ class AOCCardManager extends APP_GameClass {
                 $card->getTypeId() * 100 +
                 $card->getGenreId() +
                 $card->getValue();
-            $faceupClass = str_replace("-back", "", $card->getCssClass());
             $card->setPlayerId($player->getId());
             $card->setLocation(LOCATION_HAND);
             $card->setLocationArg($handLocation);
-            $card->setCssClass($faceupClass);
 
             $this->saveCard($card);
         }
@@ -286,7 +283,7 @@ class AOCCardManager extends APP_GameClass {
 
     private function getCardsByType($cardType) {
         $sql =
-            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId, card_class class FROM card WHERE card_type = " .
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_type = " .
             $cardType;
         $rows = self::getObjectListFromDB($sql);
 
@@ -295,7 +292,7 @@ class AOCCardManager extends APP_GameClass {
 
     private function getDeckByType($cardType) {
         $sql =
-            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId, card_class class FROM card WHERE card_type = " .
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_type = " .
             $cardType .
             " AND card_location = " .
             LOCATION_DECK .
@@ -306,7 +303,7 @@ class AOCCardManager extends APP_GameClass {
     }
 
     private function saveCard($card) {
-        $sql = "UPDATE card SET card_location = {$card->getLocation()}, card_location_arg = {$card->getLocationArg()}, card_owner = {$card->getPlayerId()}, card_class = '{$card->getCssClass()}' WHERE card_id = {$card->getId()}";
+        $sql = "UPDATE card SET card_location = {$card->getLocation()}, card_location_arg = {$card->getLocationArg()}, card_owner = {$card->getPlayerId()} WHERE card_id = {$card->getId()}";
         self::DbQuery($sql);
     }
 
