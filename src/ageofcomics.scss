@@ -13,6 +13,7 @@
 
 @import url(../../../css/csslayer.css); /* Note: you must not use any @import directive other than this one */
 
+/* Generic Classes */
 html {
   background-image: url(./img/aoc_table.jpg);
   font-size: calc(15px + 0.390625vw);
@@ -24,4 +25,31 @@ html {
 
 #page-title {
   background-color: #f5ead6 !important;
+}
+
+#aoc-overall {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+#aoc-gboard {
+  transform-origin: top left;
+}
+
+#aoc-gboard .aoc-board {
+  position: relative;
+}
+
+/* Game Board */
+.aoc-board {
+  background-image: url(./img/aoc_board.png);
+  background-repeat: no-repeat;
+  border-radius: 5px;
+  filter: drop-shadow(1px 1px 1px black);
+  -webkit-filter: drop-shadow(1px 1px 2px #000);
+  height: 903px;
+  width: 1640px;
 }

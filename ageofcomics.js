@@ -44,8 +44,29 @@ var GameBasics = /** @class */ (function (_super) {
         _this.pendingUpdate = false;
         _this.currentPlayerWasActive = false;
         _this.gameState = new GameState();
+        _this.height = dojo.marginBox("aoc-gboard").h + 580;
+        dojo.connect(window, "onresize", _this, dojo.hitch(_this, "adaptViewportSize"));
         return _this;
     }
+    GameBasics.prototype.adaptViewportSize = function () {
+        var t = dojo.marginBox("aoc-overall");
+        var r = t.w;
+        var s = 2e3;
+        if (r >= s) {
+            var i = (r - s) / 2;
+            dojo.style("aoc-gboard", "transform", "");
+            dojo.style("aoc-gboard", "left", i + "px");
+            dojo.style("aoc-gboard", "height", this.height + "px");
+        }
+        else {
+            var o = r / s;
+            i = (t.w - r) / 2;
+            i = 2e3 / 4;
+            dojo.style("aoc-gboard", "transform", "scale(" + o + ")");
+            dojo.style("aoc-gboard", "left", i + "px");
+            dojo.style("aoc-gboard", "height", this.height * o + "px");
+        }
+    };
     /**
      * UI setup entry point
      *

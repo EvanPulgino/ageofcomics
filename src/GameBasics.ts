@@ -37,6 +37,27 @@ class GameBasics extends GameGui {
     this.pendingUpdate = false;
     this.currentPlayerWasActive = false;
     this.gameState = new GameState();
+    this.height = dojo.marginBox("aoc-gboard").h + 580;
+    dojo.connect(window, "onresize", this, dojo.hitch(this, "adaptViewportSize"));
+  }
+
+  adaptViewportSize() {
+    var t = dojo.marginBox("aoc-overall");
+    var r = t.w;
+    var s = 2e3;
+    if (r >= s) {
+      var i = (r - s) / 2;
+      dojo.style("aoc-gboard", "transform", "");
+      dojo.style("aoc-gboard", "left", i + "px");
+      dojo.style("aoc-gboard", "height", this.height + "px");
+    } else {
+      var o = r / s;
+      i = (t.w - r) / 2;
+      i = 2e3 / 4;
+      dojo.style("aoc-gboard", "transform", "scale(" + o + ")");
+      dojo.style("aoc-gboard", "left", i + "px");
+      dojo.style("aoc-gboard", "height", this.height * o + "px");
+    }
   }
 
   /**
