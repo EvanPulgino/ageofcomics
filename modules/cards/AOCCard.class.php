@@ -55,14 +55,26 @@ class AOCCard extends AOCObject {
     public function getLocation() {
         return $this->location;
     }
+    public function setLocation($location) {
+        $this->location = $location;
+    }
     public function getLocationArg() {
         return $this->locationArg;
+    }
+    public function setLocationArg($locationArg) {
+        $this->locationArg = $locationArg;
     }
     public function getPlayerId() {
         return $this->playerId;
     }
+    public function setPlayerId($playerId) {
+        $this->playerId = $playerId;
+    }
     public function getCssClass() {
         return $this->cssClass;
+    }
+    public function setCssClass($cssClass) {
+        $this->cssClass = $cssClass;
     }
 
     /**

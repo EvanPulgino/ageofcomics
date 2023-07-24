@@ -35,9 +35,9 @@ define("WESTERN", "western");
 
 /** Card Types */
 define("CARD_TYPE_ARTIST", 1);
-define("CARD_TYPE_COMIC", 2);
-define("CARD_TYPE_RIPOFF", 3);
-define("CARD_TYPE_WRITER", 4);
+define("CARD_TYPE_WRITER", 2);
+define("CARD_TYPE_COMIC", 3);
+define("CARD_TYPE_RIPOFF", 4);
 
 /** Card Type Names */
 define("ARTIST", "artist");

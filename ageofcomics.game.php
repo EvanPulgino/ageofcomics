@@ -107,7 +107,7 @@ class AgeOfComics extends Table {
         $this->editorManager->setupNewGame($aocPlayers);
         $this->masteryManager->setupNewGame();
         $this->salesOrderManager->setupNewGame(sizeof($aocPlayers));
-        $this->cardManager->setupNewGame();
+        $this->cardManager->setupNewGame($aocPlayers);
 
         // Activate first player (which is in general a good idea :) )
         $this->activeNextPlayer();

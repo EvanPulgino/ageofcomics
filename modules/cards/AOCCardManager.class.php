@@ -29,12 +29,16 @@ class AOCCardManager extends APP_GameClass {
         $this->game = $game;
     }
 
-    public function setupNewGame() {
-        //Create cards
+    public function setupNewGame($players) {
+        // Create cards
         $this->createComicCards();
         $this->createCreativeCards(CARD_TYPE_ARTIST);
         $this->createCreativeCards(CARD_TYPE_WRITER);
         $this->createRipoffCards();
+
+        // Deal starting cards
+        $this->dealStartingCreative(CARD_TYPE_ARTIST, $players);
+        $this->dealStartingCreative(CARD_TYPE_WRITER, $players);
     }
 
     public function getArtistCards() {
@@ -152,6 +156,36 @@ class AOCCardManager extends APP_GameClass {
         self::DbQuery($sql);
     }
 
+    private function dealStartingCreative($creativeType, $players) {
+        // Get all level 2 cards
+        $cards =
+            $creativeType == CARD_TYPE_ARTIST
+                ? $this->getArtistCards()
+                : $this->getWriterCards();
+        $level2Cards = array_filter($cards, function ($card) {
+            return $card->getValue() == 2;
+        });
+
+        // Shuffle
+        shuffle($level2Cards);
+
+        foreach ($players as $player) {
+            // Deal 1 card to each player
+            $card = array_pop($level2Cards);
+            $handLocation =
+                $card->getTypeId() * 100 +
+                $card->getGenreId() +
+                $card->getValue();
+            $faceupClass = str_replace("-back", "", $card->getCssClass());
+            $card->setPlayerId($player->getId());
+            $card->setLocation(LOCATION_HAND);
+            $card->setLocationArg($handLocation);
+            $card->setCssClass($faceupClass);
+
+            $this->saveCard($card);
+        }
+    }
+
     private function getCardsByType($cardType) {
         $sql =
             "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId, card_class class FROM card WHERE card_type = " .
@@ -159,5 +193,10 @@ class AOCCardManager extends APP_GameClass {
         $rows = self::getObjectListFromDB($sql);
 
         return $rows;
+    }
+
+    private function saveCard($card) {
+        $sql = "UPDATE card SET card_location = {$card->getLocation()}, card_location_arg = {$card->getLocationArg()}, card_owner = {$card->getPlayerId()}, card_class = '{$card->getCssClass()}' WHERE card_id = {$card->getId()}";
+        self::DbQuery($sql);
     }
 }
