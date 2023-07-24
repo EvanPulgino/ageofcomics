@@ -60,6 +60,18 @@ CREATE TABLE IF NOT EXISTS `mastery_token` (
     PRIMARY KEY (`mastery_token_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
+CREATE TABLE IF NOT EXISTS `mini_comic` (
+    `mini_comic_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `mini_comic_type` INT(10) NOT NULL,
+    `mini_comic_type_arg` INT(10) NOT NULL,
+    `mini_comic_genre` INT(10) NOT NULL,
+    `mini_comic_location` INT(10) NOT NULL,
+    `mini_comic_location_arg` INT(10) DEFAULT NULL,
+    `mini_comic_owner` INT(10) DEFAULT NULL,
+    `mini_comic_fans` INT(10) DEFAULT NULL,
+    PRIMARY KEY (`mini_comic_id`)
+) ENGINE=InnoDb DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
 CREATE TABLE IF NOT EXISTS `sales_order` (
     `sales_order_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     `sales_order_genre` INT(10) NOT NULL,

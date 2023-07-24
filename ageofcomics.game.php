@@ -63,6 +63,7 @@ class AgeOfComics extends Table {
         $this->calendarManager = new AOCCalendarManager($this);
         $this->editorManager = new AOCEditorManager($this);
         $this->masteryManager = new AOCMasteryManager($this);
+        $this->miniComicManager = new AOCMiniComicManager($this);
         $this->salesOrderManager = new AOCSalesOrderManager($this);
     }
 
@@ -106,6 +107,7 @@ class AgeOfComics extends Table {
         $this->calendarManager->setupNewGame();
         $this->editorManager->setupNewGame($aocPlayers);
         $this->masteryManager->setupNewGame();
+        $this->miniComicManager->setupNewGame();
         $this->salesOrderManager->setupNewGame(sizeof($aocPlayers));
         $this->cardManager->setupNewGame($aocPlayers);
 
@@ -136,7 +138,10 @@ class AgeOfComics extends Table {
             "constants" => get_defined_constants(true)["user"],
             "editors" => $this->editorManager->getEditorsUiData(),
             "mastery" => $this->masteryManager->getMasteryTokensUiData(),
-            "playerHands" => $this->cardManager->getPlayerHandsUiData($this->playerManager->getPlayers()),
+            "miniComics" => $this->miniComicManager->getMiniComicsUiData(),
+            "playerHands" => $this->cardManager->getPlayerHandsUiData(
+                $this->playerManager->getPlayers()
+            ),
             "playerInfo" => $this->playerManager->getPlayersUiData(),
             "ripoffCards" => $this->cardManager->getCardsUiData(
                 CARD_TYPE_RIPOFF
