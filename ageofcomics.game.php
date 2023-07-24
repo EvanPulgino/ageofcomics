@@ -131,11 +131,14 @@ class AgeOfComics extends Table {
             "artistCards" => $this->cardManager->getCardsUiData(
                 CARD_TYPE_ARTIST
             ),
+            "artistDeck" => $this->cardManager->getDeckUiData(CARD_TYPE_ARTIST),
             "calendarTiles" => $this->calendarManager->getCalendarTilesUiData(),
             "comicCards" => $this->cardManager->getCardsUiData(CARD_TYPE_COMIC),
+            "comicDeck" => $this->cardManager->getDeckUiData(CARD_TYPE_COMIC),
             "constants" => get_defined_constants(true)["user"],
             "editors" => $this->editorManager->getEditorsUiData(),
             "mastery" => $this->masteryManager->getMasteryTokensUiData(),
+            "playerHands" => $this->cardManager->getPlayerHandsUiData($this->playerManager->getPlayers()),
             "playerInfo" => $this->playerManager->getPlayersUiData(),
             "ripoffCards" => $this->cardManager->getCardsUiData(
                 CARD_TYPE_RIPOFF
@@ -144,6 +147,7 @@ class AgeOfComics extends Table {
             "writerCards" => $this->cardManager->getCardsUiData(
                 CARD_TYPE_WRITER
             ),
+            "writerDeck" => $this->cardManager->getDeckUiData(CARD_TYPE_WRITER),
         ];
 
         return $gamedata;

@@ -55,8 +55,28 @@ class AOCCardManager extends APP_GameClass {
         return $cards;
     }
 
+    public function getArtistDeck() {
+        $rows = $this->getDeckByType(CARD_TYPE_ARTIST);
+
+        $cards = [];
+        foreach ($rows as $row) {
+            $cards[] = new AOCArtistCard($row);
+        }
+        return $cards;
+    }
+
     public function getComicCards() {
         $rows = $this->getCardsByType(CARD_TYPE_COMIC);
+
+        $cards = [];
+        foreach ($rows as $row) {
+            $cards[] = new AOCComicCard($row);
+        }
+        return $cards;
+    }
+
+    public function getComicDeck() {
+        $rows = $this->getDeckByType(CARD_TYPE_COMIC);
 
         $cards = [];
         foreach ($rows as $row) {
@@ -74,13 +94,50 @@ class AOCCardManager extends APP_GameClass {
         }
         return $cards;
     }
-
     public function getWriterCards() {
         $rows = $this->getCardsByType(CARD_TYPE_WRITER);
 
         $cards = [];
         foreach ($rows as $row) {
             $cards[] = new AOCWriterCard($row);
+        }
+        return $cards;
+    }
+
+    public function getWriterDeck() {
+        $rows = $this->getDeckByType(CARD_TYPE_WRITER);
+
+        $cards = [];
+        foreach ($rows as $row) {
+            $cards[] = new AOCWriterCard($row);
+        }
+        return $cards;
+    }
+
+    public function getPlayerHand($playerId) {
+        $sql =
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId, card_class class FROM card WHERE card_owner = " .
+            $playerId .
+            " AND card_location = " .
+            LOCATION_HAND;
+        $rows = self::getObjectListFromDB($sql);
+
+        $cards = [];
+        foreach ($rows as $row) {
+            switch ($row["type"]) {
+                case CARD_TYPE_ARTIST:
+                    $cards[] = new AOCArtistCard($row);
+                    break;
+                case CARD_TYPE_COMIC:
+                    $cards[] = new AOCComicCard($row);
+                    break;
+                case CARD_TYPE_RIPOFF:
+                    $cards[] = new AOCRipoffCard($row);
+                    break;
+                case CARD_TYPE_WRITER:
+                    $cards[] = new AOCWriterCard($row);
+                    break;
+            }
         }
         return $cards;
     }
@@ -104,6 +161,43 @@ class AOCCardManager extends APP_GameClass {
         $uiData = [];
         foreach ($cards as $card) {
             $uiData[] = $card->getUiData();
+        }
+        return $uiData;
+    }
+
+    public function getDeckUiData($cardType) {
+        $cards = [];
+        switch ($cardType) {
+            case CARD_TYPE_ARTIST:
+                $cards = $this->getArtistDeck();
+                break;
+            case CARD_TYPE_COMIC:
+                $cards = $this->getComicDeck();
+                break;
+            case CARD_TYPE_WRITER:
+                $cards = $this->getWriterDeck();
+                break;
+        }
+        $uiData = [];
+        foreach ($cards as $card) {
+            $uiData[] = $card->getUiData();
+        }
+        return $uiData;
+    }
+
+    public function getHandUiData($playerId) {
+        $cards = $this->getPlayerHand($playerId);
+        $uiData = [];
+        foreach ($cards as $card) {
+            $uiData[] = $card->getUiData();
+        }
+        return $uiData;
+    }
+
+    public function getPlayerHandsUiData($players) {
+        $uiData = [];
+        foreach ($players as $player) {
+            $uiData[$player->getId()] = $this->getHandUiData($player->getId());
         }
         return $uiData;
     }
@@ -194,6 +288,18 @@ class AOCCardManager extends APP_GameClass {
         $sql =
             "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId, card_class class FROM card WHERE card_type = " .
             $cardType;
+        $rows = self::getObjectListFromDB($sql);
+
+        return $rows;
+    }
+
+    private function getDeckByType($cardType) {
+        $sql =
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId, card_class class FROM card WHERE card_type = " .
+            $cardType .
+            " AND card_location = " .
+            LOCATION_DECK .
+            " ORDER BY card_location_arg";
         $rows = self::getObjectListFromDB($sql);
 
         return $rows;
