@@ -14,7 +14,7 @@
  *
  */
 
-class AOCMiniComic extends AOCObject {
+class AOCMiniComic {
     private int $id;
     private int $typeId;
     private string $type;
@@ -33,7 +33,7 @@ class AOCMiniComic extends AOCObject {
         $this->type = $this->getTypeName($this->typeId);
         $this->comicKey = (int) $row["typeArg"];
         $this->genreId = (int) $row["genre"];
-        $this->genre = $this->getGenreName($this->genreId);
+        $this->genre = GENRES[$this->genreId];
         $this->location = (int) $row["location"];
         $this->locationArg = (int) $row["locationArg"];
         $this->playerId = (int) $row["playerId"];

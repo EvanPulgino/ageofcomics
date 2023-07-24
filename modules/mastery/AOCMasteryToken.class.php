@@ -15,7 +15,7 @@
  *
  */
 
-class AOCMasteryToken extends AOCObject {
+class AOCMasteryToken {
     private int $id;
     private int $genreId;
     private string $genre;
@@ -25,7 +25,7 @@ class AOCMasteryToken extends AOCObject {
     public function __construct($row) {
         $this->id = (int) $row["id"];
         $this->genreId = (int) $row["genre"];
-        $this->genre = $this->getGenreName($this->genreId);
+        $this->genre = GENRES[$this->genreId];
         $this->playerId = (int) $row["playerId"];
         $this->comicCount = (int) $row["comicCount"];
     }

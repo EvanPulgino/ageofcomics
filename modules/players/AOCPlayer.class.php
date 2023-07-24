@@ -15,7 +15,7 @@
  *
  */
 
-class AOCPlayer extends AOCObject {
+class AOCPlayer {
     private int $id;
     private int $naturalOrder;
     private int $turnOrder;

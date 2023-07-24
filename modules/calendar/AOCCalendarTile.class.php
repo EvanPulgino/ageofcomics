@@ -14,7 +14,7 @@
  * Calendar tile class
  *
  */
-class AOCCalendarTile extends AOCObject {
+class AOCCalendarTile {
     private int $id;
     private int $genreId;
     private string $genre;
@@ -25,7 +25,7 @@ class AOCCalendarTile extends AOCObject {
     public function __construct($row) {
         $this->id = (int) $row["id"];
         $this->genreId = (int) $row["genre"];
-        $this->genre = $this->getGenreName($this->genreId);
+        $this->genre = GENRES[$this->genreId];
         $this->round = (int) $row["round"];
         $this->position = (int) $row["position"];
         $this->cssClass = $row["class"];

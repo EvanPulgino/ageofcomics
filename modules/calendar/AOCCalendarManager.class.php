@@ -26,7 +26,7 @@ class AOCCalendarManager extends APP_GameClass {
      */
     public function setupNewGame() {
         $calendarPositions = [10, 20, 31, 32, 40, 50];
-        $calendarGenres = $this->game->genres;
+        $calendarGenres = GENRE_KEYS;
         shuffle($calendarGenres);
 
         foreach ($calendarPositions as $position) {

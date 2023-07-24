@@ -27,9 +27,7 @@ class AOCMasteryManager extends APP_GameClass {
      * @return void
      */
     public function setupNewGame() {
-        $masteryGenres = $this->game->genres;
-
-        foreach ($masteryGenres as $genre) {
+        foreach (GENRE_KEYS as $genre) {
             $this->game->DbQuery(
                 "INSERT INTO mastery_token (mastery_token_genre) VALUES ($genre)"
             );

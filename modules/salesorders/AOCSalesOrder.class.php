@@ -15,7 +15,7 @@
  *
  */
 
-class AOCSalesOrder extends AOCObject {
+class AOCSalesOrder {
     private int $id;
     private int $genreId;
     private string $genre;
@@ -28,7 +28,7 @@ class AOCSalesOrder extends AOCObject {
     public function __construct($row) {
         $this->id = (int) $row["id"];
         $this->genreId = (int) $row["genre"];
-        $this->genre = $this->getGenreName($this->genreId);
+        $this->genre = GENRES[$this->genreId];
         $this->value = (int) $row["value"];
         $this->fans = (int) $row["fans"];
         $this->playerId = (int) $row["playerId"];

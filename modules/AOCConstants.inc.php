@@ -24,6 +24,14 @@ define("GENRE_ROMANCE", 30);
 define("GENRE_SCIFI", 40);
 define("GENRE_SUPERHERO", 50);
 define("GENRE_WESTERN", 60);
+define("GENRE_KEYS", [
+    GENRE_CRIME,
+    GENRE_HORROR,
+    GENRE_ROMANCE,
+    GENRE_SCIFI,
+    GENRE_SUPERHERO,
+    GENRE_WESTERN,
+]);
 
 /** Genre Names */
 define("CRIME", "crime");
@@ -32,6 +40,16 @@ define("ROMANCE", "romance");
 define("SCIFI", "scifi");
 define("SUPERHERO", "superhero");
 define("WESTERN", "western");
+
+/** Genres */
+define("GENRES", [
+    GENRE_CRIME => CRIME,
+    GENRE_HORROR => HORROR,
+    GENRE_ROMANCE => ROMANCE,
+    GENRE_SCIFI => SCIFI,
+    GENRE_SUPERHERO => SUPERHERO,
+    GENRE_WESTERN => WESTERN,
+]);
 
 /** Card Types */
 define("CARD_TYPE_ARTIST", 1);

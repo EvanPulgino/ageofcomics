@@ -14,7 +14,7 @@
  *
  */
 
-class AOCCard extends AOCObject {
+class AOCCard {
     private int $id;
     private int $typeId;
     private string $type;
@@ -30,7 +30,7 @@ class AOCCard extends AOCObject {
         $this->typeId = (int) $row["type"];
         $this->type = $this->getCardTypeName($this->typeId);
         $this->genreId = (int) $row["genre"];
-        $this->genre = $this->getGenreName($this->genreId);
+        $this->genre = GENRES[$this->genreId];
         $this->location = (int) $row["location"];
         $this->locationArg = (int) $row["locationArg"];
         $this->playerId = (int) $row["playerId"];

@@ -54,9 +54,8 @@ class AOCSalesOrderManager extends APP_GameClass {
     }
 
     private function createSalesOrderTiles($playerCount) {
-        $salesOrderGenres = $this->game->genres;
         $salesOrderValues = $this->salesOrdersForPlayerCount[$playerCount];
-        foreach ($salesOrderGenres as $genre) {
+        foreach (GENRE_KEYS as $genre) {
             foreach ($salesOrderValues as $value) {
                 $sql = "INSERT INTO sales_order (sales_order_genre, sales_order_value, sales_order_fans, sales_order_location, sales_order_class) VALUES ($genre, $value, $value-2, 2, 'salesorder_facedown_$genre')";
                 $this->game->DbQuery($sql);

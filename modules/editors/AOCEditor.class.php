@@ -14,7 +14,7 @@
  *
  */
 
-class AOCEditor extends AOCObject {
+class AOCEditor {
     private int $id;
     private int $playerId;
     private int $locationId;

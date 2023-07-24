@@ -41,16 +41,6 @@ class AgeOfComics extends Table {
             IDEAS_SPACE_WESTERN => 18,
         ]);
 
-        // Genres in the game
-        $this->genres = [
-            GENRE_CRIME,
-            GENRE_HORROR,
-            GENRE_ROMANCE,
-            GENRE_SCIFI,
-            GENRE_SUPERHERO,
-            GENRE_WESTERN,
-        ];
-
         // Initialize action managers
         $this->gameStateActions = new AOCGameStateActions($this);
         $this->playerActions = new AOCPlayerActions($this);
@@ -91,12 +81,9 @@ class AgeOfComics extends Table {
         self::setGameStateInitialValue(TOTAL_TURNS, sizeof($aocPlayers) * 20);
         self::setGameStateInitialValue(TURNS_TAKEN, 0);
         self::setGameStateInitialValue(CURRENT_ROUND, 0);
-        self::setGameStateInitialValue(IDEAS_SPACE_CRIME, 1);
-        self::setGameStateInitialValue(IDEAS_SPACE_HORROR, 1);
-        self::setGameStateInitialValue(IDEAS_SPACE_ROMANCE, 1);
-        self::setGameStateInitialValue(IDEAS_SPACE_SCIFI, 1);
-        self::setGameStateInitialValue(IDEAS_SPACE_SUPERHERO, 1);
-        self::setGameStateInitialValue(IDEAS_SPACE_WESTERN, 1);
+        foreach (GENRES as $genreId => $genreName) {
+            self::setGameStateInitialValue("ideas_space_{$genreName}", 1);
+        }
 
         // Init game statistics
         // (note: statistics used in this file must be defined in your stats.inc.php file)
@@ -137,6 +124,7 @@ class AgeOfComics extends Table {
             "comicDeck" => $this->cardManager->getDeckUiData(CARD_TYPE_COMIC),
             "constants" => get_defined_constants(true)["user"],
             "editors" => $this->editorManager->getEditorsUiData(),
+            "ideasSpaceContents" => $this->getIdeasSpaceContents(),
             "mastery" => $this->masteryManager->getMasteryTokensUiData(),
             "miniComics" => $this->miniComicManager->getMiniComicsUiData(),
             "playerHands" => $this->cardManager->getPlayerHandsUiData(
@@ -175,6 +163,21 @@ class AgeOfComics extends Table {
     //////////////////////////////////////////////////////////////////////////////
     //////////// Utility functions
     ////////////
+
+    /**
+     * Get current contents of ideas space
+     * @return array
+     */
+    function getIdeasSpaceContents() {
+        $ideasSpaceContents = [];
+        foreach (GENRES as $genreId => $genreName) {
+            $ideasSpaceContents[$genreId] = self::getGameStateValue(
+                "ideas_space_{$genreName}"
+            );
+        }
+
+        return $ideasSpaceContents;
+    }
 
     /**
      * Public wrapper for getCurrentPlayerId()
