@@ -21,7 +21,7 @@ class AOCObject {
      * @param $key int
      * @return string
      */
-    function getGenreName($key) {
+    protected function getGenreName($key) {
         switch ($key) {
             case GENRE_CRIME:
                 return clienttranslate(CRIME);

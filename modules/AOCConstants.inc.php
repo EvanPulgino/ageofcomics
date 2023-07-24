@@ -33,6 +33,157 @@ define("SCIFI", "scifi");
 define("SUPERHERO", "superhero");
 define("WESTERN", "western");
 
+/** Card Types */
+define("CARD_TYPE_ARTIST", 1);
+define("CARD_TYPE_COMIC", 2);
+define("CARD_TYPE_RIPOFF", 3);
+define("CARD_TYPE_WRITER", 4);
+
+/** Card Type Names */
+define("ARTIST", "artist");
+define("COMIC", "comic");
+define("RIPOFF", "rip-off");
+define("WRITER", "writer");
+
+/** Comic Bonuses */
+define("PLUS_ONE_FAN", 1);
+define("TWO_IDEAS", 2);
+define("SUPER_TRANSPORT", 3);
+define("PLUS_FOUR_MONEY", 4);
+
+/** Comic Names */
+define("ALIEN_WORLDS", "ALIEN WORLDS");
+define("ANGEL_OF_LIBERTY", "ANGEL of LIBERTY");
+define("CALL_THE_POLICE", "CALL the POLICE");
+define("CARMILLA", "CARMiLLA");
+define("FREEDOM_COMICS", "FREEDOM Comics");
+define("FUTURE_WONDER", "FUTURE Wonder");
+define("GANG_WARS", "GANG WARS!");
+define("HAUNTING_TALES", "HAUNTING TALES");
+define("HEARTBREAKERS", "Heartbreakers!");
+define("HEY_RANGER", "HEY RANGER");
+define("IT_LIVES", "IT LIVES");
+define("ITS_A_FELONY", "IT'S A FELONY");
+define("JUST_A_FEELING", "JUST A Feeling");
+define("KILLER_DAMES", "KiLLER Dames");
+define("KINGS_OF_THE_PLAINS", "KINGS OF THE PLAINS");
+define("LOVE_LETTER", "Love Letter");
+define("MISS_TIGER", "Miss Tiger");
+define("NEPTUNIO", "NEPTUNIO");
+define("OUTLAWS", "OUTLAWS");
+define("STAR_SPANGLED_DUO", "STAR-SPANGLED DUO!");
+define("STORIES_OF_TOMORROW", "STORIES OF TOMORROW");
+define("TEEN_DRAMA", "TEEN DRAMA");
+define("TRUE_TERROR", "TRUE TERROR");
+define("WILD_ANNIE", "WILD ANNIE");
+
+/** Ripoff Names */
+define("WEIRD_WORLDS", "WEIRD WORLDS");
+define("WINGS_OF_LIBERTY", "WINGS of LIBERTY");
+define("CALL_THE_COPS", "CALL the COPSs");
+define("VAMPYRIA", "VAMPYRiA");
+define("JUSTICE_COMICS", "JUSTICE Comics");
+define("FUTURE_MARVELS", "FUTURE Marvels");
+define("BANG_WARS", "BANG WARS!");
+define("HARROWING_TALES", "HARROWING TALES");
+define("TEARJERKERS", "Tearjerkers!");
+define("HI_RANGER", "HI RANGER");
+define("IT_WALKS", "IT WALKS");
+define("ITS_A_LARCENY", "IT'S A LARCENY");
+define("JUST_AN_EMOTION", "JUST AN Emotion");
+define("DEADLY_DAMES", "DEADLY Dames");
+define("KINGS_OF_THE_PEAKS", "KINGS OF THE PEAKS");
+define("LOVE_NOTES", "Love Notes");
+define("MISS_KITTY", "Miss Kitty");
+define("SATURNIO", "SATURNIO");
+define("BANDITS", "BANDITS");
+define("STAR_SPANGLED_DUDS", "STAR-SPANGLED DUDS!");
+define("LEGENDS_OF_TOMORROW", "LEGENDS OF TOMORROW");
+define("TWIN_DRAMA", "TWIN DRAMA");
+define("TRUE_HORROR", "TRUE HORROR");
+define("WILD_JENNY", "WILD JENNY");
+
+/** Comic Card Breakdown */
+define("COMIC_CARDS", [
+    GENRE_CRIME => [
+        PLUS_ONE_FAN => KILLER_DAMES,
+        TWO_IDEAS => ITS_A_FELONY,
+        SUPER_TRANSPORT => CALL_THE_POLICE,
+        PLUS_FOUR_MONEY => GANG_WARS,
+    ],
+    GENRE_HORROR => [
+        PLUS_ONE_FAN => HAUNTING_TALES,
+        TWO_IDEAS => IT_LIVES,
+        SUPER_TRANSPORT => TRUE_TERROR,
+        PLUS_FOUR_MONEY => CARMILLA,
+    ],
+
+    GENRE_ROMANCE => [
+        PLUS_ONE_FAN => JUST_A_FEELING,
+        TWO_IDEAS => LOVE_LETTER,
+        SUPER_TRANSPORT => HEARTBREAKERS,
+        PLUS_FOUR_MONEY => TEEN_DRAMA,
+    ],
+
+    GENRE_SCIFI => [
+        PLUS_ONE_FAN => STORIES_OF_TOMORROW,
+        TWO_IDEAS => NEPTUNIO,
+        SUPER_TRANSPORT => FUTURE_WONDER,
+        PLUS_FOUR_MONEY => ALIEN_WORLDS,
+    ],
+    GENRE_SUPERHERO => [
+        PLUS_ONE_FAN => STAR_SPANGLED_DUO,
+        TWO_IDEAS => MISS_TIGER,
+        SUPER_TRANSPORT => ANGEL_OF_LIBERTY,
+        PLUS_FOUR_MONEY => FREEDOM_COMICS,
+    ],
+    GENRE_WESTERN => [
+        PLUS_ONE_FAN => KINGS_OF_THE_PLAINS,
+        TWO_IDEAS => HEY_RANGER,
+        SUPER_TRANSPORT => OUTLAWS,
+        PLUS_FOUR_MONEY => WILD_ANNIE,
+    ],
+]);
+
+define("RIPOFF_CARDS", [
+    GENRE_CRIME => [
+        PLUS_ONE_FAN => DEADLY_DAMES,
+        TWO_IDEAS => ITS_A_LARCENY,
+        SUPER_TRANSPORT => CALL_THE_COPS,
+        PLUS_FOUR_MONEY => BANG_WARS,
+    ],
+    GENRE_HORROR => [
+        PLUS_ONE_FAN => HARROWING_TALES,
+        TWO_IDEAS => IT_WALKS,
+        SUPER_TRANSPORT => TRUE_HORROR,
+        PLUS_FOUR_MONEY => VAMPYRIA,
+    ],
+    GENRE_ROMANCE => [
+        PLUS_ONE_FAN => JUST_AN_EMOTION,
+        TWO_IDEAS => LOVE_NOTES,
+        SUPER_TRANSPORT => TEARJERKERS,
+        PLUS_FOUR_MONEY => TWIN_DRAMA,
+    ],
+    GENRE_SCIFI => [
+        PLUS_ONE_FAN => LEGENDS_OF_TOMORROW,
+        TWO_IDEAS => SATURNIO,
+        SUPER_TRANSPORT => FUTURE_MARVELS,
+        PLUS_FOUR_MONEY => WEIRD_WORLDS,
+    ],
+    GENRE_SUPERHERO => [
+        PLUS_ONE_FAN => STAR_SPANGLED_DUDS,
+        TWO_IDEAS => MISS_KITTY,
+        SUPER_TRANSPORT => WINGS_OF_LIBERTY,
+        PLUS_FOUR_MONEY => JUSTICE_COMICS,
+    ],
+    GENRE_WESTERN => [
+        PLUS_ONE_FAN => KINGS_OF_THE_PEAKS,
+        TWO_IDEAS => HI_RANGER,
+        SUPER_TRANSPORT => BANDITS,
+        PLUS_FOUR_MONEY => WILD_JENNY,
+    ],
+]);
+
 /** Global Variables */
 define("CURRENT_ROUND", "current_round");
 define("IDEAS_SPACE_CRIME", "ideas_space_crime");
@@ -45,19 +196,23 @@ define("TOTAL_TURNS", "total_turns");
 define("TURNS_TAKEN", "turns_taken");
 
 /** Locations */
-define("LOCATION_PLAYER", 1);
-define("LOCATION_SUPPLY", 2);
+define("LOCATION_DECK", 0);
+define("LOCATION_DISCARD", 1);
+define("LOCATION_HAND", 2);
+define("LOCATION_PLAYER_AREA", 3);
+define("LOCATION_SUPPLY", 4);
+define("LOCATION_PLAYER_MAT", 5);
 define("LOCATION_ACTION_SPACE_1", 1);
 define("LOCATION_ACTION_SPACE_2", 2);
 define("LOCATION_ACTION_SPACE_3", 3);
 define("LOCATION_ACTION_SPACE_4", 4);
 define("LOCATION_ACTION_SPACE_5", 5);
-define("LOCATION_ACTION_HIRE", 10);
-define("LOCATION_ACTION_DEVELOP", 20);
-define("LOCATION_ACTION_IDEAS", 30);
-define("LOCATION_ACTION_PRINT", 40);
-define("LOCATION_ACTION_ROYALTIES", 50);
-define("LOCATION_ACTION_SALES", 60);
+define("LOCATION_ACTION_HIRE", 10000);
+define("LOCATION_ACTION_DEVELOP", 20000);
+define("LOCATION_ACTION_IDEAS", 30000);
+define("LOCATION_ACTION_PRINT", 40000);
+define("LOCATION_ACTION_ROYALTIES", 50000);
+define("LOCATION_ACTION_SALES", 60000);
 define("LOCATION_AGENT_SPACE_1_1", 101);
 define("LOCATION_AGENT_SPACE_1_2", 102);
 define("LOCATION_AGENT_SPACE_1_3", 103);

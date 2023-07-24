@@ -59,6 +59,7 @@ class AgeOfComics extends Table {
         $this->playerManager = new AOCPlayerManager($this);
 
         // Initialize component managers
+        $this->cardManager = new AOCCardManager($this);
         $this->calendarManager = new AOCCalendarManager($this);
         $this->editorManager = new AOCEditorManager($this);
         $this->masteryManager = new AOCMasteryManager($this);
@@ -106,6 +107,7 @@ class AgeOfComics extends Table {
         $this->editorManager->setupNewGame($aocPlayers);
         $this->masteryManager->setupNewGame();
         $this->salesOrderManager->setupNewGame(sizeof($aocPlayers));
+        $this->cardManager->setupNewGame();
 
         // Activate first player (which is in general a good idea :) )
         $this->activeNextPlayer();
@@ -126,12 +128,22 @@ class AgeOfComics extends Table {
         $current_player_id = self::getCurrentPlayerId(); // !! We must only return informations visible by this player !!
 
         $gamedata = [
+            "artistCards" => $this->cardManager->getCardsUiData(
+                CARD_TYPE_ARTIST
+            ),
             "calendarTiles" => $this->calendarManager->getCalendarTilesUiData(),
+            "comicCards" => $this->cardManager->getCardsUiData(CARD_TYPE_COMIC),
             "constants" => get_defined_constants(true)["user"],
             "editors" => $this->editorManager->getEditorsUiData(),
-            "playerInfo" => $this->playerManager->getPlayersUiData(),
             "mastery" => $this->masteryManager->getMasteryTokensUiData(),
+            "playerInfo" => $this->playerManager->getPlayersUiData(),
+            "ripoffCards" => $this->cardManager->getCardsUiData(
+                CARD_TYPE_RIPOFF
+            ),
             "salesOrders" => $this->salesOrderManager->getSalesOrdersUiData(),
+            "writerCards" => $this->cardManager->getCardsUiData(
+                CARD_TYPE_WRITER
+            ),
         ];
 
         return $gamedata;

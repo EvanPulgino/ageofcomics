@@ -79,7 +79,7 @@ class AOCEditorManager extends APP_GameClass {
     private function createPlayerEditors(AOCPlayer $player) {
         $playerId = $player->getId();
         $cssClass = $this->getEditorCssFromPlayerColor($player->getColor());
-        $playerArea = LOCATION_PLAYER;
+        $playerArea = LOCATION_PLAYER_AREA;
         $extraEditor = LOCATION_EXTRA_EDITOR;
 
         for ($i = 0; $i < 4; $i++) {
