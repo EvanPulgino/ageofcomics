@@ -301,10 +301,10 @@ define("LOCATION_ORDER_SPACE_12_7", 1207);
 define("LOCATION_ORDER_SPACE_13_5", 1305);
 
 /** Player Colors */
-define("PLAYER_COLOR_BROWN", "7d4b48");
-define("PLAYER_COLOR_SALMON", "ec9b7c");
-define("PLAYER_COLOR_TEAL", "5fa7a3");
-define("PLAYER_COLOR_YELLOW", "f7c96d");
+define("PLAYER_COLOR_BROWN", "8e514e");
+define("PLAYER_COLOR_SALMON", "e5977a");
+define("PLAYER_COLOR_TEAL", "5ba59f");
+define("PLAYER_COLOR_YELLOW", "f5c86e");
 
 /** Sales Order Spaces by Player Count */
 define("SALES_ORDER_SPACES", [

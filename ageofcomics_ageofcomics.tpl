@@ -27,7 +27,24 @@
 
 
 <div id="aoc-gboard">
-    <div id="aoc-board" class="aoc-board"></div>
+    <div id="aoc-layout">
+        <div id="aoc-common-area">
+            <div id="aoc-board" class="aoc-board-image aoc-board-section aoc-board"></div>
+            <div id="aoc-chart" class="aoc-board-section">
+                <div id="aoc-chart-start" class="aoc-board-image aoc-chart-start"></div>
+                <!-- BEGIN playerchart -->
+                <div id="aoc-chart-{player_id}" class="aoc-board-image aoc-chart-{color}"></div>
+                <!-- END playerchart -->
+                <div id="aoc-chart-end" class="aoc-board-image aoc-chart-end"></div>
+            </div>
+            <div id="aoc-card-market"></div>
+        </div>
+        <div id="aoc-players-section">
+            <!-- BEGIN playerarea -->
+            <div id="aoc-player-mat-{player_id}" class="aoc-player-mat aoc-player-mat-{color}"></div>
+            <!-- END playerarea -->
+        </div>
+    </div>
 </div>
 
 <div id="aoc-overall"></div>

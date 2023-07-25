@@ -68,7 +68,7 @@ $gameinfos = [
         "Most printed comics. If still tied, highest total value of printed comics. If still tied, victory is shared."
     ),
 
-    "tie_breaker_split" => array(100, 1),
+    "tie_breaker_split" => [100, 1],
 
     // If in the game, all losers are equal (no score to rank them or explicit in the rules that losers are not ranked between them), set this to true
     // The game end result will display "Winner" for the 1st player and "Loser" for all other players
@@ -101,7 +101,7 @@ $gameinfos = [
     "diplomacy" => 3,
 
     // Colors attributed to players
-    "player_colors" => ["f7c96d", "ec9b7c", "5fa7a3", "7d4b48"],
+    "player_colors" => ["f5c86e", "e5977a", "5ba59f", "8e514e"],
 
     // Favorite colors support : if set to "true", support attribution of favorite colors based on player's preferences (see reattributeColorsBasedOnPreferences PHP method)
     // NB: this parameter is used only to flag games supporting this feature; you must use (or not use) reattributeColorsBasedOnPreferences PHP method to actually enable or disable the feature.

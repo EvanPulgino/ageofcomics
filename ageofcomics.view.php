@@ -33,53 +33,41 @@ class view_ageofcomics_ageofcomics extends game_view
         // Used for translations and stuff. Please do not modify.
         return "ageofcomics";
     }
+
+    private function getColorString($hexColor) {
+        switch($hexColor) {
+            case '8e514e':
+                return 'brown';
+            case 'e5977a':
+                return 'salmon';
+            case '5ba59f':
+                return 'teal';
+            case 'f5c86e':
+                return 'yellow';
+        }
+        return '';
+    }
+
+    private function createPlayersSection($template, $players, $section) {
+        $this->page->begin_block($template, $section);
+        foreach($players as $player) {
+            $this->page->insert_block($section, array(
+                "player_id" => $player['player_id'],
+                "color" => $this->getColorString($player['player_color']),
+            ));
+        }
+    }
     
   	function build_page( $viewArgs )
-  	{		
+  	{	
+        $template = self::getGameName() . "_" . self::getGameName();
+
   	    // Get players & players number
         $players = $this->game->loadPlayersBasicInfos();
         $players_nbr = count( $players );
 
-        /*********** Place your code below:  ************/
-
-
-        /*
-        
-        // Examples: set the value of some element defined in your tpl file like this: {MY_VARIABLE_ELEMENT}
-
-        // Display a specific number / string
-        $this->tpl['MY_VARIABLE_ELEMENT'] = $number_to_display;
-
-        // Display a string to be translated in all languages: 
-        $this->tpl['MY_VARIABLE_ELEMENT'] = self::_("A string to be translated");
-
-        // Display some HTML content of your own:
-        $this->tpl['MY_VARIABLE_ELEMENT'] = self::raw( $some_html_code );
-        
-        */
-        
-        /*
-        
-        // Example: display a specific HTML block for each player in this game.
-        // (note: the block is defined in your .tpl file like this:
-        //      <!-- BEGIN myblock --> 
-        //          ... my HTML code ...
-        //      <!-- END myblock --> 
-        
-
-        $this->page->begin_block( "ageofcomics_ageofcomics", "myblock" );
-        foreach( $players as $player )
-        {
-            $this->page->insert_block( "myblock", array( 
-                                                    "PLAYER_NAME" => $player['player_name'],
-                                                    "SOME_VARIABLE" => $some_value
-                                                    ...
-                                                     ) );
-        }
-        
-        */
-
-
+        $this->createPlayersSection($template, $players, "playerchart");
+        $this->createPlayersSection($template, $players, "playerarea");
 
         /*********** Do not change anything below this line  ************/
   	}
