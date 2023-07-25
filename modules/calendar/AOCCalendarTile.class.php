@@ -71,9 +71,9 @@ class AOCCalendarTile {
     }
 
     private function deriveCssClass() {
-        $cssClass = "calendar-tile";
+        $cssClass = "aoc-calendar-tile";
         if ($this->flipped) {
-            $cssClass .= "-" . $this->genre;
+            return $cssClass .= "-" . $this->genre;
         }
         return $cssClass .= "-facedown";
     }

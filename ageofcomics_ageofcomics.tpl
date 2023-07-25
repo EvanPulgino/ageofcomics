@@ -29,7 +29,14 @@
 <div id="aoc-gboard">
     <div id="aoc-layout">
         <div id="aoc-common-area">
-            <div id="aoc-board" class="aoc-board-image aoc-board-section aoc-board"></div>
+            <div id="aoc-board" class="aoc-board-image aoc-board-section aoc-board">
+                <div id="aoc-calendar-slot-10" class="aoc-calendar-slot"></div>
+                <div id="aoc-calendar-slot-20" class="aoc-calendar-slot"></div>
+                <div id="aoc-calendar-slot-31" class="aoc-calendar-slot"></div>
+                <div id="aoc-calendar-slot-32" class="aoc-calendar-slot"></div>
+                <div id="aoc-calendar-slot-40" class="aoc-calendar-slot"></div>
+                <div id="aoc-calendar-slot-50" class="aoc-calendar-slot"></div>
+            </div>
             <div id="aoc-chart" class="aoc-board-section">
                 <div id="aoc-chart-start" class="aoc-board-image aoc-chart-start"></div>
                 <!-- BEGIN playerchart -->

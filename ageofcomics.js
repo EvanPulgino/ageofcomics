@@ -44,28 +44,8 @@ var GameBasics = /** @class */ (function (_super) {
         _this.pendingUpdate = false;
         _this.currentPlayerWasActive = false;
         _this.gameState = new GameState();
-        dojo.connect(window, "onresize", _this, dojo.hitch(_this, "adaptViewportSize"));
         return _this;
     }
-    GameBasics.prototype.adaptViewportSize = function () {
-        var t = dojo.marginBox("aoc-overall");
-        var r = t.w;
-        var s = 2772;
-        var height = dojo.marginBox("aoc-layout").h;
-        if (r >= s) {
-            var i = (r - s) / 2;
-            dojo.style("aoc-gboard", "transform", "");
-            dojo.style("aoc-gboard", "left", i + "px");
-            dojo.style("aoc-gboard", "height", height + "px");
-        }
-        else {
-            var o = r / s;
-            i = (t.w - r) / 2;
-            dojo.style("aoc-gboard", "transform", "scale(" + o + ")");
-            dojo.style("aoc-gboard", "left", i + "px");
-            dojo.style("aoc-gboard", "height", height * o + "px");
-        }
-    };
     /**
      * UI setup entry point
      *
@@ -262,8 +242,30 @@ var GameBasics = /** @class */ (function (_super) {
 var GameBody = /** @class */ (function (_super) {
     __extends(GameBody, _super);
     function GameBody() {
-        return _super.call(this) || this;
+        var _this = _super.call(this) || this;
+        _this.calendarController = new CalendarController();
+        dojo.connect(window, "onresize", _this, dojo.hitch(_this, "adaptViewportSize"));
+        return _this;
     }
+    GameBody.prototype.adaptViewportSize = function () {
+        var t = dojo.marginBox("aoc-overall");
+        var r = t.w;
+        var s = 2772;
+        var height = dojo.marginBox("aoc-layout").h;
+        if (r >= s) {
+            var i = (r - s) / 2;
+            dojo.style("aoc-gboard", "transform", "");
+            dojo.style("aoc-gboard", "left", i + "px");
+            dojo.style("aoc-gboard", "height", height + "px");
+        }
+        else {
+            var o = r / s;
+            i = (t.w - r) / 2;
+            dojo.style("aoc-gboard", "transform", "scale(" + o + ")");
+            dojo.style("aoc-gboard", "left", i + "px");
+            dojo.style("aoc-gboard", "height", height * o + "px");
+        }
+    };
     /**
      * UI setup entry point
      *
@@ -271,6 +273,7 @@ var GameBody = /** @class */ (function (_super) {
      */
     GameBody.prototype.setup = function (gamedata) {
         _super.prototype.setup.call(this, gamedata);
+        this.calendarController.setupCalendar(gamedata.calendarTiles);
         this.setupNotifications();
         this.debug("Ending game setup");
     };
@@ -346,6 +349,35 @@ define([
 ], function (dojo, declare) {
     return declare("bgagame.ageofcomics", ebg.core.gamegui, new GameBody());
 });
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * CalendarController.ts
+ *
+ */
+var CalendarController = /** @class */ (function (_super) {
+    __extends(CalendarController, _super);
+    function CalendarController() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    CalendarController.prototype.setupCalendar = function (calendarTiles) {
+        for (var key in calendarTiles) {
+            this.createCalendarTile(calendarTiles[key]);
+        }
+    };
+    CalendarController.prototype.createCalendarTile = function (calendarTile) {
+        this.debug("creating calendar tile", calendarTile);
+        var calendarTileDiv = '<div id="aoc-calender-tile-' + calendarTile.id + '" class="aoc-calendar-tile ' + calendarTile.cssClass + '"></div>';
+        this.createHtml(calendarTileDiv, "aoc-calendar-slot-" + calendarTile.position);
+    };
+    return CalendarController;
+}(GameBasics));
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
