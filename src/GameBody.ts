@@ -16,9 +16,11 @@
 // @ts-ignore
 class GameBody extends GameBasics {
   states: any;
+  playerController: PlayerController;
   calendarController: CalendarController;
   constructor() {
     super();
+    this.playerController = new PlayerController();
     this.calendarController = new CalendarController();
 
     dojo.connect(
@@ -55,6 +57,7 @@ class GameBody extends GameBasics {
    */
   setup(gamedata: any) {
     super.setup(gamedata);
+    this.playerController.setupPlayers(gamedata.playerInfo);
     this.calendarController.setupCalendar(gamedata.calendarTiles);
     this.setupNotifications();
     this.debug("Ending game setup");

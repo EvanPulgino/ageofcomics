@@ -106,6 +106,29 @@ html {
   left: 631px;
 }
 
+.aoc-player-order-space {
+  height: 28px;
+  left: 120px;
+  position: absolute;
+  width: 28px;
+}
+
+#aoc-player-order-space-1 {
+  top: 27px;
+}
+
+#aoc-player-order-space-2 {
+  top: 69px;
+}
+
+#aoc-player-order-space-3 {
+  top: 109px;
+}
+
+#aoc-player-order-space-4 {
+  top: 151px;
+}
+
 .aoc-board-section {
   filter: drop-shadow(1px 1px 1px black);
   -webkit-filter: drop-shadow(1px 1px 2px #000);
@@ -230,4 +253,31 @@ html {
 
 .aoc-calendar-tile-western {
   background-position: 66.66% 100%;
+}
+
+/* Player Order Tokens */
+.aoc-player-order-token {
+  background-image: url(./img/aoc_player_order.png);
+  background-repeat: no-repeat;
+  border-radius: 5px;
+  bottom: 20px;
+  height: 49px;
+  position: relative;
+  width: 28px;
+}
+
+.aoc-player-order-token-brown {
+  background-position: 0;
+}
+
+.aoc-player-order-token-salmon {
+  background-position: 33.33%;
+}
+
+.aoc-player-order-token-teal {
+  background-position: 66.66%;
+}
+
+.aoc-player-order-token-yellow {
+  background-position: 100%;
 }

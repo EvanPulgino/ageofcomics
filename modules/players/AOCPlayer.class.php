@@ -21,6 +21,7 @@ class AOCPlayer {
     private int $turnOrder;
     private string $name;
     private string $color;
+    private string $colorAsText;
     private int $score;
     private int $scoreAux;
     private int $money;
@@ -38,6 +39,7 @@ class AOCPlayer {
         $this->turnOrder = (int) $row["turnOrder"];
         $this->name = $row["name"];
         $this->color = $row["color"];
+        $this->colorAsText = $this->getColorString($row["color"]);
         $this->score = $row["score"];
         $this->scoreAux = $row["scoreAux"];
         $this->money = $row["money"];
@@ -64,6 +66,9 @@ class AOCPlayer {
     }
     public function getColor() {
         return $this->color;
+    }
+    public function getColorAsText() {
+        return $this->colorAsText;
     }
     public function getScore() {
         return $this->score;
@@ -103,6 +108,7 @@ class AOCPlayer {
             "turnOrder" => $this->turnOrder,
             "name" => $this->name,
             "color" => $this->color,
+            "colorAsText" => $this->colorAsText,
             "score" => $this->score,
             "scoreAux" => $this->scoreAux,
             "money" => $this->money,
@@ -114,5 +120,19 @@ class AOCPlayer {
             "westernIdeas" => $this->westernIdeas,
             "multiActive" => $this->multiActive,
         ];
+    }
+
+    private function getColorString($hexColor) {
+        switch($hexColor) {
+            case '8e514e':
+                return 'brown';
+            case 'e5977a':
+                return 'salmon';
+            case '5ba59f':
+                return 'teal';
+            case 'f5c86e':
+                return 'yellow';
+        }
+        return '';
     }
 }

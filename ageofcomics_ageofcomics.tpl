@@ -30,12 +30,20 @@
     <div id="aoc-layout">
         <div id="aoc-common-area">
             <div id="aoc-board" class="aoc-board-image aoc-board-section aoc-board">
-                <div id="aoc-calendar-slot-10" class="aoc-calendar-slot"></div>
-                <div id="aoc-calendar-slot-20" class="aoc-calendar-slot"></div>
-                <div id="aoc-calendar-slot-31" class="aoc-calendar-slot"></div>
-                <div id="aoc-calendar-slot-32" class="aoc-calendar-slot"></div>
-                <div id="aoc-calendar-slot-40" class="aoc-calendar-slot"></div>
-                <div id="aoc-calendar-slot-50" class="aoc-calendar-slot"></div>
+                <div id="aoc-player-order">
+                    <div id="aoc-player-order-space-1" class="aoc-player-order-space"></div>
+                    <div id="aoc-player-order-space-2" class="aoc-player-order-space"></div>
+                    <div id="aoc-player-order-space-3" class="aoc-player-order-space"></div>
+                    <div id="aoc-player-order-space-4" class="aoc-player-order-space"></div>
+                </div>
+                <div id="aoc-calender">
+                    <div id="aoc-calendar-slot-10" class="aoc-calendar-slot"></div>
+                    <div id="aoc-calendar-slot-20" class="aoc-calendar-slot"></div>
+                    <div id="aoc-calendar-slot-31" class="aoc-calendar-slot"></div>
+                    <div id="aoc-calendar-slot-32" class="aoc-calendar-slot"></div>
+                    <div id="aoc-calendar-slot-40" class="aoc-calendar-slot"></div>
+                    <div id="aoc-calendar-slot-50" class="aoc-calendar-slot"></div>
+                </div>
             </div>
             <div id="aoc-chart" class="aoc-board-section">
                 <div id="aoc-chart-start" class="aoc-board-image aoc-chart-start"></div>
