@@ -1,0 +1,61 @@
+/**
+ *
+ * Styles for the game board
+ *
+ */
+
+.aoc-board {
+  background-position: 99% 0;
+  border-radius: 5px;
+  width: 1439px;
+}
+
+.aoc-board-image {
+  background-image: url(./img/aoc_board.jpg);
+  background-repeat: no-repeat;
+  height: 1062px;
+}
+
+.aoc-board-section {
+  filter: drop-shadow(1px 1px 1px black);
+  -webkit-filter: drop-shadow(1px 1px 2px #000);
+}
+
+#aoc-chart {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+}
+
+.aoc-chart-start {
+  background-position-x: -5px;
+  border-radius: 5px 0 0 5px;
+  width: 66px;
+}
+
+.aoc-chart-yellow {
+  background-position-x: -71px;
+  width: 71px;
+}
+
+.aoc-chart-salmon {
+  background-position-x: -182px;
+  width: 71px;
+}
+
+.aoc-chart-teal {
+  background-position-x: -295px;
+  width: 71px;
+}
+
+.aoc-chart-brown {
+  background-position-x: -407px;
+  width: 71px;
+}
+
+.aoc-chart-end {
+  background-position-x: -477px;
+  border-radius: 0 5px 5px 0;
+  width: 21px;
+}

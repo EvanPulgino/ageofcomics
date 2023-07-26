@@ -233,4 +233,8 @@ class GameBasics extends GameGui {
     //super.onScriptError(msg, url, linenumber);
     return this.inherited(arguments);
   }
+
+  getGenreName(genreId: number) {
+    return GENRES[genreId];
+  }
 }

@@ -12,7 +12,11 @@
  *
  */
 @import url(../../../css/csslayer.css); /* Note: you must not use any @import directive other than this one */
-/* Generic Classes */
+/**
+ *
+ * Styles for overall table layout
+ *
+ */
 html {
   background-image: url(./img/aoc_table.jpg);
   font-size: calc(15px + 0.390625vw);
@@ -58,13 +62,6 @@ html {
   justify-content: center;
 }
 
-#aoc-chart {
-  align-items: center;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
-}
-
 #aoc-players-section {
   align-items: center;
   display: flex;
@@ -74,58 +71,21 @@ html {
   position: relative;
 }
 
-.aoc-calendar-slot {
-  position: absolute;
-  height: 78px;
-  width: 78px;
-  top: 104px;
+/**
+ *
+ * Styles for the game board
+ *
+ */
+.aoc-board {
+  background-position: 99% 0;
+  border-radius: 5px;
+  width: 1439px;
 }
 
-#aoc-calendar-slot-10 {
-  left: 214px;
-}
-
-#aoc-calendar-slot-20 {
-  left: 295px;
-}
-
-#aoc-calendar-slot-31 {
-  left: 378px;
-}
-
-#aoc-calendar-slot-32 {
-  left: 460px;
-}
-
-#aoc-calendar-slot-40 {
-  left: 543px;
-}
-
-#aoc-calendar-slot-50 {
-  left: 625px;
-}
-
-.aoc-player-order-space {
-  height: 28px;
-  left: 114px;
-  position: absolute;
-  width: 28px;
-}
-
-#aoc-player-order-space-1 {
-  top: 27px;
-}
-
-#aoc-player-order-space-2 {
-  top: 69px;
-}
-
-#aoc-player-order-space-3 {
-  top: 109px;
-}
-
-#aoc-player-order-space-4 {
-  top: 151px;
+.aoc-board-image {
+  background-image: url(./img/aoc_board.jpg);
+  background-repeat: no-repeat;
+  height: 1062px;
 }
 
 .aoc-board-section {
@@ -133,17 +93,11 @@ html {
   -webkit-filter: drop-shadow(1px 1px 2px #000);
 }
 
-/* Game Board */
-.aoc-board-image {
-  background-image: url(./img/aoc_board.jpg);
-  background-repeat: no-repeat;
-  height: 1062px;
-}
-
-.aoc-board {
-  background-position: 99% 0;
-  border-radius: 5px;
-  width: 1439px;
+#aoc-chart {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
 }
 
 .aoc-chart-start {
@@ -173,50 +127,48 @@ html {
 }
 
 .aoc-chart-end {
-  background-position-x: -478px;
+  background-position-x: -477px;
   border-radius: 0 5px 5px 0;
   width: 21px;
 }
 
-/* Player Mats */
-.aoc-player-mat {
-  background-image: url(./img/aoc_player_mats.jpg);
-  background-repeat: no-repeat;
-  border-radius: 5px;
-  filter: drop-shadow(1px 1px 1px black);
-  -webkit-filter: drop-shadow(1px 1px 2px #000);
-  height: 420px;
-  width: 1230px;
+/**
+ *
+ * Styles for the calendar components
+ *
+ */
+.aoc-calendar-slot {
+  position: absolute;
+  height: 78px;
+  top: 104px;
+  width: 78px;
 }
 
-.aoc-player-mat-brown {
-  background-position: 0 0;
+#aoc-calendar-slot-10 {
+  left: 214px;
 }
 
-.aoc-player-mat-salmon {
-  background-position: 100% 0;
+#aoc-calendar-slot-20 {
+  left: 295px;
 }
 
-.aoc-player-mat-teal {
-  background-position: 0 100%;
+#aoc-calendar-slot-31 {
+  left: 378px;
 }
 
-.aoc-player-mat-yellow {
-  background-position: 100% 100%;
+#aoc-calendar-slot-32 {
+  left: 460px;
 }
 
-/* Cards */
-.aoc-comic-card {
-  background-image: url(./img/aoc_comic_cards.jpg);
-  background-repeat: no-repeat;
-  border-radius: 5px;
-  filter: drop-shadow(1px 1px 1px black);
-  -webkit-filter: drop-shadow(1px 1px 2px #000);
-  height: 249px;
-  width: 174px;
+#aoc-calendar-slot-40 {
+  left: 543px;
 }
 
-/* Calendar Tiles */
+#aoc-calendar-slot-50 {
+  left: 625px;
+}
+
+/* Tiles*/
 .aoc-calendar-tile {
   background-image: url(./img/aoc_calendar.jpg);
   background-repeat: no-repeat;
@@ -255,6 +207,141 @@ html {
   background-position: 66.66% 100%;
 }
 
+/**
+ *
+ * Style for the idea tokens
+ *
+ */
+.aoc-idea-token {
+  background-image: url(./img/aoc_ideas.png);
+  background-repeat: no-repeat;
+  border-radius: 5px;
+  filter: drop-shadow(1px 1px 1px black);
+  -webkit-filter: drop-shadow(1px 1px 2px #000);
+  height: 44px;
+  position: relative;
+  width: 44px;
+}
+
+.aoc-idea-token-crime {
+  background-position: 0 0;
+}
+
+.aoc-idea-token-horror {
+  background-position: 50% 0;
+}
+
+.aoc-idea-token-romance {
+  background-position: 0 100%;
+}
+
+.aoc-idea-token-scifi {
+  background-position: 50% 100%;
+}
+
+.aoc-idea-token-superhero {
+  background-position: 100% 0;
+}
+
+.aoc-idea-token-western {
+  background-position: 100% 100%;
+}
+
+.aoc-action-ideas-idea-space {
+  height: 44px;
+  position: absolute;
+  width: 44px;
+}
+
+#aoc-action-ideas-crime {
+  top: 252px;
+  left: 589px;
+}
+
+#aoc-action-ideas-horror {
+  top: 311px;
+  left: 707px;
+}
+
+#aoc-action-ideas-romance {
+  top: 311px;
+  left: 589px;
+}
+
+#aoc-action-ideas-scifi {
+  top: 252px;
+  left: 648px;
+}
+
+#aoc-action-ideas-superhero {
+  top: 252px;
+  left: 707px;
+}
+
+#aoc-action-ideas-western {
+  top: 311px;
+  left: 648px;
+}
+
+/**
+ *
+ * Styles for the player areas
+ *
+ */
+.aoc-player-mat {
+  background-image: url(./img/aoc_player_mats.jpg);
+  background-repeat: no-repeat;
+  border-radius: 5px;
+  filter: drop-shadow(1px 1px 1px black);
+  -webkit-filter: drop-shadow(1px 1px 2px #000);
+  height: 420px;
+  width: 1230px;
+}
+
+.aoc-player-mat-brown {
+  background-position: 0 0;
+}
+
+.aoc-player-mat-salmon {
+  background-position: 100% 0;
+}
+
+.aoc-player-mat-teal {
+  background-position: 0 100%;
+}
+
+.aoc-player-mat-yellow {
+  background-position: 100% 100%;
+}
+
+/**
+ *
+ * Styles for the player order components
+ *
+ */
+.aoc-player-order-space {
+  height: 28px;
+  left: 114px;
+  position: absolute;
+  width: 28px;
+}
+
+#aoc-player-order-space-1 {
+  top: 27px;
+}
+
+#aoc-player-order-space-2 {
+  top: 69px;
+}
+
+#aoc-player-order-space-3 {
+  top: 109px;
+}
+
+#aoc-player-order-space-4 {
+  top: 151px;
+}
+
 /* Player Order Tokens */
 .aoc-player-order-token {
   background-image: url(./img/aoc_player_order.png);
@@ -280,4 +367,19 @@ html {
 
 .aoc-player-order-token-yellow {
   background-position: 100%;
+}
+
+/**
+ * 
+ * Styles for comic cards
+ *
+ */
+.aoc-comic-card {
+  background-image: url(./img/aoc_comic_cards.jpg);
+  background-repeat: no-repeat;
+  border-radius: 5px;
+  filter: drop-shadow(1px 1px 1px black);
+  -webkit-filter: drop-shadow(1px 1px 2px #000);
+  height: 249px;
+  width: 174px;
 }

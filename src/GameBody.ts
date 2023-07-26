@@ -16,10 +16,12 @@
 // @ts-ignore
 class GameBody extends GameBasics {
   states: any;
+  gameController: GameController;
   playerController: PlayerController;
   calendarController: CalendarController;
   constructor() {
     super();
+    this.gameController = new GameController();
     this.playerController = new PlayerController();
     this.calendarController = new CalendarController();
 
@@ -57,6 +59,7 @@ class GameBody extends GameBasics {
    */
   setup(gamedata: any) {
     super.setup(gamedata);
+    this.gameController.setup(gamedata);
     this.playerController.setupPlayers(gamedata.playerInfo);
     this.calendarController.setupCalendar(gamedata.calendarTiles);
     this.setupNotifications();

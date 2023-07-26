@@ -1,0 +1,59 @@
+/**
+ *
+ * Styles for overall table layout
+ *
+ */
+
+html {
+  background-image: url(./img/aoc_table.jpg);
+  font-size: calc(15px + 0.390625vw);
+}
+
+.player-board {
+  background-color: #f5ead6 !important;
+}
+
+#page-title {
+  background-color: #f5ead6 !important;
+}
+
+#aoc-overall {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#aoc-gboard {
+  transform-origin: top left;
+}
+
+#aoc-gboard .aoc-board {
+  position: relative;
+}
+
+#aoc-layout {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  flex-flow: column nowrap;
+  justify-content: center;
+  position: absolute;
+}
+
+#aoc-common-area{
+  align-items: center;
+  display: flex;
+  flex-flow: row wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+#aoc-players-section {
+  align-items: center;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 10px;
+  justify-content: center;
+  position: relative;
+}

@@ -1,0 +1,75 @@
+/**
+ *
+ * Styles for the calendar components
+ *
+ */
+
+.aoc-calendar-slot {
+    position: absolute;
+    height: 78px;
+    top: 104px;
+    width: 78px;
+}
+
+#aoc-calendar-slot-10 {
+  left: 214px;
+}
+
+#aoc-calendar-slot-20 {
+  left: 295px;
+}
+
+#aoc-calendar-slot-31 {
+  left: 378px;
+}
+
+#aoc-calendar-slot-32 {
+  left: 460px;
+}
+
+#aoc-calendar-slot-40 {
+  left: 543px;
+}
+
+#aoc-calendar-slot-50 {
+  left: 625px;
+}
+
+/* Tiles*/
+.aoc-calendar-tile {
+  background-image: url(./img/aoc_calendar.jpg);
+  background-repeat: no-repeat;
+  border-radius: 5px;
+  filter: drop-shadow(1px 1px 1px black);
+  -webkit-filter: drop-shadow(1px 1px 2px #000);
+  height: 78px;
+  width: 78px;
+}
+
+.aoc-calendar-tile-facedown {
+  background-position: 0 0;
+}
+
+.aoc-calendar-tile-crime {
+  background-position: 33.33% 0;
+}
+
+.aoc-calendar-tile-horror {
+  background-position: 66.66% 0;
+}
+
+.aoc-calendar-tile-romance {
+  background-position: 100% 0;
+}
+
+.aoc-calendar-tile-scifi {
+  background-position: 0 100%;
+}
+
+.aoc-calendar-tile-superhero {
+  background-position: 33.33% 100%;
+}
+
+.aoc-calendar-tile-western {
+  background-position: 66.66% 100%;
+}

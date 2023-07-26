@@ -44,6 +44,16 @@
                     <div id="aoc-calendar-slot-40" class="aoc-calendar-slot"></div>
                     <div id="aoc-calendar-slot-50" class="aoc-calendar-slot"></div>
                 </div>
+                <div id="aoc-action-ideas">
+                    <div id="aoc-action-ideas-idea-spaces">
+                        <div id="aoc-action-ideas-crime" class="aoc-action-ideas-idea-space"></div>
+                        <div id="aoc-action-ideas-scifi" class="aoc-action-ideas-idea-space"></div>
+                        <div id="aoc-action-ideas-superhero" class="aoc-action-ideas-idea-space"></div>
+                        <div id="aoc-action-ideas-romance" class="aoc-action-ideas-idea-space"></div>
+                        <div id="aoc-action-ideas-western" class="aoc-action-ideas-idea-space"></div>
+                        <div id="aoc-action-ideas-horror" class="aoc-action-ideas-idea-space"></div>
+                    </div>
+                </div>
             </div>
             <div id="aoc-chart" class="aoc-board-section">
                 <div id="aoc-chart-start" class="aoc-board-image aoc-chart-start"></div>

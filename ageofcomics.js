@@ -222,6 +222,9 @@ var GameBasics = /** @class */ (function (_super) {
         //super.onScriptError(msg, url, linenumber);
         return this.inherited(arguments);
     };
+    GameBasics.prototype.getGenreName = function (genreId) {
+        return GENRES[genreId];
+    };
     return GameBasics;
 }(GameGui));
 /**
@@ -243,6 +246,7 @@ var GameBody = /** @class */ (function (_super) {
     __extends(GameBody, _super);
     function GameBody() {
         var _this = _super.call(this) || this;
+        _this.gameController = new GameController();
         _this.playerController = new PlayerController();
         _this.calendarController = new CalendarController();
         dojo.connect(window, "onresize", _this, dojo.hitch(_this, "adaptViewportSize"));
@@ -274,6 +278,7 @@ var GameBody = /** @class */ (function (_super) {
      */
     GameBody.prototype.setup = function (gamedata) {
         _super.prototype.setup.call(this, gamedata);
+        this.gameController.setup(gamedata);
         this.playerController.setupPlayers(gamedata.playerInfo);
         this.calendarController.setupCalendar(gamedata.calendarTiles);
         this.setupNotifications();
@@ -379,6 +384,41 @@ var CalendarController = /** @class */ (function (_super) {
         this.createHtml(calendarTileDiv, "aoc-calendar-slot-" + calendarTile.position);
     };
     return CalendarController;
+}(GameBasics));
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * GameController.ts
+ *
+ */
+var GameController = /** @class */ (function (_super) {
+    __extends(GameController, _super);
+    function GameController() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    GameController.prototype.setup = function (gamedata) {
+        this.createIdeaTokensOnBoard(gamedata.ideasSpaceContents);
+    };
+    GameController.prototype.createIdeaTokensOnBoard = function (ideasSpaceContents) {
+        for (var key in ideasSpaceContents) {
+            var genreSpace = ideasSpaceContents[key];
+            this.createIdeaTokenOnBoard(key, genreSpace);
+        }
+    };
+    GameController.prototype.createIdeaTokenOnBoard = function (genreId, exists) {
+        if (exists) {
+            var genre = this.getGenreName(genreId);
+            var ideaTokenDiv = '<div id="aoc-idea-token-' + genre + '" class="aoc-idea-token aoc-idea-token-' + genre + '"></div>';
+            this.createHtml(ideaTokenDiv, "aoc-action-ideas-" + genre);
+        }
+    };
+    return GameController;
 }(GameBasics));
 /**
  *------
