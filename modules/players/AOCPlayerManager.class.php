@@ -30,16 +30,24 @@ class AOCPlayerManager extends APP_GameClass {
     public function setupNewGame($players) {
         $gameInfos = $this->game->getGameinfos();
         $defaultColors = $gameInfos["player_colors"];
+        shuffle($defaultColors);
+        $playerCount = count($players);
+        $order = [];
+        for ($i = 1; $i <= $playerCount; $i++) {
+            $order[] = $i;
+        }
+        shuffle($order);
 
         $sql =
-            "INSERT INTO player (player_id, player_color, player_canal, player_name, player_avatar) VALUES ";
+            "INSERT INTO player (player_id, player_no, player_color, player_canal, player_name, player_avatar) VALUES ";
         $values = [];
         foreach ($players as $playerId => $player) {
             $color = array_shift($defaultColors);
+            $orderNum = array_shift($order);
             $values[] =
                 "('" .
                 $playerId .
-                "','$color','" .
+                "','$orderNum','$color','" .
                 $player["player_canal"] .
                 "','" .
                 addslashes($player["player_name"]) .
@@ -50,10 +58,6 @@ class AOCPlayerManager extends APP_GameClass {
 
         $sql .= implode(",", $values);
         self::DbQuery($sql);
-        $this->game->reattributeColorsBasedOnPreferences(
-            $players,
-            $gameInfos["player_colors"]
-        );
         $this->setTurnOrderToNaturalOrder();
         $this->game->reloadPlayersBasicInfos();
     }
