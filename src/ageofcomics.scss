@@ -83,32 +83,32 @@ html {
 }
 
 #aoc-calendar-slot-10 {
-  left: 220px;
+  left: 214px;
 }
 
 #aoc-calendar-slot-20 {
-  left: 301px;
+  left: 295px;
 }
 
 #aoc-calendar-slot-31 {
-  left: 384px;
+  left: 378px;
 }
 
 #aoc-calendar-slot-32 {
-  left: 466px;
+  left: 460px;
 }
 
 #aoc-calendar-slot-40 {
-  left: 549px;
+  left: 543px;
 }
 
 #aoc-calendar-slot-50 {
-  left: 631px;
+  left: 625px;
 }
 
 .aoc-player-order-space {
   height: 28px;
-  left: 120px;
+  left: 114px;
   position: absolute;
   width: 28px;
 }
@@ -142,14 +142,15 @@ html {
 }
 
 .aoc-board {
-  background-position: 100% 0;
+  background-position: 99% 0;
   border-radius: 5px;
-  width: 1450px;
+  width: 1439px;
 }
 
 .aoc-chart-start {
+  background-position-x: -5px;
   border-radius: 5px 0 0 5px;
-  width: 71px;
+  width: 66px;
 }
 
 .aoc-chart-yellow {
@@ -175,7 +176,7 @@ html {
 .aoc-chart-end {
   background-position-x: -478px;
   border-radius: 0 5px 5px 0;
-  width: 26px;
+  width: 21px;
 }
 
 /* Player Mats */
