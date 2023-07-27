@@ -19,12 +19,14 @@ class GameBody extends GameBasics {
   gameController: GameController;
   playerController: PlayerController;
   calendarController: CalendarController;
+  editorController: EditorController;
   miniComicController: MiniComicController;
   constructor() {
     super();
     this.gameController = new GameController();
     this.playerController = new PlayerController();
     this.calendarController = new CalendarController();
+    this.editorController = new EditorController();
     this.miniComicController = new MiniComicController();
 
     dojo.connect(
@@ -70,6 +72,7 @@ class GameBody extends GameBasics {
     this.gameController.setup(gamedata);
     this.playerController.setupPlayers(gamedata.playerInfo);
     this.calendarController.setupCalendar(gamedata.calendarTiles);
+    this.editorController.setupEditors(gamedata.editors);
     this.miniComicController.setupMiniComics(gamedata.miniComics);
     this.setupNotifications();
     this.debug("Ending game setup");

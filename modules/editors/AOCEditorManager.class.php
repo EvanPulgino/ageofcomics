@@ -80,7 +80,7 @@ class AOCEditorManager extends APP_GameClass {
         $playerId = $player->getId();
         $playerColor = $player->getColor();
         $playerArea = LOCATION_PLAYER_AREA;
-        $extraEditor = LOCATION_ACTION_SALES;
+        $extraEditor = LOCATION_EXTRA_EDITOR;
 
         for ($i = 0; $i < 4; $i++) {
             $sql = "INSERT INTO editor (editor_owner, editor_color, editor_location) VALUES ($playerId, '$playerColor', $playerArea)";

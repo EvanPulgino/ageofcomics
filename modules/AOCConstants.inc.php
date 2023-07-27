@@ -222,6 +222,7 @@ define("LOCATION_SUPPLY", 4);
 define("LOCATION_PLAYER_MAT", 5);
 define("LOCATION_CHART", 6);
 define("LOCATION_HYPE", 7);
+define("LOCATION_EXTRA_EDITOR", 8);
 define("LOCATION_ACTION_SPACE_1", 1);
 define("LOCATION_ACTION_SPACE_2", 2);
 define("LOCATION_ACTION_SPACE_3", 3);
@@ -305,6 +306,14 @@ define("PLAYER_COLOR_BROWN", "8e514e");
 define("PLAYER_COLOR_SALMON", "e5977a");
 define("PLAYER_COLOR_TEAL", "5ba59f");
 define("PLAYER_COLOR_YELLOW", "f5c86e");
+
+/** Player Colors as String */
+define("PLAYER_COLORS", [
+    PLAYER_COLOR_BROWN => "brown",
+    PLAYER_COLOR_SALMON => "salmon",
+    PLAYER_COLOR_TEAL => "teal",
+    PLAYER_COLOR_YELLOW => "yellow",
+]);
 
 /** Sales Order Spaces by Player Count */
 define("SALES_ORDER_SPACES", [

@@ -72,6 +72,12 @@
                         <div id="aoc-mini-ripoffs-western" class="aoc-mini-comic-container aoc-mini-ripoff-space"></div>
                     </div>
                 </div>
+                <div id="aoc-extra-editors">
+                    <div id="aoc-extra-editor-space-yellow" class="aoc-extra-editor-space"></div>
+                    <div id="aoc-extra-editor-space-salmon" class="aoc-extra-editor-space"></div>
+                    <div id="aoc-extra-editor-space-teal" class="aoc-extra-editor-space"></div>
+                    <div id="aoc-extra-editor-space-brown" class="aoc-extra-editor-space"></div>
+                </div>
             </div>
             <div id="aoc-chart" class="aoc-board-section">
                 <div id="aoc-chart-start" class="aoc-board-image aoc-chart-start"></div>

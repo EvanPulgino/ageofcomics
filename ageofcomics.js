@@ -225,6 +225,9 @@ var GameBasics = /** @class */ (function (_super) {
     GameBasics.prototype.getGenreName = function (genreId) {
         return GENRES[genreId];
     };
+    GameBasics.prototype.getPlayerColorAsString = function (playerColor) {
+        return PLAYER_COLORS[playerColor];
+    };
     return GameBasics;
 }(GameGui));
 /**
@@ -249,6 +252,7 @@ var GameBody = /** @class */ (function (_super) {
         _this.gameController = new GameController();
         _this.playerController = new PlayerController();
         _this.calendarController = new CalendarController();
+        _this.editorController = new EditorController();
         _this.miniComicController = new MiniComicController();
         dojo.connect(window, "onresize", _this, dojo.hitch(_this, "adaptViewportSize"));
         return _this;
@@ -287,6 +291,7 @@ var GameBody = /** @class */ (function (_super) {
         this.gameController.setup(gamedata);
         this.playerController.setupPlayers(gamedata.playerInfo);
         this.calendarController.setupCalendar(gamedata.calendarTiles);
+        this.editorController.setupEditors(gamedata.editors);
         this.miniComicController.setupMiniComics(gamedata.miniComics);
         this.setupNotifications();
         this.debug("Ending game setup");
@@ -401,6 +406,40 @@ var CalendarController = /** @class */ (function (_super) {
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
+ * EditorController.ts
+ *
+ */
+var EditorController = /** @class */ (function (_super) {
+    __extends(EditorController, _super);
+    function EditorController() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    EditorController.prototype.setupEditors = function (editors) {
+        for (var key in editors) {
+            this.createEditor(editors[key]);
+        }
+    };
+    EditorController.prototype.createEditor = function (editor) {
+        this.debug("creating editor", editor);
+        var editorDiv = '<div id="aoc-editor-' + editor.id + '" class="aoc-editor ' + editor.cssClass + '"></div>';
+        if (editor.locationId == globalThis.LOCATION_EXTRA_EDITOR) {
+            console.log("creating extra editor");
+            var color = this.getPlayerColorAsString(editor.color);
+            this.createHtml(editorDiv, "aoc-extra-editor-space-" + color);
+        }
+        // TODO: Handle other editor locations
+    };
+    return EditorController;
+}(GameBasics));
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
  * GameController.ts
  *
  */
@@ -453,7 +492,6 @@ var MiniComicController = /** @class */ (function (_super) {
         this.debug("creating mini comic", miniComic);
         var miniComicDiv = '<div id="aoc-mini-comic-' + miniComic.id + '" class="aoc-mini-comic ' + miniComic.cssClass + '"></div>';
         if (miniComic.location == globalThis.LOCATION_SUPPLY) {
-            this.debug("aoc-mini-" + miniComic.type + "s-" + miniComic.genre);
             this.createHtml(miniComicDiv, "aoc-mini-" + miniComic.type + "s-" + miniComic.genre);
         }
         if (miniComic.location == globalThis.LOCATION_CHART) {

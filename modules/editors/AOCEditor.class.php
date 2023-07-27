@@ -56,7 +56,7 @@ class AOCEditor {
     }
 
     private function deriveCssClass() {
-        $cssClass = "editor-";
+        $cssClass = "aoc-editor-";
         switch ($this->color) {
             case PLAYER_COLOR_BROWN:
                 return $cssClass .= "brown";

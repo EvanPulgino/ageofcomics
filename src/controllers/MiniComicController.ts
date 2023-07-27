@@ -23,7 +23,6 @@ class MiniComicController extends GameBasics {
         this.debug("creating mini comic", miniComic);
         var miniComicDiv = '<div id="aoc-mini-comic-' + miniComic.id + '" class="aoc-mini-comic ' + miniComic.cssClass + '"></div>';
         if (miniComic.location == globalThis.LOCATION_SUPPLY) {
-            this.debug("aoc-mini-" + miniComic.type + "s-" + miniComic.genre);
             this.createHtml(miniComicDiv,"aoc-mini-" + miniComic.type + "s-" + miniComic.genre);
         }
         if (miniComic.location == globalThis.LOCATION_CHART) {

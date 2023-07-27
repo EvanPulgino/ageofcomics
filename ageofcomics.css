@@ -209,6 +209,58 @@ html {
 }
 
 /**
+*
+* Styles for editor meeples
+*
+*/
+.aoc-editor {
+  background-image: url(./img/aoc_editor.png);
+  background-repeat: no-repeat;
+  height: 62px;
+  position: relative;
+  width: 30.75px;
+}
+
+.aoc-editor-salmon {
+  background-position-x: 0;
+}
+
+.aoc-editor-yellow {
+  background-position-x: 33.33%;
+}
+
+.aoc-editor-teal {
+  background-position-x: 66.66%;
+}
+
+.aoc-editor-brown {
+  background-position-x: 100%;
+}
+
+.aoc-extra-editor-space {
+  height: 62px;
+  position: absolute;
+  top: 971px;
+  width: 30.75px;
+}
+
+#aoc-extra-editor-space-yellow {
+  left: 405px;
+}
+
+#aoc-extra-editor-space-salmon {
+  left: 444px;
+}
+
+#aoc-extra-editor-space-teal {
+  left: 483px;
+}
+
+#aoc-extra-editor-space-brown {
+  left: 522px;
+}
+
+/**
  *
  * Style for the idea tokens
  *

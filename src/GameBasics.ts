@@ -237,4 +237,8 @@ class GameBasics extends GameGui {
   getGenreName(genreId: number) {
     return GENRES[genreId];
   }
+
+  getPlayerColorAsString(playerColor: string) : string {
+    return PLAYER_COLORS[playerColor];
+  }
 }
