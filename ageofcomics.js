@@ -249,6 +249,7 @@ var GameBody = /** @class */ (function (_super) {
         _this.gameController = new GameController();
         _this.playerController = new PlayerController();
         _this.calendarController = new CalendarController();
+        _this.miniComicController = new MiniComicController();
         dojo.connect(window, "onresize", _this, dojo.hitch(_this, "adaptViewportSize"));
         return _this;
     }
@@ -281,6 +282,7 @@ var GameBody = /** @class */ (function (_super) {
         this.gameController.setup(gamedata);
         this.playerController.setupPlayers(gamedata.playerInfo);
         this.calendarController.setupCalendar(gamedata.calendarTiles);
+        this.miniComicController.setupMiniComics(gamedata.miniComics);
         this.setupNotifications();
         this.debug("Ending game setup");
     };
@@ -419,6 +421,41 @@ var GameController = /** @class */ (function (_super) {
         }
     };
     return GameController;
+}(GameBasics));
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * MiniComicController.ts
+ *
+ */
+var MiniComicController = /** @class */ (function (_super) {
+    __extends(MiniComicController, _super);
+    function MiniComicController() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    MiniComicController.prototype.setupMiniComics = function (miniComics) {
+        for (var key in miniComics) {
+            this.createMiniComic(miniComics[key]);
+        }
+    };
+    MiniComicController.prototype.createMiniComic = function (miniComic) {
+        this.debug("creating mini comic", miniComic);
+        var miniComicDiv = '<div id="aoc-mini-comic-' + miniComic.id + '" class="aoc-mini-comic ' + miniComic.cssClass + '"></div>';
+        if (miniComic.location == globalThis.LOCATION_SUPPLY) {
+            this.debug("aoc-mini-" + miniComic.type + "s-" + miniComic.genre);
+            this.createHtml(miniComicDiv, "aoc-mini-" + miniComic.type + "s-" + miniComic.genre);
+        }
+        if (miniComic.location == globalThis.LOCATION_CHART) {
+            // TODO: Add to chart location
+        }
+    };
+    return MiniComicController;
 }(GameBasics));
 /**
  *------

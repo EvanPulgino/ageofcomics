@@ -54,6 +54,24 @@
                         <div id="aoc-action-ideas-horror" class="aoc-action-ideas-idea-space"></div>
                     </div>
                 </div>
+                <div id="aoc-mini-comics-section">
+                    <div id="aoc-mini-comics">
+                        <div id="aoc-mini-comics-crime" class="aoc-mini-comic-container aoc-mini-comic-space"></div>
+                        <div id="aoc-mini-comics-horror" class="aoc-mini-comic-container aoc-mini-comic-space"></div>
+                        <div id="aoc-mini-comics-romance" class="aoc-mini-comic-container aoc-mini-comic-space"></div>
+                        <div id="aoc-mini-comics-scifi" class="aoc-mini-comic-container aoc-mini-comic-space"></div>
+                        <div id="aoc-mini-comics-superhero" class="aoc-mini-comic-container aoc-mini-comic-space"></div>
+                        <div id="aoc-mini-comics-western" class="aoc-mini-comic-container aoc-mini-comic-space"></div>
+                    </div>
+                    <div id="aoc-mini-ripoffs">
+                        <div id="aoc-mini-ripoffs-crime" class="aoc-mini-comic-container aoc-mini-ripoff-space"></div>
+                        <div id="aoc-mini-ripoffs-horror" class="aoc-mini-comic-container aoc-mini-ripoff-space"></div>
+                        <div id="aoc-mini-ripoffs-romance" class="aoc-mini-comic-container aoc-mini-ripoff-space"></div>
+                        <div id="aoc-mini-ripoffs-scifi" class="aoc-mini-comic-container aoc-mini-ripoff-space"></div>
+                        <div id="aoc-mini-ripoffs-superhero" class="aoc-mini-comic-container aoc-mini-ripoff-space"></div>
+                        <div id="aoc-mini-ripoffs-western" class="aoc-mini-comic-container aoc-mini-ripoff-space"></div>
+                    </div>
+                </div>
             </div>
             <div id="aoc-chart" class="aoc-board-section">
                 <div id="aoc-chart-start" class="aoc-board-image aoc-chart-start"></div>

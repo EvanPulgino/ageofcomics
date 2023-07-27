@@ -26,6 +26,7 @@ class AOCMiniComic {
     private int $playerId;
     private int $fans;
     private string $name;
+    private string $cssClass;
 
     public function __construct($row) {
         $this->id = (int) $row["id"];
@@ -43,6 +44,7 @@ class AOCMiniComic {
             $this->genreId,
             $this->comicKey
         );
+        $this->cssClass = $this->deriveCssClass();
     }
 
     public function getId() {
@@ -90,6 +92,9 @@ class AOCMiniComic {
     public function getName() {
         return $this->name;
     }
+    public function getCssClass() {
+        return $this->cssClass;
+    }
 
     public function getUiData() {
         return [
@@ -104,6 +109,7 @@ class AOCMiniComic {
             "playerId" => $this->getPlayerId(),
             "fans" => $this->getFans(),
             "name" => $this->getName(),
+            "cssClass" => $this->getCssClass(),
         ];
     }
 
@@ -122,5 +128,14 @@ class AOCMiniComic {
             case CARD_TYPE_RIPOFF:
                 return clienttranslate(RIPOFF);
         }
+    }
+
+    private function deriveCssClass() {
+        $base = $this->typeId == CARD_TYPE_COMIC ? "aoc-mini-comic" : "aoc-mini-ripoff";
+        $class = $base . "-" . $this->genreId . "-" . $this->comicKey;
+        if ($this->fans > 10) {
+            return $class . "-flipped";
+        }
+        return $class;
     }
 }

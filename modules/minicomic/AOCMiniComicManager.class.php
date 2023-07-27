@@ -56,7 +56,7 @@ class AOCMiniComicManager extends APP_GameClass {
         $values = [];
         foreach ($comics as $genreId => $genre) {
             foreach ($genre as $comicKey => $comicName) {
-                $values[] = "({$comicType}, {$comicKey}, {$genreId}, " . LOCATION_CHART . ", {$comicKey})";
+                $values[] = "({$comicType}, {$comicKey}, {$genreId}, " . LOCATION_SUPPLY . ", {$comicKey})";
             }
         }
         $sql .= implode(", ", $values);

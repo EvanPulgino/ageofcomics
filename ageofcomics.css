@@ -285,6 +285,540 @@ html {
 
 /**
  *
+ * Style for the mini comics
+ *
+ */
+.aoc-mini-comic-container {
+  height: 82.75px;
+  position: absolute;
+  width: 64px;
+}
+
+.aoc-mini-comic-space {
+  top: 509.5px;
+}
+
+.aoc-mini-ripoff-space {
+  top: 640.5px;
+}
+
+#aoc-mini-comics-crime, #aoc-mini-ripoffs-crime {
+  left: 659px;
+}
+
+#aoc-mini-comics-horror, #aoc-mini-ripoffs-horror {
+  left: 429px;
+}
+
+#aoc-mini-comics-romance, #aoc-mini-ripoffs-romance {
+  left: 352px;
+}
+
+#aoc-mini-comics-scifi, #aoc-mini-ripoffs-scifi {
+  left: 583px;
+}
+
+#aoc-mini-comics-superhero, #aoc-mini-ripoffs-superhero {
+  left: 505px;
+}
+
+#aoc-mini-comics-western, #aoc-mini-ripoffs-western {
+  left: 275px;
+}
+
+.aoc-mini-comic {
+  background-image: url(./img/aoc_mini_comics.png);
+  background-repeat: no-repeat;
+  border-radius: 5px;
+  filter: drop-shadow(1px 1px 1px black);
+  -webkit-filter: drop-shadow(1px 1px 2px #000);
+  height: 82.75px;
+  position: absolute;
+  width: 64px;
+}
+
+.aoc-mini-comic-10-1 {
+  background-position: 18.18% 42.87%;
+  z-index: 4;
+}
+
+.aoc-mini-comic-10-1-flipped {
+  background-position: 36.36% 71.45%;
+  z-index: 4;
+}
+
+.aoc-mini-comic-10-2 {
+  background-position: 36.36% 42.87%;
+  z-index: 3;
+}
+
+.aoc-mini-comic-10-2-flipped {
+  background-position: 54.54% 71.45%;
+  z-index: 3;
+}
+
+.aoc-mini-comic-10-3 {
+  background-position: 27.27% 42.87%;
+  z-index: 2;
+}
+
+.aoc-mini-comic-10-3-flipped {
+  background-position: 45.45% 71.45%;
+  z-index: 2;
+}
+
+.aoc-mini-comic-10-4 {
+  background-position: 45.45% 42.87%;
+  z-index: 1;
+}
+
+.aoc-mini-comic-10-4-flipped {
+  background-position: 63.63% 71.45%;
+  z-index: 1;
+}
+
+.aoc-mini-comic-20-1 {
+  background-position: 36.36% 0;
+  z-index: 4;
+}
+
+.aoc-mini-comic-20-1-flipped {
+  background-position: 0 71.45%;
+  z-index: 4;
+}
+
+.aoc-mini-comic-20-2 {
+  background-position: 0 42.87%;
+  z-index: 3;
+}
+
+.aoc-mini-comic-20-2-flipped {
+  background-position: 18.18% 71.45%;
+  z-index: 3;
+}
+
+.aoc-mini-comic-20-3 {
+  background-position: 45.45% 28.58%;
+  z-index: 2;
+}
+
+.aoc-mini-comic-20-3-flipped {
+  background-position: 9.09% 71.45%;
+  z-index: 2;
+}
+
+.aoc-mini-comic-20-4 {
+  background-position: 9.09% 42.87%;
+  z-index: 1;
+}
+
+.aoc-mini-comic-20-4-flipped {
+  background-position: 27.27% 71.45%;
+  z-index: 1;
+}
+
+.aoc-mini-comic-30-1 {
+  background-position: 0 0;
+  z-index: 4;
+}
+
+.aoc-mini-comic-30-1-flipped {
+  background-position: 63.63% 14.29%;
+  z-index: 4;
+}
+
+.aoc-mini-comic-30-2 {
+  background-position: 36.36% 28.58%;
+  z-index: 3;
+}
+
+.aoc-mini-comic-30-2-flipped {
+  background-position: 63.63% 42.87%;
+  z-index: 3;
+}
+
+.aoc-mini-comic-30-3 {
+  background-position: 36.36% 14.29%;
+  z-index: 2;
+}
+
+.aoc-mini-comic-30-3-flipped {
+  background-position: 63.63% 28.58%;
+  z-index: 2;
+}
+
+.aoc-mini-comic-30-4 {
+  background-position: 45.45% 14.29%;
+  z-index: 1;
+}
+
+.aoc-mini-comic-30-4-flipped {
+  background-position: 63.63% 57.16%;
+  z-index: 1;
+}
+
+.aoc-mini-comic-40-1 {
+  background-position: 9.09% 28.58%;
+  z-index: 4;
+}
+
+.aoc-mini-comic-40-1-flipped {
+  background-position: 36.36% 57.16%;
+  z-index: 4;
+}
+
+.aoc-mini-comic-40-2 {
+  background-position: 27.27% 28.58%;
+  z-index: 3;
+}
+
+.aoc-mini-comic-40-2-flipped {
+  background-position: 54.54% 57.16%;
+  z-index: 3;
+}
+
+.aoc-mini-comic-40-3 {
+  background-position: 18.18% 28.58%;
+  z-index: 2;
+}
+
+.aoc-mini-comic-40-3-flipped {
+  background-position: 45.45% 57.16%;
+  z-index: 2;
+}
+
+.aoc-mini-comic-40-4 {
+  background-position: 18.18% 0;
+  z-index: 1;
+}
+
+.aoc-mini-comic-40-4-flipped {
+  background-position: 63.63% 0;
+  z-index: 1;
+}
+
+.aoc-mini-comic-50-1 {
+  background-position: 27.27% 0;
+  z-index: 4;
+}
+
+.aoc-mini-comic-50-1-flipped {
+  background-position: 0 57.16%;
+  z-index: 4;
+}
+
+.aoc-mini-comic-50-2 {
+  background-position: 27.37% 14.29%;
+  z-index: 3;
+}
+
+.aoc-mini-comic-50-2-flipped {
+  background-position: 18.18% 57.16%;
+  z-index: 3;
+}
+
+.aoc-mini-comic-50-3 {
+  background-position: 45.45% 0;
+  z-index: 2;
+}
+
+.aoc-mini-comic-50-3-flipped {
+  background-position: 9.09% 57.16%;
+  z-index: 2;
+}
+
+.aoc-mini-comic-50-4 {
+  background-position: 0 28.58%;
+  z-index: 1;
+}
+
+.aoc-mini-comic-50-4-flipped {
+  background-position: 27.27% 57.16%;
+  z-index: 1;
+}
+
+.aoc-mini-comic-60-1 {
+  background-position: 9.09% 0;
+  z-index: 4;
+}
+
+.aoc-mini-comic-60-1-flipped {
+  background-position: 54.54% 0;
+  z-index: 4;
+}
+
+.aoc-mini-comic-60-2 {
+  background-position: 18.18% 14.29%;
+  z-index: 3;
+}
+
+.aoc-mini-comic-60-2-flipped {
+  background-position: 54.54% 42.87%;
+  z-index: 3;
+}
+
+.aoc-mini-comic-60-3 {
+  background-position: 0 14.29%;
+  z-index: 2;
+}
+
+.aoc-mini-comic-60-3-flipped {
+  background-position: 54.54% 14.29%;
+  z-index: 2;
+}
+
+.aoc-mini-comic-60-4 {
+  background-position: 9.09% 14.29%;
+  z-index: 1;
+}
+
+.aoc-mini-comic-60-4-flipped {
+  background-position: 54.54% 28.58%;
+  z-index: 1;
+}
+
+.aoc-mini-ripoff-10-1 {
+  background-position: 72.72% 0;
+  z-index: 4;
+}
+
+.aoc-mini-ripoff-10-1-flipped {
+  background-position: 90.9% 28.57%;
+  z-index: 4;
+}
+
+.aoc-mini-ripoff-10-2 {
+  background-position: 72.72% 28.57%;
+  z-index: 3;
+}
+
+.aoc-mini-ripoff-10-2-flipped {
+  background-position: 90.9% 85.74%;
+  z-index: 3;
+}
+
+.aoc-mini-ripoff-10-3 {
+  background-position: 72.72% 14.29%;
+  z-index: 2;
+}
+
+.aoc-mini-ripoff-10-3-flipped {
+  background-position: 90.9% 42.87%;
+  z-index: 2;
+}
+
+.aoc-mini-ripoff-10-4 {
+  background-position: 72.72% 42.87%;
+  z-index: 1;
+}
+
+.aoc-mini-ripoff-10-4-flipped {
+  background-position: 90.9% 57.16%;
+  z-index: 1;
+}
+
+.aoc-mini-ripoff-20-1 {
+  background-position: 72.72% 57.16%;
+  z-index: 4;
+}
+
+.aoc-mini-ripoff-20-1-flipped {
+  background-position: 90.9% 71.45%;
+  z-index: 4;
+}
+
+.aoc-mini-ripoff-20-2 {
+  background-position: 81.81% 0;
+  z-index: 3;
+}
+
+.aoc-mini-ripoff-20-2-flipped {
+  background-position: 9.09% 100%;
+  z-index: 3;
+}
+
+.aoc-mini-ripoff-20-3 {
+  background-position: 72.72% 71.45%;
+  z-index: 2;
+}
+
+.aoc-mini-ripoff-20-3-flipped {
+  background-position: 0 100%;
+  z-index: 2;
+}
+
+.aoc-mini-ripoff-20-4 {
+  background-position: 81.81% 14.29%;
+  z-index: 1;
+}
+
+.aoc-mini-ripoff-20-4-flipped {
+  background-position: 18.18% 100%;
+  z-index: 1;
+}
+
+.aoc-mini-ripoff-30-1 {
+  background-position: 81.81% 28.57%;
+  z-index: 4;
+}
+
+.aoc-mini-ripoff-30-1-flipped {
+  background-position: 27.27% 100%;
+  z-index: 4;
+}
+
+.aoc-mini-ripoff-30-2 {
+  background-position: 81.81% 57.16%;
+  z-index: 3;
+}
+
+.aoc-mini-ripoff-30-2-flipped {
+  background-position: 45.45% 100%;
+  z-index: 3;
+}
+
+.aoc-mini-ripoff-30-3 {
+  background-position: 81.81% 42.87%;
+  z-index: 2;
+}
+
+.aoc-mini-ripoff-30-3-flipped {
+  background-position: 36.36% 100%;
+  z-index: 2;
+}
+
+.aoc-mini-ripoff-30-4 {
+  background-position: 81.81% 71.45%;
+  z-index: 1;
+}
+
+.aoc-mini-ripoff-30-4-flipped {
+  background-position: 54.54% 100%;
+  z-index: 1;
+}
+
+.aoc-mini-ripoff-40-1 {
+  background-position: 0 85.74%;
+  z-index: 4;
+}
+
+.aoc-mini-ripoff-40-1-flipped {
+  background-position: 63.63% 100%;
+  z-index: 4;
+}
+
+.aoc-mini-ripoff-40-2 {
+  background-position: 18.18% 85.74%;
+  z-index: 3;
+}
+
+.aoc-mini-ripoff-40-2-flipped {
+  background-position: 81.81% 100%;
+  z-index: 3;
+}
+
+.aoc-mini-ripoff-40-3 {
+  background-position: 9.09% 85.74%;
+  z-index: 2;
+}
+
+.aoc-mini-ripoff-40-3-flipped {
+  background-position: 72.72% 100%;
+  z-index: 2;
+}
+
+.aoc-mini-ripoff-40-4 {
+  background-position: 27.27% 85.74%;
+  z-index: 1;
+}
+
+.aoc-mini-ripoff-40-4-flipped {
+  background-position: 90.9% 100%;
+  z-index: 1;
+}
+
+.aoc-mini-ripoff-50-1 {
+  background-position: 36.36% 85.74%;
+  z-index: 4;
+}
+
+.aoc-mini-ripoff-50-1-flipped {
+  background-position: 100% 0;
+  z-index: 4;
+}
+
+.aoc-mini-ripoff-50-2 {
+  background-position: 54.54% 85.74%;
+  z-index: 3;
+}
+
+.aoc-mini-ripofff-50-2-flipped {
+  background-position: 100% 28.57%;
+  z-index: 3;
+}
+
+.aoc-mini-ripoff-50-3 {
+  background-position: 45.45% 85.74%;
+  z-index: 2;
+}
+
+.aoc-mini-ripoff-50-3-flipped {
+  background-position: 100% 14.29%;
+  z-index: 2;
+}
+
+.aoc-mini-ripoff-50-4 {
+  background-position: 63.63% 85.74%;
+  z-index: 1;
+}
+
+.aoc-mini-ripoff-50-4-flipped {
+  background-position: 100% 42.87%;
+  z-index: 1;
+}
+
+.aoc-mini-ripoff-60-1 {
+  background-position: 72.72% 85.74%;
+  z-index: 4;
+}
+
+.aoc-mini-ripoff-60-1-flipped {
+  background-position: 100% 57.16%;
+  z-index: 4;
+}
+
+.aoc-mini-ripoff-60-2 {
+  background-position: 90.9% 14.29%;
+  z-index: 3;
+}
+
+.aoc-mini-ripoff-60-2-flipped {
+  background-position: 100% 100%;
+  z-index: 3;
+}
+
+.aoc-mini-ripoff-60-3 {
+  background-position: 81.81% 85.74%;
+  z-index: 2;
+}
+
+.aoc-mini-ripoff-60-3-flipped {
+  background-position: 100% 71.45%;
+  z-index: 2;
+}
+
+.aoc-mini-ripoff-60-4 {
+  background-position: 90.9% 0;
+  z-index: 1;
+}
+
+.aoc-mini-ripoff-60-4-flipped {
+  background-position: 100% 85.74%;
+  z-index: 1;
+}
+
+/**
+ *
  * Styles for the player areas
  *
  */

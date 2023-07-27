@@ -60,7 +60,7 @@ define("CARD_TYPE_RIPOFF", 4);
 /** Card Type Names */
 define("ARTIST", "artist");
 define("COMIC", "comic");
-define("RIPOFF", "rip-off");
+define("RIPOFF", "ripoff");
 define("WRITER", "writer");
 
 /** Comic Bonuses */
