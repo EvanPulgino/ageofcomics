@@ -39,6 +39,7 @@ class AgeOfComics extends Table {
             IDEAS_SPACE_SCIFI => 16,
             IDEAS_SPACE_SUPERHERO => 17,
             IDEAS_SPACE_WESTERN => 18,
+            TICKET_SUPPLY => 19,
         ]);
 
         // Initialize action managers
@@ -81,6 +82,7 @@ class AgeOfComics extends Table {
         self::setGameStateInitialValue(TOTAL_TURNS, sizeof($aocPlayers) * 20);
         self::setGameStateInitialValue(TURNS_TAKEN, 0);
         self::setGameStateInitialValue(CURRENT_ROUND, 0);
+        self::setGameStateInitialValue(TICKET_SUPPLY, 4);
         foreach (GENRES as $genreId => $genreName) {
             self::setGameStateInitialValue("ideas_space_{$genreName}", 1);
         }
@@ -149,6 +151,7 @@ class AgeOfComics extends Table {
                 $currentPlayerId
             ),
             "salesOrders" => $this->salesOrderManager->getSalesOrdersUiData(),
+            "ticketSupply" => self::getGameStateValue(TICKET_SUPPLY),
             "writerCards" => $this->cardManager->getCardsUiData(
                 CARD_TYPE_WRITER,
                 $currentPlayerId

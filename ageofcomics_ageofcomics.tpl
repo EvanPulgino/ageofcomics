@@ -123,6 +123,34 @@
                         <div id="aoc-map-order-space-1207" class="aoc-map-order-space"></div>
                         <div id="aoc-map-order-space-1305" class="aoc-map-order-space"></div>
                     </div>
+                    <div id="aoc-map-agent-spaces">
+                        <div id="aoc-map-agent-space-0" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-101" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-102" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-103" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-104" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-201" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-202" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-203" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-204" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-301" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-302" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-303" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-304" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-401" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-402" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-403" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-404" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-501" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-502" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-503" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-504" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-601" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-602" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-603" class="aoc-map-agent-space"></div>
+                        <div id="aoc-map-agent-space-604" class="aoc-map-agent-space"></div>
+                    </div>
+                    <div id="aoc-tickets-space"></div>
                 </div>
             </div>
             <div id="aoc-chart" class="aoc-board-section">

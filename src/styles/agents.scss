@@ -1,0 +1,162 @@
+/**
+*
+* Styles for agent discs
+*
+*/
+
+$column1: 868px;
+$column2: 1002px;
+$column3: 1136px;
+$column4: 1270px;
+
+$row1: 169px;
+$row2: 313px;
+$row3: 457px;
+$row4: 601px;
+$row5: 745px;
+$row6: 889px;
+
+.aoc-agent {
+    background-image: url('./img/aoc_agent.png');
+    background-repeat: no-repeat;
+    height: 40px;
+    position: absolute;
+    width: 45px;
+}
+
+.aoc-agent-brown {
+    background-position: 0 0;
+}
+
+.aoc-agent-salmon {
+    background-position: 100% 0;
+}
+
+.aoc-agent-teal {
+    background-position: 0 100%;
+}
+
+.aoc-agent-yellow {
+    background-position: 100% 100%;
+}
+
+.aoc-map-agent-space {
+    height: 40px;
+    position: absolute;
+    width: 45px;
+}
+
+#aoc-map-agent-space-0 {
+    left: 1068px;
+    top: 528px;
+}
+
+#aoc-map-agent-space-101 {
+    left: $column1;
+    top: $row1;
+}
+#aoc-map-agent-space-102 {
+    left: $column2;
+    top: $row1;
+}
+#aoc-map-agent-space-103 {
+    left: $column3;
+    top: $row1;
+}
+#aoc-map-agent-space-104 {
+    left: $column4;
+    top: $row1;
+}
+#aoc-map-agent-space-201 {
+    left: $column1;
+    top: $row2;
+}
+#aoc-map-agent-space-202 {
+    left: $column2;
+    top: $row2;
+}
+#aoc-map-agent-space-203 {
+    left: $column3;
+    top: $row2;
+}
+#aoc-map-agent-space-204 {
+    left: $column4;
+    top: $row2;
+}
+#aoc-map-agent-space-301 {
+    left: $column1;
+    top: $row3;
+}
+#aoc-map-agent-space-302 {
+    left: $column2;
+    top: $row3;
+}
+#aoc-map-agent-space-303 {
+    left: $column3;
+    top: $row3;
+}
+#aoc-map-agent-space-304 {
+    left: $column4;
+    top: $row3;
+}
+#aoc-map-agent-space-401 {
+    left: $column1;
+    top: $row4;
+}
+#aoc-map-agent-space-402 {
+    left: $column2;
+    top: $row4;
+}
+#aoc-map-agent-space-403 {
+    left: $column3;
+    top: $row4;
+}
+#aoc-map-agent-space-404 {
+    left: $column4;
+    top: $row4;
+}
+#aoc-map-agent-space-501 {
+    left: $column1;
+    top: $row5;
+}
+#aoc-map-agent-space-502 {
+    left: $column2;
+    top: $row5;
+}
+#aoc-map-agent-space-503 {
+    left: $column3;
+    top: $row5;
+}
+#aoc-map-agent-space-504 {
+    left: $column4;
+    top: $row5;
+}
+#aoc-map-agent-space-601 {
+    left: $column1;
+    top: $row6;
+}
+#aoc-map-agent-space-602 {
+    left: $column2;
+    top: $row6;
+}
+#aoc-map-agent-space-603 {
+    left: $column3;
+    top: $row6;
+}
+#aoc-map-agent-space-604 {
+    left: $column4;
+    top: $row6;
+}
+
+.aoc-agent-stack-1 {
+    bottom: 0;
+}
+.aoc-agent-stack-2 {
+    bottom: 10px;
+}
+.aoc-agent-stack-3 {
+    bottom: 20px;
+}
+.aoc-agent-stack-4 {
+    bottom: 30px;
+}

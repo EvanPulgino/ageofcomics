@@ -255,6 +255,7 @@ var GameBody = /** @class */ (function (_super) {
         _this.editorController = new EditorController();
         _this.miniComicController = new MiniComicController();
         _this.salesOrderController = new SalesOrderController();
+        _this.ticketController = new TicketController();
         dojo.connect(window, "onresize", _this, dojo.hitch(_this, "adaptViewportSize"));
         return _this;
     }
@@ -295,6 +296,7 @@ var GameBody = /** @class */ (function (_super) {
         this.editorController.setupEditors(gamedata.editors);
         this.miniComicController.setupMiniComics(gamedata.miniComics);
         this.salesOrderController.setupSalesOrders(gamedata.salesOrders);
+        this.ticketController.setupTickets(gamedata.ticketSupply);
         this.setupNotifications();
         this.debug("Ending game setup");
     };
@@ -521,6 +523,7 @@ var PlayerController = /** @class */ (function (_super) {
     PlayerController.prototype.setupPlayers = function (playerData) {
         for (var key in playerData) {
             this.createPlayerOrderToken(playerData[key]);
+            this.createPlayerAgent(playerData[key]);
         }
     };
     PlayerController.prototype.createPlayerOrderToken = function (player) {
@@ -531,6 +534,14 @@ var PlayerController = /** @class */ (function (_super) {
             player.colorAsText +
             '"></div>';
         this.createHtml(playerOrderTokenDiv, "aoc-player-order-space-" + player.turnOrder);
+    };
+    PlayerController.prototype.createPlayerAgent = function (player) {
+        this.debug("creating player agent", player);
+        var playerAgentDiv = '<div id="aoc-agent' +
+            player.id +
+            '" class="aoc-agent aoc-agent-' +
+            player.colorAsText + ' aoc-agent-stack-' + player.agentLocationArg + '"></div>';
+        this.createHtml(playerAgentDiv, "aoc-map-agent-space-" + player.agentLocation);
     };
     return PlayerController;
 }(GameBasics));
@@ -564,6 +575,34 @@ var SalesOrderController = /** @class */ (function (_super) {
         }
     };
     return SalesOrderController;
+}(GameBasics));
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * TicketController.ts
+ *
+ */
+var TicketController = /** @class */ (function (_super) {
+    __extends(TicketController, _super);
+    function TicketController() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    TicketController.prototype.setupTickets = function (ticketCount) {
+        for (var i = 1; i <= ticketCount; i++) {
+            this.createTicket(i);
+        }
+    };
+    TicketController.prototype.createTicket = function (ticketNum) {
+        var ticketDiv = '<div id="aoc-ticket-' + ticketNum + '" class="aoc-ticket aoc-ticket-stack-' + ticketNum + '"></div>';
+        this.createHtml(ticketDiv, "aoc-tickets-space");
+    };
+    return TicketController;
 }(GameBasics));
 /**
  *------

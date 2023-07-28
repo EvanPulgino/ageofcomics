@@ -73,6 +73,182 @@ html {
 }
 
 /**
+*
+* Styles for agent discs
+*
+*/
+.aoc-agent {
+  background-image: url("./img/aoc_agent.png");
+  background-repeat: no-repeat;
+  height: 40px;
+  position: absolute;
+  width: 45px;
+}
+
+.aoc-agent-brown {
+  background-position: 0 0;
+}
+
+.aoc-agent-salmon {
+  background-position: 100% 0;
+}
+
+.aoc-agent-teal {
+  background-position: 0 100%;
+}
+
+.aoc-agent-yellow {
+  background-position: 100% 100%;
+}
+
+.aoc-map-agent-space {
+  height: 40px;
+  position: absolute;
+  width: 45px;
+}
+
+#aoc-map-agent-space-0 {
+  left: 1068px;
+  top: 528px;
+}
+
+#aoc-map-agent-space-101 {
+  left: 868px;
+  top: 169px;
+}
+
+#aoc-map-agent-space-102 {
+  left: 1002px;
+  top: 169px;
+}
+
+#aoc-map-agent-space-103 {
+  left: 1136px;
+  top: 169px;
+}
+
+#aoc-map-agent-space-104 {
+  left: 1270px;
+  top: 169px;
+}
+
+#aoc-map-agent-space-201 {
+  left: 868px;
+  top: 313px;
+}
+
+#aoc-map-agent-space-202 {
+  left: 1002px;
+  top: 313px;
+}
+
+#aoc-map-agent-space-203 {
+  left: 1136px;
+  top: 313px;
+}
+
+#aoc-map-agent-space-204 {
+  left: 1270px;
+  top: 313px;
+}
+
+#aoc-map-agent-space-301 {
+  left: 868px;
+  top: 457px;
+}
+
+#aoc-map-agent-space-302 {
+  left: 1002px;
+  top: 457px;
+}
+
+#aoc-map-agent-space-303 {
+  left: 1136px;
+  top: 457px;
+}
+
+#aoc-map-agent-space-304 {
+  left: 1270px;
+  top: 457px;
+}
+
+#aoc-map-agent-space-401 {
+  left: 868px;
+  top: 601px;
+}
+
+#aoc-map-agent-space-402 {
+  left: 1002px;
+  top: 601px;
+}
+
+#aoc-map-agent-space-403 {
+  left: 1136px;
+  top: 601px;
+}
+
+#aoc-map-agent-space-404 {
+  left: 1270px;
+  top: 601px;
+}
+
+#aoc-map-agent-space-501 {
+  left: 868px;
+  top: 745px;
+}
+
+#aoc-map-agent-space-502 {
+  left: 1002px;
+  top: 745px;
+}
+
+#aoc-map-agent-space-503 {
+  left: 1136px;
+  top: 745px;
+}
+
+#aoc-map-agent-space-504 {
+  left: 1270px;
+  top: 745px;
+}
+
+#aoc-map-agent-space-601 {
+  left: 868px;
+  top: 889px;
+}
+
+#aoc-map-agent-space-602 {
+  left: 1002px;
+  top: 889px;
+}
+
+#aoc-map-agent-space-603 {
+  left: 1136px;
+  top: 889px;
+}
+
+#aoc-map-agent-space-604 {
+  left: 1270px;
+  top: 889px;
+}
+
+.aoc-agent-stack-1 {
+  bottom: 0;
+}
+
+.aoc-agent-stack-2 {
+  bottom: 10px;
+}
+
+.aoc-agent-stack-3 {
+  bottom: 20px;
+}
+
+.aoc-agent-stack-4 {
+  bottom: 30px;
+}
+
+/**
  *
  * Styles for the game board
  *
@@ -1305,6 +1481,46 @@ html {
 #aoc-map-order-space-1305 {
   left: 1062px;
   top: 967px;
+}
+
+/**
+ *
+ * Style for sales orders
+ *
+ */
+.aoc-ticket {
+  background-image: url("./img/aoc_ticket.png");
+  background-repeat: no-repeat;
+  border-radius: 5px;
+  filter: drop-shadow(1px 1px 1px black);
+  -webkit-filter: drop-shadow(1px 1px 2px #000);
+  height: 64px;
+  width: 124px;
+  position: absolute;
+}
+
+#aoc-tickets-space {
+  height: 64px;
+  left: 1277px;
+  position: absolute;
+  top: 964px;
+  width: 124px;
+}
+
+.aoc-ticket-stack-1 {
+  bottom: 0;
+}
+
+.aoc-ticket-stack-2 {
+  bottom: 3px;
+}
+
+.aoc-ticket-stack-3 {
+  bottom: 6px;
+}
+
+.aoc-ticket-stack-4 {
+  bottom: 9px;
 }
 
 /**

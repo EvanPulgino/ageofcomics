@@ -13,6 +13,7 @@
 
 @import url(../../../css/csslayer.css); /* Note: you must not use any @import directive other than this one */
 @import 'styles/layout';
+@import 'styles/agents';
 @import 'styles/board';
 @import 'styles/calendar';
 @import 'styles/editors';
@@ -21,4 +22,5 @@
 @import 'styles/playerarea';
 @import 'styles/playerorder';
 @import 'styles/salesorders';
+@import 'styles/ticket';
 @import 'styles/cards/comics';

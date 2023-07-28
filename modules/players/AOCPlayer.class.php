@@ -31,6 +31,8 @@ class AOCPlayer {
     private int $scifiIdeas;
     private int $superheroIdeas;
     private int $westernIdeas;
+    private int $agentLocation;
+    private int $agentLocationArg;
     private bool $multiActive;
 
     public function __construct($row) {
@@ -49,6 +51,8 @@ class AOCPlayer {
         $this->scifiIdeas = $row["scifiIdeas"];
         $this->superheroIdeas = $row["superheroIdeas"];
         $this->westernIdeas = $row["westernIdeas"];
+        $this->agentLocation = $row["agentLocation"];
+        $this->agentLocationArg = $row["agentLocationArg"];
         $this->multiActive = $row["multiActive"] == 1;
     }
 
@@ -97,6 +101,12 @@ class AOCPlayer {
     public function getWesternIdeas() {
         return $this->westernIdeas;
     }
+    public function getAgentLocation() {
+        return $this->agentLocation;
+    }
+    public function getAgentLocationArg() {
+        return $this->agentLocationArg;
+    }
     public function isMultiActive() {
         return $this->multiActive;
     }
@@ -118,6 +128,8 @@ class AOCPlayer {
             "scifiIdeas" => $this->scifiIdeas,
             "superheroIdeas" => $this->superheroIdeas,
             "westernIdeas" => $this->westernIdeas,
+            "agentLocation" => $this->agentLocation,
+            "agentLocationArg" => $this->agentLocationArg,
             "multiActive" => $this->multiActive,
         ];
     }

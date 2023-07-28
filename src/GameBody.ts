@@ -22,6 +22,7 @@ class GameBody extends GameBasics {
   editorController: EditorController;
   miniComicController: MiniComicController;
   salesOrderController: SalesOrderController;
+  ticketController: TicketController;
   constructor() {
     super();
     this.gameController = new GameController();
@@ -30,6 +31,7 @@ class GameBody extends GameBasics {
     this.editorController = new EditorController();
     this.miniComicController = new MiniComicController();
     this.salesOrderController = new SalesOrderController();
+    this.ticketController = new TicketController();
 
     dojo.connect(
       window,
@@ -77,6 +79,7 @@ class GameBody extends GameBasics {
     this.editorController.setupEditors(gamedata.editors);
     this.miniComicController.setupMiniComics(gamedata.miniComics);
     this.salesOrderController.setupSalesOrders(gamedata.salesOrders);
+    this.ticketController.setupTickets(gamedata.ticketSupply);
     this.setupNotifications();
     this.debug("Ending game setup");
   }

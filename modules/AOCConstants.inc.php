@@ -210,6 +210,7 @@ define("IDEAS_SPACE_ROMANCE", "ideas_space_romance");
 define("IDEAS_SPACE_SCIFI", "ideas_space_scifi");
 define("IDEAS_SPACE_SUPERHERO", "ideas_space_superhero");
 define("IDEAS_SPACE_WESTERN", "ideas_space_western");
+define("TICKET_SUPPLY", "ticket_supply");
 define("TOTAL_TURNS", "total_turns");
 define("TURNS_TAKEN", "turns_taken");
 
