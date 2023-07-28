@@ -1,0 +1,149 @@
+/**
+ *
+ * Style for sales orders
+ *
+ */
+
+$facedown: 0;
+$value3: 25%;
+$value4: 50%;
+$value5: 75%;
+$value6: 100%;
+$crime: 0;
+$horror: 20%;
+$romance: 40%;
+$scifi: 60%;
+$superhero: 80%;
+$western: 100%;
+
+
+
+.aoc-salesorder {
+    background-image: url('img/aoc-sales-orders.png');
+    background-repeat: no-repeat;
+    border-radius: 5px;
+    filter: drop-shadow(1px 1px 1px black);
+    -webkit-filter: drop-shadow(1px 1px 2px #000);
+    height: 55px;
+    width: 55px;
+}
+
+.aoc-salesorder-crime-facedown {
+    background-position: $facedown $crime;
+}
+
+.aoc-salesorder-crime-3 {
+    background-position: $value3 $crime;
+}
+
+.aoc-salesorder-crime-4 {
+    background-position: $value4 $crime;
+}
+
+.aoc-salesorder-crime-5 {
+    background-position: $value5 $crime;
+}
+
+.aoc-salesorder-crime-6 {
+    background-position: $value6 $crime;
+}
+
+.aoc-salesorder-horror-facedown {
+    background-position: $facedown $horror;
+}
+
+.aoc-salesorder-horror-3 {
+    background-position: $value3 $horror;
+}
+
+.aoc-salesorder-horror-4 {
+    background-position: $value4 $horror;
+}
+
+.aoc-salesorder-horror-5 {
+    background-position: $value5 $horror;
+}
+
+.aoc-salesorder-horror-6 {
+    background-position: $value6 $horror;
+}
+
+.aoc-salesorder-romance-facedown {
+    background-position: $facedown $romance;
+}
+
+.aoc-salesorder-romance-3 {
+    background-position: $value3 $romance;
+}
+
+.aoc-salesorder-romance-4 {
+    background-position: $value4 $romance;
+}
+
+.aoc-salesorder-romance-5 {
+    background-position: $value5 $romance;
+}
+
+.aoc-salesorder-romance-6 {
+    background-position: $value6 $romance;
+}
+
+.aoc-salesorder-scifi-facedown {
+    background-position: $facedown $scifi;
+}
+
+.aoc-salesorder-scifi-3 {
+    background-position: $value3 $scifi;
+}
+
+.aoc-salesorder-scifi-4 {
+    background-position: $value4 $scifi;
+}
+
+.aoc-salesorder-scifi-5 {
+    background-position: $value5 $scifi;
+}
+
+.aoc-salesorder-scifi-6 {
+    background-position: $value6 $scifi;
+}
+
+.aoc-salesorder-superhero-facedown {
+    background-position: $facedown $superhero;
+}
+
+.aoc-salesorder-superhero-3 {
+    background-position: $value3 $superhero;
+}
+
+.aoc-salesorder-superhero-4 {
+    background-position: $value4 $superhero;
+}
+
+.aoc-salesorder-superhero-5 {
+    background-position: $value5 $superhero;
+}
+
+.aoc-salesorder-superhero-6 {
+    background-position: $value6 $superhero;
+}
+
+.aoc-salesorder-western-facedown {
+    background-position: $facedown $western;
+}
+
+.aoc-salesorder-western-3 {
+    background-position: $value3 $western;
+}
+
+.aoc-salesorder-western-4 {
+    background-position: $value4 $western;
+}
+
+.aoc-salesorder-western-5 {
+    background-position: $value5 $western;
+}
+
+.aoc-salesorder-western-6 {
+    background-position: $value6 $western;
+}

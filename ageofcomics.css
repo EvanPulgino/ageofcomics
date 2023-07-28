@@ -957,6 +957,141 @@ html {
 }
 
 /**
+ *
+ * Style for sales orders
+ *
+ */
+.aoc-salesorder {
+  background-image: url("img/aoc-sales-orders.png");
+  background-repeat: no-repeat;
+  border-radius: 5px;
+  filter: drop-shadow(1px 1px 1px black);
+  -webkit-filter: drop-shadow(1px 1px 2px #000);
+  height: 55px;
+  width: 55px;
+}
+
+.aoc-salesorder-crime-facedown {
+  background-position: 0 0;
+}
+
+.aoc-salesorder-crime-3 {
+  background-position: 25% 0;
+}
+
+.aoc-salesorder-crime-4 {
+  background-position: 50% 0;
+}
+
+.aoc-salesorder-crime-5 {
+  background-position: 75% 0;
+}
+
+.aoc-salesorder-crime-6 {
+  background-position: 100% 0;
+}
+
+.aoc-salesorder-horror-facedown {
+  background-position: 0 20%;
+}
+
+.aoc-salesorder-horror-3 {
+  background-position: 25% 20%;
+}
+
+.aoc-salesorder-horror-4 {
+  background-position: 50% 20%;
+}
+
+.aoc-salesorder-horror-5 {
+  background-position: 75% 20%;
+}
+
+.aoc-salesorder-horror-6 {
+  background-position: 100% 20%;
+}
+
+.aoc-salesorder-romance-facedown {
+  background-position: 0 40%;
+}
+
+.aoc-salesorder-romance-3 {
+  background-position: 25% 40%;
+}
+
+.aoc-salesorder-romance-4 {
+  background-position: 50% 40%;
+}
+
+.aoc-salesorder-romance-5 {
+  background-position: 75% 40%;
+}
+
+.aoc-salesorder-romance-6 {
+  background-position: 100% 40%;
+}
+
+.aoc-salesorder-scifi-facedown {
+  background-position: 0 60%;
+}
+
+.aoc-salesorder-scifi-3 {
+  background-position: 25% 60%;
+}
+
+.aoc-salesorder-scifi-4 {
+  background-position: 50% 60%;
+}
+
+.aoc-salesorder-scifi-5 {
+  background-position: 75% 60%;
+}
+
+.aoc-salesorder-scifi-6 {
+  background-position: 100% 60%;
+}
+
+.aoc-salesorder-superhero-facedown {
+  background-position: 0 80%;
+}
+
+.aoc-salesorder-superhero-3 {
+  background-position: 25% 80%;
+}
+
+.aoc-salesorder-superhero-4 {
+  background-position: 50% 80%;
+}
+
+.aoc-salesorder-superhero-5 {
+  background-position: 75% 80%;
+}
+
+.aoc-salesorder-superhero-6 {
+  background-position: 100% 80%;
+}
+
+.aoc-salesorder-western-facedown {
+  background-position: 0 100%;
+}
+
+.aoc-salesorder-western-3 {
+  background-position: 25% 100%;
+}
+
+.aoc-salesorder-western-4 {
+  background-position: 50% 100%;
+}
+
+.aoc-salesorder-western-5 {
+  background-position: 75% 100%;
+}
+
+.aoc-salesorder-western-6 {
+  background-position: 100% 100%;
+}
+
+/**
  * 
  * Styles for comic cards
  *

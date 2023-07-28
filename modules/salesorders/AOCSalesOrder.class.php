@@ -91,7 +91,7 @@ class AOCSalesOrder {
     }
 
     private function deriveCssClass() {
-        $cssClass = "salesorder-" . $this->genre;
+        $cssClass = "aoc-salesorder-" . $this->genre;
         if ($this->flipped) {
             return $cssClass .= "-" . $this->value;
         } else {
