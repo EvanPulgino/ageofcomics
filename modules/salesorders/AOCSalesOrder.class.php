@@ -23,6 +23,7 @@ class AOCSalesOrder {
     private int $fans;
     private int $playerId;
     private int $location;
+    private int $locationArg;
     private int $flipped;
     private string $cssClass;
 
@@ -34,6 +35,7 @@ class AOCSalesOrder {
         $this->fans = (int) $row["fans"];
         $this->playerId = (int) $row["playerId"];
         $this->location = (int) $row["location"];
+        $this->locationArg = (int) $row["locationArg"];
         $this->flipped = (int) $row["flipped"];
         $this->cssClass = $this->deriveCssClass();
     }
@@ -62,8 +64,14 @@ class AOCSalesOrder {
     public function getLocation() {
         return $this->location;
     }
+    public function getLocationArg() {
+        return $this->locationArg;
+    }
     public function setLocation($location) {
         $this->location = $location;
+    }
+    public function setLocationArg($locationArg) {
+        $this->locationArg = $locationArg;
     }
     public function isFlipped() {
         return $this->flipped;
@@ -85,6 +93,7 @@ class AOCSalesOrder {
             "fans" => $this->fans,
             "playerId" => $this->playerId,
             "location" => $this->location,
+            "locationArg" => $this->locationArg,
             "flipped" => $this->flipped,
             "cssClass" => $this->cssClass,
         ];

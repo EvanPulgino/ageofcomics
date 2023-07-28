@@ -254,6 +254,7 @@ var GameBody = /** @class */ (function (_super) {
         _this.calendarController = new CalendarController();
         _this.editorController = new EditorController();
         _this.miniComicController = new MiniComicController();
+        _this.salesOrderController = new SalesOrderController();
         dojo.connect(window, "onresize", _this, dojo.hitch(_this, "adaptViewportSize"));
         return _this;
     }
@@ -293,6 +294,7 @@ var GameBody = /** @class */ (function (_super) {
         this.calendarController.setupCalendar(gamedata.calendarTiles);
         this.editorController.setupEditors(gamedata.editors);
         this.miniComicController.setupMiniComics(gamedata.miniComics);
+        this.salesOrderController.setupSalesOrders(gamedata.salesOrders);
         this.setupNotifications();
         this.debug("Ending game setup");
     };
@@ -423,7 +425,6 @@ var EditorController = /** @class */ (function (_super) {
         this.debug("creating editor", editor);
         var editorDiv = '<div id="aoc-editor-' + editor.id + '" class="aoc-editor ' + editor.cssClass + '"></div>';
         if (editor.locationId == globalThis.LOCATION_EXTRA_EDITOR) {
-            console.log("creating extra editor");
             var color = this.getPlayerColorAsString(editor.color);
             this.createHtml(editorDiv, "aoc-extra-editor-space-" + color);
         }
@@ -532,6 +533,37 @@ var PlayerController = /** @class */ (function (_super) {
         this.createHtml(playerOrderTokenDiv, "aoc-player-order-space-" + player.turnOrder);
     };
     return PlayerController;
+}(GameBasics));
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * SalesOrderController.ts
+ *
+ */
+var SalesOrderController = /** @class */ (function (_super) {
+    __extends(SalesOrderController, _super);
+    function SalesOrderController() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    SalesOrderController.prototype.setupSalesOrders = function (salesOrders) {
+        for (var key in salesOrders) {
+            this.createSalesOrder(salesOrders[key]);
+        }
+    };
+    SalesOrderController.prototype.createSalesOrder = function (salesOrder) {
+        this.debug("creating sales order", salesOrder);
+        var salesOrderDiv = '<div id="aoc-salesorder-' + salesOrder.id + '" class="aoc-salesorder ' + salesOrder.cssClass + '"></div>';
+        if (salesOrder.location == globalThis.LOCATION_MAP) {
+            this.createHtml(salesOrderDiv, "aoc-map-order-space-" + salesOrder.locationArg);
+        }
+    };
+    return SalesOrderController;
 }(GameBasics));
 /**
  *------

@@ -78,6 +78,52 @@
                     <div id="aoc-extra-editor-space-teal" class="aoc-extra-editor-space"></div>
                     <div id="aoc-extra-editor-space-brown" class="aoc-extra-editor-space"></div>
                 </div>
+                <div id="aoc-map">
+                    <div id="aoc-map-order-spaces">
+                        <div id="aoc-map-order-space-105" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-203" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-205" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-207" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-302" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-304" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-306" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-308" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-403" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-405" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-407" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-502" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-504" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-506" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-508" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-603" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-605" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-607" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-701" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-702" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-704" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-706" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-708" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-709" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-803" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-805" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-807" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-902" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-904" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-906" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-908" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-1003" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-1005" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-1007" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-1102" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-1104" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-1106" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-1108" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-1203" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-1205" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-1207" class="aoc-map-order-space"></div>
+                        <div id="aoc-map-order-space-1305" class="aoc-map-order-space"></div>
+                    </div>
+                </div>
             </div>
             <div id="aoc-chart" class="aoc-board-section">
                 <div id="aoc-chart-start" class="aoc-board-image aoc-chart-start"></div>
