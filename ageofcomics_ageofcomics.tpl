@@ -276,47 +276,170 @@
                     </div>
                 </div>
                 <div id="aoc-writers-market" class="aoc-card-market-row">
-                    <div id="aoc-writers-deck" class="aoc-deck">
-                        <div id="test" class="aoc-comic-card"></div>
+                    <div id="aoc-writer-deck" class="aoc-deck">
+                        <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
                     </div>
                     <div id="aoc-writers-available" class="aoc-card-market-row">
-                        <div id="test" class="aoc-comic-card"></div>
-                        <div id="test" class="aoc-comic-card"></div>
-                        <div id="test" class="aoc-comic-card"></div>
-                        <div id="test" class="aoc-comic-card"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-horror-21"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-western-30"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-romance-10"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-horror-20"></div>
                     </div>
                     <div id="aoc-writers-discard" class="aoc-discard">
-                        <div id="test" class="aoc-comic-card"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-superhero-10"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-horror-21"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-western-30"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-romance-10"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-horror-20"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-superhero-10"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-horror-21"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-western-30"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-romance-10"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-horror-20"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-superhero-10"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-horror-21"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-western-30"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-romance-10"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-horror-20"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-superhero-10"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-horror-21"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-western-30"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-romance-10"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-horror-20"></div>
+                        <div id="test" class="aoc-creative-card aoc-writer-romance-30"></div>
                     </div>
                 </div>
                 <div id="aoc-artists-market" class="aoc-card-market-row">
-                    <div id="aoc-artists-deck" class="aoc-deck">
-                        <div id="test" class="aoc-comic-card"></div>
+                    <div id="aoc-artist-deck" class="aoc-deck">
+                        <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
                     </div>
                     <div id="aoc-artists-available" class="aoc-card-market-row">
-                        <div id="test" class="aoc-comic-card"></div>
-                        <div id="test" class="aoc-comic-card"></div>
-                        <div id="test" class="aoc-comic-card"></div>
-                        <div id="test" class="aoc-comic-card"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-horror-21"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-western-30"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-romance-10"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-horror-20"></div>
                     </div>
                     <div id="aoc-artists-discard" class="aoc-discard">
-                        <div id="test" class="aoc-comic-card"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-superhero-10"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-horror-21"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-western-30"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-romance-10"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-horror-20"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-superhero-10"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-horror-21"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-western-30"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-romance-10"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-horror-20"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-superhero-10"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-horror-21"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-western-30"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-romance-10"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-horror-20"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-superhero-10"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-horror-21"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-western-30"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-romance-10"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-horror-20"></div>
+                        <div id="test" class="aoc-creative-card aoc-artist-romance-30"></div>
                     </div>
                 </div>
                 <div id="aoc-comics-market" class="aoc-card-market-row">
-                    <div id="aoc-comics-deck" class="aoc-deck">
-                        <div id="test" class="aoc-comic-card"></div>
+                    <div id="aoc-comic-deck" class="aoc-deck">
+                        <div id="test" class="aoc-comic-card aoc-comic-horror-facedown"></div>
+                        <div id="test" class="aoc-comic-card aoc-horror-facedown"></div>
+                        <div id="test" class="aoc-comic-card aoc-horror-facedown"></div>
+                        <div id="test" class="aoc-comic-card aoc-horror-facedown"></div>
+                        <div id="test" class="aoc-comic-card aoc-horror-facedown"></div>
+                        <div id="test" class="aoc-comic-card aoc-horror-facedown"></div>
+                        <div id="test" class="aoc-comic-card aoc-horror-facedown"></div>
+                        <div id="test" class="aoc-comic-card aoc-horror-facedown"></div>
+                        <div id="test" class="aoc-comic-card aoc-horror-facedown"></div>
+                        <div id="test" class="aoc-comic-card aoc-horror-facedown"></div>
+                        <div id="test" class="aoc-comic-card aoc-horror-facedown"></div>
+                        <div id="test" class="aoc-comic-card aoc-horror-facedown"></div>
+                        <div id="test" class="aoc-comic-card aoc-horror-facedown"></div>
+                        <div id="test" class="aoc-comic-card aoc-horror-facedown"></div>
+                        <div id="test" class="aoc-comic-card aoc-horror-facedown"></div>
+                        <div id="test" class="aoc-comic-card aoc-horror-facedown"></div>
+                        <div id="test" class="aoc-comic-card aoc-horror-facedown"></div>
+                        <div id="test" class="aoc-comic-card aoc-horror-facedown"></div>
+                        <div id="test" class="aoc-comic-card aoc-horror-facedown"></div>
+                        <div id="test" class="aoc-comic-card aoc-horror-facedown"></div>
+                        <div id="test" class="aoc-comic-card aoc-horror-facedown"></div>
+                        <div id="test" class="aoc-comic-card aoc-horror-facedown"></div>
                     </div>
                     <div id="aoc-comics-available" class="aoc-card-market-row">
-                        <div id="test" class="aoc-comic-card"></div>
-                        <div id="test" class="aoc-comic-card"></div>
-                        <div id="test" class="aoc-comic-card"></div>
-                        <div id="test" class="aoc-comic-card"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-horror-2"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-western-3"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-romance-1"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-horror-4"></div>
                     </div>
                     <div id="aoc-comics-discard" class="aoc-discard">
-                        <div id="test" class="aoc-comic-card"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-superhero-1"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-horror-2"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-western-3"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-romance-1"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-horror-2"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-superhero-1"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-horror-2"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-western-3"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-romance-1"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-horror-2"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-superhero-1"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-horror-2"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-western-3"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-romance-1"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-horror-2"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-superhero-1"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-horror-2"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-western-3"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-romance-1"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-horror-2"></div>
+                        <div id="test" class="aoc-comic-card aoc-comic-romance-3"></div>
                     </div>
-                </div>
+</div>
             </div>
         </div>
         <div id="aoc-players-section">

@@ -4,138 +4,391 @@
  *
  */
 
+$crime: 0;
+$horror: 20%;
+$romance: 40%;
+$scifi: 60%;
+$superhero: 80%;
+$western: 100%;
+
+$facedown: 0;
+$one: 25%;
+$two: 50%;
+$three: 75%;
+$four: 100%;
+
+
 .aoc-comic-card {
   background-image: url(./img/aoc_comic_cards.jpg);
   background-repeat: no-repeat;
   border-radius: 5px;
   filter: drop-shadow(1px 1px 1px black);
   -webkit-filter: drop-shadow(1px 1px 2px #000);
-  height: 243px;
+  height: 242px;
   position: absolute;
   width: 172px;
 }
 
-.aoc-card-market-row .aoc-comic-card {
+#aoc-comics-available .aoc-comic-card {
   position: relative !important;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(1) {
+.aoc-deck .aoc-comic-card:nth-child(1) {
     bottom: 0;
     z-index: 1;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(2) {
+.aoc-deck .aoc-comic-card:nth-child(2) {
     bottom: 1px;
     z-index: 2;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(3) {
+.aoc-deck .aoc-comic-card:nth-child(3) {
     bottom: 2px;
     z-index: 3;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(4) {
+.aoc-deck .aoc-comic-card:nth-child(4) {
     bottom: 3px;
     z-index: 4;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(5) {
+.aoc-deck .aoc-comic-card:nth-child(5) {
     bottom: 4px;
     z-index: 5;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(6) {
+.aoc-deck .aoc-comic-card:nth-child(6) {
     bottom: 5px;
     z-index: 6;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(7) {
+.aoc-deck .aoc-comic-card:nth-child(7) {
     bottom: 6px;
     z-index: 7;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(8) {
+.aoc-deck .aoc-comic-card:nth-child(8) {
     bottom: 7px;
     z-index: 8;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(9) {
+.aoc-deck .aoc-comic-card:nth-child(9) {
     bottom: 8px;
     z-index: 9;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(10) {
+.aoc-deck .aoc-comic-card:nth-child(10) {
     bottom: 9px;
     z-index: 10;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(11) {
+.aoc-deck .aoc-comic-card:nth-child(11) {
     bottom: 10px;
     z-index: 11;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(12) {
+.aoc-deck .aoc-comic-card:nth-child(12) {
     bottom: 11px;
     z-index: 12;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(13) {
+.aoc-deck .aoc-comic-card:nth-child(13) {
     bottom: 12px;
     z-index: 13;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(14) {
+.aoc-deck .aoc-comic-card:nth-child(14) {
     bottom: 13px;
     z-index: 14;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(15) {
+.aoc-deck .aoc-comic-card:nth-child(15) {
     bottom: 14px;
     z-index: 15;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(16) {
+.aoc-deck .aoc-comic-card:nth-child(16) {
     bottom: 15px;
     z-index: 16;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(17) {
+.aoc-deck .aoc-comic-card:nth-child(17) {
     bottom: 16px;
     z-index: 17;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(18) {
+.aoc-deck .aoc-comic-card:nth-child(18) {
     bottom: 17px;
     z-index: 18;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(19) {
+.aoc-deck .aoc-comic-card:nth-child(19) {
     bottom: 18px;
     z-index: 19;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(20) {
+.aoc-deck .aoc-comic-card:nth-child(20) {
     bottom: 19px;
     z-index: 20;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(21) {
+.aoc-deck .aoc-comic-card:nth-child(21) {
     bottom: 20px;
     z-index: 21;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(22) {
+.aoc-deck .aoc-comic-card:nth-child(22) {
     bottom: 21px;
     z-index: 22;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(23) {
+.aoc-deck .aoc-comic-card:nth-child(23) {
     bottom: 22px;
     z-index: 23;
 }
 
-#aoc-comics-deck .aoc-comic-card:nth-child(24) {
+.aoc-deck .aoc-comic-card:nth-child(24) {
     bottom: 23px;
     z-index: 24;
 }
 
+.aoc-discard .aoc-comic-card:nth-child(1) {
+    bottom: 0;
+    z-index: 1;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(2) {
+    bottom: 1px;
+    z-index: 2;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(3) {
+    bottom: 2px;
+    z-index: 3;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(4) {
+    bottom: 3px;
+    z-index: 4;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(5) {
+    bottom: 4px;
+    z-index: 5;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(6) {
+    bottom: 5px;
+    z-index: 6;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(7) {
+    bottom: 6px;
+    z-index: 7;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(8) {
+    bottom: 7px;
+    z-index: 8;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(9) {
+    bottom: 8px;
+    z-index: 9;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(10) {
+    bottom: 9px;
+    z-index: 10;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(11) {
+    bottom: 10px;
+    z-index: 11;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(12) {
+    bottom: 11px;
+    z-index: 12;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(13) {
+    bottom: 12px;
+    z-index: 13;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(14) {
+    bottom: 13px;
+    z-index: 14;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(15) {
+    bottom: 14px;
+    z-index: 15;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(16) {
+    bottom: 15px;
+    z-index: 16;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(17) {
+    bottom: 16px;
+    z-index: 17;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(18) {
+    bottom: 17px;
+    z-index: 18;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(19) {
+    bottom: 18px;
+    z-index: 19;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(20) {
+    bottom: 19px;
+    z-index: 20;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(21) {
+    bottom: 20px;
+    z-index: 21;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(22) {
+    bottom: 21px;
+    z-index: 22;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(23) {
+    bottom: 22px;
+    z-index: 23;
+}
+
+.aoc-discard .aoc-comic-card:nth-child(24) {
+    bottom: 23px;
+    z-index: 24;
+}
+
+.aoc-comic-crime-facedown {
+    background-position: $facedown $crime;
+}
+
+.aoc-comic-crime-1 {
+    background-position: $one $crime;
+}
+
+.aoc-comic-crime-2 {
+    background-position: $two $crime;
+}
+
+.aoc-comic-crime-3 {
+    background-position: $three $crime;
+}
+
+.aoc-comic-crime-4 {
+    background-position: $four $crime;
+}
+
+.aoc-comic-horror-facedown {
+    background-position: $facedown $horror;
+}
+
+.aoc-comic-horror-1 {
+    background-position: $one $horror;
+}
+
+.aoc-comic-horror-2 {
+    background-position: $two $horror;
+}
+
+.aoc-comic-horror-3 {
+    background-position: $three $horror;
+}
+
+.aoc-comic-horror-4 {
+    background-position: $four $horror;
+}
+
+.aoc-comic-romance-facedown {
+    background-position: $facedown $romance;
+}
+
+.aoc-comic-romance-1 {
+    background-position: $one $romance;
+}
+
+.aoc-comic-romance-2 {
+    background-position: $two $romance;
+}
+
+.aoc-comic-romance-3 {
+    background-position: $three $romance;
+}
+
+.aoc-comic-romance-4 {
+    background-position: $four $romance;
+}
+
+.aoc-comic-scifi-facedown {
+    background-position: $facedown $scifi;
+}
+
+.aoc-comic-scifi-1 {
+    background-position: $one $scifi;
+}
+
+.aoc-comic-scifi-2 {
+    background-position: $two $scifi;
+}
+
+.aoc-comic-scifi-3 {
+    background-position: $three $scifi;
+}
+
+.aoc-comic-scifi-4 {
+    background-position: $four $scifi;
+}
+
+.aoc-comic-superhero-facedown {
+    background-position: $facedown $superhero;
+}
+
+.aoc-comic-superhero-1 {
+    background-position: $one $superhero;
+}
+
+.aoc-comic-superhero-2 {
+    background-position: $two $superhero;
+}
+
+.aoc-comic-superhero-3 {
+    background-position: $three $superhero;
+}
+
+.aoc-comic-superhero-4 {
+    background-position: $four $superhero;
+}
+
+.aoc-comic-western-facedown {
+    background-position: $facedown $western;
+}
+
+.aoc-comic-western-1 {
+    background-position: $one $western;
+}
+
+.aoc-comic-western-2 {
+    background-position: $two $western;
+}
+
+.aoc-comic-western-3 {
+    background-position: $three $western;
+}
+
+.aoc-comic-western-4 {
+    background-position: $four $western;
+}

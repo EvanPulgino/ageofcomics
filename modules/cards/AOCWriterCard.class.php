@@ -29,12 +29,14 @@ class AOCWriterCard extends AOCCard {
         $this->fans = 1;
         $this->ideas = $this->value == 1 ? 1 : 0;
         $this->baseClass =
+            "aoc-" .
             $this->getType() .
             "-" .
             $this->getGenre() .
             "-" .
             $this->creativeKey;
         $this->facedownClass =
+            "aoc-" .
             $this->getType() .
             "-" .
             $this->getGenre() .
