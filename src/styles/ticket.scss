@@ -23,15 +23,19 @@
     width: 124px;
 }
 
-.aoc-ticket-stack-1 {
+.aoc-ticket:nth-child(1) {
     bottom: 0;
+    z-index: 1;
 }
-.aoc-ticket-stack-2 {
+.aoc-ticket:nth-child(2) {
     bottom: 3px;
+    z-index: 2;
 }
-.aoc-ticket-stack-3 {
+.aoc-ticket:nth-child(3) {
     bottom: 6px;
+    z-index: 3;
 }
-.aoc-ticket-stack-4 {
+.aoc-ticket:nth-child(4) {
     bottom: 9px;
+    z-index: 4;
 }

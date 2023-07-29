@@ -92,5 +92,3 @@ ALTER TABLE `player`
 ADD `player_western_ideas` INT(10) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `player`
 ADD `player_agent_location` INT(10) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `player`
-ADD `player_agent_location_arg` INT(10) UNSIGNED NOT NULL DEFAULT '0';

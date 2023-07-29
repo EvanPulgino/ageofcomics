@@ -10,6 +10,132 @@
   border-radius: 5px;
   filter: drop-shadow(1px 1px 1px black);
   -webkit-filter: drop-shadow(1px 1px 2px #000);
-  height: 249px;
-  width: 174px;
+  height: 243px;
+  position: absolute;
+  width: 172px;
 }
+
+.aoc-card-market-row .aoc-comic-card {
+  position: relative !important;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(1) {
+    bottom: 0;
+    z-index: 1;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(2) {
+    bottom: 1px;
+    z-index: 2;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(3) {
+    bottom: 2px;
+    z-index: 3;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(4) {
+    bottom: 3px;
+    z-index: 4;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(5) {
+    bottom: 4px;
+    z-index: 5;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(6) {
+    bottom: 5px;
+    z-index: 6;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(7) {
+    bottom: 6px;
+    z-index: 7;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(8) {
+    bottom: 7px;
+    z-index: 8;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(9) {
+    bottom: 8px;
+    z-index: 9;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(10) {
+    bottom: 9px;
+    z-index: 10;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(11) {
+    bottom: 10px;
+    z-index: 11;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(12) {
+    bottom: 11px;
+    z-index: 12;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(13) {
+    bottom: 12px;
+    z-index: 13;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(14) {
+    bottom: 13px;
+    z-index: 14;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(15) {
+    bottom: 14px;
+    z-index: 15;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(16) {
+    bottom: 15px;
+    z-index: 16;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(17) {
+    bottom: 16px;
+    z-index: 17;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(18) {
+    bottom: 17px;
+    z-index: 18;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(19) {
+    bottom: 18px;
+    z-index: 19;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(20) {
+    bottom: 19px;
+    z-index: 20;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(21) {
+    bottom: 20px;
+    z-index: 21;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(22) {
+    bottom: 21px;
+    z-index: 22;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(23) {
+    bottom: 22px;
+    z-index: 23;
+}
+
+#aoc-comics-deck .aoc-comic-card:nth-child(24) {
+    bottom: 23px;
+    z-index: 24;
+}
+

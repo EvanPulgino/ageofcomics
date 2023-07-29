@@ -254,6 +254,7 @@ var GameBody = /** @class */ (function (_super) {
         _this.calendarController = new CalendarController();
         _this.editorController = new EditorController();
         _this.miniComicController = new MiniComicController();
+        _this.ripoffController = new RipoffController();
         _this.salesOrderController = new SalesOrderController();
         _this.ticketController = new TicketController();
         dojo.connect(window, "onresize", _this, dojo.hitch(_this, "adaptViewportSize"));
@@ -295,6 +296,7 @@ var GameBody = /** @class */ (function (_super) {
         this.calendarController.setupCalendar(gamedata.calendarTiles);
         this.editorController.setupEditors(gamedata.editors);
         this.miniComicController.setupMiniComics(gamedata.miniComics);
+        this.ripoffController.setupRipoffCards(gamedata.ripoffCards);
         this.salesOrderController.setupSalesOrders(gamedata.salesOrders);
         this.ticketController.setupTickets(gamedata.ticketSupply);
         this.setupNotifications();
@@ -540,10 +542,40 @@ var PlayerController = /** @class */ (function (_super) {
         var playerAgentDiv = '<div id="aoc-agent' +
             player.id +
             '" class="aoc-agent aoc-agent-' +
-            player.colorAsText + ' aoc-agent-stack-' + player.agentLocationArg + '"></div>';
+            player.colorAsText + '"></div>';
         this.createHtml(playerAgentDiv, "aoc-map-agent-space-" + player.agentLocation);
     };
     return PlayerController;
+}(GameBasics));
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * RipoffController.ts
+ *
+ */
+var RipoffController = /** @class */ (function (_super) {
+    __extends(RipoffController, _super);
+    function RipoffController() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    RipoffController.prototype.setupRipoffCards = function (ripoffCards) {
+        for (var key in ripoffCards) {
+            this.createRipoffCard(ripoffCards[key]);
+        }
+    };
+    RipoffController.prototype.createRipoffCard = function (ripoffCard) {
+        var ripoffCardDiv = '<div id="aoc-ripoff-card-' + ripoffCard.id + '" class="aoc-ripoff-card ' + ripoffCard.cssClass + '"></div>';
+        if (ripoffCard.location == globalThis.LOCATION_DECK) {
+            this.createHtml(ripoffCardDiv, "aoc-ripoff-deck");
+        }
+    };
+    return RipoffController;
 }(GameBasics));
 /**
  *------
@@ -599,7 +631,7 @@ var TicketController = /** @class */ (function (_super) {
         }
     };
     TicketController.prototype.createTicket = function (ticketNum) {
-        var ticketDiv = '<div id="aoc-ticket-' + ticketNum + '" class="aoc-ticket aoc-ticket-stack-' + ticketNum + '"></div>';
+        var ticketDiv = '<div id="aoc-ticket-' + ticketNum + '" class="aoc-ticket"></div>';
         this.createHtml(ticketDiv, "aoc-tickets-space");
     };
     return TicketController;

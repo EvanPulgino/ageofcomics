@@ -37,7 +37,7 @@ class PlayerController extends GameBasics {
           '<div id="aoc-agent' +
           player.id +
           '" class="aoc-agent aoc-agent-' +
-          player.colorAsText + ' aoc-agent-stack-' + player.agentLocationArg + '"></div>';
+          player.colorAsText + '"></div>';
         this.createHtml(playerAgentDiv, "aoc-map-agent-space-" + player.agentLocation);
     }
 }

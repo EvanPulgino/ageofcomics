@@ -1,0 +1,34 @@
+/**
+ * 
+ * General card styles
+ *
+ */
+
+ #aoc-card-market {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.aoc-card-market-row {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+}
+
+.aoc-deck {
+  height: 243px;
+  padding-right: 10px;
+  position: relative;
+  width: 172px;
+}
+
+.aoc-discard {
+  height: 243px;
+  opacity: 0.75;
+  padding-left: 10px;
+  position: relative;
+  width: 172px;
+}

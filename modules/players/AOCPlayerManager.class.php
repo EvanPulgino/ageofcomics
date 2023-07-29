@@ -31,18 +31,15 @@ class AOCPlayerManager extends APP_GameClass {
         $gameInfos = $this->game->getGameinfos();
         $defaultColors = $gameInfos["player_colors"];
         shuffle($defaultColors);
-        $stackOrder = [1,2,3,4];
 
         $sql =
-            "INSERT INTO player (player_id, player_agent_location_arg, player_color, player_canal, player_name, player_avatar) VALUES ";
+            "INSERT INTO player (player_id, player_color, player_canal, player_name, player_avatar) VALUES ";
         $values = [];
         foreach ($players as $playerId => $player) {
             $color = array_shift($defaultColors);
-            $stack = array_shift($stackOrder);
             $values[] =
                 "('" .
                 $playerId .
-                "','$stack".
                 "','$color','" .
                 $player["player_canal"] .
                 "','" .
@@ -158,7 +155,7 @@ class AOCPlayerManager extends APP_GameClass {
      */
     public function getPlayers($playerIds = null) {
         $sql =
-            "SELECT player_id id, player_no naturalOrder, player_turn_order turnOrder, player_name name, player_color color, player_score score, player_score_aux scoreAux, player_money money, player_crime_ideas crimeIdeas, player_horror_ideas horrorIdeas, player_romance_ideas romanceIdeas, player_scifi_ideas scifiIdeas, player_superhero_ideas superheroIdeas, player_western_ideas westernIdeas, player_agent_location agentLocation, player_agent_location_arg agentLocationArg, player_is_multiactive multiActive FROM player";
+            "SELECT player_id id, player_no naturalOrder, player_turn_order turnOrder, player_name name, player_color color, player_score score, player_score_aux scoreAux, player_money money, player_crime_ideas crimeIdeas, player_horror_ideas horrorIdeas, player_romance_ideas romanceIdeas, player_scifi_ideas scifiIdeas, player_superhero_ideas superheroIdeas, player_western_ideas westernIdeas, player_agent_location agentLocation, player_is_multiactive multiActive FROM player";
         if ($playerIds) {
             $sql .= " WHERE player_id IN (" . implode(",", $playerIds) . ")";
         }

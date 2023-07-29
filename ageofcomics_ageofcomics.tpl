@@ -160,7 +160,55 @@
                 <!-- END playerchart -->
                 <div id="aoc-chart-end" class="aoc-board-image aoc-chart-end"></div>
             </div>
-            <div id="aoc-card-market"></div>
+            <div id="aoc-card-market">
+                <div id="aoc-component-supply" class="aoc-card-market-row">
+                    <div id="aoc-ripoff-deck" class="aoc-deck"></div>
+                    <div id="aoc-mastery-tokens"></div>
+                    <div id="aoc-other-tokens"></div>
+                </div>
+                <div id="aoc-writers-market" class="aoc-card-market-row">
+                    <div id="aoc-writers-deck" class="aoc-deck">
+                        <div id="test" class="aoc-comic-card"></div>
+                    </div>
+                    <div id="aoc-writers-available" class="aoc-card-market-row">
+                        <div id="test" class="aoc-comic-card"></div>
+                        <div id="test" class="aoc-comic-card"></div>
+                        <div id="test" class="aoc-comic-card"></div>
+                        <div id="test" class="aoc-comic-card"></div>
+                    </div>
+                    <div id="aoc-writers-discard" class="aoc-discard">
+                        <div id="test" class="aoc-comic-card"></div>
+                    </div>
+                </div>
+                <div id="aoc-artists-market" class="aoc-card-market-row">
+                    <div id="aoc-artists-deck" class="aoc-deck">
+                        <div id="test" class="aoc-comic-card"></div>
+                    </div>
+                    <div id="aoc-artists-available" class="aoc-card-market-row">
+                        <div id="test" class="aoc-comic-card"></div>
+                        <div id="test" class="aoc-comic-card"></div>
+                        <div id="test" class="aoc-comic-card"></div>
+                        <div id="test" class="aoc-comic-card"></div>
+                    </div>
+                    <div id="aoc-artists-discard" class="aoc-discard">
+                        <div id="test" class="aoc-comic-card"></div>
+                    </div>
+                </div>
+                <div id="aoc-comics-market" class="aoc-card-market-row">
+                    <div id="aoc-comics-deck" class="aoc-deck">
+                        <div id="test" class="aoc-comic-card"></div>
+                    </div>
+                    <div id="aoc-comics-available" class="aoc-card-market-row">
+                        <div id="test" class="aoc-comic-card"></div>
+                        <div id="test" class="aoc-comic-card"></div>
+                        <div id="test" class="aoc-comic-card"></div>
+                        <div id="test" class="aoc-comic-card"></div>
+                    </div>
+                    <div id="aoc-comics-discard" class="aoc-discard">
+                        <div id="test" class="aoc-comic-card"></div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="aoc-players-section">
             <!-- BEGIN playerarea -->

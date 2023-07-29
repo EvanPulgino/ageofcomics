@@ -21,7 +21,7 @@ class TicketController extends GameBasics {
 
     createTicket(ticketNum: any) : void {
         var ticketDiv =
-          '<div id="aoc-ticket-'+ticketNum+'" class="aoc-ticket aoc-ticket-stack-'+ticketNum+'"></div>';
+          '<div id="aoc-ticket-'+ticketNum+'" class="aoc-ticket"></div>';
         this.createHtml(ticketDiv, "aoc-tickets-space");
     }
 }

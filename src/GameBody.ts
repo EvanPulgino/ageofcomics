@@ -21,6 +21,7 @@ class GameBody extends GameBasics {
   calendarController: CalendarController;
   editorController: EditorController;
   miniComicController: MiniComicController;
+  ripoffController: RipoffController;
   salesOrderController: SalesOrderController;
   ticketController: TicketController;
   constructor() {
@@ -30,6 +31,7 @@ class GameBody extends GameBasics {
     this.calendarController = new CalendarController();
     this.editorController = new EditorController();
     this.miniComicController = new MiniComicController();
+    this.ripoffController = new RipoffController();
     this.salesOrderController = new SalesOrderController();
     this.ticketController = new TicketController();
 
@@ -78,6 +80,7 @@ class GameBody extends GameBasics {
     this.calendarController.setupCalendar(gamedata.calendarTiles);
     this.editorController.setupEditors(gamedata.editors);
     this.miniComicController.setupMiniComics(gamedata.miniComics);
+    this.ripoffController.setupRipoffCards(gamedata.ripoffCards);
     this.salesOrderController.setupSalesOrders(gamedata.salesOrders);
     this.ticketController.setupTickets(gamedata.ticketSupply);
     this.setupNotifications();
