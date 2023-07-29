@@ -4,34 +4,77 @@
  *
  */
 
+ #aoc-idea-tokens {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 20px;
+ }
+
+ .aoc-idea-tokens-row {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+ }
+
 .aoc-idea-token {
-  background-image: url(./img/aoc_ideas.png);
+  background-image: url(./img/aoc_round_tokens.png);
   background-repeat: no-repeat;
   border-radius: 5px;
   filter: drop-shadow(1px 1px 1px black);
   -webkit-filter: drop-shadow(1px 1px 2px #000);
   height: 44px;
+  position: absolute;
+  width: 44px;
+}
+
+.aoc-idea-bank {
+  height: 44px;
   position: relative;
   width: 44px;
 }
 
+.aoc-idea-bank .aoc-idea-token:nth-child(1) {
+  bottom: 0;
+  z-index: 1;
+}
+
+.aoc-idea-bank .aoc-idea-token:nth-child(2) {
+  bottom: 2px;
+  z-index: 2;
+}
+
+.aoc-idea-bank .aoc-idea-token:nth-child(3) {
+  bottom: 4px;
+  z-index: 3;
+}
+
+.aoc-idea-bank .aoc-idea-token:nth-child(4) {
+  bottom: 6px;
+  z-index: 4;
+}
+
+.aoc-idea-bank .aoc-idea-token:nth-child(5) {
+  bottom: 8px;
+  z-index: 5;
+}
+
 .aoc-idea-token-crime {
-  background-position: 0 0;
+  background-position: 50% 50%;
 }
 .aoc-idea-token-horror {
-  background-position: 50% 0;
+  background-position: 100% 0;
 }
 
 .aoc-idea-token-romance {
-  background-position: 0 100%;
+  background-position: 100% 50%;
 }
 
 .aoc-idea-token-scifi {
-  background-position: 50% 100%;
+  background-position: 0 100%;
 }
 
 .aoc-idea-token-superhero {
-  background-position: 100% 0;
+  background-position: 50% 100%;
 }
 
 .aoc-idea-token-western {

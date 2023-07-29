@@ -58,3 +58,32 @@ html {
   justify-content: center;
   position: relative;
 }
+
+ #aoc-card-market {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.aoc-card-market-row {
+  align-items: flex-end;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+  height: 243px;
+}
+
+#aoc-token-bank {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 10px;
+  height: 100%;
+  justify-content: space-evenly;
+}
+
+#aoc-small-tokens {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+}

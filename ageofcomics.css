@@ -72,6 +72,35 @@ html {
   position: relative;
 }
 
+#aoc-card-market {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.aoc-card-market-row {
+  align-items: flex-end;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+  height: 243px;
+}
+
+#aoc-token-bank {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 10px;
+  height: 100%;
+  justify-content: space-evenly;
+}
+
+#aoc-small-tokens {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+}
+
 /**
 *
 * Styles for agent discs
@@ -446,35 +475,78 @@ html {
  * Style for the idea tokens
  *
  */
+#aoc-idea-tokens {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 20px;
+}
+
+.aoc-idea-tokens-row {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+}
+
 .aoc-idea-token {
-  background-image: url(./img/aoc_ideas.png);
+  background-image: url(./img/aoc_round_tokens.png);
   background-repeat: no-repeat;
   border-radius: 5px;
   filter: drop-shadow(1px 1px 1px black);
   -webkit-filter: drop-shadow(1px 1px 2px #000);
   height: 44px;
+  position: absolute;
+  width: 44px;
+}
+
+.aoc-idea-bank {
+  height: 44px;
   position: relative;
   width: 44px;
 }
 
+.aoc-idea-bank .aoc-idea-token:nth-child(1) {
+  bottom: 0;
+  z-index: 1;
+}
+
+.aoc-idea-bank .aoc-idea-token:nth-child(2) {
+  bottom: 2px;
+  z-index: 2;
+}
+
+.aoc-idea-bank .aoc-idea-token:nth-child(3) {
+  bottom: 4px;
+  z-index: 3;
+}
+
+.aoc-idea-bank .aoc-idea-token:nth-child(4) {
+  bottom: 6px;
+  z-index: 4;
+}
+
+.aoc-idea-bank .aoc-idea-token:nth-child(5) {
+  bottom: 8px;
+  z-index: 5;
+}
+
 .aoc-idea-token-crime {
-  background-position: 0 0;
+  background-position: 50% 50%;
 }
 
 .aoc-idea-token-horror {
-  background-position: 50% 0;
+  background-position: 100% 0;
 }
 
 .aoc-idea-token-romance {
-  background-position: 0 100%;
+  background-position: 100% 50%;
 }
 
 .aoc-idea-token-scifi {
-  background-position: 50% 100%;
+  background-position: 0 100%;
 }
 
 .aoc-idea-token-superhero {
-  background-position: 100% 0;
+  background-position: 50% 100%;
 }
 
 .aoc-idea-token-western {
@@ -1460,6 +1532,165 @@ html {
 
 /**
  *
+ * Style for other small tokens
+ *
+ */
+#aoc-other-tokens {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 20px;
+}
+
+.aoc-other-tokens-row {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+}
+
+.aoc-round-token {
+  background-image: url(./img/aoc_round_tokens.png);
+  background-repeat: no-repeat;
+  border-radius: 5px;
+  filter: drop-shadow(1px 1px 1px black);
+  -webkit-filter: drop-shadow(1px 1px 2px #000);
+  height: 44px;
+  position: absolute;
+  width: 44px;
+}
+
+.aoc-token-bank {
+  height: 44px;
+  position: relative;
+  width: 44px;
+}
+
+.aoc-token-bank .aoc-round-token:nth-child(1) {
+  bottom: 0;
+  z-index: 1;
+}
+
+.aoc-token-bank .aoc-round-token:nth-child(2) {
+  bottom: 2px;
+  z-index: 2;
+}
+
+.aoc-token-bank .aoc-round-token:nth-child(3) {
+  bottom: 4px;
+  z-index: 3;
+}
+
+.aoc-token-bank .aoc-round-token:nth-child(4) {
+  bottom: 6px;
+  z-index: 4;
+}
+
+.aoc-token-bank .aoc-round-token:nth-child(5) {
+  bottom: 8px;
+  z-index: 5;
+}
+
+.aoc-token-coin {
+  background-position: 0 0;
+}
+
+.aoc-token-point {
+  background-position: 50% 0;
+}
+
+.aoc-token-hype {
+  background-position: 0 50%;
+}
+
+.aoc-increase-token {
+  background-image: url(./img/aoc_increase_tokens.jpg);
+  background-repeat: no-repeat;
+  border-radius: 5px;
+  filter: drop-shadow(1px 1px 1px black);
+  -webkit-filter: drop-shadow(1px 1px 2px #000);
+  height: 42px;
+  position: absolute;
+  width: 42px;
+}
+
+.aoc-token-bank .aoc-increase-token:nth-child(1) {
+  bottom: 0;
+  z-index: 1;
+}
+
+.aoc-token-bank .aoc-increase-token:nth-child(2) {
+  bottom: 2px;
+  z-index: 2;
+}
+
+.aoc-token-bank .aoc-increase-token:nth-child(3) {
+  bottom: 4px;
+  z-index: 3;
+}
+
+.aoc-token-bank .aoc-increase-token:nth-child(4) {
+  bottom: 6px;
+  z-index: 4;
+}
+
+.aoc-token-bank .aoc-increase-token:nth-child(5) {
+  bottom: 8px;
+  z-index: 5;
+}
+
+.aoc-token-increase-writer-2 {
+  background-position: 0 0;
+}
+
+.aoc-token-increase-writer-3 {
+  background-position: 100% 0;
+}
+
+.aoc-token-increase-artist-2 {
+  background-position: 0 100%;
+}
+
+.aoc-token-increase-artist-3 {
+  background-position: 100% 100%;
+}
+
+.aoc-token-better-color {
+  background-image: url(./img/aoc_better_color.jpg);
+  background-repeat: no-repeat;
+  border-radius: 5px;
+  filter: drop-shadow(1px 1px 1px black);
+  -webkit-filter: drop-shadow(1px 1px 2px #000);
+  height: 44px;
+  position: absolute;
+  width: 44px;
+}
+
+.aoc-token-bank .aoc-token-better-color:nth-child(1) {
+  bottom: 0;
+  z-index: 1;
+}
+
+.aoc-token-bank .aoc-token-better-color:nth-child(2) {
+  bottom: 2px;
+  z-index: 2;
+}
+
+.aoc-token-bank .aoc-token-better-color:nth-child(3) {
+  bottom: 4px;
+  z-index: 3;
+}
+
+.aoc-token-bank .aoc-token-better-color:nth-child(4) {
+  bottom: 6px;
+  z-index: 4;
+}
+
+.aoc-token-bank .aoc-token-better-color:nth-child(5) {
+  bottom: 8px;
+  z-index: 5;
+}
+
+/**
+ *
  * Style for sales orders
  *
  */
@@ -1647,20 +1878,6 @@ html {
  * General card styles
  *
  */
-#aoc-card-market {
-  display: flex;
-  flex-flow: column nowrap;
-  gap: 10px;
-  justify-content: center;
-}
-
-.aoc-card-market-row {
-  align-items: center;
-  display: flex;
-  flex-flow: row nowrap;
-  gap: 10px;
-}
-
 .aoc-deck {
   height: 243px;
   padding-right: 10px;

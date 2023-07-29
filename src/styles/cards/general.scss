@@ -4,20 +4,6 @@
  *
  */
 
- #aoc-card-market {
-  display: flex;
-  flex-flow: column nowrap;
-  gap: 10px;
-  justify-content: center;
-}
-
-.aoc-card-market-row {
-  align-items: center;
-  display: flex;
-  flex-flow: row nowrap;
-  gap: 10px;
-}
-
 .aoc-deck {
   height: 243px;
   padding-right: 10px;

@@ -163,8 +163,117 @@
             <div id="aoc-card-market">
                 <div id="aoc-component-supply" class="aoc-card-market-row">
                     <div id="aoc-ripoff-deck" class="aoc-deck"></div>
-                    <div id="aoc-mastery-tokens"></div>
-                    <div id="aoc-other-tokens"></div>
+                    <div id="aoc-token-bank">
+                        <div id="aoc-mastery-tokens"></div>
+                        <div id="aoc-small-tokens">
+                            <div id="aoc-idea-tokens">
+                                <div id="aoc-idea-tokens-row-1" class="aoc-idea-tokens-row">
+                                    <div id="aoc-crime-tokens" class="aoc-idea-bank">
+                                        <div id="aoc-idea-crime-1" class="aoc-idea-token aoc-idea-token-crime"></div>
+                                        <div id="aoc-idea-crime-2" class="aoc-idea-token aoc-idea-token-crime"></div>
+                                        <div id="aoc-idea-crime-3" class="aoc-idea-token aoc-idea-token-crime"></div>
+                                        <div id="aoc-idea-crime-4" class="aoc-idea-token aoc-idea-token-crime"></div>
+                                        <div id="aoc-idea-crime-5" class="aoc-idea-token aoc-idea-token-crime"></div>
+                                    </div>
+                                    <div id="aoc-horror-tokens" class="aoc-idea-bank">
+                                        <div id="aoc-idea-horror-1" class="aoc-idea-token aoc-idea-token-horror"></div>
+                                        <div id="aoc-idea-horror-2" class="aoc-idea-token aoc-idea-token-horror"></div>
+                                        <div id="aoc-idea-horror-3" class="aoc-idea-token aoc-idea-token-horror"></div>
+                                        <div id="aoc-idea-horror-4" class="aoc-idea-token aoc-idea-token-horror"></div>
+                                        <div id="aoc-idea-horror-5" class="aoc-idea-token aoc-idea-token-horror"></div>
+                                    </div>
+                                    <div id="aoc-romance-tokens" class="aoc-idea-bank">
+                                        <div id="aoc-idea-romance-1" class="aoc-idea-token aoc-idea-token-romance"></div>
+                                        <div id="aoc-idea-romance-2" class="aoc-idea-token aoc-idea-token-romance"></div>
+                                        <div id="aoc-idea-romance-3" class="aoc-idea-token aoc-idea-token-romance"></div>
+                                        <div id="aoc-idea-romance-4" class="aoc-idea-token aoc-idea-token-romance"></div>
+                                        <div id="aoc-idea-romance-5" class="aoc-idea-token aoc-idea-token-romance"></div>
+                                    </div>
+                                </div>
+                                <div id="aoc-idea-tokens-row-1" class="aoc-idea-tokens-row">
+                                    <div id="aoc-scifi-tokens" class="aoc-idea-bank">
+                                        <div id="aoc-idea-scifi-1" class="aoc-idea-token aoc-idea-token-scifi"></div>
+                                        <div id="aoc-idea-scifi-2" class="aoc-idea-token aoc-idea-token-scifi"></div>
+                                        <div id="aoc-idea-scifi-3" class="aoc-idea-token aoc-idea-token-scifi"></div>
+                                        <div id="aoc-idea-scifi-4" class="aoc-idea-token aoc-idea-token-scifi"></div>
+                                        <div id="aoc-idea-scifi-5" class="aoc-idea-token aoc-idea-token-scifi"></div>
+                                    </div>
+                                    <div id="aoc-superhero-tokens" class="aoc-idea-bank">
+                                        <div id="aoc-idea-superhero-1" class="aoc-idea-token aoc-idea-token-superhero"></div>
+                                        <div id="aoc-idea-superhero-2" class="aoc-idea-token aoc-idea-token-superhero"></div>
+                                        <div id="aoc-idea-superhero-3" class="aoc-idea-token aoc-idea-token-superhero"></div>
+                                        <div id="aoc-idea-superhero-4" class="aoc-idea-token aoc-idea-token-superhero"></div>
+                                        <div id="aoc-idea-superhero-5" class="aoc-idea-token aoc-idea-token-superhero"></div>
+                                    </div>
+                                    <div id="aoc-western-tokens" class="aoc-idea-bank">
+                                        <div id="aoc-idea-western-1" class="aoc-idea-token aoc-idea-token-western"></div>
+                                        <div id="aoc-idea-western-2" class="aoc-idea-token aoc-idea-token-western"></div>
+                                        <div id="aoc-idea-western-3" class="aoc-idea-token aoc-idea-token-western"></div>
+                                        <div id="aoc-idea-western-4" class="aoc-idea-token aoc-idea-token-western"></div>
+                                        <div id="aoc-idea-western-5" class="aoc-idea-token aoc-idea-token-western"></div>
+                                    </div>    
+                                </div>
+                            </div>
+                            <div id="aoc-other-tokens">
+                                <div id="aoc-other-tokens-row-1" class="aoc-other-tokens-row">
+                                    <div id="aoc-increase-writer-tokens" class="aoc-token-bank">
+                                        <div id="aoc-increase-writer-1"
+                                            class="aoc-increase-token aoc-token-increase-writer-2"></div>
+                                        <div id="aoc-increase-writer-2"
+                                            class="aoc-increase-token aoc-token-increase-writer-2"></div>
+                                        <div id="aoc-increase-writer-3"
+                                            class="aoc-increase-token aoc-token-increase-writer-2"></div>
+                                        <div id="aoc-increase-writer-4"
+                                            class="aoc-increase-token aoc-token-increase-writer-2"></div>
+                                        <div id="aoc-increase-writer-5"
+                                            class="aoc-increase-token aoc-token-increase-writer-2"></div>
+                                    </div>
+                                    <div id="aoc-increase-artist-tokens" class="aoc-token-bank">
+                                        <div id="aoc-increase-artist-1"
+                                            class="aoc-increase-token aoc-token-increase-artist-2"></div>
+                                        <div id="aoc-increase-artist-2"
+                                            class="aoc-increase-token aoc-token-increase-artist-2"></div>
+                                        <div id="aoc-increase-artist-3"
+                                            class="aoc-increase-token aoc-token-increase-artist-2"></div>
+                                        <div id="aoc-increase-artist-4"
+                                            class="aoc-increase-token aoc-token-increase-artist-2"></div>
+                                        <div id="aoc-increase-artist-5"
+                                            class="aoc-increase-token aoc-token-increase-artist-2"></div>
+                                    </div>
+                                    <div id="aoc-better-color-tokens" class="aoc-token-bank">
+                                        <div id="aoc-better-color-1" class="aoc-token-better-color"></div>
+                                        <div id="aoc-better-color-2" class="aoc-token-better-color"></div>
+                                        <div id="aoc-better-color-3" class="aoc-token-better-color"></div>
+                                        <div id="aoc-better-color-4" class="aoc-token-better-color"></div>
+                                        <div id="aoc-better-color-5" class="aoc-token-better-color"></div>
+                                    </div>
+                                </div>
+                                <div id="aoc-other-tokens-row-2" class="aoc-other-tokens-row">
+                                    <div id="aoc-coin-tokens" class="aoc-token-bank">
+                                        <div id="aoc-coin-1" class="aoc-round-token aoc-token-coin"></div>
+                                        <div id="aoc-coin-2" class="aoc-round-token aoc-token-coin"></div>
+                                        <div id="aoc-coin-3" class="aoc-round-token aoc-token-coin"></div>
+                                        <div id="aoc-coin-4" class="aoc-round-token aoc-token-coin"></div>
+                                        <div id="aoc-coin-5" class="aoc-round-token aoc-token-coin"></div>
+                                    </div>
+                                    <div id="aoc-point-tokens" class="aoc-token-bank">
+                                        <div id="aoc-point-1" class="aoc-round-token aoc-token-point"></div>
+                                        <div id="aoc-point-2" class="aoc-round-token aoc-token-point"></div>
+                                        <div id="aoc-point-3" class="aoc-round-token aoc-token-point"></div>
+                                        <div id="aoc-point-4" class="aoc-round-token aoc-token-point"></div>
+                                        <div id="aoc-point-5" class="aoc-round-token aoc-token-point"></div>
+                                    </div>
+                                    <div id="aoc-hype-tokens" class="aoc-token-bank">
+                                        <div id="aoc-hype-1" class="aoc-round-token aoc-token-hype"></div>
+                                        <div id="aoc-hype-2" class="aoc-round-token aoc-token-hype"></div>
+                                        <div id="aoc-hype-3" class="aoc-round-token aoc-token-hype"></div>
+                                        <div id="aoc-hype-4" class="aoc-round-token aoc-token-hype"></div>
+                                        <div id="aoc-hype-5" class="aoc-round-token aoc-token-hype"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div id="aoc-writers-market" class="aoc-card-market-row">
                     <div id="aoc-writers-deck" class="aoc-deck">
