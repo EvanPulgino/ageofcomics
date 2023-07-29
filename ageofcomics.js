@@ -253,6 +253,7 @@ var GameBody = /** @class */ (function (_super) {
         _this.playerController = new PlayerController();
         _this.calendarController = new CalendarController();
         _this.editorController = new EditorController();
+        _this.masteryController = new MasteryController();
         _this.miniComicController = new MiniComicController();
         _this.ripoffController = new RipoffController();
         _this.salesOrderController = new SalesOrderController();
@@ -295,6 +296,7 @@ var GameBody = /** @class */ (function (_super) {
         this.playerController.setupPlayers(gamedata.playerInfo);
         this.calendarController.setupCalendar(gamedata.calendarTiles);
         this.editorController.setupEditors(gamedata.editors);
+        this.masteryController.setupMasteryTokens(gamedata.mastery);
         this.miniComicController.setupMiniComics(gamedata.miniComics);
         this.ripoffController.setupRipoffCards(gamedata.ripoffCards);
         this.salesOrderController.setupSalesOrders(gamedata.salesOrders);
@@ -470,6 +472,36 @@ var GameController = /** @class */ (function (_super) {
         }
     };
     return GameController;
+}(GameBasics));
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * MasteryController.ts
+ *
+ */
+var MasteryController = /** @class */ (function (_super) {
+    __extends(MasteryController, _super);
+    function MasteryController() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    MasteryController.prototype.setupMasteryTokens = function (masteryTokens) {
+        for (var key in masteryTokens) {
+            this.createMasteryToken(masteryTokens[key]);
+        }
+    };
+    MasteryController.prototype.createMasteryToken = function (masteryToken) {
+        var masteryTokenDiv = '<div id="aoc-mastery-token-' + masteryToken.id + '" class="aoc-mastery-token aoc-mastery-token-' + masteryToken.genre + '"></div>';
+        if (masteryToken.playerId == 0) {
+            this.createHtml(masteryTokenDiv, "aoc-mastery-tokens");
+        }
+    };
+    return MasteryController;
 }(GameBasics));
 /**
  *------

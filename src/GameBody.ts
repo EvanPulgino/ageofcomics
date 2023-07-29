@@ -20,6 +20,7 @@ class GameBody extends GameBasics {
   playerController: PlayerController;
   calendarController: CalendarController;
   editorController: EditorController;
+  masteryController: MasteryController;
   miniComicController: MiniComicController;
   ripoffController: RipoffController;
   salesOrderController: SalesOrderController;
@@ -30,6 +31,7 @@ class GameBody extends GameBasics {
     this.playerController = new PlayerController();
     this.calendarController = new CalendarController();
     this.editorController = new EditorController();
+    this.masteryController = new MasteryController();
     this.miniComicController = new MiniComicController();
     this.ripoffController = new RipoffController();
     this.salesOrderController = new SalesOrderController();
@@ -79,6 +81,7 @@ class GameBody extends GameBasics {
     this.playerController.setupPlayers(gamedata.playerInfo);
     this.calendarController.setupCalendar(gamedata.calendarTiles);
     this.editorController.setupEditors(gamedata.editors);
+    this.masteryController.setupMasteryTokens(gamedata.mastery);
     this.miniComicController.setupMiniComics(gamedata.miniComics);
     this.ripoffController.setupRipoffCards(gamedata.ripoffCards);
     this.salesOrderController.setupSalesOrders(gamedata.salesOrders);

@@ -1,0 +1,45 @@
+/**
+ *
+ * Style for the mastery tokens
+ *
+ */
+
+ #aoc-mastery-tokens {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 5px;
+ }
+
+.aoc-mastery-token {
+    background-image: url(./img/aoc_mastery_tokens.png);
+    background-repeat: no-repeat;
+    filter: drop-shadow(1px 1px 1px black);
+    -webkit-filter: drop-shadow(1px 1px 2px #000);
+    height: 70px;
+    position: relative;
+    width: 70px;
+}
+
+.aoc-mastery-token-crime {
+    background-position: 0 0;
+}
+
+.aoc-mastery-token-horror {
+    background-position: 50% 0;
+}
+
+.aoc-mastery-token-romance {
+    background-position: 0 100%;
+}
+
+.aoc-mastery-token-scifi {
+    background-position: 50% 100%;
+}
+
+.aoc-mastery-token-superhero {
+    background-position: 100% 100%;
+}
+
+.aoc-mastery-token-western {
+    background-position: 100% 0;
+}
