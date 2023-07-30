@@ -38,11 +38,8 @@ class AOCWriterCard extends AOCCard {
         $this->facedownClass =
             "aoc-" .
             $this->getType() .
-            "-" .
-            $this->getGenre() .
-            "-" .
-            $this->value .
-            "-facedown";
+            "-facedown-" .
+            $this->value;
     }
 
     public function getCreativeKey() {

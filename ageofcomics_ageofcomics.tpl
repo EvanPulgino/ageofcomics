@@ -328,6 +328,9 @@
                         <div id="test" class="aoc-creative-card aoc-writer-romance-10"></div>
                         <div id="test" class="aoc-creative-card aoc-writer-horror-20"></div>
                         <div id="test" class="aoc-creative-card aoc-writer-romance-30"></div>
+                        <div id="aoc-writers-discard-cover" class="aoc-discard-cover">
+                            <div id="aoc-writers-trash" class="aoc-trash-icon"></div>
+                        </div>
                     </div>
                 </div>
                 <div id="aoc-artists-market" class="aoc-card-market-row">
@@ -383,6 +386,9 @@
                         <div id="test" class="aoc-creative-card aoc-artist-romance-10"></div>
                         <div id="test" class="aoc-creative-card aoc-artist-horror-20"></div>
                         <div id="test" class="aoc-creative-card aoc-artist-romance-30"></div>
+                        <div id="aoc-artists-discard-cover" class="aoc-discard-cover">
+                            <div id="aoc-artists-trash" class="aoc-trash-icon"></div>
+                        </div>
                     </div>
                 </div>
                 <div id="aoc-comics-market" class="aoc-card-market-row">
@@ -438,13 +444,19 @@
                         <div id="test" class="aoc-comic-card aoc-comic-romance-1"></div>
                         <div id="test" class="aoc-comic-card aoc-comic-horror-2"></div>
                         <div id="test" class="aoc-comic-card aoc-comic-romance-3"></div>
+                        <div id="aoc-comics-discard-cover" class="aoc-discard-cover">
+                            <div id="aoc-comics-trash" class="aoc-trash-icon"></div>
+                        </div>
                     </div>
 </div>
             </div>
         </div>
         <div id="aoc-players-section">
             <!-- BEGIN playerarea -->
-            <div id="aoc-player-mat-{player_id}" class="aoc-player-mat aoc-player-mat-{color}"></div>
+            <div id="aoc-player-area-{player_id}" class="aoc-player-area aoc-player-area-{color}">
+                <div id="aoc-player-mat-{player_id}" class="aoc-player-mat aoc-player-mat-{color}"></div>
+                <div id="aoc-hand-{player_id}" class="aoc-hand"></div>
+            </div>
             <!-- END playerarea -->
         </div>
     </div>

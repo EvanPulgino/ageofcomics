@@ -19,6 +19,7 @@ class GameBody extends GameBasics {
   gameController: GameController;
   playerController: PlayerController;
   calendarController: CalendarController;
+  cardController: CardController;
   editorController: EditorController;
   masteryController: MasteryController;
   miniComicController: MiniComicController;
@@ -30,6 +31,7 @@ class GameBody extends GameBasics {
     this.gameController = new GameController();
     this.playerController = new PlayerController();
     this.calendarController = new CalendarController();
+    this.cardController = new CardController();
     this.editorController = new EditorController();
     this.masteryController = new MasteryController();
     this.miniComicController = new MiniComicController();
@@ -48,7 +50,7 @@ class GameBody extends GameBasics {
   adaptViewportSize() {
     var t = dojo.marginBox("aoc-overall");
     var r = t.w;
-    var s = 2772;
+    var s = 1500;
     var height = dojo.marginBox("aoc-layout").h;
     var viewportWidth = dojo.window.getBox().w;
     var gameAreaWidth = viewportWidth < 980 ? viewportWidth : viewportWidth - 245;
@@ -80,6 +82,7 @@ class GameBody extends GameBasics {
     this.gameController.setup(gamedata);
     this.playerController.setupPlayers(gamedata.playerInfo);
     this.calendarController.setupCalendar(gamedata.calendarTiles);
+    this.cardController.setupPlayerHands(gamedata.playerHands);
     this.editorController.setupEditors(gamedata.editors);
     this.masteryController.setupMasteryTokens(gamedata.mastery);
     this.miniComicController.setupMiniComics(gamedata.miniComics);

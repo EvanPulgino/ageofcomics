@@ -4,6 +4,11 @@
  *
  */
 
+$brown: #8e514e;
+$salmon: #e5977a;
+$teal: #5ba59f;
+$yellow: #f5c86e;
+
 html {
   background-image: url(./img/aoc_table.jpg);
   font-size: calc(15px + 0.390625vw);
@@ -55,9 +60,10 @@ html {
   align-items: center;
   display: flex;
   flex-flow: column nowrap;
-  gap: 10px;
+  gap: 25px;
   justify-content: center;
   position: relative;
+  width: 100%;
 }
 
  #aoc-card-market {

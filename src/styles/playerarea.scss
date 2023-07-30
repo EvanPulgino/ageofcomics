@@ -4,6 +4,52 @@
  *
  */
 
+ .aoc-player-area {
+  align-items: center;
+  box-shadow: 1px 1px 1px 1px #000000a0;
+  display: flex;
+  flex-flow: row wrap;
+  gap: 10px;
+  justify-content: start;
+  position: relative;
+  width: 100%;
+ }
+
+ .aoc-player-area-brown {
+  background-color: $brown;
+  background-image: linear-gradient(to right, $brown, #f5ead690);
+ }
+
+.aoc-player-area-salmon {
+  background-color: $salmon;
+  background-image: linear-gradient(to right, $salmon, #f5ead690);
+}
+
+.aoc-player-area-teal {
+  background-color: $teal;
+  background-image: linear-gradient(to right, $teal, #f5ead690);
+}
+
+.aoc-player-area-yellow {
+  background-color: $yellow;
+  background-image: linear-gradient(to right, $yellow, #f5ead690);
+}
+
+.aoc-hand {
+  align-items: flex-end;
+  display: flex;
+  flex-flow: row wrap;
+  gap: 10px;
+  height: 243px;
+}
+
+.aoc-hand .aoc-creative-card {
+  position: relative !important;
+}
+.aoc-hand .aoc-comic-card {
+  position: relative !important;
+}
+
 .aoc-player-mat {
   background-image: url(./img/aoc_player_mats.jpg);
   background-repeat: no-repeat;

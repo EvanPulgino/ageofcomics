@@ -252,6 +252,7 @@ var GameBody = /** @class */ (function (_super) {
         _this.gameController = new GameController();
         _this.playerController = new PlayerController();
         _this.calendarController = new CalendarController();
+        _this.cardController = new CardController();
         _this.editorController = new EditorController();
         _this.masteryController = new MasteryController();
         _this.miniComicController = new MiniComicController();
@@ -264,7 +265,7 @@ var GameBody = /** @class */ (function (_super) {
     GameBody.prototype.adaptViewportSize = function () {
         var t = dojo.marginBox("aoc-overall");
         var r = t.w;
-        var s = 2772;
+        var s = 1500;
         var height = dojo.marginBox("aoc-layout").h;
         var viewportWidth = dojo.window.getBox().w;
         var gameAreaWidth = viewportWidth < 980 ? viewportWidth : viewportWidth - 245;
@@ -295,6 +296,7 @@ var GameBody = /** @class */ (function (_super) {
         this.gameController.setup(gamedata);
         this.playerController.setupPlayers(gamedata.playerInfo);
         this.calendarController.setupCalendar(gamedata.calendarTiles);
+        this.cardController.setupPlayerHands(gamedata.playerHands);
         this.editorController.setupEditors(gamedata.editors);
         this.masteryController.setupMasteryTokens(gamedata.mastery);
         this.miniComicController.setupMiniComics(gamedata.miniComics);
@@ -404,6 +406,68 @@ var CalendarController = /** @class */ (function (_super) {
         this.createHtml(calendarTileDiv, "aoc-calendar-slot-" + calendarTile.position);
     };
     return CalendarController;
+}(GameBasics));
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * CardController.ts
+ *
+ */
+var CardController = /** @class */ (function (_super) {
+    __extends(CardController, _super);
+    function CardController() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    CardController.prototype.setupPlayerHands = function (playerHands) {
+        for (var player_id in playerHands) {
+            var hand = playerHands[player_id];
+            for (var i in hand) {
+                var card = hand[i];
+                this.createCard(card);
+            }
+        }
+    };
+    CardController.prototype.createCard = function (card) {
+        this.debug("createCard", card);
+        switch (card.typeId) {
+            case 1:
+                this.createCreativeCard(card);
+                break;
+            case 2:
+                this.createCreativeCard(card);
+                break;
+            case 3:
+                this.createComicCard(card);
+                break;
+        }
+    };
+    CardController.prototype.createComicCard = function (card) {
+        var cardDiv = '<div id="aoc-card-' +
+            card.id +
+            '" class="aoc-comic-card ' +
+            card.cssClass +
+            '"></div>';
+        if (card.location == globalThis.LOCATION_HAND) {
+            this.createHtml(cardDiv, "aoc-hand-" + card.playerId);
+        }
+    };
+    CardController.prototype.createCreativeCard = function (card) {
+        var cardDiv = '<div id="aoc-card-' +
+            card.id +
+            '" class="aoc-creative-card ' +
+            card.cssClass +
+            '"></div>';
+        if (card.location == globalThis.LOCATION_HAND) {
+            this.createHtml(cardDiv, "aoc-hand-" + card.playerId);
+        }
+    };
+    return CardController;
 }(GameBasics));
 /**
  *------
