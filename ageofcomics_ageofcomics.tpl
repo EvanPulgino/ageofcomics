@@ -454,7 +454,11 @@
         <div id="aoc-players-section">
             <!-- BEGIN playerarea -->
             <div id="aoc-player-area-{player_id}" class="aoc-player-area aoc-player-area-{color}">
-                <div id="aoc-player-mat-{player_id}" class="aoc-player-mat aoc-player-mat-{color}"></div>
+                <div id="aoc-player-mat-{player_id}" class="aoc-player-mat aoc-player-mat-{color}">
+                    <div id="aoc-cube-one-space-{player_id}" class="aoc-cube-space aoc-cube-space-one"></div>
+                    <div id="aoc-cube-two-space-{player_id}" class="aoc-cube-space aoc-cube-space-two"></div>
+                    <div id="aoc-cube-three-space-{player_id}" class="aoc-cube-space aoc-cube-space-three"></div>
+                </div>
                 <div id="aoc-hand-{player_id}" class="aoc-hand"></div>
             </div>
             <!-- END playerarea -->

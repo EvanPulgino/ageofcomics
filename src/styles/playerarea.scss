@@ -75,3 +75,46 @@
 .aoc-player-mat-yellow {
   background-position: 100% 100%;
 }
+
+.aoc-player-cube {
+  background-image: url(./img/aoc_cubes.png);
+  background-repeat: no-repeat;
+  height: 28px;
+  position: absolute;
+  width: 23px;
+}
+
+.aoc-player-cube-brown {
+  background-position: 0 0;
+}
+
+.aoc-player-cube-salmon {
+  background-position: 33.33% 0;
+}
+
+.aoc-player-cube-teal {
+  background-position: 100% 0;
+}
+
+.aoc-player-cube-yellow {
+  background-position: 66.66% 0;
+}
+
+.aoc-cube-space {
+  height: 28px;
+  position: absolute;
+  width: 23px;
+  top: 30px;
+}
+
+.aoc-cube-space-one {
+  left: 304px;
+}
+
+.aoc-cube-space-two {
+  left: 503px;
+}
+
+.aoc-cube-space-three {
+  left: 703px;
+}

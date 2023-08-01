@@ -407,3 +407,93 @@
     bottom: 22px;
     z-index: 24;
 }
+
+.aoc-hand .aoc-creative-card:nth-child(1) {
+    left: 0;
+    z-index: 1;
+}
+
+.aoc-hand .aoc-creative-card:nth-child(2) {
+    left: -80px;
+    z-index: 2;
+}
+
+.aoc-hand .aoc-creative-card:nth-child(3) {
+    left: -160px;
+    z-index: 3;
+}
+
+.aoc-hand .aoc-creative-card:nth-child(4) {
+    left: -240px;
+    z-index: 4;
+}
+
+.aoc-hand .aoc-creative-card:nth-child(5) {
+    left: -320px;
+    z-index: 5;
+}
+
+.aoc-hand .aoc-creative-card:nth-child(6) {
+    left: -400px;
+    z-index: 6;
+}
+
+.aoc-hand .aoc-creative-card:nth-child(7) {
+    left: -480px;
+    z-index: 7;
+}
+
+.aoc-hand .aoc-creative-card:nth-child(8) {
+    left: -560px;
+    z-index: 8;
+}
+
+.aoc-hand .aoc-comic-card:nth-child(1) {
+    left: 0;
+    z-index: 1;
+}
+
+.aoc-hand .aoc-comic-card:nth-child(2) {
+    left: -80px;
+    z-index: 2;
+}
+
+.aoc-hand .aoc-comic-card:nth-child(3) {
+    left: -160px;
+    z-index: 3;
+}
+
+.aoc-hand .aoc-comic-card:nth-child(4) {
+    left: -240px;
+    z-index: 4;
+}
+
+.aoc-hand .aoc-comic-card:nth-child(5) {
+    left: -320px;
+    z-index: 5;
+}
+
+.aoc-hand .aoc-comic-card:nth-child(6) {
+    left: -400px;
+    z-index: 6;
+}
+
+.aoc-hand .aoc-comic-card:nth-child(7) {
+    left: -480px;
+    z-index: 7;
+}
+
+.aoc-hand .aoc-comic-card:nth-child(8) {
+    left: -560px;
+    z-index: 8;
+}
+
+.aoc-hand .aoc-comic-card:hover {
+    transform: scale(1.05);
+    z-index: 100;
+}
+
+.aoc-hand .aoc-creative-card:hover {
+    transform: scale(1.05);
+    z-index: 100;
+}

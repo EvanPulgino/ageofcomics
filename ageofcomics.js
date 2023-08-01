@@ -622,6 +622,7 @@ var PlayerController = /** @class */ (function (_super) {
         for (var key in playerData) {
             this.createPlayerOrderToken(playerData[key]);
             this.createPlayerAgent(playerData[key]);
+            this.createPlayerCubes(playerData[key]);
         }
     };
     PlayerController.prototype.createPlayerOrderToken = function (player) {
@@ -638,8 +639,46 @@ var PlayerController = /** @class */ (function (_super) {
         var playerAgentDiv = '<div id="aoc-agent' +
             player.id +
             '" class="aoc-agent aoc-agent-' +
-            player.colorAsText + '"></div>';
+            player.colorAsText +
+            '"></div>';
         this.createHtml(playerAgentDiv, "aoc-map-agent-space-" + player.agentLocation);
+    };
+    PlayerController.prototype.createPlayerCubes = function (player) {
+        this.debug("creating player cubes", player);
+        this.createPlayerCubeOne(player);
+        this.createPlayerCubeTwo(player);
+        this.createPlayerCubeThree(player);
+    };
+    PlayerController.prototype.createPlayerCubeOne = function (player) {
+        var cubeDiv = '<div id="aoc-player-cube-one-' +
+            player.id +
+            '" class="aoc-player-cube aoc-player-cube-' +
+            player.colorAsText +
+            '"></div>';
+        console.log(cubeDiv);
+        if (player.cubeOneLocation == 5) {
+            this.createHtml(cubeDiv, "aoc-cube-one-space-" + player.id);
+        }
+    };
+    PlayerController.prototype.createPlayerCubeTwo = function (player) {
+        var cubeDiv = '<div id="aoc-player-cube-two-' +
+            player.id +
+            '" class="aoc-player-cube aoc-player-cube-' +
+            player.colorAsText +
+            '"></div>';
+        if (player.cubeOneLocation == 5) {
+            this.createHtml(cubeDiv, "aoc-cube-two-space-" + player.id);
+        }
+    };
+    PlayerController.prototype.createPlayerCubeThree = function (player) {
+        var cubeDiv = '<div id="aoc-player-cube-three-' +
+            player.id +
+            '" class="aoc-player-cube aoc-player-cube-' +
+            player.colorAsText +
+            '"></div>';
+        if (player.cubeOneLocation == 5) {
+            this.createHtml(cubeDiv, "aoc-cube-three-space-" + player.id);
+        }
     };
     return PlayerController;
 }(GameBasics));

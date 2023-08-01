@@ -64,14 +64,21 @@ class AOCSalesOrderManager extends APP_GameClass {
     }
 
     private function distributeSalesOrderTiles($playerCount) {
-        $salesOrderTiles = $this->getSalesOrders();
+        $salesOrders = $this->getSalesOrders();
+        $placedSalesOrders = $this->shuffleSalesOrders($playerCount, $salesOrders);
+        $this->savePlacedSalesOrders($placedSalesOrders);
+    }
+
+    private function shuffleSalesOrders($playerCount, $salesOrders) {
+        $copyOfSalesOrders = $salesOrders;
         $salesOrderSpaces = SALES_ORDER_SPACES[$playerCount];
         $placedSalesOrders = [];
+        $restart = false;
 
         // Shuffle the sales order tiles and place on the board
-        shuffle($salesOrderTiles);
+        shuffle($copyOfSalesOrders);
         foreach ($salesOrderSpaces as $space) {
-            $placedSalesOrders[$space] = array_pop($salesOrderTiles);
+            $placedSalesOrders[$space] = array_pop($copyOfSalesOrders);
         }
 
         // Validate that no connection has 3 or more of 1 genre
@@ -83,16 +90,28 @@ class AOCSalesOrderManager extends APP_GameClass {
             }
 
             $genreCounts = array_count_values($genres);
+
+            $restart = false;
             foreach ($genreCounts as $genreCount) {
                 if ($genreCount >= 3) {
-                    $this->distributeSalesOrderTiles($playerCount);
+                    $restart = true;
                     break;
                 }
             }
+            if ($restart) {
+                break;
+            }
         }
 
-        // If valid, save the sales order tiles to the database
-        foreach ($placedSalesOrders as $space => $salesOrder) {
+        if ($restart) {
+            return $this->shuffleSalesOrders($playerCount, $salesOrders);
+        } else {
+            return $placedSalesOrders;
+        }
+    }
+
+    private function savePlacedSalesOrders($shuffledOrders) {
+        foreach ($shuffledOrders as $space => $salesOrder) {
             $sql =
                 "UPDATE sales_order SET sales_order_location_arg = $space WHERE sales_order_id = " .
                 $salesOrder->getId();

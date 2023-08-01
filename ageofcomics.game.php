@@ -160,6 +160,7 @@ class AgeOfComics extends Table {
                 CARD_TYPE_WRITER,
                 $currentPlayerId
             ),
+            "connections" => SALES_ORDER_CONNECTIONS[4]
         ];
 
         return $gamedata;

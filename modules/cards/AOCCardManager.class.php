@@ -37,8 +37,7 @@ class AOCCardManager extends APP_GameClass {
         $this->createRipoffCards();
 
         // Deal starting cards
-        $this->dealStartingCreative(CARD_TYPE_ARTIST, $players);
-        $this->dealStartingCreative(CARD_TYPE_WRITER, $players);
+        $this->dealStartingCreative($players);
 
         // Shuffle decks
         $this->shuffleStartingDeck(CARD_TYPE_ARTIST);
@@ -253,33 +252,49 @@ class AOCCardManager extends APP_GameClass {
         self::DbQuery($sql);
     }
 
-    private function dealStartingCreative($creativeType, $players) {
+    private function dealStartingCreative($players) {
         // Get all level 2 cards
-        $cards =
-            $creativeType == CARD_TYPE_ARTIST
-                ? $this->getArtistCards()
-                : $this->getWriterCards();
-        $level2Cards = array_filter($cards, function ($card) {
+        $artistCards = $this->getArtistCards();
+        $writerCards = $this->getWriterCards();
+
+        $level2Artists = array_filter($artistCards, function ($card) {
+            return $card->getValue() == 2;
+        });
+        $level2Writers = array_filter($writerCards, function ($card) {
             return $card->getValue() == 2;
         });
 
         // Shuffle
-        shuffle($level2Cards);
+        shuffle($level2Artists);
+        shuffle($level2Writers);
 
         foreach ($players as $player) {
-            // Deal 1 card to each player
-            $card = array_pop($level2Cards);
-            $handLocation =
-                $card->getTypeId() * 100 +
-                $card->getGenreId() +
-                $card->getValue();
-            $card->setPlayerId($player->getId());
-            $card->setLocation(LOCATION_HAND);
-            $card->setLocationArg($handLocation);
+            // Deal 1 card of each type to each player
+            $artistCard = array_pop($level2Artists);
+            $writerCard = array_pop($level2Writers);
 
-            $this->saveCard($card);
+            // Make sure cards are different genres
+            while ($artistCard->getGenreId() == $writerCard->getGenreId()) {
+                $level2Artists[] = $artistCard;
+                $level2Writers[] = $writerCard;
+                shuffle($level2Artists);
+                shuffle($level2Writers);
+                $artistCard = array_pop($level2Artists);
+                $writerCard = array_pop($level2Writers);
+            }
+
+            $artistCard->setPlayerId($player->getId());
+            $artistCard->setLocation(LOCATION_HAND);
+            $artistCard->setLocationArg($artistCard->getTypeId() * 100 + $artistCard->getGenreId() + $artistCard->getValue());
+            $this->saveCard($artistCard);
+
+            $writerCard->setPlayerId($player->getId());
+            $writerCard->setLocation(LOCATION_HAND);
+            $writerCard->setLocationArg($writerCard->getTypeId() * 100 + $writerCard->getGenreId() + $writerCard->getValue());
+            $this->saveCard($writerCard);
         }
     }
+
 
     private function getCardsByType($cardType) {
         $sql =
