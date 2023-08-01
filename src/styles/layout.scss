@@ -69,16 +69,31 @@ html {
  #aoc-card-market {
   display: flex;
   flex-flow: column nowrap;
-  gap: 30px;
+  gap: 35px;
+  height: 1062px;
   justify-content: center;
+  padding-bottom: 25px;
+}
+
+.aoc-card-row-container {
+  background-color: #e4d8c7;
+  background-image: linear-gradient(to right, #f5ead690, #e4d8c7);
+  border-radius: 10px;
+  height: 300px;
+  width: 1015px;
+  filter: drop-shadow(1px 1px 1px black);
+  -webkit-filter: drop-shadow(1px 1px 2px #000);
 }
 
 .aoc-card-market-row {
-  align-items: flex-end;
+  align-items: center;
   display: flex;
   flex-flow: row nowrap;
-  gap: 10px;
-  height: 243px;
+  gap: 25px;
+  justify-content: center;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 10px;
 }
 
 #aoc-token-bank {

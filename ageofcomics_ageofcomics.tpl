@@ -153,7 +153,7 @@
                     <div id="aoc-tickets-space"></div>
                 </div>
             </div>
-            <div id="aoc-chart" class="aoc-board-section">
+            <div id="aoc-chart" class="aoc-board-section" style="display: none;">
                 <div id="aoc-chart-start" class="aoc-board-image aoc-chart-start"></div>
                 <!-- BEGIN playerchart -->
                 <div id="aoc-chart-{player_id}" class="aoc-board-image aoc-chart-{color}"></div>
@@ -161,7 +161,7 @@
                 <div id="aoc-chart-end" class="aoc-board-image aoc-chart-end"></div>
             </div>
             <div id="aoc-card-market">
-                <div id="aoc-component-supply" class="aoc-card-market-row">
+                <div id="aoc-component-supply" class="aoc-card-market-row" style="display: none;">
                     <div id="aoc-ripoff-deck" class="aoc-deck"></div>
                     <div id="aoc-token-bank">
                         <div id="aoc-mastery-tokens"></div>
@@ -275,7 +275,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="aoc-writers-market" class="aoc-card-market-row">
+                <div id="aoc-writers-market" class="aoc-card-row-container aoc-card-market-row">
                     <div id="aoc-writer-deck" class="aoc-deck">
                         <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
                         <div id="test" class="aoc-creative-card aoc-writer-facedown-2"></div>
@@ -306,7 +306,7 @@
                         <div id="test" class="aoc-creative-card aoc-writer-romance-10"></div>
                         <div id="test" class="aoc-creative-card aoc-writer-horror-20"></div>
                     </div>
-                    <div id="aoc-writers-discard" class="aoc-discard">
+                    <div id="aoc-writers-discard" class="aoc-discard" style="display: none;">
                         <div id="test" class="aoc-creative-card aoc-writer-superhero-10"></div>
                         <div id="test" class="aoc-creative-card aoc-writer-horror-21"></div>
                         <div id="test" class="aoc-creative-card aoc-writer-western-30"></div>
@@ -333,7 +333,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="aoc-artists-market" class="aoc-card-market-row">
+                <div id="aoc-artists-market" class="aoc-card-row-container aoc-card-market-row">
                     <div id="aoc-artist-deck" class="aoc-deck">
                         <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
                         <div id="test" class="aoc-creative-card aoc-artist-facedown-2"></div>
@@ -364,7 +364,7 @@
                         <div id="test" class="aoc-creative-card aoc-artist-romance-10"></div>
                         <div id="test" class="aoc-creative-card aoc-artist-horror-20"></div>
                     </div>
-                    <div id="aoc-artists-discard" class="aoc-discard">
+                    <div id="aoc-artists-discard" class="aoc-discard" style="display: none;">
                         <div id="test" class="aoc-creative-card aoc-artist-superhero-10"></div>
                         <div id="test" class="aoc-creative-card aoc-artist-horror-21"></div>
                         <div id="test" class="aoc-creative-card aoc-artist-western-30"></div>
@@ -391,7 +391,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="aoc-comics-market" class="aoc-card-market-row">
+                <div id="aoc-comics-market" class="aoc-card-row-container aoc-card-market-row">
                     <div id="aoc-comic-deck" class="aoc-deck">
                         <div id="test" class="aoc-comic-card aoc-comic-horror-facedown"></div>
                         <div id="test" class="aoc-comic-card aoc-horror-facedown"></div>
@@ -422,7 +422,7 @@
                         <div id="test" class="aoc-comic-card aoc-comic-romance-1"></div>
                         <div id="test" class="aoc-comic-card aoc-comic-horror-4"></div>
                     </div>
-                    <div id="aoc-comics-discard" class="aoc-discard">
+                    <div id="aoc-comics-discard" class="aoc-discard" style="display: none;">
                         <div id="test" class="aoc-comic-card aoc-comic-superhero-1"></div>
                         <div id="test" class="aoc-comic-card aoc-comic-horror-2"></div>
                         <div id="test" class="aoc-comic-card aoc-comic-western-3"></div>
