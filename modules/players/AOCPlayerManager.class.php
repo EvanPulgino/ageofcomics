@@ -168,6 +168,35 @@ class AOCPlayerManager extends APP_GameClass {
         return $players;
     }
 
+    public function getPlayersInViewOrder() {
+        $players = $this->getPlayers();
+        $playerCount = count($players);
+        $currentPlayer = self::findPlayerById($players, $this->game->getViewingPlayerId());
+
+        if($currentPlayer) {
+            $sortedPlayers = [];
+            $sortedPlayers[] = $currentPlayer;
+            $lastPlayerAdded = $currentPlayer;
+
+            while(count($sortedPlayers) < $playerCount) {
+                $nextPlayerNaturalOrder = 0;
+                if($lastPlayerAdded->getNaturalOrder() == $playerCount) {
+                    $nextPlayerNaturalOrder = 1;
+                } else {
+                    $nextPlayerNaturalOrder = $lastPlayerAdded->getNaturalOrder() + 1;
+                }
+
+                $nextPlayer = self::findPlayerByNaturalOrder($players, $nextPlayerNaturalOrder);
+                $sortedPlayers[] = $nextPlayer;
+                $lastPlayerAdded = $nextPlayer;
+            }
+
+            return $sortedPlayers;
+        } else {
+            return $players;
+        }
+    }
+
     /**
      * Get ui data of all/specified players in a list
      * @param array<AOCPlayer> $players list of player objects
@@ -180,6 +209,26 @@ class AOCPlayerManager extends APP_GameClass {
             $uiData[] = $player->getUiData();
         }
         return $uiData;
+    }
+
+    private function findPlayerById($players, $playerId) {
+        foreach($players as $player) {
+            if($playerId == $player->getId()) {
+                return $player;
+            }
+        }
+
+        return false;
+    }
+
+    private function findPlayerByNaturalOrder($players, $naturalOrder) {
+        foreach($players as $player) {
+            if($naturalOrder == $player->getNaturalOrder()) {
+                return $player;
+            }
+        }
+
+        return false;
     }
 
     /**

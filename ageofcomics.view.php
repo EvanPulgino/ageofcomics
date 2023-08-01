@@ -52,8 +52,8 @@ class view_ageofcomics_ageofcomics extends game_view
         $this->page->begin_block($template, $section);
         foreach($players as $player) {
             $this->page->insert_block($section, array(
-                "player_id" => $player['player_id'],
-                "color" => $this->getColorString($player['player_color']),
+                "player_id" => $player->getId(),
+                "color" => $player->getColorAsText(),
             ));
         }
     }
@@ -63,7 +63,7 @@ class view_ageofcomics_ageofcomics extends game_view
         $template = self::getGameName() . "_" . self::getGameName();
 
   	    // Get players & players number
-        $players = $this->game->loadPlayersBasicInfos();
+        $players = $this->game->playerManager->getPlayersInViewOrder();
         $players_nbr = count( $players );
 
         $this->createPlayersSection($template, $players, "playerchart");
