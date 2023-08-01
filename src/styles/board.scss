@@ -6,7 +6,6 @@
 
 .aoc-board {
   background-position: 99% 0;
-  border-radius: 5px;
   width: 1439px;
 }
 
@@ -17,9 +16,9 @@
 }
 
 .aoc-board-section {
-  filter: drop-shadow(1px 1px 1px black);
-  -webkit-filter: drop-shadow(1px 1px 2px #000);
-  padding-bottom: 25px;
+  border-radius: 15px;
+  filter: drop-shadow(4px 4px 4px black);
+  -webkit-filter: drop-shadow(4px 4px 5px #000);
 }
 
 #aoc-chart {
