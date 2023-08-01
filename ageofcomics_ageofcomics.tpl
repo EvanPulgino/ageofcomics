@@ -455,37 +455,37 @@
             <!-- BEGIN playerarea -->
             <div id="aoc-player-background-panel-{player_id}" class="aoc-player-background-panel">
                 <div id="aoc-paper-supply-{player_id}" class="aoc-paper-supply">
-                    <div id="aoc-player-crime-supply-{player_id}" class="aoc-player-supply">
-                        <div id="aoc-player-crime-count-{player_id}" class="aoc-player-supply-count">0</div>
-                        <div id="aoc-player-crime-{player_id}" class="aoc-idea-token aoc-idea-token-crime"></div>
+                    <div id="aoc-player-crime-supply-{player_id}" class="aoc-player-supply aoc-empty">
+                        <span id="aoc-player-crime-count-{player_id}" class="aoc-player-supply-count">0</span>
+                        <span id="aoc-player-crime-{player_id}" class="aoc-idea-token aoc-idea-token-crime"></span>
                     </div>
-                    <div id="aoc-player-horror-supply-{player_id}" class="aoc-player-supply">
-                    <div id="aoc-player-horror-count-{player_id}" class="aoc-player-supply-count">0</div>
-                        <div id="aoc-player-horror-{player_id}" class="aoc-idea-token aoc-idea-token-horror"></div>
+                    <div id="aoc-player-horror-supply-{player_id}" class="aoc-player-supply aoc-empty">
+                        <span id="aoc-player-horror-count-{player_id}" class="aoc-player-supply-count">0</span>
+                        <span id="aoc-player-horror-{player_id}" class="aoc-idea-token aoc-idea-token-horror"></span>
                     </div>
-                    <div id="aoc-player-romance-supply-{player_id}" class="aoc-player-supply">
-                        <div id="aoc-player-romance-count-{player_id}" class="aoc-player-supply-count">0</div>
-                        <div id="aoc-player-romance-{player_id}" class="aoc-idea-token aoc-idea-token-romance"></div>
+                    <div id="aoc-player-romance-supply-{player_id}" class="aoc-player-supply aoc-empty">
+                        <span id="aoc-player-romance-count-{player_id}" class="aoc-player-supply-count">0</span>
+                        <span id="aoc-player-romance-{player_id}" class="aoc-idea-token aoc-idea-token-romance"></span>
                     </div>
-                    <div id="aoc-player-scifi-supply-{player_id}" class="aoc-player-supply">
-                        <div id="aoc-player-scifi-count-{player_id}" class="aoc-player-supply-count">0</div>
-                        <div id="aoc-player-scifi-{player_id}" class="aoc-idea-token aoc-idea-token-scifi"></div>
+                    <div id="aoc-player-scifi-supply-{player_id}" class="aoc-player-supply aoc-empty">
+                        <span id="aoc-player-scifi-count-{player_id}" class="aoc-player-supply-count">0</span>
+                        <span id="aoc-player-scifi-{player_id}" class="aoc-idea-token aoc-idea-token-scifi"></span>
                     </div>
-                    <div id="aoc-player-superhero-supply-{player_id}" class="aoc-player-supply">
-                        <div id="aoc-player-superhero-count-{player_id}" class="aoc-player-supply-count">0</div>
-                        <div id="aoc-player-superhero-{player_id}" class="aoc-idea-token aoc-idea-token-superhero"></div>
+                    <div id="aoc-player-superhero-supply-{player_id}" class="aoc-player-supply aoc-empty">
+                        <span id="aoc-player-superhero-count-{player_id}" class="aoc-player-supply-count">0</span>
+                        <span id="aoc-player-superhero-{player_id}" class="aoc-idea-token aoc-idea-token-superhero"></span>
                     </div>
-                    <div id="aoc-player-western-supply-{player_id}" class="aoc-player-supply">
-                        <div id="aoc-player-western-count-{player_id}" class="aoc-player-supply-count">0</div>
-                        <div id="aoc-player-western-{player_id}" class="aoc-idea-token aoc-idea-token-western"></div>
+                    <div id="aoc-player-western-supply-{player_id}" class="aoc-player-supply aoc-empty">
+                        <span id="aoc-player-western-count-{player_id}" class="aoc-player-supply-count">0</span>
+                        <span id="aoc-player-western-{player_id}" class="aoc-idea-token aoc-idea-token-western"></span>
                     </div>
-                    <div id="aoc-player-money-supply-{player_id}" class="aoc-player-supply">
-                        <div id="aoc-player-money-count-{player_id}" class="aoc-player-supply-count">0</div>
-                        <div id="aoc-player-money-{player_id}" class="aoc-round-token aoc-token-coin"></div>
+                    <div id="aoc-player-money-supply-{player_id}" class="aoc-player-supply aoc-empty">
+                        <span id="aoc-player-money-count-{player_id}" class="aoc-player-supply-count">0</span>
+                        <span id="aoc-player-money-{player_id}" class="aoc-round-token aoc-token-coin"></span>
                     </div>
-                    <div id="aoc-player-point-supply-{player_id}" class="aoc-player-supply">
-                    <div id="aoc-player-point-count-{player_id}" class="aoc-player-supply-count">0</div>
-                        <div id="aoc-player-points-{player_id}" class="aoc-round-token aoc-token-point"></div>
+                    <div id="aoc-player-point-supply-{player_id}" class="aoc-player-supply aoc-empty">
+                        <span id="aoc-player-point-count-{player_id}" class="aoc-player-supply-count">0</span>
+                        <span id="aoc-player-points-{player_id}" class="aoc-round-token aoc-token-point"></span>
                     </div>
                 </div>
                 <div id="aoc-player-area-{player_id}" class="aoc-player-area aoc-player-area-{color}">

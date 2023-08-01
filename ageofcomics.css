@@ -1122,7 +1122,7 @@ html {
   background-image: url(./img/aoc-paper.png);
   background-size: contain;
   height: 100%;
-  width: 1200px;
+  width: 830px;
   position: absolute;
   z-index: 1;
   filter: drop-shadow(2px 2px 2px black);
@@ -1135,6 +1135,10 @@ html {
   gap: 10px;
 }
 
+.aoc-empty {
+  opacity: 0.2;
+}
+
 .aoc-player-supply {
   display: flex;
   flex-flow: row nowrap;
@@ -1142,12 +1146,18 @@ html {
   padding: 12px;
 }
 
+.aoc-player-supply-count {
+  font-size: 35px;
+  font-weight: 800;
+  letter-spacing: 6px;
+}
+
 .aoc-player-area {
   align-items: end;
   border-radius: 5px;
   box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.6274509804);
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
   gap: 50px;
   justify-content: start;
   position: relative;
