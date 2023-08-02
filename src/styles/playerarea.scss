@@ -14,7 +14,7 @@
   background-image: url(./img/aoc_paper.jpg);
   background-size: contain;
   height: 100%;
-  width: 830px;
+  width: 100%;
   position: absolute;
   z-index: 1;
   filter: drop-shadow(2px 2px 2px black);
@@ -23,7 +23,7 @@
   display: flex;
   flex-flow: row nowrap;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 10px;
  }
 
@@ -40,7 +40,7 @@
 
  .aoc-player-supply-count {
   font-size: 35px;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 6px;
  }
 
@@ -62,8 +62,9 @@
   display: flex;
   flex-flow: row nowrap;
   height: 485px;
+  justify-content: flex-end;
   position: relative;
-  width: 1230px;
+  width: 1300px;
  }
 
  .aoc-player-area-right {
@@ -73,7 +74,7 @@
   height: auto;
   padding-left: 25px;
   position: relative;
-  width: 1230px;
+  width: 1300px;
  }
 
  .aoc-player-area-brown {
@@ -180,4 +181,30 @@
 
 .aoc-cube-space-three {
   left: 703px;
+}
+
+.aoc-player-name {
+  font-size: 35px;
+  font-weight: 600;
+  line-height: 65px;
+  z-index: 3;
+  text-align: center;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.aoc-player-name-brown {
+  color: $brown;
+}
+
+.aoc-player-name-salmon {
+  color: $salmon;
+}
+
+.aoc-player-name-teal {
+  color: $teal;
+}
+
+.aoc-player-name-yellow {
+  color: $yellow;
 }

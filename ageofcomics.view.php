@@ -53,6 +53,7 @@ class view_ageofcomics_ageofcomics extends game_view
         foreach($players as $player) {
             $this->page->insert_block($section, array(
                 "player_id" => $player->getId(),
+                "player_name" => $player->getName(),
                 "color" => $player->getColorAsText(),
             ));
         }
