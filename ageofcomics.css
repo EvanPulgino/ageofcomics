@@ -1144,8 +1144,21 @@ html {
   display: flex;
   flex-flow: row nowrap;
   align-items: flex-start;
-  justify-content: flex-start;
+  justify-content: space-evenly;
   gap: 10px;
+}
+
+.aoc-editor-container {
+  align-items: center;
+  bottom: 0;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 10px;
+  height: 420px;
+  justify-content: space-evenly;
+  left: 0;
+  position: absolute;
+  width: 70px;
 }
 
 .aoc-empty {
@@ -1313,6 +1326,7 @@ html {
   text-align: center;
   padding-left: 20px;
   padding-right: 20px;
+  text-shadow: 2px 2px 2px black;
 }
 
 .aoc-player-name-brown {

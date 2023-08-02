@@ -25,7 +25,9 @@ class EditorController extends GameBasics {
         if (editor.locationId == globalThis.LOCATION_EXTRA_EDITOR) {
             var color = this.getPlayerColorAsString(editor.color);
             this.createHtml(editorDiv,"aoc-extra-editor-space-" + color);
+        } else if (editor.locationId == globalThis.LOCATION_PLAYER_AREA) {
+            var color = this.getPlayerColorAsString(editor.color);
+            this.createHtml(editorDiv,"aoc-editor-container-" + editor.playerId);
         }
-        // TODO: Handle other editor locations
     }
 }

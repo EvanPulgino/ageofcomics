@@ -457,6 +457,7 @@
                 <div id="aoc-player-area-{player_id}" class="aoc-player-area aoc-player-area-{color}">
                     <div id="aoc-player-area-left-{player_id}" class="aoc-player-area-left">
                         <div id="aoc-paper-supply-{player_id}" class="aoc-paper-supply">
+                            <div id="aoc-editor-container-{player_id}" class="aoc-editor-container"></div>
                             <span id="aoc-player-name-{player_id}" class="aoc-player-name aoc-player-name-{color}">
                                 {player_name}
                             </span>
