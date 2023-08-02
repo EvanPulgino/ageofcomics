@@ -1202,9 +1202,11 @@ html {
 }
 
 .aoc-player-area-right {
-  align-items: flex-end;
+  align-items: flex-start;
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: column nowrap;
+  gap: 40px;
+  justify-content: space-evenly;
   height: auto;
   padding-left: 25px;
   position: relative;
@@ -1229,6 +1231,26 @@ html {
 .aoc-player-area-yellow {
   background-color: #f5c86e;
   background-image: linear-gradient(to right, #f5c86e, rgba(245, 234, 214, 0.5647058824));
+}
+
+.aoc-player-mastery-container {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+  justify-content: space-evenly;
+}
+
+.aoc-player-token-container {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+  justify-content: space-evenly;
+}
+
+.aoc-player-token-container .aoc-ticket {
+  position: relative !important;
 }
 
 .aoc-hand {

@@ -68,7 +68,8 @@
                         <div id="aoc-mini-ripoffs-horror" class="aoc-mini-comic-container aoc-mini-ripoff-space"></div>
                         <div id="aoc-mini-ripoffs-romance" class="aoc-mini-comic-container aoc-mini-ripoff-space"></div>
                         <div id="aoc-mini-ripoffs-scifi" class="aoc-mini-comic-container aoc-mini-ripoff-space"></div>
-                        <div id="aoc-mini-ripoffs-superhero" class="aoc-mini-comic-container aoc-mini-ripoff-space"></div>
+                        <div id="aoc-mini-ripoffs-superhero" class="aoc-mini-comic-container aoc-mini-ripoff-space">
+                        </div>
                         <div id="aoc-mini-ripoffs-western" class="aoc-mini-comic-container aoc-mini-ripoff-space"></div>
                     </div>
                 </div>
@@ -183,11 +184,16 @@
                                         <div id="aoc-idea-horror-5" class="aoc-idea-token aoc-idea-token-horror"></div>
                                     </div>
                                     <div id="aoc-romance-tokens" class="aoc-idea-bank">
-                                        <div id="aoc-idea-romance-1" class="aoc-idea-token aoc-idea-token-romance"></div>
-                                        <div id="aoc-idea-romance-2" class="aoc-idea-token aoc-idea-token-romance"></div>
-                                        <div id="aoc-idea-romance-3" class="aoc-idea-token aoc-idea-token-romance"></div>
-                                        <div id="aoc-idea-romance-4" class="aoc-idea-token aoc-idea-token-romance"></div>
-                                        <div id="aoc-idea-romance-5" class="aoc-idea-token aoc-idea-token-romance"></div>
+                                        <div id="aoc-idea-romance-1" class="aoc-idea-token aoc-idea-token-romance">
+                                        </div>
+                                        <div id="aoc-idea-romance-2" class="aoc-idea-token aoc-idea-token-romance">
+                                        </div>
+                                        <div id="aoc-idea-romance-3" class="aoc-idea-token aoc-idea-token-romance">
+                                        </div>
+                                        <div id="aoc-idea-romance-4" class="aoc-idea-token aoc-idea-token-romance">
+                                        </div>
+                                        <div id="aoc-idea-romance-5" class="aoc-idea-token aoc-idea-token-romance">
+                                        </div>
                                     </div>
                                 </div>
                                 <div id="aoc-idea-tokens-row-1" class="aoc-idea-tokens-row">
@@ -199,19 +205,29 @@
                                         <div id="aoc-idea-scifi-5" class="aoc-idea-token aoc-idea-token-scifi"></div>
                                     </div>
                                     <div id="aoc-superhero-tokens" class="aoc-idea-bank">
-                                        <div id="aoc-idea-superhero-1" class="aoc-idea-token aoc-idea-token-superhero"></div>
-                                        <div id="aoc-idea-superhero-2" class="aoc-idea-token aoc-idea-token-superhero"></div>
-                                        <div id="aoc-idea-superhero-3" class="aoc-idea-token aoc-idea-token-superhero"></div>
-                                        <div id="aoc-idea-superhero-4" class="aoc-idea-token aoc-idea-token-superhero"></div>
-                                        <div id="aoc-idea-superhero-5" class="aoc-idea-token aoc-idea-token-superhero"></div>
+                                        <div id="aoc-idea-superhero-1" class="aoc-idea-token aoc-idea-token-superhero">
+                                        </div>
+                                        <div id="aoc-idea-superhero-2" class="aoc-idea-token aoc-idea-token-superhero">
+                                        </div>
+                                        <div id="aoc-idea-superhero-3" class="aoc-idea-token aoc-idea-token-superhero">
+                                        </div>
+                                        <div id="aoc-idea-superhero-4" class="aoc-idea-token aoc-idea-token-superhero">
+                                        </div>
+                                        <div id="aoc-idea-superhero-5" class="aoc-idea-token aoc-idea-token-superhero">
+                                        </div>
                                     </div>
                                     <div id="aoc-western-tokens" class="aoc-idea-bank">
-                                        <div id="aoc-idea-western-1" class="aoc-idea-token aoc-idea-token-western"></div>
-                                        <div id="aoc-idea-western-2" class="aoc-idea-token aoc-idea-token-western"></div>
-                                        <div id="aoc-idea-western-3" class="aoc-idea-token aoc-idea-token-western"></div>
-                                        <div id="aoc-idea-western-4" class="aoc-idea-token aoc-idea-token-western"></div>
-                                        <div id="aoc-idea-western-5" class="aoc-idea-token aoc-idea-token-western"></div>
-                                    </div>    
+                                        <div id="aoc-idea-western-1" class="aoc-idea-token aoc-idea-token-western">
+                                        </div>
+                                        <div id="aoc-idea-western-2" class="aoc-idea-token aoc-idea-token-western">
+                                        </div>
+                                        <div id="aoc-idea-western-3" class="aoc-idea-token aoc-idea-token-western">
+                                        </div>
+                                        <div id="aoc-idea-western-4" class="aoc-idea-token aoc-idea-token-western">
+                                        </div>
+                                        <div id="aoc-idea-western-5" class="aoc-idea-token aoc-idea-token-western">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div id="aoc-other-tokens">
@@ -462,49 +478,80 @@
                                 {player_name}
                             </span>
                             <div id="aoc-player-crime-supply-{player_id}" class="aoc-player-supply aoc-empty">
-                                <span id="aoc-player-crime-count-{player_id}" class="aoc-player-supply-count aoc-squanda">0</span>
-                                <span id="aoc-player-crime-{player_id}" class="aoc-idea-token aoc-idea-token-crime"></span>
+                                <span id="aoc-player-crime-count-{player_id}"
+                                    class="aoc-player-supply-count aoc-squanda">0</span>
+                                <span id="aoc-player-crime-{player_id}"
+                                    class="aoc-idea-token aoc-idea-token-crime"></span>
                             </div>
                             <div id="aoc-player-horror-supply-{player_id}" class="aoc-player-supply aoc-empty">
-                                <span id="aoc-player-horror-count-{player_id}" class="aoc-player-supply-count aoc-squanda">0</span>
-                                <span id="aoc-player-horror-{player_id}" class="aoc-idea-token aoc-idea-token-horror"></span>
+                                <span id="aoc-player-horror-count-{player_id}"
+                                    class="aoc-player-supply-count aoc-squanda">0</span>
+                                <span id="aoc-player-horror-{player_id}"
+                                    class="aoc-idea-token aoc-idea-token-horror"></span>
                             </div>
                             <div id="aoc-player-romance-supply-{player_id}" class="aoc-player-supply aoc-empty">
-                                <span id="aoc-player-romance-count-{player_id}" class="aoc-player-supply-count aoc-squanda">0</span>
-                                <span id="aoc-player-romance-{player_id}" class="aoc-idea-token aoc-idea-token-romance"></span>
+                                <span id="aoc-player-romance-count-{player_id}"
+                                    class="aoc-player-supply-count aoc-squanda">0</span>
+                                <span id="aoc-player-romance-{player_id}"
+                                    class="aoc-idea-token aoc-idea-token-romance"></span>
                             </div>
                             <div id="aoc-player-scifi-supply-{player_id}" class="aoc-player-supply aoc-empty">
-                                <span id="aoc-player-scifi-count-{player_id}" class="aoc-player-supply-count aoc-squanda">0</span>
-                                <span id="aoc-player-scifi-{player_id}" class="aoc-idea-token aoc-idea-token-scifi"></span>
+                                <span id="aoc-player-scifi-count-{player_id}"
+                                    class="aoc-player-supply-count aoc-squanda">0</span>
+                                <span id="aoc-player-scifi-{player_id}"
+                                    class="aoc-idea-token aoc-idea-token-scifi"></span>
                             </div>
                             <div id="aoc-player-superhero-supply-{player_id}" class="aoc-player-supply aoc-empty">
-                                <span id="aoc-player-superhero-count-{player_id}" class="aoc-player-supply-count aoc-squanda">0</span>
-                                <span id="aoc-player-superhero-{player_id}" class="aoc-idea-token aoc-idea-token-superhero"></span>
+                                <span id="aoc-player-superhero-count-{player_id}"
+                                    class="aoc-player-supply-count aoc-squanda">0</span>
+                                <span id="aoc-player-superhero-{player_id}"
+                                    class="aoc-idea-token aoc-idea-token-superhero"></span>
                             </div>
                             <div id="aoc-player-western-supply-{player_id}" class="aoc-player-supply aoc-empty">
-                                <span id="aoc-player-western-count-{player_id}" class="aoc-player-supply-count aoc-squanda">0</span>
-                                <span id="aoc-player-western-{player_id}" class="aoc-idea-token aoc-idea-token-western"></span>
+                                <span id="aoc-player-western-count-{player_id}"
+                                    class="aoc-player-supply-count aoc-squanda">0</span>
+                                <span id="aoc-player-western-{player_id}"
+                                    class="aoc-idea-token aoc-idea-token-western"></span>
                             </div>
                             <div id="aoc-player-money-supply-{player_id}" class="aoc-player-supply aoc-empty">
-                                <span id="aoc-player-money-count-{player_id}" class="aoc-player-supply-count aoc-squanda">0</span>
+                                <span id="aoc-player-money-count-{player_id}"
+                                    class="aoc-player-supply-count aoc-squanda">0</span>
                                 <span id="aoc-player-money-{player_id}" class="aoc-round-token aoc-token-coin"></span>
                             </div>
                             <div id="aoc-player-point-supply-{player_id}" class="aoc-player-supply aoc-empty">
-                                <span id="aoc-player-point-count-{player_id}" class="aoc-player-supply-count aoc-squanda">0</span>
+                                <span id="aoc-player-point-count-{player_id}"
+                                    class="aoc-player-supply-count aoc-squanda">0</span>
                                 <span id="aoc-player-points-{player_id}" class="aoc-round-token aoc-token-point"></span>
                             </div>
                             <div id="aoc-player-income-{player_id}" class="aoc-player-supply aoc-empty">
-                                <span id="aoc-player-income-count-{player_id}" class="aoc-player-supply-count aoc-squanda">0</span>
-                                <i id="aoc-player-income-{player_id}" class="aoc-icon-size fa6 fa6-solid fa6-money-bill-trend-up"></i>
+                                <span id="aoc-player-income-count-{player_id}"
+                                    class="aoc-player-supply-count aoc-squanda">0</span>
+                                <i id="aoc-player-income-{player_id}"
+                                    class="aoc-icon-size fa6 fa6-solid fa6-money-bill-trend-up"></i>
                             </div>
                         </div>
                         <div id="aoc-player-mat-{player_id}" class="aoc-player-mat aoc-player-mat-{color}">
                             <div id="aoc-cube-one-space-{player_id}" class="aoc-cube-space aoc-cube-space-one"></div>
                             <div id="aoc-cube-two-space-{player_id}" class="aoc-cube-space aoc-cube-space-two"></div>
-                            <div id="aoc-cube-three-space-{player_id}" class="aoc-cube-space aoc-cube-space-three"></div>
+                            <div id="aoc-cube-three-space-{player_id}" class="aoc-cube-space aoc-cube-space-three">
+                            </div>
                         </div>
                     </div>
                     <div id="aoc-player-area-right-{player_id}" class="aoc-player-area-right">
+                        <div id="aoc-player-mastery-{player_id}" class="aoc-player-mastery-container">
+                            <div id="aoc-mastery-token-1" class="aoc-mastery-token aoc-mastery-token-crime"></div>
+                            <div id="aoc-mastery-token-2" class="aoc-mastery-token aoc-mastery-token-horror"></div>
+                            <div id="aoc-mastery-token-3" class="aoc-mastery-token aoc-mastery-token-romance"></div>
+                            <div id="aoc-mastery-token-4" class="aoc-mastery-token aoc-mastery-token-scifi"></div>
+                            <div id="aoc-mastery-token-5" class="aoc-mastery-token aoc-mastery-token-superhero"></div>
+                            <div id="aoc-mastery-token-6" class="aoc-mastery-token aoc-mastery-token-western"></div>
+                        </div>
+                        <div id="aoc-player-tokens-{player_id}" class="aoc-player-token-container">
+                            <div id="aoc-ticket-1" class="aoc-ticket"></div>
+                            <div id="aoc-salesorder-11" class="aoc-salesorder aoc-salesorder-horror-facedown"></div>
+                            <div id="aoc-salesorder-11" class="aoc-salesorder aoc-salesorder-horror-facedown"></div>
+                            <div id="aoc-salesorder-11" class="aoc-salesorder aoc-salesorder-horror-facedown"></div>
+                        </div>
                         <div id="aoc-hand-{player_id}" class="aoc-hand"></div>
                     </div>
                 </div>

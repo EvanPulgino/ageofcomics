@@ -4,13 +4,13 @@
  *
  */
 
- .aoc-player-background-panel {
+.aoc-player-background-panel {
   height: auto;
   width: 95%;
   position: relative;
- }
+}
 
- .aoc-paper-supply {
+.aoc-paper-supply {
   background-image: url(./img/aoc_paper.jpg);
   background-size: contain;
   height: 100%;
@@ -25,9 +25,9 @@
   align-items: flex-start;
   justify-content: space-evenly;
   gap: 10px;
- }
+}
 
- .aoc-editor-container {
+.aoc-editor-container {
   align-items: center;
   bottom: 0;
   display: flex;
@@ -38,26 +38,26 @@
   left: 0;
   position: absolute;
   width: 70px;
- }
+}
 
- .aoc-empty {
-  opacity: .2;
- }
+.aoc-empty {
+  opacity: 0.2;
+}
 
- .aoc-player-supply {
+.aoc-player-supply {
   display: flex;
   flex-flow: row nowrap;
   align-items: flex-start;
   padding: 12px;
- }
+}
 
- .aoc-player-supply-count {
+.aoc-player-supply-count {
   font-size: 35px;
   font-weight: 600;
   letter-spacing: 6px;
- }
+}
 
- .aoc-player-area {
+.aoc-player-area {
   align-items: end;
   border-radius: 5px;
   box-shadow: 3px 3px 3px 3px #000000a0;
@@ -68,9 +68,9 @@
   position: relative;
   width: 100%;
   height: 100%;
- }
+}
 
- .aoc-player-area-left {
+.aoc-player-area-left {
   align-items: flex-end;
   display: flex;
   flex-flow: row nowrap;
@@ -78,22 +78,24 @@
   justify-content: flex-end;
   position: relative;
   width: 1300px;
- }
+}
 
- .aoc-player-area-right {
-  align-items: flex-end;
+.aoc-player-area-right {
+  align-items: flex-start;
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: column nowrap;
+  gap: 40px;
+  justify-content: space-evenly;
   height: auto;
   padding-left: 25px;
   position: relative;
   width: 1300px;
- }
+}
 
- .aoc-player-area-brown {
+.aoc-player-area-brown {
   background-color: $brown;
   background-image: linear-gradient(to right, $brown, #f5ead690);
- }
+}
 
 .aoc-player-area-salmon {
   background-color: $salmon;
@@ -108,6 +110,26 @@
 .aoc-player-area-yellow {
   background-color: $yellow;
   background-image: linear-gradient(to right, $yellow, #f5ead690);
+}
+
+.aoc-player-mastery-container {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+  justify-content: space-evenly;
+}
+
+.aoc-player-token-container {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+  justify-content: space-evenly;
+}
+
+.aoc-player-token-container .aoc-ticket {
+  position: relative !important;
 }
 
 .aoc-hand {
