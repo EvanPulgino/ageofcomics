@@ -10,8 +10,8 @@ $teal: #5ba59f;
 $yellow: #f5c86e;
 
 @font-face {
-  font-family: 'Squanda One';
-  src: url(./fonts/SquandaOne-Regular.ttf) format('truetype');
+  font-family: "Squanda One";
+  src: url(./fonts/SquandaOne-Regular.ttf) format("truetype");
 }
 
 html {
@@ -24,12 +24,16 @@ html {
   background-color: #f5ead6 !important;
 }
 
+.player-name {
+  text-shadow: 1px 1px 1px black;
+}
+
 #page-title {
   background-color: #f5ead6 !important;
 }
 
 .aoc-squanda {
-  font-family: 'Squanda One';
+  font-family: "Squanda One";
 }
 
 #aoc-overall {
@@ -57,7 +61,7 @@ html {
   width: 100%;
 }
 
-#aoc-common-area{
+#aoc-common-area {
   align-items: center;
   display: flex;
   flex-flow: row wrap;
@@ -77,7 +81,7 @@ html {
   padding-bottom: 25px;
 }
 
- #aoc-card-market {
+#aoc-card-market {
   display: flex;
   flex-flow: column nowrap;
   gap: 35px;

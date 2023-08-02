@@ -513,9 +513,9 @@
                                 <span id="aoc-player-western-{player_id}"
                                     class="aoc-idea-token aoc-idea-token-western"></span>
                             </div>
-                            <div id="aoc-player-money-supply-{player_id}" class="aoc-player-supply aoc-empty">
+                            <div id="aoc-player-money-supply-{player_id}" class="aoc-player-supply">
                                 <span id="aoc-player-money-count-{player_id}"
-                                    class="aoc-player-supply-count aoc-squanda">0</span>
+                                    class="aoc-player-supply-count aoc-squanda">5</span>
                                 <span id="aoc-player-money-{player_id}" class="aoc-round-token aoc-token-coin"></span>
                             </div>
                             <div id="aoc-player-point-supply-{player_id}" class="aoc-player-supply aoc-empty">
