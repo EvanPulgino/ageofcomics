@@ -533,8 +533,7 @@
                         <div id="aoc-player-mat-{player_id}" class="aoc-player-mat aoc-player-mat-{color}">
                             <div id="aoc-cube-one-space-{player_id}" class="aoc-cube-space aoc-cube-space-one"></div>
                             <div id="aoc-cube-two-space-{player_id}" class="aoc-cube-space aoc-cube-space-two"></div>
-                            <div id="aoc-cube-three-space-{player_id}" class="aoc-cube-space aoc-cube-space-three">
-                            </div>
+                            <div id="aoc-cube-three-space-{player_id}" class="aoc-cube-space aoc-cube-space-three"></div>
                         </div>
                     </div>
                     <div id="aoc-player-area-right-{player_id}" class="aoc-player-area-right">

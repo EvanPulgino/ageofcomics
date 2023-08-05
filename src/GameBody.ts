@@ -53,7 +53,8 @@ class GameBody extends GameBasics {
     var s = 1500;
     var height = dojo.marginBox("aoc-layout").h;
     var viewportWidth = dojo.window.getBox().w;
-    var gameAreaWidth = viewportWidth < 980 ? viewportWidth : viewportWidth - 245;
+    var gameAreaWidth =
+      viewportWidth < 980 ? viewportWidth : viewportWidth - 245;
 
     if (r >= s) {
       var i = (r - s) / 2;

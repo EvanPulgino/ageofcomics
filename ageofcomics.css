@@ -17,9 +17,14 @@
  * Styles for overall table layout
  *
  */
+/* squada-one-regular - latin */
 @font-face {
-  font-family: "Squanda One";
-  src: url(./fonts/SquandaOne-Regular.ttf) format("truetype");
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Squada One";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/squada-one-v14-latin-regular.eot"); /* IE9 Compat Modes */
+  src: url("../fonts/squada-one-v14-latin-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/squada-one-v14-latin-regular.woff2") format("woff2"), url("../fonts/squada-one-v14-latin-regular.woff") format("woff"), url("../fonts/squada-one-v14-latin-regular.ttf") format("truetype"), url("../fonts/squada-one-v14-latin-regular.svg#SquadaOne") format("svg"); /* Legacy iOS */
 }
 html {
   background-image: url(./img/aoc_table.jpg);
@@ -27,8 +32,15 @@ html {
   background-size: contain;
 }
 
+#player_boards {
+  display: flex;
+  flex-flow: row wrap;
+}
+
 .player-board {
-  background-color: #f5ead6 !important;
+  background-image: url(./img/aoc_paper.jpg);
+  background-size: contain;
+  order: 2;
 }
 
 .player-name {
@@ -36,7 +48,12 @@ html {
 }
 
 #page-title {
-  background-color: #f5ead6 !important;
+  background-image: url(./img/aoc_paper.jpg);
+  background-size: contain;
+}
+
+#aoc-game-status-panel {
+  order: 1 !important;
 }
 
 .aoc-squanda {

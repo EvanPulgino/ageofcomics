@@ -76,6 +76,7 @@ var GameBasics = /** @class */ (function (_super) {
      */
     GameBasics.prototype.onEnteringState = function (stateName, args) {
         this.debug("onEnteringState: " + stateName, args, this.debugStateInfo());
+        console.log(document.getElementById("player_boards"));
         this.curstate = stateName;
         // Call appropriate method
         args = args ? args.args : null; // this method has extra wrapper for args for some reason
@@ -523,7 +524,20 @@ var GameController = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     GameController.prototype.setup = function (gamedata) {
+        this.createGameStatusPanel(gamedata);
         this.createIdeaTokensOnBoard(gamedata.ideasSpaceContents);
+    };
+    /**
+     * Create game status panel
+     * @param {object} gamedata - current game data used to initialize UI
+     */
+    GameController.prototype.createGameStatusPanel = function (gamedata) {
+        var gameStatusPanel = this.createGameStatusPanelHtml(gamedata);
+        this.createHtml(gameStatusPanel, "player_boards");
+    };
+    GameController.prototype.createGameStatusPanelHtml = function (gamedata) {
+        var gameStatusPanelHtml = '<div id="aoc-game-status-panel" class="player-board">TEST</div>';
+        return gameStatusPanelHtml;
     };
     GameController.prototype.createIdeaTokensOnBoard = function (ideasSpaceContents) {
         for (var key in ideasSpaceContents) {
@@ -534,7 +548,11 @@ var GameController = /** @class */ (function (_super) {
     GameController.prototype.createIdeaTokenOnBoard = function (genreId, exists) {
         if (exists) {
             var genre = this.getGenreName(genreId);
-            var ideaTokenDiv = '<div id="aoc-idea-token-' + genre + '" class="aoc-idea-token aoc-idea-token-' + genre + '"></div>';
+            var ideaTokenDiv = '<div id="aoc-idea-token-' +
+                genre +
+                '" class="aoc-idea-token aoc-idea-token-' +
+                genre +
+                '"></div>';
             this.createHtml(ideaTokenDiv, "aoc-action-ideas-" + genre);
         }
     };

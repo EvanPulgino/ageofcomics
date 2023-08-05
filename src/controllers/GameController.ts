@@ -11,25 +11,44 @@
  *
  */
 
- class GameController extends GameBasics {
+class GameController extends GameBasics {
+  setup(gamedata: any) {
+    this.createGameStatusPanel(gamedata);
+    this.createIdeaTokensOnBoard(gamedata.ideasSpaceContents);
+  }
 
-    setup(gamedata: any) {
-        this.createIdeaTokensOnBoard(gamedata.ideasSpaceContents);
+  /**
+   * Create game status panel
+   * @param {object} gamedata - current game data used to initialize UI
+   */
+  createGameStatusPanel(gamedata: any): void {
+    var gameStatusPanel = this.createGameStatusPanelHtml(gamedata);
+    this.createHtml(gameStatusPanel, "player_boards");
+  }
+
+  createGameStatusPanelHtml(gamedata: any): any {
+    var gameStatusPanelHtml =
+      '<div id="aoc-game-status-panel" class="player-board">TEST</div>';
+    return gameStatusPanelHtml;
+  }
+
+  createIdeaTokensOnBoard(ideasSpaceContents: any) {
+    for (var key in ideasSpaceContents) {
+      var genreSpace = ideasSpaceContents[key];
+      this.createIdeaTokenOnBoard(key, genreSpace);
     }
+  }
 
-    createIdeaTokensOnBoard(ideasSpaceContents) {
-        for (var key in ideasSpaceContents) {
-            var genreSpace = ideasSpaceContents[key];
-            this.createIdeaTokenOnBoard(key, genreSpace);
-        }
+  createIdeaTokenOnBoard(genreId: any, exists: boolean) {
+    if (exists) {
+      var genre = this.getGenreName(genreId);
+      var ideaTokenDiv =
+        '<div id="aoc-idea-token-' +
+        genre +
+        '" class="aoc-idea-token aoc-idea-token-' +
+        genre +
+        '"></div>';
+      this.createHtml(ideaTokenDiv, "aoc-action-ideas-" + genre);
     }
-
-    createIdeaTokenOnBoard(genreId: any, exists: boolean) {
-        if (exists) {
-            var genre = this.getGenreName(genreId);
-            var ideaTokenDiv = '<div id="aoc-idea-token-' + genre + '" class="aoc-idea-token aoc-idea-token-' + genre + '"></div>';
-            this.createHtml(ideaTokenDiv,"aoc-action-ideas-" + genre);
-        }
-
-    }
- }
+  }
+}
