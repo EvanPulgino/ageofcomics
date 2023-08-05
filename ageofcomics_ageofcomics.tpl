@@ -154,13 +154,6 @@
                     <div id="aoc-tickets-space"></div>
                 </div>
             </div>
-            <div id="aoc-chart" class="aoc-board-section" style="display: none;">
-                <div id="aoc-chart-start" class="aoc-board-image aoc-chart-start"></div>
-                <!-- BEGIN playerchart -->
-                <div id="aoc-chart-{player_id}" class="aoc-board-image aoc-chart-{color}"></div>
-                <!-- END playerchart -->
-                <div id="aoc-chart-end" class="aoc-board-image aoc-chart-end"></div>
-            </div>
             <div id="aoc-card-market">
                 <div id="aoc-component-supply" class="aoc-card-market-row" style="display: none;">
                     <div id="aoc-ripoff-deck" class="aoc-deck"></div>
@@ -475,7 +468,9 @@
                         <div id="aoc-paper-supply-{player_id}" class="aoc-paper-supply">
                             <div id="aoc-editor-container-{player_id}" class="aoc-editor-container"></div>
                             <span id="aoc-player-name-{player_id}" class="aoc-player-name aoc-player-name-{color}">
+                                <i class="aoc-icon-size fa6 fa6-solid fa6-circle-left"></i>
                                 {player_name}
+                                <i class="aoc-icon-size fa6 fa6-solid fa6-circle-right"></i>
                             </span>
                             <div id="aoc-player-crime-supply-{player_id}" class="aoc-player-supply aoc-empty">
                                 <span id="aoc-player-crime-count-{player_id}"
@@ -533,7 +528,8 @@
                         <div id="aoc-player-mat-{player_id}" class="aoc-player-mat aoc-player-mat-{color}">
                             <div id="aoc-cube-one-space-{player_id}" class="aoc-cube-space aoc-cube-space-one"></div>
                             <div id="aoc-cube-two-space-{player_id}" class="aoc-cube-space aoc-cube-space-two"></div>
-                            <div id="aoc-cube-three-space-{player_id}" class="aoc-cube-space aoc-cube-space-three"></div>
+                            <div id="aoc-cube-three-space-{player_id}" class="aoc-cube-space aoc-cube-space-three">
+                            </div>
                         </div>
                     </div>
                     <div id="aoc-player-area-right-{player_id}" class="aoc-player-area-right">

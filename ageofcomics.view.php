@@ -67,7 +67,6 @@ class view_ageofcomics_ageofcomics extends game_view
         $players = $this->game->playerManager->getPlayersInViewOrder();
         $players_nbr = count( $players );
 
-        $this->createPlayersSection($template, $players, "playerchart");
         $this->createPlayersSection($template, $players, "playerarea");
 
         /*********** Do not change anything below this line  ************/

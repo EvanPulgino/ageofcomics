@@ -524,20 +524,49 @@ var GameController = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     GameController.prototype.setup = function (gamedata) {
-        this.createGameStatusPanel(gamedata);
+        this.createNeededGameElements(gamedata);
         this.createIdeaTokensOnBoard(gamedata.ideasSpaceContents);
     };
     /**
      * Create game status panel
      * @param {object} gamedata - current game data used to initialize UI
      */
-    GameController.prototype.createGameStatusPanel = function (gamedata) {
-        var gameStatusPanel = this.createGameStatusPanelHtml(gamedata);
-        this.createHtml(gameStatusPanel, "player_boards");
+    GameController.prototype.createNeededGameElements = function (gamedata) {
+        this.createGameStatusPanelHtml();
+        this.createShowChartContainerHtml();
+        this.createChartHtml(gamedata.playerInfo);
+        this.createOnClickEvents();
     };
-    GameController.prototype.createGameStatusPanelHtml = function (gamedata) {
-        var gameStatusPanelHtml = '<div id="aoc-game-status-panel" class="player-board">TEST</div>';
-        return gameStatusPanelHtml;
+    GameController.prototype.createGameStatusPanelHtml = function () {
+        var gameStatusPanelHtml = '<div id="aoc-game-status-panel" class="player-board"><div id="aoc-game-status" class="player_board_content"><div id="aoc-game-status-mastery-container" class="aoc-game-status-row"></div><div id="aoc-chart-button" class="aoc-game-status-row"><a id="aoc-show-chart-button" href="#"><i class="aoc-icon-size fa6 fa6-solid fa6-chart-simple"></i></a><i class="aoc-icon-size fa6 fa6-solid fa6-arrows-left-right-to-line"></i><i class="aoc-icon-size fa6 fa6-solid fa6-list"></i></div></div></div>';
+        this.createHtml(gameStatusPanelHtml, "player_boards");
+    };
+    GameController.prototype.createShowChartContainerHtml = function () {
+        var showChartContainerHtml = '<div id="aoc-show-chart-container"><div id="aoc-show-chart-underlay"></div><div id="aoc-show-chart-wrapper"></div></div>';
+        this.createHtml(showChartContainerHtml, "overall-content");
+    };
+    GameController.prototype.createChartHtml = function (players) {
+        var chartWidth = 87 + players.length * 71;
+        var chartHtml = '<div id="aoc-show-chart" style="width: ' +
+            chartWidth +
+            '"><a id="aoc-show-chart-close" href="#"><i class="aoc-icon-size fa6 fa6-solid fa6-square-xmark fa6-2x aria-hidden="true"></i></a><div id="aoc-chart" class="aoc-board-section"><div id="aoc-chart-start" class="aoc-board-image aoc-chart-start"></div>';
+        for (var key in players) {
+            var player = players[key];
+            chartHtml +=
+                '<div id="aoc-chart-' +
+                    player.id +
+                    '" class="aoc-board-image aoc-chart-' +
+                    player.colorAsText +
+                    '"></div>';
+        }
+        chartHtml +=
+            '<div id="aoc-chart-end" class="aoc-board-image aoc-chart-end"></div></div></div>';
+        console.log(chartHtml);
+        this.createHtml(chartHtml, "aoc-show-chart-wrapper");
+    };
+    GameController.prototype.createOnClickEvents = function () {
+        dojo.connect($("aoc-show-chart-button"), "onclick", this, "showChart");
+        dojo.connect($("aoc-show-chart-close"), "onclick", this, "hideChart");
     };
     GameController.prototype.createIdeaTokensOnBoard = function (ideasSpaceContents) {
         for (var key in ideasSpaceContents) {
@@ -555,6 +584,12 @@ var GameController = /** @class */ (function (_super) {
                 '"></div>';
             this.createHtml(ideaTokenDiv, "aoc-action-ideas-" + genre);
         }
+    };
+    GameController.prototype.showChart = function () {
+        dojo.style("aoc-show-chart-container", "display", "block");
+    };
+    GameController.prototype.hideChart = function () {
+        dojo.style("aoc-show-chart-container", "display", "none");
     };
     return GameController;
 }(GameBasics));
@@ -583,7 +618,7 @@ var MasteryController = /** @class */ (function (_super) {
     MasteryController.prototype.createMasteryToken = function (masteryToken) {
         var masteryTokenDiv = '<div id="aoc-mastery-token-' + masteryToken.id + '" class="aoc-mastery-token aoc-mastery-token-' + masteryToken.genre + '"></div>';
         if (masteryToken.playerId == 0) {
-            this.createHtml(masteryTokenDiv, "aoc-mastery-tokens");
+            this.createHtml(masteryTokenDiv, "aoc-game-status-mastery-container");
         }
     };
     return MasteryController;
