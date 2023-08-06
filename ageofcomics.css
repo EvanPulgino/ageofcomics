@@ -11,21 +11,13 @@
  * ageofcomics.scss
  *
  */
-@import url(../../../css/csslayer.css); /* Note: you must not use any @import directive other than this one */
+@import url(../../../css/csslayer.css);
+@import url("https://fonts.googleapis.com/css2?family=Squada+One&display=swap");
 /**
  *
  * Styles for overall table layout
  *
  */
-/* squada-one-regular - latin */
-@font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-  font-family: "Squada One";
-  font-style: normal;
-  font-weight: 400;
-  src: url("../fonts/squada-one-v14-latin-regular.eot"); /* IE9 Compat Modes */
-  src: url("../fonts/squada-one-v14-latin-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/squada-one-v14-latin-regular.woff2") format("woff2"), url("../fonts/squada-one-v14-latin-regular.woff") format("woff"), url("../fonts/squada-one-v14-latin-regular.ttf") format("truetype"), url("../fonts/squada-one-v14-latin-regular.svg#SquadaOne") format("svg"); /* Legacy iOS */
-}
 html {
   background-image: url(./img/aoc_table.jpg);
   font-size: calc(15px + 0.390625vw);
@@ -57,8 +49,12 @@ html {
   order: 1 !important;
 }
 
-.aoc-squanda {
-  font-family: "Squanda One";
+.aoc-squada {
+  font-family: "Squada One", cursive;
+}
+
+.aoc-hidden {
+  display: none;
 }
 
 #aoc-overall {
@@ -780,6 +776,10 @@ html {
   background-position: 100% 0;
 }
 
+.aoc-mastery-token:hover {
+  transform: scale(1.05);
+}
+
 /**
  *
  * Style for the mini comics
@@ -1292,7 +1292,7 @@ html {
 }
 
 .aoc-player-supply-count {
-  font-size: 35px;
+  font-size: 40px;
   font-weight: 600;
   letter-spacing: 6px;
 }
@@ -1459,8 +1459,7 @@ html {
 }
 
 .aoc-player-name {
-  font-family: Squanda One;
-  font-size: 35px;
+  font-size: 40px;
   font-weight: 600;
   line-height: 65px;
   z-index: 3;
@@ -1554,6 +1553,10 @@ html {
   -webkit-filter: drop-shadow(1px 1px 2px #000);
   height: 55px;
   width: 55px;
+}
+
+.aoc-salesorder:hover {
+  transform: scale(1.05);
 }
 
 .aoc-salesorder-crime-facedown {
