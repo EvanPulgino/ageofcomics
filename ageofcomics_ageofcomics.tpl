@@ -261,9 +261,9 @@
                         <div id="aoc-paper-supply-{player_id}" class="aoc-paper-supply">
                             <div id="aoc-editor-container-{player_id}" class="aoc-editor-container"></div>
                             <div id="aoc-player-name-{player_id}" class="aoc-player-name aoc-player-name-{color}">
-                                <i class="aoc-icon-size fa6 fa6-solid fa6-circle-left aoc-hidden"></i>
+                                <i class="aoc-icon-size fa6 fa6-solid fa6-circle-left aoc-arrow aoc-hidden"></i>
                                 <span class="aoc-squada">{player_name}</span>
-                                <i class=" aoc-icon-size fa6 fa6-solid fa6-circle-right aoc-hidden"></i>
+                                <i class="aoc-icon-size fa6 fa6-solid fa6-circle-right aoc-arrow aoc-hidden"></i>
                             </div>
                             <div id="aoc-player-crime-supply-{player_id}" class="aoc-player-supply aoc-empty">
                                 <span id="aoc-player-crime-count-{player_id}"

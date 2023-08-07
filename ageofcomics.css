@@ -236,13 +236,18 @@ html {
   color: red !important;
 }
 
-#aoc-show-chart-button {
+.aoc-status-button {
   color: #000 !important;
 }
 
-#aoc-show-chart-button:hover {
+.aoc-status-button:hover {
   transform: scale(1.5);
   color: red !important;
+}
+
+.aoc-arrow:hover {
+  transform: scale(1.2);
+  cursor: pointer;
 }
 
 /**

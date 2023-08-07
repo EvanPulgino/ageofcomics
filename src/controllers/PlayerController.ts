@@ -62,7 +62,6 @@ class PlayerController extends GameBasics {
       '" class="aoc-player-cube aoc-player-cube-' +
       player.colorAsText +
       '"></div>';
-      console.log(cubeDiv);
     if (player.cubeOneLocation == 5) {
       this.createHtml(cubeDiv, "aoc-cube-one-space-" + player.id);
     }

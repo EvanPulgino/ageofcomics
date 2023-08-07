@@ -538,7 +538,7 @@ var GameController = /** @class */ (function (_super) {
         this.createOnClickEvents();
     };
     GameController.prototype.createGameStatusPanelHtml = function () {
-        var gameStatusPanelHtml = '<div id="aoc-game-status-panel" class="player-board"><div id="aoc-game-status" class="player_board_content"><div id="aoc-game-status-mastery-container" class="aoc-game-status-row"></div><div id="aoc-chart-button" class="aoc-game-status-row"><a id="aoc-show-chart-button" href="#"><i class="aoc-icon-size fa6 fa6-solid fa6-chart-simple"></i></a><i class="aoc-icon-size fa6 fa6-solid fa6-arrows-left-right-to-line"></i><i class="aoc-icon-size fa6 fa6-solid fa6-list"></i></div></div></div>';
+        var gameStatusPanelHtml = '<div id="aoc-game-status-panel" class="player-board"><div id="aoc-game-status" class="player_board_content"><div id="aoc-game-status-mastery-container" class="aoc-game-status-row"></div><div id="aoc-button-row" class="aoc-game-status-row"><a id="aoc-show-chart-button" class="aoc-status-button" href="#"><i class="aoc-icon-size fa6 fa6-solid fa6-chart-simple"></i></a><a id="aoc-carousel-button" class="aoc-status-button" href="#"><i class="aoc-icon-size fa6 fa6-solid fa6-arrows-left-right-to-line"></i></a><a id="aoc-list-button" class="aoc-status-button" href="#"><i class="aoc-icon-size fa6 fa6-solid fa6-list"></i></a></div></div></div>';
         this.createHtml(gameStatusPanelHtml, "player_boards");
     };
     GameController.prototype.createShowChartContainerHtml = function () {
@@ -561,12 +561,15 @@ var GameController = /** @class */ (function (_super) {
         }
         chartHtml +=
             '<div id="aoc-chart-end" class="aoc-board-image aoc-chart-end"></div></div></div>';
-        console.log(chartHtml);
         this.createHtml(chartHtml, "aoc-show-chart-wrapper");
     };
     GameController.prototype.createOnClickEvents = function () {
         dojo.connect($("aoc-show-chart-button"), "onclick", this, "showChart");
         dojo.connect($("aoc-show-chart-close"), "onclick", this, "hideChart");
+        dojo.connect($("aoc-carousel-button"), "onclick", this, "carouselView");
+        dojo.connect($("aoc-list-button"), "onclick", this, "listView");
+        dojo.query(".fa6-circle-right").connect("onclick", this, "nextPlayer");
+        dojo.query(".fa6-circle-left").connect("onclick", this, "previousPlayer");
     };
     GameController.prototype.createIdeaTokensOnBoard = function (ideasSpaceContents) {
         for (var key in ideasSpaceContents) {
@@ -590,6 +593,72 @@ var GameController = /** @class */ (function (_super) {
     };
     GameController.prototype.hideChart = function () {
         dojo.style("aoc-show-chart-container", "display", "none");
+    };
+    GameController.prototype.carouselView = function () {
+        var playersSection = dojo.query("#aoc-players-section")[0];
+        for (var i = 1; i < playersSection.children.length; i++) {
+            var playerSection = playersSection.children[i];
+            if (!dojo.hasClass(playerSection, "aoc-hidden")) {
+                dojo.toggleClass(playerSection, "aoc-hidden");
+            }
+        }
+        var arrows = dojo.query(".aoc-arrow");
+        arrows.forEach(function (arrow) {
+            if (dojo.hasClass(arrow, "aoc-hidden")) {
+                dojo.toggleClass(arrow, "aoc-hidden");
+            }
+        });
+    };
+    GameController.prototype.listView = function () {
+        var playersSection = dojo.query("#aoc-players-section")[0];
+        for (var i = 0; i < playersSection.children.length; i++) {
+            var playerSection = playersSection.children[i];
+            if (dojo.hasClass(playerSection, "aoc-hidden")) {
+                dojo.toggleClass(playerSection, "aoc-hidden");
+            }
+        }
+        var arrows = dojo.query(".aoc-arrow");
+        arrows.forEach(function (arrow) {
+            if (!dojo.hasClass(arrow, "aoc-hidden")) {
+                dojo.toggleClass(arrow, "aoc-hidden");
+            }
+        });
+    };
+    GameController.prototype.nextPlayer = function () {
+        var visiblePlayerSection = dojo.query(".aoc-player-background-panel:not(.aoc-hidden)")[0];
+        var visiblePlayerId = visiblePlayerSection.id;
+        var playersSection = dojo.query("#aoc-players-section")[0];
+        for (var i = 0; i < playersSection.children.length; i++) {
+            var playerSection = playersSection.children[i];
+            if (playerSection.id == visiblePlayerId) {
+                if (i == playersSection.children.length - 1) {
+                    var nextPlayerSection = playersSection.children[0];
+                }
+                else {
+                    var nextPlayerSection = playersSection.children[i + 1];
+                }
+            }
+        }
+        dojo.toggleClass(visiblePlayerSection, "aoc-hidden");
+        dojo.toggleClass(nextPlayerSection, "aoc-hidden");
+    };
+    GameController.prototype.previousPlayer = function () {
+        var visiblePlayerSection = dojo.query(".aoc-player-background-panel:not(.aoc-hidden)")[0];
+        var visiblePlayerId = visiblePlayerSection.id;
+        var playersSection = dojo.query("#aoc-players-section")[0];
+        for (var i = 0; i < playersSection.children.length; i++) {
+            var playerSection = playersSection.children[i];
+            if (playerSection.id == visiblePlayerId) {
+                if (i == 0) {
+                    var previousPlayerSection = playersSection.children[playersSection.children.length - 1];
+                }
+                else {
+                    var previousPlayerSection = playersSection.children[i - 1];
+                }
+            }
+        }
+        dojo.toggleClass(visiblePlayerSection, "aoc-hidden");
+        dojo.toggleClass(previousPlayerSection, "aoc-hidden");
     };
     return GameController;
 }(GameBasics));
@@ -711,7 +780,6 @@ var PlayerController = /** @class */ (function (_super) {
             '" class="aoc-player-cube aoc-player-cube-' +
             player.colorAsText +
             '"></div>';
-        console.log(cubeDiv);
         if (player.cubeOneLocation == 5) {
             this.createHtml(cubeDiv, "aoc-cube-one-space-" + player.id);
         }
