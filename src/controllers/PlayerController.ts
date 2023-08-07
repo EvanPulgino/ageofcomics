@@ -17,6 +17,7 @@ class PlayerController extends GameBasics {
       this.createPlayerOrderToken(playerData[key]);
       this.createPlayerAgent(playerData[key]);
       this.createPlayerCubes(playerData[key]);
+      this.createPlayerPanel(playerData[key]);
     }
   }
 
@@ -89,5 +90,96 @@ class PlayerController extends GameBasics {
     if (player.cubeOneLocation == 5) {
       this.createHtml(cubeDiv, "aoc-cube-three-space-" + player.id);
     }
+  }
+
+  createPlayerPanel(player: any): void {
+    this.debug("creating player panel", player);
+    var playerPanelDiv =
+      '<div id="aoc-player-panel-' +
+      player.id +
+      '" class="aoc-player-panel">' +
+      '<div id="aoc-player-panel-mastery-' +
+      player.id +
+      '" class="aoc-player-panel-row aoc-player-panel-mastery"></div>' +
+      '<div id="aoc-player-panel-ideas-1-' +
+      player.id +
+      '" class="aoc-player-panel-row">' +
+      this.createPlayerPanelIdeaSupplyDiv(player, "crime") +
+      this.createPlayerPanelIdeaSupplyDiv(player, "horror") +
+      this.createPlayerPanelIdeaSupplyDiv(player, "romance") +
+      "</div>" +
+      '<div id="aoc-player-panel-ideas-2-' +
+      player.id +
+      '" class="aoc-player-panel-row">' +
+      this.createPlayerPanelIdeaSupplyDiv(player, "scifi") +
+      this.createPlayerPanelIdeaSupplyDiv(player, "superhero") +
+      this.createPlayerPanelIdeaSupplyDiv(player, "western") +
+      "</div>" +
+      '<div id="aoc-player-panel-other-' +
+      player.id +
+      '" class="aoc-player-panel-row">' +
+      this.createPlayerPanelOtherSupplyDiv(player, "money") +
+      this.createPlayerPanelOtherSupplyDiv(player, "point") +
+      this.createPlayerPanelOtherSupplyDiv(player, "income") +
+      "</div>" +
+      "</div>";
+    this.createHtml(playerPanelDiv, "player_board_" + player.id);
+  }
+
+  createPlayerPanelIdeaSupplyDiv(player: any, genre: string): any {
+    var ideaSupplyDiv =
+      '<div id="aoc-player-panel-' +
+      genre +
+      "-supply-" +
+      player.id +
+      '" class="aoc-player-panel-supply aoc-player-panel-idea-supply"><span id="aoc-player-panel-' +
+      genre +
+      "-count-" +
+      player.id +
+      '" class="aoc-player-panel-supply-count aoc-squada">0</span><span id="aoc-player-panel-' +
+      genre +
+      "-" +
+      player.id +
+      '" class="aoc-idea-token aoc-idea-token-' +
+      genre +
+      '"></span></div>';
+    return ideaSupplyDiv;
+  }
+
+  createPlayerPanelOtherSupplyDiv(player: any, supply: string): any {
+    var otherSupplyDiv;
+    switch (supply) {
+      case "money":
+        otherSupplyDiv =
+          '<div id="aoc-player-panel-money-' +
+          player.id +
+          '-supply" class="aoc-player-panel-supply aoc-player-panel-other-supply"><span id="aoc-player-panel-money-count-' +
+          player.id +
+          '" class="aoc-player-panel-supply-count aoc-squada">5</span><i id="aoc-player-panel-money-' +
+          player.id +
+          '" class="aoc-round-token aoc-token-coin"></i></div>';
+        break;
+      case "point":
+        otherSupplyDiv =
+          '<div id="aoc-player-panel-point-' +
+          player.id +
+          '-supply" class="aoc-player-panel-supply aoc-player-panel-other-supply"><span id="aoc-player-panel-point-count-' +
+          player.id +
+          '" class="aoc-player-panel-supply-count aoc-squada">0</span><span id="aoc-player-panel-points-' +
+          player.id +
+          '" class="aoc-round-token aoc-token-point"></span></div>';
+        break;
+      case "income":
+        otherSupplyDiv =
+          '<div id="aoc-player-panel-income-' +
+          player.id +
+          '-supply" class="aoc-player-panel-supply aoc-player-panel-other-supply"><span id="aoc-player-panel-income-count-' +
+          player.id +
+          '" class="aoc-player-panel-income-count aoc-squada">0</span><i id="aoc-player-panel-income-' +
+          player.id +
+          '" class="aoc-player-panel-icon-size fa6 fa6-solid fa6-money-bill-trend-up"></i></div>';
+        break;
+    }
+    return otherSupplyDiv;
   }
 }

@@ -243,3 +243,50 @@
 .aoc-player-name-yellow {
   color: $yellow;
 }
+
+.aoc-player-panel-row {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  padding: 1px;
+}
+
+.aoc-player-panel-idea-supply {
+  height: 22px;
+}
+
+.aoc-player-panel-other-supply {
+  height: 22px;
+}
+
+.aoc-player-panel-mastery {
+  flex-flow: row wrap !important;
+}
+
+.aoc-player-panel-supply {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  padding: 10px;
+}
+
+.aoc-player-panel-supply-count {
+  font-size: 33px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  line-height: 30px;
+}
+
+.aoc-player-panel-income-count {
+  font-size: 33px;
+  font-weight: 400;
+  letter-spacing: 6px;
+  line-height: 30px;
+}
+
+.aoc-player-panel-icon-size {
+  font-size: 33px;
+  line-height: 30px;
+  text-align: center;
+}

@@ -4,17 +4,17 @@
  *
  */
 
- #aoc-idea-tokens {
+#aoc-idea-tokens {
   display: flex;
   flex-flow: column nowrap;
   gap: 20px;
- }
+}
 
- .aoc-idea-tokens-row {
+.aoc-idea-tokens-row {
   display: flex;
   flex-flow: row nowrap;
   gap: 10px;
- }
+}
 
 .aoc-idea-token {
   background-image: url(./img/aoc_round_tokens.png);
@@ -114,4 +114,9 @@
 #aoc-action-ideas-western {
   top: 311px;
   left: 648px;
+}
+
+.aoc-player-panel-supply .aoc-idea-token {
+  text-align: center;
+  transform: scale(0.75);
 }

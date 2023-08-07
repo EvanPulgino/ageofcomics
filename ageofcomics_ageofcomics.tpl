@@ -311,7 +311,7 @@
                                     class="aoc-player-supply-count aoc-squada">0</span>
                                 <span id="aoc-player-points-{player_id}" class="aoc-round-token aoc-token-point"></span>
                             </div>
-                            <div id="aoc-player-income-{player_id}" class="aoc-player-supply aoc-empty">
+                            <div id="aoc-player-income-supply-{player_id}" class="aoc-player-supply aoc-empty">
                                 <span id="aoc-player-income-count-{player_id}"
                                     class="aoc-player-supply-count aoc-squada">0</span>
                                 <i id="aoc-player-income-{player_id}"

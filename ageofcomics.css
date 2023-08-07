@@ -736,6 +736,11 @@ html {
   left: 648px;
 }
 
+.aoc-player-panel-supply .aoc-idea-token {
+  text-align: center;
+  transform: scale(0.75);
+}
+
 /**
  *
  * Style for the mastery tokens
@@ -783,6 +788,14 @@ html {
 
 .aoc-mastery-token:hover {
   transform: scale(1.05);
+}
+
+.aoc-game-status-row .aoc-mastery-token {
+  transform: scale(0.75);
+}
+
+.aoc-player-panel-row .aoc-mastery-token {
+  transform: scale(0.75);
 }
 
 /**
@@ -1490,6 +1503,53 @@ html {
   color: #f5c86e;
 }
 
+.aoc-player-panel-row {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  padding: 1px;
+}
+
+.aoc-player-panel-idea-supply {
+  height: 22px;
+}
+
+.aoc-player-panel-other-supply {
+  height: 22px;
+}
+
+.aoc-player-panel-mastery {
+  flex-flow: row wrap !important;
+}
+
+.aoc-player-panel-supply {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  padding: 10px;
+}
+
+.aoc-player-panel-supply-count {
+  font-size: 33px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  line-height: 30px;
+}
+
+.aoc-player-panel-income-count {
+  font-size: 33px;
+  font-weight: 400;
+  letter-spacing: 6px;
+  line-height: 30px;
+}
+
+.aoc-player-panel-icon-size {
+  font-size: 33px;
+  line-height: 30px;
+  text-align: center;
+}
+
 /**
  *
  * Styles for the player order components
@@ -2056,6 +2116,10 @@ html {
 .aoc-token-bank .aoc-token-better-color:nth-child(5) {
   bottom: 8px;
   z-index: 5;
+}
+
+.aoc-player-panel-supply .aoc-round-token {
+  transform: scale(0.75);
 }
 
 /**
