@@ -744,11 +744,13 @@ var PlayerController = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     PlayerController.prototype.setupPlayers = function (playerData) {
+        this.playerCounter = {};
         for (var key in playerData) {
             this.createPlayerOrderToken(playerData[key]);
             this.createPlayerAgent(playerData[key]);
             this.createPlayerCubes(playerData[key]);
             this.createPlayerPanel(playerData[key]);
+            this.createPlayerCounters(playerData[key]);
         }
     };
     PlayerController.prototype.createPlayerOrderToken = function (player) {
@@ -846,7 +848,7 @@ var PlayerController = /** @class */ (function (_super) {
             genre +
             "-count-" +
             player.id +
-            '" class="aoc-player-panel-supply-count aoc-squada">0</span><span id="aoc-player-panel-' +
+            '" class="aoc-player-panel-supply-count aoc-squada"></span><span id="aoc-player-panel-' +
             genre +
             "-" +
             player.id +
@@ -864,7 +866,7 @@ var PlayerController = /** @class */ (function (_super) {
                         player.id +
                         '-supply" class="aoc-player-panel-supply aoc-player-panel-other-supply"><span id="aoc-player-panel-money-count-' +
                         player.id +
-                        '" class="aoc-player-panel-supply-count aoc-squada">5</span><i id="aoc-player-panel-money-' +
+                        '" class="aoc-player-panel-supply-count aoc-squada"></span><i id="aoc-player-panel-money-' +
                         player.id +
                         '" class="aoc-round-token aoc-token-coin"></i></div>';
                 break;
@@ -874,7 +876,7 @@ var PlayerController = /** @class */ (function (_super) {
                         player.id +
                         '-supply" class="aoc-player-panel-supply aoc-player-panel-other-supply"><span id="aoc-player-panel-point-count-' +
                         player.id +
-                        '" class="aoc-player-panel-supply-count aoc-squada">0</span><span id="aoc-player-panel-points-' +
+                        '" class="aoc-player-panel-supply-count aoc-squada"></span><span id="aoc-player-panel-points-' +
                         player.id +
                         '" class="aoc-round-token aoc-token-point"></span></div>';
                 break;
@@ -884,12 +886,36 @@ var PlayerController = /** @class */ (function (_super) {
                         player.id +
                         '-supply" class="aoc-player-panel-supply aoc-player-panel-other-supply"><span id="aoc-player-panel-income-count-' +
                         player.id +
-                        '" class="aoc-player-panel-income-count aoc-squada">0</span><i id="aoc-player-panel-income-' +
+                        '" class="aoc-player-panel-income-count aoc-squada"></span><i id="aoc-player-panel-income-' +
                         player.id +
                         '" class="aoc-player-panel-icon-size fa6 fa6-solid fa6-money-bill-trend-up"></i></div>';
                 break;
         }
         return otherSupplyDiv;
+    };
+    PlayerController.prototype.createPlayerCounters = function (player) {
+        this.playerCounter[player.id] = {};
+        this.createPlayerCounter(player, "crime", player.crimeIdeas);
+        this.createPlayerCounter(player, "horror", player.horrorIdeas);
+        this.createPlayerCounter(player, "romance", player.romanceIdeas);
+        this.createPlayerCounter(player, "scifi", player.scifiIdeas);
+        this.createPlayerCounter(player, "superhero", player.superheroIdeas);
+        this.createPlayerCounter(player, "western", player.westernIdeas);
+        this.createPlayerCounter(player, "money", player.money);
+        this.createPlayerCounter(player, "point", player.score);
+        // TODO:calculate income
+        this.createPlayerCounter(player, "income", 0);
+        console.log("createdCounter", this.playerCounter[player.id]);
+    };
+    PlayerController.prototype.createPlayerCounter = function (player, counter, initialValue) {
+        var counterKey = counter;
+        var counterPanel = "panel-" + counter;
+        this.playerCounter[player.id][counterKey] = new ebg.counter();
+        this.playerCounter[player.id][counterKey].create("aoc-player-" + counter + "-count-" + player.id);
+        this.playerCounter[player.id][counterKey].setValue(initialValue);
+        this.playerCounter[player.id][counterPanel] = new ebg.counter();
+        this.playerCounter[player.id][counterPanel].create("aoc-player-" + counterPanel + "-count-" + player.id);
+        this.playerCounter[player.id][counterPanel].setValue(initialValue);
     };
     return PlayerController;
 }(GameBasics));
