@@ -20,7 +20,6 @@ class SalesOrderController extends GameBasics {
     }
 
     createSalesOrder(salesOrder: any) : void {
-        this.debug("creating sales order", salesOrder);
         var salesOrderDiv = '<div id="aoc-salesorder-' + salesOrder.id + '" class="aoc-salesorder ' + salesOrder.cssClass + '"></div>';
 
         if (salesOrder.location == globalThis.LOCATION_MAP) {

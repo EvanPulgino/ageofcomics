@@ -24,7 +24,6 @@ class CardController extends GameBasics {
   }
 
   createCard(card: any): void {
-    this.debug("createCard", card);
       switch (card.typeId) {
         case 1:
           this.createCreativeCard(card);

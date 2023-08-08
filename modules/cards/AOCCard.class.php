@@ -23,7 +23,6 @@ class AOCCard {
     private int $location;
     private int $locationArg;
     private int $playerId;
-    private string $cssClass;
 
     public function __construct($row) {
         $this->id = (int) $row["id"];
@@ -85,10 +84,6 @@ class AOCCard {
             "locationArg" => $this->locationArg,
             "playerId" => $this->playerId,
         ];
-    }
-
-    private function deriveCssClass($currentPlayerId) {
-        return;
     }
 
     /**

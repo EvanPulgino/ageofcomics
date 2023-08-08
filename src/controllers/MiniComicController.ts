@@ -20,7 +20,6 @@ class MiniComicController extends GameBasics {
     }
 
     createMiniComic(miniComic: any) : void {
-        this.debug("creating mini comic", miniComic);
         var miniComicDiv = '<div id="aoc-mini-comic-' + miniComic.id + '" class="aoc-mini-comic ' + miniComic.cssClass + '"></div>';
         if (miniComic.location == globalThis.LOCATION_SUPPLY) {
             this.createHtml(miniComicDiv,"aoc-mini-" + miniComic.type + "s-" + miniComic.genre);

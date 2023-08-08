@@ -26,7 +26,6 @@ class PlayerController extends GameBasics {
   }
 
   createPlayerOrderToken(player: any): void {
-    this.debug("creating player order token", player);
     var playerOrderTokenDiv =
       '<div id="aoc-player-order-token' +
       player.id +
@@ -40,7 +39,6 @@ class PlayerController extends GameBasics {
   }
 
   createPlayerAgent(player: any): void {
-    this.debug("creating player agent", player);
     var playerAgentDiv =
       '<div id="aoc-agent' +
       player.id +
@@ -54,7 +52,6 @@ class PlayerController extends GameBasics {
   }
 
   createPlayerCubes(player: any): void {
-    this.debug("creating player cubes", player);
     this.createPlayerCubeOne(player);
     this.createPlayerCubeTwo(player);
     this.createPlayerCubeThree(player);
@@ -97,7 +94,6 @@ class PlayerController extends GameBasics {
   }
 
   createPlayerPanel(player: any): void {
-    this.debug("creating player panel", player);
     var playerPanelDiv =
       '<div id="aoc-player-panel-' +
       player.id +
@@ -199,7 +195,6 @@ class PlayerController extends GameBasics {
     this.createPlayerCounter(player, "point", player.score);
     // TODO:calculate income
     this.createPlayerCounter(player, "income", 0);
-    console.log("createdCounter", this.playerCounter[player.id]);
   }
 
   createPlayerCounter(

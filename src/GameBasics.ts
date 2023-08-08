@@ -71,7 +71,6 @@ class GameBasics extends GameGui {
    */
   onEnteringState(stateName: string, args: { args: any }) {
     this.debug("onEnteringState: " + stateName, args, this.debugStateInfo());
-    console.log(document.getElementById("player_boards"));
     this.curstate = stateName;
     // Call appropriate method
     args = args ? args.args : null; // this method has extra wrapper for args for some reason

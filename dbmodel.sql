@@ -6,13 +6,6 @@
 -- See http://en.boardgamearena.com/#!doc/Studio for more information.
 -- -----
 -- dbmodel.sql
--- This is the file where you are describing the database schema of your game
--- Basically, you just have to export from PhpMyAdmin your table structure and copy/paste
--- this export here.
--- Note that the database itself and the standard tables ("global", "stats", "gamelog" and "player") are
--- already created and must not be created here
--- Note: The database schema is created from this file when the game starts. If you modify this file,
---       you have to restart a game to see your changes in database.
 
 CREATE TABLE IF NOT EXISTS `calendar_tile` (
     `calendar_tile_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,

@@ -76,7 +76,6 @@ var GameBasics = /** @class */ (function (_super) {
      */
     GameBasics.prototype.onEnteringState = function (stateName, args) {
         this.debug("onEnteringState: " + stateName, args, this.debugStateInfo());
-        console.log(document.getElementById("player_boards"));
         this.curstate = stateName;
         // Call appropriate method
         args = args ? args.args : null; // this method has extra wrapper for args for some reason
@@ -402,7 +401,6 @@ var CalendarController = /** @class */ (function (_super) {
         }
     };
     CalendarController.prototype.createCalendarTile = function (calendarTile) {
-        this.debug("creating calendar tile", calendarTile);
         var calendarTileDiv = '<div id="aoc-calender-tile-' + calendarTile.id + '" class="aoc-calendar-tile ' + calendarTile.cssClass + '"></div>';
         this.createHtml(calendarTileDiv, "aoc-calendar-slot-" + calendarTile.position);
     };
@@ -435,7 +433,6 @@ var CardController = /** @class */ (function (_super) {
         }
     };
     CardController.prototype.createCard = function (card) {
-        this.debug("createCard", card);
         switch (card.typeId) {
             case 1:
                 this.createCreativeCard(card);
@@ -493,7 +490,6 @@ var EditorController = /** @class */ (function (_super) {
         }
     };
     EditorController.prototype.createEditor = function (editor) {
-        this.debug("creating editor", editor);
         var editorDiv = '<div id="aoc-editor-' + editor.id + '" class="aoc-editor ' + editor.cssClass + '"></div>';
         if (editor.locationId == globalThis.LOCATION_EXTRA_EDITOR) {
             var color = this.getPlayerColorAsString(editor.color);
@@ -715,7 +711,6 @@ var MiniComicController = /** @class */ (function (_super) {
         }
     };
     MiniComicController.prototype.createMiniComic = function (miniComic) {
-        this.debug("creating mini comic", miniComic);
         var miniComicDiv = '<div id="aoc-mini-comic-' + miniComic.id + '" class="aoc-mini-comic ' + miniComic.cssClass + '"></div>';
         if (miniComic.location == globalThis.LOCATION_SUPPLY) {
             this.createHtml(miniComicDiv, "aoc-mini-" + miniComic.type + "s-" + miniComic.genre);
@@ -754,7 +749,6 @@ var PlayerController = /** @class */ (function (_super) {
         }
     };
     PlayerController.prototype.createPlayerOrderToken = function (player) {
-        this.debug("creating player order token", player);
         var playerOrderTokenDiv = '<div id="aoc-player-order-token' +
             player.id +
             '" class="aoc-player-order-token aoc-player-order-token-' +
@@ -763,7 +757,6 @@ var PlayerController = /** @class */ (function (_super) {
         this.createHtml(playerOrderTokenDiv, "aoc-player-order-space-" + player.turnOrder);
     };
     PlayerController.prototype.createPlayerAgent = function (player) {
-        this.debug("creating player agent", player);
         var playerAgentDiv = '<div id="aoc-agent' +
             player.id +
             '" class="aoc-agent aoc-agent-' +
@@ -772,7 +765,6 @@ var PlayerController = /** @class */ (function (_super) {
         this.createHtml(playerAgentDiv, "aoc-map-agent-space-" + player.agentLocation);
     };
     PlayerController.prototype.createPlayerCubes = function (player) {
-        this.debug("creating player cubes", player);
         this.createPlayerCubeOne(player);
         this.createPlayerCubeTwo(player);
         this.createPlayerCubeThree(player);
@@ -808,7 +800,6 @@ var PlayerController = /** @class */ (function (_super) {
         }
     };
     PlayerController.prototype.createPlayerPanel = function (player) {
-        this.debug("creating player panel", player);
         var playerPanelDiv = '<div id="aoc-player-panel-' +
             player.id +
             '" class="aoc-player-panel">' +
@@ -905,7 +896,6 @@ var PlayerController = /** @class */ (function (_super) {
         this.createPlayerCounter(player, "point", player.score);
         // TODO:calculate income
         this.createPlayerCounter(player, "income", 0);
-        console.log("createdCounter", this.playerCounter[player.id]);
     };
     PlayerController.prototype.createPlayerCounter = function (player, counter, initialValue) {
         var counterKey = counter;
@@ -972,7 +962,6 @@ var SalesOrderController = /** @class */ (function (_super) {
         }
     };
     SalesOrderController.prototype.createSalesOrder = function (salesOrder) {
-        this.debug("creating sales order", salesOrder);
         var salesOrderDiv = '<div id="aoc-salesorder-' + salesOrder.id + '" class="aoc-salesorder ' + salesOrder.cssClass + '"></div>';
         if (salesOrder.location == globalThis.LOCATION_MAP) {
             this.createHtml(salesOrderDiv, "aoc-map-order-space-" + salesOrder.locationArg);

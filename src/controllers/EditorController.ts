@@ -20,7 +20,6 @@ class EditorController extends GameBasics {
     }
 
     createEditor(editor: any) : void {
-        this.debug("creating editor", editor);
         var editorDiv = '<div id="aoc-editor-' + editor.id + '" class="aoc-editor ' + editor.cssClass + '"></div>';
         if (editor.locationId == globalThis.LOCATION_EXTRA_EDITOR) {
             var color = this.getPlayerColorAsString(editor.color);

@@ -20,7 +20,6 @@
     }
 
     createCalendarTile(calendarTile: any) : void {
-        this.debug("creating calendar tile", calendarTile);
         var calendarTileDiv = '<div id="aoc-calender-tile-' + calendarTile.id + '" class="aoc-calendar-tile ' + calendarTile.cssClass + '"></div>';
         this.createHtml(calendarTileDiv,"aoc-calendar-slot-" + calendarTile.position);
     }
