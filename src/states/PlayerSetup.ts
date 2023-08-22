@@ -22,12 +22,27 @@ class PlayerSetup implements State {
       for (var i = 1; i <= startIdeas; i++) {
         this.createIdeaSelectionDiv(game, i);
       }
+      this.createOnClickEvents(game.getGenres());
     }
   }
   onLeavingState(game: any): void {
     dojo.style("aoc-select-start-items", "display", "none");
+    dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
+    dojo.query(".aoc-card-unselected").removeClass("aoc-card-unselected");
   }
   onUpdateActionButtons(game: any, stateArgs: any): void {}
+
+  createOnClickEvents(genres: any): void {
+    for (var key in genres) {
+      var genre = genres[key];
+      var divId = "aoc-select-starting-" + genre;
+      dojo.connect(
+        dojo.byId(divId),
+        "onclick",
+        dojo.hitch(this, "selectComic", genre)
+      );
+    }
+  }
 
   createIdeaSelectionDiv(game: any, idNum: number): void {
     var ideaSelectionDiv =
@@ -36,5 +51,21 @@ class PlayerSetup implements State {
       '" class="aoc-selection-container"></div>';
 
     game.createHtml(ideaSelectionDiv, "aoc-select-containers");
+  }
+
+  selectComic(genre: string): void {
+    dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
+    dojo.query(".aoc-card-unselected").removeClass("aoc-card-unselected");
+
+    var divId = "aoc-select-starting-" + genre;
+    dojo.addClass(divId, "aoc-card-selected");
+
+    var allComics = dojo.byId("aoc-select-comic-genre").children;
+    for (var i = 0; i < allComics.length; i++) {
+      var comic = allComics[i];
+      if (comic.id != divId) {
+        dojo.addClass(comic.id, "aoc-card-unselected");
+      }
+    }
   }
 }

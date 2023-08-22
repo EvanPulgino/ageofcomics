@@ -222,6 +222,10 @@ var GameBasics = /** @class */ (function (_super) {
         //super.onScriptError(msg, url, linenumber);
         return this.inherited(arguments);
     };
+    GameBasics.prototype.getGenres = function () {
+        return GENRES;
+    };
+    ;
     GameBasics.prototype.getGenreName = function (genreId) {
         return GENRES[genreId];
     };
@@ -1082,17 +1086,40 @@ var PlayerSetup = /** @class */ (function () {
             for (var i = 1; i <= startIdeas; i++) {
                 this.createIdeaSelectionDiv(game, i);
             }
+            this.createOnClickEvents(game.getGenres());
         }
     };
     PlayerSetup.prototype.onLeavingState = function (game) {
         dojo.style("aoc-select-start-items", "display", "none");
+        dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
+        dojo.query(".aoc-card-unselected").removeClass("aoc-card-unselected");
     };
     PlayerSetup.prototype.onUpdateActionButtons = function (game, stateArgs) { };
+    PlayerSetup.prototype.createOnClickEvents = function (genres) {
+        for (var key in genres) {
+            var genre = genres[key];
+            var divId = "aoc-select-starting-" + genre;
+            dojo.connect(dojo.byId(divId), "onclick", dojo.hitch(this, "selectComic", genre));
+        }
+    };
     PlayerSetup.prototype.createIdeaSelectionDiv = function (game, idNum) {
         var ideaSelectionDiv = '<div id="aoc-selection-container-' +
             idNum +
             '" class="aoc-selection-container"></div>';
         game.createHtml(ideaSelectionDiv, "aoc-select-containers");
+    };
+    PlayerSetup.prototype.selectComic = function (genre) {
+        dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
+        dojo.query(".aoc-card-unselected").removeClass("aoc-card-unselected");
+        var divId = "aoc-select-starting-" + genre;
+        dojo.addClass(divId, "aoc-card-selected");
+        var allComics = dojo.byId("aoc-select-comic-genre").children;
+        for (var i = 0; i < allComics.length; i++) {
+            var comic = allComics[i];
+            if (comic.id != divId) {
+                dojo.addClass(comic.id, "aoc-card-unselected");
+            }
+        }
     };
     return PlayerSetup;
 }());

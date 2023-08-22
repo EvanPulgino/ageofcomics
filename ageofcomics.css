@@ -3240,6 +3240,14 @@ html {
   z-index: 100;
 }
 
+.aoc-card-selected {
+  border: 5px dotted red;
+}
+
+.aoc-card-unselected {
+  opacity: 0.5;
+}
+
 /**
  * 
  * Styles for ripoff cards

@@ -234,6 +234,10 @@ class GameBasics extends GameGui {
     return this.inherited(arguments);
   }
 
+  getGenres(): string[] {
+    return GENRES;
+  };
+
   getGenreName(genreId: number) {
     return GENRES[genreId];
   }
