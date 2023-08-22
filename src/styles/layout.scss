@@ -73,6 +73,70 @@ html {
   width: 100%;
 }
 
+#aoc-select-start-items {
+  align-items: center;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  margin-bottom: -45px;
+  padding-top: 15px;
+  gap: 15px;
+}
+
+#aoc-select-start-items-header-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+}
+
+#aoc-select-buttons {
+  align-items: center;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+#aoc-select-comic-genre {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 15px;
+  justify-content: center;
+  transform: scale(0.75);
+}
+
+#aoc-select-ideas {
+  align-items: center;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+#aoc-select-idea-buttons {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+#aoc-select-containers {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.aoc-selection-container {
+  border: 3px dotted black;
+  height: 45px;
+  width: 45px;
+}
+
 #aoc-common-area {
   align-items: center;
   display: flex;

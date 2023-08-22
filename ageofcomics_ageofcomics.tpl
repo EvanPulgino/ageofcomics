@@ -12,23 +12,43 @@
     ageofcomics_ageofcomics.tpl
 
     This is the HTML template of your game.
-
-    Everything you are writing in this file will be displayed in the HTML page of your game user interface,
-    in the "main game zone" of the screen.
-
-    You can use in this template:
-    _ variables, with the format {MY_VARIABLE_ELEMENT}.
-    _ HTML block, with the BEGIN/END format
-
-    See your "view" PHP file to check how to set variables and control blocks
-
-    Please REMOVE this comment before publishing your game on BGA
 -->
 
 
 <div id="aoc-gboard">
     <div id="aoc-layout">
-        <div id="aoc-common-area">
+        <div id="aoc-select-start-items" class="whiteblock" style="display: none;">
+            <div id="aoc-select-start-items-header">
+                <div id="aoc-select-start-items-header-text" class="aoc-squada">Select Starting Comic Genre and 2 Idea
+                    Tokens
+                </div>
+            </div>
+            <div id="aoc-select-buttons">
+                <div id="aoc-select-comic-genre">
+                    <div id="aoc-select-starting-crime" class="aoc-comic-card aoc-comic-crime-facedown"></div>
+                    <div id="aoc-select-starting-horror" class="aoc-comic-card aoc-comic-horror-facedown"></div>
+                    <div id="aoc-select-starting-romance" class="aoc-comic-card aoc-comic-romance-facedown"></div>
+                    <div id="aoc-select-starting-scifi" class="aoc-comic-card aoc-comic-scifi-facedown"></div>
+                    <div id="aoc-select-starting-superhero" class="aoc-comic-card aoc-comic-superhero-facedown">
+                    </div>
+                    <div id="aoc-select-starting-western" class="aoc-comic-card aoc-comic-western-facedown"></div>
+                </div>
+                <div id="aoc-select-ideas">
+                    <div id="aoc-select-idea-buttons">
+                        <div id=" aoc-select-starting-crime-idea" class="aoc-idea-token aoc-idea-token-crime">
+                        </div>
+                        <div id="aoc-select-starting-horror-idea" class="aoc-idea-token aoc-idea-token-horror"></div>
+                        <div id="aoc-select-starting-romance-idea" class="aoc-idea-token aoc-idea-token-romance"></div>
+                        <div id="aoc-select-starting-scifi-idea" class="aoc-idea-token aoc-idea-token-scifi"></div>
+                        <div id="aoc-select-starting-superhero-idea" class="aoc-idea-token aoc-idea-token-superhero">
+                        </div>
+                        <div id="aoc-select-starting-western-idea" class="aoc-idea-token aoc-idea-token-western"></div>
+                    </div>
+                    <div id="aoc-select-containers"></div>
+                </div>
+            </div>
+        </div>
+        <div id=" aoc-common-area">
             <div id="aoc-board" class="aoc-board-image aoc-board-section aoc-board">
                 <div id="aoc-player-order">
                     <div id="aoc-player-order-space-1" class="aoc-player-order-space"></div>
@@ -56,21 +76,32 @@
                 </div>
                 <div id="aoc-mini-comics-section">
                     <div id="aoc-mini-comics">
-                        <div id="aoc-mini-comics-crime" class="aoc-mini-comic-container aoc-mini-comic-space"></div>
-                        <div id="aoc-mini-comics-horror" class="aoc-mini-comic-container aoc-mini-comic-space"></div>
-                        <div id="aoc-mini-comics-romance" class="aoc-mini-comic-container aoc-mini-comic-space"></div>
-                        <div id="aoc-mini-comics-scifi" class="aoc-mini-comic-container aoc-mini-comic-space"></div>
-                        <div id="aoc-mini-comics-superhero" class="aoc-mini-comic-container aoc-mini-comic-space"></div>
-                        <div id="aoc-mini-comics-western" class="aoc-mini-comic-container aoc-mini-comic-space"></div>
+                        <div id="aoc-mini-comics-crime" class="aoc-mini-comic-container aoc-mini-comic-space">
+                        </div>
+                        <div id="aoc-mini-comics-horror" class="aoc-mini-comic-container aoc-mini-comic-space">
+                        </div>
+                        <div id="aoc-mini-comics-romance" class="aoc-mini-comic-container aoc-mini-comic-space">
+                        </div>
+                        <div id="aoc-mini-comics-scifi" class="aoc-mini-comic-container aoc-mini-comic-space">
+                        </div>
+                        <div id="aoc-mini-comics-superhero" class="aoc-mini-comic-container aoc-mini-comic-space">
+                        </div>
+                        <div id="aoc-mini-comics-western" class="aoc-mini-comic-container aoc-mini-comic-space">
+                        </div>
                     </div>
                     <div id="aoc-mini-ripoffs">
-                        <div id="aoc-mini-ripoffs-crime" class="aoc-mini-comic-container aoc-mini-ripoff-space"></div>
-                        <div id="aoc-mini-ripoffs-horror" class="aoc-mini-comic-container aoc-mini-ripoff-space"></div>
-                        <div id="aoc-mini-ripoffs-romance" class="aoc-mini-comic-container aoc-mini-ripoff-space"></div>
-                        <div id="aoc-mini-ripoffs-scifi" class="aoc-mini-comic-container aoc-mini-ripoff-space"></div>
+                        <div id="aoc-mini-ripoffs-crime" class="aoc-mini-comic-container aoc-mini-ripoff-space">
+                        </div>
+                        <div id="aoc-mini-ripoffs-horror" class="aoc-mini-comic-container aoc-mini-ripoff-space">
+                        </div>
+                        <div id="aoc-mini-ripoffs-romance" class="aoc-mini-comic-container aoc-mini-ripoff-space">
+                        </div>
+                        <div id="aoc-mini-ripoffs-scifi" class="aoc-mini-comic-container aoc-mini-ripoff-space">
+                        </div>
                         <div id="aoc-mini-ripoffs-superhero" class="aoc-mini-comic-container aoc-mini-ripoff-space">
                         </div>
-                        <div id="aoc-mini-ripoffs-western" class="aoc-mini-comic-container aoc-mini-ripoff-space"></div>
+                        <div id="aoc-mini-ripoffs-western" class="aoc-mini-comic-container aoc-mini-ripoff-space">
+                        </div>
                     </div>
                 </div>
                 <div id="aoc-extra-editors">
@@ -154,7 +185,7 @@
                     <div id="aoc-tickets-space"></div>
                 </div>
             </div>
-            <div id="aoc-card-market">
+            <div id="aoc-card-market" style="display: none;">
                 <div id="aoc-writers-market" class="aoc-card-row-container aoc-card-market-row">
                     <div id="aoc-writer-deck" class="aoc-deck"></div>
                     <div id="aoc-writers-available" class="aoc-card-market-row"></div>
@@ -235,8 +266,10 @@
                             </div>
                         </div>
                         <div id="aoc-player-mat-{player_id}" class="aoc-player-mat aoc-player-mat-{color}">
-                            <div id="aoc-cube-one-space-{player_id}" class="aoc-cube-space aoc-cube-space-one"></div>
-                            <div id="aoc-cube-two-space-{player_id}" class="aoc-cube-space aoc-cube-space-two"></div>
+                            <div id="aoc-cube-one-space-{player_id}" class="aoc-cube-space aoc-cube-space-one">
+                            </div>
+                            <div id="aoc-cube-two-space-{player_id}" class="aoc-cube-space aoc-cube-space-two">
+                            </div>
                             <div id="aoc-cube-three-space-{player_id}" class="aoc-cube-space aoc-cube-space-three">
                             </div>
                         </div>

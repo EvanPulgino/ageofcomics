@@ -1077,10 +1077,23 @@ var PlayerSetup = /** @class */ (function () {
     }
     PlayerSetup.prototype.onEnteringState = function (game, stateArgs) {
         if (stateArgs.isCurrentPlayerActive) {
+            dojo.style("aoc-select-start-items", "display", "block");
+            var startIdeas = stateArgs.args.startIdeas;
+            for (var i = 1; i <= startIdeas; i++) {
+                this.createIdeaSelectionDiv(game, i);
+            }
         }
     };
-    PlayerSetup.prototype.onLeavingState = function (game) { };
+    PlayerSetup.prototype.onLeavingState = function (game) {
+        dojo.style("aoc-select-start-items", "display", "none");
+    };
     PlayerSetup.prototype.onUpdateActionButtons = function (game, stateArgs) { };
+    PlayerSetup.prototype.createIdeaSelectionDiv = function (game, idNum) {
+        var ideaSelectionDiv = '<div id="aoc-selection-container-' +
+            idNum +
+            '" class="aoc-selection-container"></div>';
+        game.createHtml(ideaSelectionDiv, "aoc-select-containers");
+    };
     return PlayerSetup;
 }());
 /**

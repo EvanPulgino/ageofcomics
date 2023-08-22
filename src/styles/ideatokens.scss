@@ -26,6 +26,11 @@
   width: 44px;
 }
 
+#aoc-select-idea-buttons .aoc-idea-token:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
 .aoc-idea-bank {
   height: 44px;
   position: relative;
