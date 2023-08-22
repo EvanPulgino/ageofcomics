@@ -40,6 +40,7 @@ class AgeOfComics extends Table {
             IDEAS_SPACE_SUPERHERO => 17,
             IDEAS_SPACE_WESTERN => 18,
             TICKET_SUPPLY => 19,
+            START_IDEAS => 20,
         ]);
 
         // Initialize action managers
@@ -83,6 +84,7 @@ class AgeOfComics extends Table {
         self::setGameStateInitialValue(TURNS_TAKEN, 0);
         self::setGameStateInitialValue(CURRENT_ROUND, 0);
         self::setGameStateInitialValue(TICKET_SUPPLY, 4);
+        self::setGameStateInitialValue(START_IDEAS, 0);
         foreach (GENRES as $genreId => $genreName) {
             self::setGameStateInitialValue("ideas_space_{$genreName}", 1);
         }
@@ -160,7 +162,6 @@ class AgeOfComics extends Table {
                 CARD_TYPE_WRITER,
                 $currentPlayerId
             ),
-            "connections" => SALES_ORDER_CONNECTIONS[4]
         ];
 
         return $gamedata;
@@ -185,6 +186,15 @@ class AgeOfComics extends Table {
     //////////////////////////////////////////////////////////////////////////////
     //////////// Utility functions
     ////////////
+
+    function __call($name, $args) {
+        if (in_array($name, get_class_methods($this->gameStateActions))) {
+            call_user_func([$this->gameStateActions, $name], $args);
+        }
+        elseif (in_array($name, get_class_methods($this->playerActions))) {
+            call_user_func([$this->playerActions, $name], $args);
+        }
+    }
 
     /**
      * Get current contents of ideas space
@@ -270,7 +280,11 @@ class AgeOfComics extends Table {
         );
     }    
     */
-
+    function argsPlayerSetup() {
+        return [
+            "startIdeas" => self::getGameStateValue(START_IDEAS),
+        ];
+    }
     //////////////////////////////////////////////////////////////////////////////
     //////////// Game state actions
     ////////////

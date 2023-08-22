@@ -16,6 +16,12 @@
 /** Actions */
 define("GAME_ACTION_GAME_END", "stGameEnd");
 define("GAME_ACTION_GAME_SETUP", "stGameSetup");
+define("GAME_ACTION_PLAYER_SETUP", "stPlayerSetup");
+
+define("PLAYER_ACTION_SELECT_START_ITEMS", "selectStartItems");
+
+/** State Args */
+define("ARGS_PLAYER_SETUP", "argsPlayerSetup");
 
 /** Genre Keys */
 define("GENRE_CRIME", 10);
@@ -213,6 +219,7 @@ define("IDEAS_SPACE_WESTERN", "ideas_space_western");
 define("TICKET_SUPPLY", "ticket_supply");
 define("TOTAL_TURNS", "total_turns");
 define("TURNS_TAKEN", "turns_taken");
+define("START_IDEAS", "start_ideas");
 
 /** Locations */
 define("LOCATION_DECK", 0);

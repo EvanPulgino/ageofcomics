@@ -122,4 +122,13 @@ class GameBody extends GameBasics {
   notif_message(notif: any): void {
     this.debug("notif", notif);
   }
+
+  /**
+   * Handle 'setupMoney' notification
+   *
+   * @param {object} notif - notification data
+   */
+  notif_setupMoney(notif: any): void {
+    this.playerController.adjustMoney(notif.args.player, notif.args.money);
+  }
 }

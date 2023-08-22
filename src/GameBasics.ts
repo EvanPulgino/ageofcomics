@@ -73,8 +73,8 @@ class GameBasics extends GameGui {
     this.debug("onEnteringState: " + stateName, args, this.debugStateInfo());
     this.curstate = stateName;
     // Call appropriate method
-    args = args ? args.args : null; // this method has extra wrapper for args for some reason
-    this.gameState[stateName].onEnteringState(args);
+    args["isCurrentPlayerActive"] = gameui.isCurrentPlayerActive();
+    this.gameState[stateName].onEnteringState(this, args);
 
     if (this.pendingUpdate) {
       this.onUpdateActionButtons(stateName, args);
@@ -90,7 +90,7 @@ class GameBasics extends GameGui {
   onLeavingState(stateName: string) {
     this.debug("onLeavingState: " + stateName, this.debugStateInfo());
     this.currentPlayerWasActive = false;
-    this.gameState[stateName].onLeavingState();
+    this.gameState[stateName].onLeavingState(this);
   }
 
   /**
@@ -118,7 +118,7 @@ class GameBasics extends GameGui {
       );
       this.currentPlayerWasActive = true;
       // Call appropriate method
-      this.gameState[stateName].onUpdateActionButtons(args);
+      this.gameState[stateName].onUpdateActionButtons(this, args);
     } else {
       this.currentPlayerWasActive = false;
     }

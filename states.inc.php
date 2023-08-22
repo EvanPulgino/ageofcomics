@@ -68,10 +68,9 @@ $machinestates = [
             '${you} must select starting items'
         ),
         "type" => STATE_TYPE_ACTIVE_PLAYER,
-        "possibleactions" => [
-            "selectComic",
-            "selectIdeaTokens",
-        ],
+        "args" => ARGS_PLAYER_SETUP,
+        "action" => GAME_ACTION_PLAYER_SETUP,
+        "possibleactions" => [PLAYER_ACTION_SELECT_START_ITEMS],
         "transitions" => ["" => ST_GAME_END],
     ],
 

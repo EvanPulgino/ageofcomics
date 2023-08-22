@@ -25,6 +25,10 @@ class PlayerController extends GameBasics {
     }
   }
 
+  adjustMoney(player: any, amount: number): void {
+    this.updatePlayerCounter(player, "money", amount);
+  }
+
   createPlayerOrderToken(player: any): void {
     var playerOrderTokenDiv =
       '<div id="aoc-player-order-token' +
@@ -216,5 +220,12 @@ class PlayerController extends GameBasics {
       "aoc-player-" + counterPanel + "-count-" + player.id
     );
     this.playerCounter[player.id][counterPanel].setValue(initialValue);
+  }
+
+  updatePlayerCounter(player: any, counter: string, value: number): void {
+    var counterKey = counter;
+    var counterPanel = "panel-" + counter;
+    this.playerCounter[player.id][counterKey].incValue(value);
+    this.playerCounter[player.id][counterPanel].incValue(value);
   }
 }

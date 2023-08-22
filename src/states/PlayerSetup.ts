@@ -14,7 +14,11 @@
  */
 
 class PlayerSetup implements State {
-  onEnteringState(stateArgs: any): void {}
-  onLeavingState(): void {}
-  onUpdateActionButtons(stateArgs: any): void {}
+  onEnteringState(game: any, stateArgs: any): void {
+    if (stateArgs.isCurrentPlayerActive) {
+    }
+  }
+  onLeavingState(game: any): void {}
+  onUpdateActionButtons(game: any, stateArgs: any): void {}
+
 }

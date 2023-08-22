@@ -78,8 +78,8 @@ var GameBasics = /** @class */ (function (_super) {
         this.debug("onEnteringState: " + stateName, args, this.debugStateInfo());
         this.curstate = stateName;
         // Call appropriate method
-        args = args ? args.args : null; // this method has extra wrapper for args for some reason
-        this.gameState[stateName].onEnteringState(args);
+        args["isCurrentPlayerActive"] = gameui.isCurrentPlayerActive();
+        this.gameState[stateName].onEnteringState(this, args);
         if (this.pendingUpdate) {
             this.onUpdateActionButtons(stateName, args);
             this.pendingUpdate = false;
@@ -93,7 +93,7 @@ var GameBasics = /** @class */ (function (_super) {
     GameBasics.prototype.onLeavingState = function (stateName) {
         this.debug("onLeavingState: " + stateName, this.debugStateInfo());
         this.currentPlayerWasActive = false;
-        this.gameState[stateName].onLeavingState();
+        this.gameState[stateName].onLeavingState(this);
     };
     /**
      * Builds action buttons on state change
@@ -113,7 +113,7 @@ var GameBasics = /** @class */ (function (_super) {
             this.debug("onUpdateActionButtons: " + stateName, args, this.debugStateInfo());
             this.currentPlayerWasActive = true;
             // Call appropriate method
-            this.gameState[stateName].onUpdateActionButtons(args);
+            this.gameState[stateName].onUpdateActionButtons(this, args);
         }
         else {
             this.currentPlayerWasActive = false;
@@ -331,6 +331,14 @@ var GameBody = /** @class */ (function (_super) {
      */
     GameBody.prototype.notif_message = function (notif) {
         this.debug("notif", notif);
+    };
+    /**
+     * Handle 'setupMoney' notification
+     *
+     * @param {object} notif - notification data
+     */
+    GameBody.prototype.notif_setupMoney = function (notif) {
+        this.playerController.adjustMoney(notif.args.player, notif.args.money);
     };
     return GameBody;
 }(GameBasics));
@@ -748,6 +756,9 @@ var PlayerController = /** @class */ (function (_super) {
             this.createPlayerCounters(playerData[key]);
         }
     };
+    PlayerController.prototype.adjustMoney = function (player, amount) {
+        this.updatePlayerCounter(player, "money", amount);
+    };
     PlayerController.prototype.createPlayerOrderToken = function (player) {
         var playerOrderTokenDiv = '<div id="aoc-player-order-token' +
             player.id +
@@ -907,6 +918,12 @@ var PlayerController = /** @class */ (function (_super) {
         this.playerCounter[player.id][counterPanel].create("aoc-player-" + counterPanel + "-count-" + player.id);
         this.playerCounter[player.id][counterPanel].setValue(initialValue);
     };
+    PlayerController.prototype.updatePlayerCounter = function (player, counter, value) {
+        var counterKey = counter;
+        var counterPanel = "panel-" + counter;
+        this.playerCounter[player.id][counterKey].incValue(value);
+        this.playerCounter[player.id][counterPanel].incValue(value);
+    };
     return PlayerController;
 }(GameBasics));
 /**
@@ -1014,9 +1031,9 @@ var TicketController = /** @class */ (function (_super) {
 var GameEnd = /** @class */ (function () {
     function GameEnd() {
     }
-    GameEnd.prototype.onEnteringState = function (stateArgs) { };
-    GameEnd.prototype.onLeavingState = function () { };
-    GameEnd.prototype.onUpdateActionButtons = function (stateArgs) { };
+    GameEnd.prototype.onEnteringState = function (game, stateArgs) { };
+    GameEnd.prototype.onLeavingState = function (game) { };
+    GameEnd.prototype.onUpdateActionButtons = function (game, stateArgs) { };
     return GameEnd;
 }());
 /**
@@ -1036,9 +1053,9 @@ var GameEnd = /** @class */ (function () {
 var GameSetup = /** @class */ (function () {
     function GameSetup() {
     }
-    GameSetup.prototype.onEnteringState = function (stateArgs) { };
-    GameSetup.prototype.onLeavingState = function () { };
-    GameSetup.prototype.onUpdateActionButtons = function (stateArgs) { };
+    GameSetup.prototype.onEnteringState = function (game, stateArgs) { };
+    GameSetup.prototype.onLeavingState = function (game) { };
+    GameSetup.prototype.onUpdateActionButtons = function (game, stateArgs) { };
     return GameSetup;
 }());
 /**
@@ -1058,9 +1075,12 @@ var GameSetup = /** @class */ (function () {
 var PlayerSetup = /** @class */ (function () {
     function PlayerSetup() {
     }
-    PlayerSetup.prototype.onEnteringState = function (stateArgs) { };
-    PlayerSetup.prototype.onLeavingState = function () { };
-    PlayerSetup.prototype.onUpdateActionButtons = function (stateArgs) { };
+    PlayerSetup.prototype.onEnteringState = function (game, stateArgs) {
+        if (stateArgs.isCurrentPlayerActive) {
+        }
+    };
+    PlayerSetup.prototype.onLeavingState = function (game) { };
+    PlayerSetup.prototype.onUpdateActionButtons = function (game, stateArgs) { };
     return PlayerSetup;
 }());
 /**
