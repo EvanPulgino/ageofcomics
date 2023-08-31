@@ -499,9 +499,10 @@
 }
 
 .aoc-card-selected {
-  border: 5px dotted red;
+  border: 5px solid black;
 }
 
 .aoc-card-unselected {
   opacity: 0.5;
+  transform: scale(0.9);
 }

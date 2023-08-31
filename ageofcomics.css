@@ -57,6 +57,25 @@ html {
   display: none;
 }
 
+.aoc-start-idea-remove {
+  border-radius: 10px;
+  color: red;
+  cursor: pointer;
+  position: absolute;
+  right: -12px;
+  top: -14px;
+  transition: top 0.3s ease;
+  transition: right 0.3s ease;
+  transition: font-size 0.3s ease;
+  z-index: 100;
+}
+
+.aoc-selection-container:hover .aoc-start-idea-remove {
+  font-size: 350%;
+  right: -2px;
+  top: 2px;
+}
+
 #aoc-overall {
   align-items: center;
   display: flex;
@@ -144,6 +163,7 @@ html {
   border: 3px dotted black;
   height: 45px;
   width: 45px;
+  position: relative;
 }
 
 #aoc-common-area {
@@ -3241,11 +3261,12 @@ html {
 }
 
 .aoc-card-selected {
-  border: 5px dotted red;
+  border: 5px solid black;
 }
 
 .aoc-card-unselected {
   opacity: 0.5;
+  transform: scale(0.9);
 }
 
 /**

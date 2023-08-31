@@ -14,7 +14,12 @@
  */
 
 class GameSetup implements State {
-  onEnteringState(game: any, stateArgs: any): void {}
-  onLeavingState(game: any): void {}
-  onUpdateActionButtons(game:any, stateArgs: any): void {}
+  game: any;
+  constructor(game: any) {
+    this.game = game;
+  }
+
+  onEnteringState(stateArgs: any): void {}
+  onLeavingState(): void {}
+  onUpdateActionButtons(stateArgs: any): void {}
 }

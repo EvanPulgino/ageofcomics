@@ -8,7 +8,7 @@
  * -----
  *
  * GameState.ts
- * 
+ *
  * Class that holds all game states
  *
  */
@@ -17,9 +17,9 @@ class GameState {
   gameEnd: State;
   gameSetup: State;
   playerSetup: State;
-  constructor() {
-    this.gameEnd = new GameEnd();
-    this.gameSetup = new GameSetup();
-    this.playerSetup = new PlayerSetup();
+  constructor(game: any) {
+    this.gameEnd = new GameEnd(game);
+    this.gameSetup = new GameSetup(game);
+    this.playerSetup = new PlayerSetup(game);
   }
 }

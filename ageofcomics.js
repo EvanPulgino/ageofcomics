@@ -43,7 +43,7 @@ var GameBasics = /** @class */ (function (_super) {
         _this.curstate = null;
         _this.pendingUpdate = false;
         _this.currentPlayerWasActive = false;
-        _this.gameState = new GameState();
+        _this.gameState = new GameState(_this);
         return _this;
     }
     /**
@@ -79,7 +79,7 @@ var GameBasics = /** @class */ (function (_super) {
         this.curstate = stateName;
         // Call appropriate method
         args["isCurrentPlayerActive"] = gameui.isCurrentPlayerActive();
-        this.gameState[stateName].onEnteringState(this, args);
+        this.gameState[stateName].onEnteringState(args);
         if (this.pendingUpdate) {
             this.onUpdateActionButtons(stateName, args);
             this.pendingUpdate = false;
@@ -93,7 +93,7 @@ var GameBasics = /** @class */ (function (_super) {
     GameBasics.prototype.onLeavingState = function (stateName) {
         this.debug("onLeavingState: " + stateName, this.debugStateInfo());
         this.currentPlayerWasActive = false;
-        this.gameState[stateName].onLeavingState(this);
+        this.gameState[stateName].onLeavingState();
     };
     /**
      * Builds action buttons on state change
@@ -113,7 +113,7 @@ var GameBasics = /** @class */ (function (_super) {
             this.debug("onUpdateActionButtons: " + stateName, args, this.debugStateInfo());
             this.currentPlayerWasActive = true;
             // Call appropriate method
-            this.gameState[stateName].onUpdateActionButtons(this, args);
+            this.gameState[stateName].onUpdateActionButtons(args);
         }
         else {
             this.currentPlayerWasActive = false;
@@ -225,7 +225,6 @@ var GameBasics = /** @class */ (function (_super) {
     GameBasics.prototype.getGenres = function () {
         return GENRES;
     };
-    ;
     GameBasics.prototype.getGenreName = function (genreId) {
         return GENRES[genreId];
     };
@@ -361,10 +360,10 @@ var GameBody = /** @class */ (function (_super) {
  *
  */
 var GameState = /** @class */ (function () {
-    function GameState() {
-        this.gameEnd = new GameEnd();
-        this.gameSetup = new GameSetup();
-        this.playerSetup = new PlayerSetup();
+    function GameState(game) {
+        this.gameEnd = new GameEnd(game);
+        this.gameSetup = new GameSetup(game);
+        this.playerSetup = new PlayerSetup(game);
     }
     return GameState;
 }());
@@ -1033,11 +1032,12 @@ var TicketController = /** @class */ (function (_super) {
  *
  */
 var GameEnd = /** @class */ (function () {
-    function GameEnd() {
+    function GameEnd(game) {
+        this.game = game;
     }
-    GameEnd.prototype.onEnteringState = function (game, stateArgs) { };
-    GameEnd.prototype.onLeavingState = function (game) { };
-    GameEnd.prototype.onUpdateActionButtons = function (game, stateArgs) { };
+    GameEnd.prototype.onEnteringState = function (stateArgs) { };
+    GameEnd.prototype.onLeavingState = function () { };
+    GameEnd.prototype.onUpdateActionButtons = function (stateArgs) { };
     return GameEnd;
 }());
 /**
@@ -1055,11 +1055,12 @@ var GameEnd = /** @class */ (function () {
  *
  */
 var GameSetup = /** @class */ (function () {
-    function GameSetup() {
+    function GameSetup(game) {
+        this.game = game;
     }
-    GameSetup.prototype.onEnteringState = function (game, stateArgs) { };
-    GameSetup.prototype.onLeavingState = function (game) { };
-    GameSetup.prototype.onUpdateActionButtons = function (game, stateArgs) { };
+    GameSetup.prototype.onEnteringState = function (stateArgs) { };
+    GameSetup.prototype.onLeavingState = function () { };
+    GameSetup.prototype.onUpdateActionButtons = function (stateArgs) { };
     return GameSetup;
 }());
 /**
@@ -1077,41 +1078,67 @@ var GameSetup = /** @class */ (function () {
  *
  */
 var PlayerSetup = /** @class */ (function () {
-    function PlayerSetup() {
+    function PlayerSetup(game) {
+        this.game = game;
     }
-    PlayerSetup.prototype.onEnteringState = function (game, stateArgs) {
+    PlayerSetup.prototype.onEnteringState = function (stateArgs) {
+        console.log(globalThis);
         if (stateArgs.isCurrentPlayerActive) {
             dojo.style("aoc-select-start-items", "display", "block");
             var startIdeas = stateArgs.args.startIdeas;
             for (var i = 1; i <= startIdeas; i++) {
-                this.createIdeaSelectionDiv(game, i);
+                this.createIdeaSelectionDiv(i);
             }
-            this.createOnClickEvents(game.getGenres());
+            this.createOnClickEvents(startIdeas);
         }
     };
-    PlayerSetup.prototype.onLeavingState = function (game) {
+    PlayerSetup.prototype.onLeavingState = function () {
         dojo.style("aoc-select-start-items", "display", "none");
         dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
         dojo.query(".aoc-card-unselected").removeClass("aoc-card-unselected");
     };
-    PlayerSetup.prototype.onUpdateActionButtons = function (game, stateArgs) { };
-    PlayerSetup.prototype.createOnClickEvents = function (genres) {
+    PlayerSetup.prototype.onUpdateActionButtons = function (stateArgs) { };
+    PlayerSetup.prototype.createOnClickEvents = function (startIdeas) {
+        var genres = this.game.getGenres();
         for (var key in genres) {
             var genre = genres[key];
-            var divId = "aoc-select-starting-" + genre;
-            dojo.connect(dojo.byId(divId), "onclick", dojo.hitch(this, "selectComic", genre));
+            var comicDivId = "aoc-select-starting-comic-" + genre;
+            dojo.connect(dojo.byId(comicDivId), "onclick", dojo.hitch(this, "selectComic", genre));
+            var ideaDivId = "aoc-select-starting-idea-" + genre;
+            dojo.connect(dojo.byId(ideaDivId), "onclick", dojo.hitch(this, "selectIdea", genre));
+        }
+        for (var i = 1; i <= startIdeas; i++) {
+            var ideaCancelId = "aoc-idea-cancel-" + i;
+            dojo.connect(dojo.byId(ideaCancelId), "onclick", dojo.hitch(this, "removeIdea", i));
         }
     };
-    PlayerSetup.prototype.createIdeaSelectionDiv = function (game, idNum) {
+    PlayerSetup.prototype.createIdeaSelectionDiv = function (idNum) {
         var ideaSelectionDiv = '<div id="aoc-selection-container-' +
             idNum +
-            '" class="aoc-selection-container"></div>';
-        game.createHtml(ideaSelectionDiv, "aoc-select-containers");
+            '" class="aoc-selection-container"><i id="aoc-idea-cancel-' +
+            idNum +
+            '" class="fa fa-lg fa-times-circle aoc-start-idea-remove aoc-hidden"></i></div>';
+        this.game.createHtml(ideaSelectionDiv, "aoc-select-containers");
+    };
+    PlayerSetup.prototype.getFirstEmptyIdeaSelectionDiv = function () {
+        var allDivs = dojo.query(".aoc-selection-container");
+        for (var i = 0; i < allDivs.length; i++) {
+            var div = allDivs[i];
+            if (div.children.length == 1) {
+                return div;
+            }
+        }
+        return null;
+    };
+    PlayerSetup.prototype.removeIdea = function (slotId) {
+        var ideaDiv = dojo.byId("aoc-selected-idea-box-" + slotId);
+        ideaDiv.remove();
+        dojo.toggleClass("aoc-idea-cancel-" + slotId, "aoc-hidden", true);
     };
     PlayerSetup.prototype.selectComic = function (genre) {
         dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
         dojo.query(".aoc-card-unselected").removeClass("aoc-card-unselected");
-        var divId = "aoc-select-starting-" + genre;
+        var divId = "aoc-select-starting-comic-" + genre;
         dojo.addClass(divId, "aoc-card-selected");
         var allComics = dojo.byId("aoc-select-comic-genre").children;
         for (var i = 0; i < allComics.length; i++) {
@@ -1120,6 +1147,22 @@ var PlayerSetup = /** @class */ (function () {
                 dojo.addClass(comic.id, "aoc-card-unselected");
             }
         }
+    };
+    PlayerSetup.prototype.selectIdea = function (genre) {
+        var firstEmptySelectionDiv = this.getFirstEmptyIdeaSelectionDiv();
+        if (firstEmptySelectionDiv == null) {
+            return;
+        }
+        var slotId = firstEmptySelectionDiv.id.split("-")[3];
+        var tokenDiv = '<div id="aoc-selected-idea-box-' +
+            slotId +
+            '"<div id="aoc-selected-idea-' +
+            genre +
+            '" class="aoc-idea-token aoc-idea-token-' +
+            genre +
+            '"></div>';
+        this.game.createHtml(tokenDiv, firstEmptySelectionDiv.id);
+        dojo.toggleClass("aoc-idea-cancel-" + slotId, "aoc-hidden", false);
     };
     return PlayerSetup;
 }());

@@ -36,7 +36,7 @@ class GameBasics extends GameGui {
     this.curstate = null;
     this.pendingUpdate = false;
     this.currentPlayerWasActive = false;
-    this.gameState = new GameState();
+    this.gameState = new GameState(this);
   }
 
   /**
@@ -74,7 +74,7 @@ class GameBasics extends GameGui {
     this.curstate = stateName;
     // Call appropriate method
     args["isCurrentPlayerActive"] = gameui.isCurrentPlayerActive();
-    this.gameState[stateName].onEnteringState(this, args);
+    this.gameState[stateName].onEnteringState(args);
 
     if (this.pendingUpdate) {
       this.onUpdateActionButtons(stateName, args);
@@ -90,7 +90,7 @@ class GameBasics extends GameGui {
   onLeavingState(stateName: string) {
     this.debug("onLeavingState: " + stateName, this.debugStateInfo());
     this.currentPlayerWasActive = false;
-    this.gameState[stateName].onLeavingState(this);
+    this.gameState[stateName].onLeavingState();
   }
 
   /**
@@ -118,7 +118,7 @@ class GameBasics extends GameGui {
       );
       this.currentPlayerWasActive = true;
       // Call appropriate method
-      this.gameState[stateName].onUpdateActionButtons(this, args);
+      this.gameState[stateName].onUpdateActionButtons(args);
     } else {
       this.currentPlayerWasActive = false;
     }
@@ -236,7 +236,7 @@ class GameBasics extends GameGui {
 
   getGenres(): string[] {
     return GENRES;
-  };
+  }
 
   getGenreName(genreId: number) {
     return GENRES[genreId];

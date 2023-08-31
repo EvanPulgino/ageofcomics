@@ -14,7 +14,7 @@
  */
 
 interface State {
-  onEnteringState(game: any,stateArgs: any): void;
-  onLeavingState(game: any): void;
-  onUpdateActionButtons(game: any, stateArgs: any): void;
+  onEnteringState(stateArgs: any): void;
+  onLeavingState(): void;
+  onUpdateActionButtons(stateArgs: any): void;
 }
