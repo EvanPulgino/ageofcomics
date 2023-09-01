@@ -48,6 +48,17 @@ html {
   display: none;
 }
 
+.aoc-button-disabled {
+  background-color: #ccc !important;
+  color: #fff !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
+
+.aoc-button:hover {
+  transform: scale(1.05);
+}
+
 .aoc-start-idea-remove {
   border-radius: 10px;
   color: red;

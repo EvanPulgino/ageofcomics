@@ -20,7 +20,6 @@ class PlayerSetup implements State {
   }
 
   onEnteringState(stateArgs: any): void {
-    console.log(globalThis);
     if (stateArgs.isCurrentPlayerActive) {
       dojo.style("aoc-select-start-items", "display", "block");
       var startIdeas = stateArgs.args.startIdeas;
@@ -36,7 +35,24 @@ class PlayerSetup implements State {
     dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
     dojo.query(".aoc-card-unselected").removeClass("aoc-card-unselected");
   }
-  onUpdateActionButtons(stateArgs: any): void {}
+  onUpdateActionButtons(stateArgs: any): void {
+    if (stateArgs.isCurrentPlayerActive) {
+      gameui.addActionButton(
+        "aoc-confirm-starting-items",
+        _("Confirm"),
+        (event) => {
+          this.confirmStartingItems(event);
+        }
+      );
+      dojo.addClass("aoc-confirm-starting-items", "aoc-button-disabled");
+      dojo.addClass("aoc-confirm-starting-items", "aoc-button");
+    }
+  }
+
+  confirmStartingItems(event): void {
+    console.log("confirming starting items");
+    console.log(event);
+  }
 
   createOnClickEvents(startIdeas): void {
     var genres = this.game.getGenres();
@@ -95,6 +111,8 @@ class PlayerSetup implements State {
     ideaDiv.remove();
 
     dojo.toggleClass("aoc-idea-cancel-" + slotId, "aoc-hidden", true);
+
+    this.setButtonConfirmationStatus();
   }
 
   selectComic(genre: string): void {
@@ -108,9 +126,11 @@ class PlayerSetup implements State {
     for (var i = 0; i < allComics.length; i++) {
       var comic = allComics[i];
       if (comic.id != divId) {
-        dojo.addClass(comic.id, "aoc-card-unselected");
+        dojo.toggleClass(comic.id, "aoc-card-unselected", true);
       }
     }
+
+    this.setButtonConfirmationStatus();
   }
 
   selectIdea(genre: string): void {
@@ -134,5 +154,24 @@ class PlayerSetup implements State {
     this.game.createHtml(tokenDiv, firstEmptySelectionDiv.id);
 
     dojo.toggleClass("aoc-idea-cancel-" + slotId, "aoc-hidden", false);
+
+    this.setButtonConfirmationStatus();
+  }
+
+  setButtonConfirmationStatus(): void {
+    var firstEmptySelectionDiv = this.getFirstEmptyIdeaSelectionDiv();
+    var selectedComic = dojo.query(
+      ".aoc-card-selected",
+      "aoc-select-comic-genre"
+    );
+    if (firstEmptySelectionDiv == null && selectedComic.length == 1) {
+      dojo.toggleClass(
+        "aoc-confirm-starting-items",
+        "aoc-button-disabled",
+        false
+      );
+    } else {
+      dojo.toggleClass("aoc-confirm-starting-items", "aoc-button-disabled", true);
+    }
   }
 }

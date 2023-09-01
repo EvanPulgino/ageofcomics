@@ -1082,7 +1082,6 @@ var PlayerSetup = /** @class */ (function () {
         this.game = game;
     }
     PlayerSetup.prototype.onEnteringState = function (stateArgs) {
-        console.log(globalThis);
         if (stateArgs.isCurrentPlayerActive) {
             dojo.style("aoc-select-start-items", "display", "block");
             var startIdeas = stateArgs.args.startIdeas;
@@ -1097,7 +1096,20 @@ var PlayerSetup = /** @class */ (function () {
         dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
         dojo.query(".aoc-card-unselected").removeClass("aoc-card-unselected");
     };
-    PlayerSetup.prototype.onUpdateActionButtons = function (stateArgs) { };
+    PlayerSetup.prototype.onUpdateActionButtons = function (stateArgs) {
+        var _this = this;
+        if (stateArgs.isCurrentPlayerActive) {
+            gameui.addActionButton("aoc-confirm-starting-items", _("Confirm"), function (event) {
+                _this.confirmStartingItems(event);
+            });
+            dojo.addClass("aoc-confirm-starting-items", "aoc-button-disabled");
+            dojo.addClass("aoc-confirm-starting-items", "aoc-button");
+        }
+    };
+    PlayerSetup.prototype.confirmStartingItems = function (event) {
+        console.log("confirming starting items");
+        console.log(event);
+    };
     PlayerSetup.prototype.createOnClickEvents = function (startIdeas) {
         var genres = this.game.getGenres();
         for (var key in genres) {
@@ -1134,6 +1146,7 @@ var PlayerSetup = /** @class */ (function () {
         var ideaDiv = dojo.byId("aoc-selected-idea-box-" + slotId);
         ideaDiv.remove();
         dojo.toggleClass("aoc-idea-cancel-" + slotId, "aoc-hidden", true);
+        this.setButtonConfirmationStatus();
     };
     PlayerSetup.prototype.selectComic = function (genre) {
         dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
@@ -1144,9 +1157,10 @@ var PlayerSetup = /** @class */ (function () {
         for (var i = 0; i < allComics.length; i++) {
             var comic = allComics[i];
             if (comic.id != divId) {
-                dojo.addClass(comic.id, "aoc-card-unselected");
+                dojo.toggleClass(comic.id, "aoc-card-unselected", true);
             }
         }
+        this.setButtonConfirmationStatus();
     };
     PlayerSetup.prototype.selectIdea = function (genre) {
         var firstEmptySelectionDiv = this.getFirstEmptyIdeaSelectionDiv();
@@ -1163,6 +1177,17 @@ var PlayerSetup = /** @class */ (function () {
             '"></div>';
         this.game.createHtml(tokenDiv, firstEmptySelectionDiv.id);
         dojo.toggleClass("aoc-idea-cancel-" + slotId, "aoc-hidden", false);
+        this.setButtonConfirmationStatus();
+    };
+    PlayerSetup.prototype.setButtonConfirmationStatus = function () {
+        var firstEmptySelectionDiv = this.getFirstEmptyIdeaSelectionDiv();
+        var selectedComic = dojo.query(".aoc-card-selected", "aoc-select-comic-genre");
+        if (firstEmptySelectionDiv == null && selectedComic.length == 1) {
+            dojo.toggleClass("aoc-confirm-starting-items", "aoc-button-disabled", false);
+        }
+        else {
+            dojo.toggleClass("aoc-confirm-starting-items", "aoc-button-disabled", true);
+        }
     };
     return PlayerSetup;
 }());
