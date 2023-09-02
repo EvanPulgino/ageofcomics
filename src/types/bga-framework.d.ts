@@ -185,6 +185,12 @@ declare class GameGui {
     duration?: number,
     delay?: number
   ): Animation;
+  slideToObjectAndDestroy(
+    mobile_obj: ElementOrId,
+    target_obj: ElementOrId,
+    duration?: number,
+    delay?: number
+  ): Animation;
   slideToObjectPos(
     mobile_obj: ElementOrId,
     target_obj: ElementOrId,

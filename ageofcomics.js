@@ -325,8 +325,13 @@ var GameBody = /** @class */ (function (_super) {
                 dojo.subscribe(m.substring(6), this, m);
             }
         }
+        this.notifqueue.setSynchronous("gainStartingIdea", 500);
+        this.notifqueue.setSynchronous("gainStartingIdeaPrivate", 500);
         this.notifqueue.setIgnoreNotificationCheck("gainStartingComic", function (notif) {
-            return (notif.args.player_id == gameui.player_id);
+            return notif.args.player_id == gameui.player_id;
+        });
+        this.notifqueue.setIgnoreNotificationCheck("gainStartingIdea", function (notif) {
+            return notif.args.player_id == gameui.player_id;
         });
     };
     /**
@@ -342,6 +347,12 @@ var GameBody = /** @class */ (function (_super) {
     };
     GameBody.prototype.notif_gainStartingComicPrivate = function (notif) {
         this.cardController.gainStartingComic(notif.args.comic_card);
+    };
+    GameBody.prototype.notif_gainStartingIdea = function (notif) {
+        this.playerController.gainStartingIdea(notif.args.player_id, notif.args.genre);
+    };
+    GameBody.prototype.notif_gainStartingIdeaPrivate = function (notif) {
+        this.playerController.gainStartingIdea(notif.args.player_id, notif.args.genre);
     };
     /**
      * Handle 'setupMoney' notification
@@ -807,6 +818,15 @@ var PlayerController = /** @class */ (function (_super) {
     PlayerController.prototype.adjustMoney = function (player, amount) {
         this.updatePlayerCounter(player, "money", amount);
     };
+    PlayerController.prototype.createStartingIdeaToken = function (genre) {
+        var randomId = Math.floor(Math.random() * 1000000);
+        var ideaTokenDiv = '<div id="' +
+            randomId +
+            '" class="aoc-idea-token aoc-idea-token-' +
+            genre +
+            '" style="position:relative;z-index:1000;"></div>';
+        return this.createHtml(ideaTokenDiv, "aoc-select-starting-idea-" + genre);
+    };
     PlayerController.prototype.createPlayerOrderToken = function (player) {
         var playerOrderTokenDiv = '<div id="aoc-player-order-token' +
             player.id +
@@ -966,11 +986,18 @@ var PlayerController = /** @class */ (function (_super) {
         this.playerCounter[player.id][counterPanel].create("aoc-player-" + counterPanel + "-count-" + player.id);
         this.playerCounter[player.id][counterPanel].setValue(initialValue);
     };
-    PlayerController.prototype.updatePlayerCounter = function (player, counter, value) {
+    PlayerController.prototype.gainStartingIdea = function (playerId, genre) {
+        var ideaTokenDiv = this.createStartingIdeaToken(genre);
+        console.log("gainStartingIdea", playerId, genre, ideaTokenDiv);
+        var playerPanelIcon = dojo.byId("aoc-player-panel-" + genre + "-" + playerId);
+        gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
+        this.updatePlayerCounter(playerId, genre, 1);
+    };
+    PlayerController.prototype.updatePlayerCounter = function (playerId, counter, value) {
         var counterKey = counter;
         var counterPanel = "panel-" + counter;
-        this.playerCounter[player.id][counterKey].incValue(value);
-        this.playerCounter[player.id][counterPanel].incValue(value);
+        this.playerCounter[playerId][counterKey].incValue(value);
+        this.playerCounter[playerId][counterPanel].incValue(value);
     };
     return PlayerController;
 }(GameBasics));

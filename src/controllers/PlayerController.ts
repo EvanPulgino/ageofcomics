@@ -29,6 +29,17 @@ class PlayerController extends GameBasics {
     this.updatePlayerCounter(player, "money", amount);
   }
 
+  createStartingIdeaToken(genre: string): any {
+    var randomId = Math.floor(Math.random() * 1000000);
+    var ideaTokenDiv =
+      '<div id="' +
+      randomId +
+      '" class="aoc-idea-token aoc-idea-token-' +
+      genre +
+      '" style="position:relative;z-index:1000;"></div>';
+    return this.createHtml(ideaTokenDiv, "aoc-select-starting-idea-" + genre);
+  }
+
   createPlayerOrderToken(player: any): void {
     var playerOrderTokenDiv =
       '<div id="aoc-player-order-token' +
@@ -222,10 +233,20 @@ class PlayerController extends GameBasics {
     this.playerCounter[player.id][counterPanel].setValue(initialValue);
   }
 
-  updatePlayerCounter(player: any, counter: string, value: number): void {
+  gainStartingIdea(playerId: any, genre: string): void {
+    var ideaTokenDiv = this.createStartingIdeaToken(genre);
+    console.log("gainStartingIdea", playerId, genre, ideaTokenDiv);
+    var playerPanelIcon = dojo.byId(
+      "aoc-player-panel-" + genre + "-" + playerId
+    );
+    gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
+    this.updatePlayerCounter(playerId, genre, 1);
+  }
+
+  updatePlayerCounter(playerId: any, counter: string, value: number): void {
     var counterKey = counter;
     var counterPanel = "panel-" + counter;
-    this.playerCounter[player.id][counterKey].incValue(value);
-    this.playerCounter[player.id][counterPanel].incValue(value);
+    this.playerCounter[playerId][counterKey].incValue(value);
+    this.playerCounter[playerId][counterPanel].incValue(value);
   }
 }

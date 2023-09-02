@@ -24,11 +24,18 @@ class AOCPlayerActions {
     function selectStartItems($args) {
         $activePlayerId = $this->game->getActivePlayerId();
         $comicGenre = $args[0];
-        $ideaGenres = $args[1];
+        $ideaGenres = explode(",", $args[1]);
 
         $this->game->cardManager->gainStaringComicCard(
             $activePlayerId,
             $comicGenre
         );
+
+        foreach ($ideaGenres as $ideaGenre) {
+            $this->game->playerManager->gainStartingIdea(
+                $activePlayerId,
+                GENRES[$ideaGenre]
+            );
+        }
     }
 }

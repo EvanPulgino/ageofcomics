@@ -77,15 +77,15 @@ class AOCPlayerManager extends APP_GameClass {
      * Adjust how many ideas a player has
      * @param int $playerId The player's ID
      * @param int $ideas The number of ideas to adjust by
-     * @param string $type The type of ideas to adjust
+     * @param string $genre The genre of ideas to adjust
      * @return void
      */
-    public function adjustPlayerIdeas($playerId, $ideas, $type) {
+    public function adjustPlayerIdeas($playerId, $ideas, $genre) {
         $sql =
             "UPDATE player SET player_" .
-            $type .
+            $genre .
             "_ideas = player_" .
-            $type .
+            $genre .
             "_ideas + $ideas WHERE player_id = $playerId";
         self::DbQuery($sql);
     }
@@ -111,6 +111,35 @@ class AOCPlayerManager extends APP_GameClass {
         $sql = "UPDATE player SET player_score = player_score + $score WHERE player_id = $playerId";
         self::DbQuery($sql);
     }
+
+    public function gainStartingIdea($playerId, $genre) {
+        $this->adjustPlayerIdeas($playerId, 1, $genre);
+
+        $this->game->notifyAllPlayers(
+            "gainStartingIdea",
+            clienttranslate('${player_name} gains a ${genre} idea'),
+            [
+                "player_name" => $this->game->playerManager
+                    ->getPlayer($playerId)
+                    ->getName(),
+                "player_id" => $playerId,
+                "genre" => $genre,
+            ]
+        );
+        $this->game->notifyPlayer(
+            $playerId,
+            "gainStartingIdeaPrivate",
+            clienttranslate('You gain a ${genre} idea'),
+            [
+                "player_name" => $this->game->playerManager
+                    ->getPlayer($playerId)
+                    ->getName(),
+                "player_id" => $playerId,
+                "genre" => $genre,
+            ]
+        );
+    }
+
     /**
      * Gets the active player as an AOCPlayer object
      * @return AOCPlayer The active player
@@ -171,22 +200,29 @@ class AOCPlayerManager extends APP_GameClass {
     public function getPlayersInViewOrder() {
         $players = $this->getPlayers();
         $playerCount = count($players);
-        $currentPlayer = self::findPlayerById($players, $this->game->getViewingPlayerId());
+        $currentPlayer = self::findPlayerById(
+            $players,
+            $this->game->getViewingPlayerId()
+        );
 
-        if($currentPlayer) {
+        if ($currentPlayer) {
             $sortedPlayers = [];
             $sortedPlayers[] = $currentPlayer;
             $lastPlayerAdded = $currentPlayer;
 
-            while(count($sortedPlayers) < $playerCount) {
+            while (count($sortedPlayers) < $playerCount) {
                 $nextPlayerNaturalOrder = 0;
-                if($lastPlayerAdded->getNaturalOrder() == $playerCount) {
+                if ($lastPlayerAdded->getNaturalOrder() == $playerCount) {
                     $nextPlayerNaturalOrder = 1;
                 } else {
-                    $nextPlayerNaturalOrder = $lastPlayerAdded->getNaturalOrder() + 1;
+                    $nextPlayerNaturalOrder =
+                        $lastPlayerAdded->getNaturalOrder() + 1;
                 }
 
-                $nextPlayer = self::findPlayerByNaturalOrder($players, $nextPlayerNaturalOrder);
+                $nextPlayer = self::findPlayerByNaturalOrder(
+                    $players,
+                    $nextPlayerNaturalOrder
+                );
                 $sortedPlayers[] = $nextPlayer;
                 $lastPlayerAdded = $nextPlayer;
             }
@@ -212,8 +248,8 @@ class AOCPlayerManager extends APP_GameClass {
     }
 
     private function findPlayerById($players, $playerId) {
-        foreach($players as $player) {
-            if($playerId == $player->getId()) {
+        foreach ($players as $player) {
+            if ($playerId == $player->getId()) {
                 return $player;
             }
         }
@@ -222,8 +258,8 @@ class AOCPlayerManager extends APP_GameClass {
     }
 
     private function findPlayerByNaturalOrder($players, $naturalOrder) {
-        foreach($players as $player) {
-            if($naturalOrder == $player->getNaturalOrder()) {
+        foreach ($players as $player) {
+            if ($naturalOrder == $player->getNaturalOrder()) {
                 return $player;
             }
         }
