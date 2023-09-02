@@ -26,34 +26,9 @@ class AOCPlayerActions {
         $comicGenre = $args[0];
         $ideaGenres = $args[1];
 
-        $card = $this->game->cardManager->gainStaringComicCard(
+        $this->game->cardManager->gainStaringComicCard(
             $activePlayerId,
             $comicGenre
-        );
-        $this->game->notifyAllPlayers(
-            "gainStartingComic",
-            clienttranslate('${player_name} gains a ${comic_genre} comic'),
-            [
-                "player_name" => $this->game->playerManager
-                    ->getPlayer($activePlayerId)
-                    ->getName(),
-                "player_id" => $activePlayerId,
-                "comic_genre" => $card->getGenre(),
-                "comic_card" => $card->getUiData(0),
-            ]
-        );
-        $this->game->notifyPlayer(
-            $activePlayerId,
-            "gainStartingComicPrivate",
-            clienttranslate('You gain a ${comic_genre} comic'),
-            [
-                "player_name" => $this->game->playerManager
-                    ->getPlayer($activePlayerId)
-                    ->getName(),
-                "player_id" => $activePlayerId,
-                "comic_genre" => $card->getGenre(),
-                "comic_card" => $card->getUiData($activePlayerId),
-            ]
         );
     }
 }

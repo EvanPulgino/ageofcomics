@@ -512,7 +512,12 @@ var CardController = /** @class */ (function (_super) {
         });
         var animation = gameui.slideToObject(cardDiv, handDiv, 1000);
         dojo.connect(animation, "onEnd", function () {
-            dojo.place(cardDiv, cardToRightOfNewCard, "before");
+            if (cardToRightOfNewCard == null) {
+                dojo.place(cardDiv, handDiv);
+            }
+            else {
+                dojo.place(cardDiv, cardToRightOfNewCard, "before");
+            }
         });
         animation.play();
     };

@@ -60,7 +60,31 @@ class AOCCardManager extends APP_GameClass {
 
         $this->saveCard($card);
 
-        return $card;
+        $this->game->notifyAllPlayers(
+            "gainStartingComic",
+            clienttranslate('${player_name} gains a ${comic_genre} comic'),
+            [
+                "player_name" => $this->game->playerManager
+                    ->getPlayer($playerId)
+                    ->getName(),
+                "player_id" => $playerId,
+                "comic_genre" => $card->getGenre(),
+                "comic_card" => $card->getUiData(0),
+            ]
+        );
+        $this->game->notifyPlayer(
+            $playerId,
+            "gainStartingComicPrivate",
+            clienttranslate('You gain a ${comic_genre} comic'),
+            [
+                "player_name" => $this->game->playerManager
+                    ->getPlayer($playerId)
+                    ->getName(),
+                "player_id" => $playerId,
+                "comic_genre" => $card->getGenre(),
+                "comic_card" => $card->getUiData($playerId),
+            ]
+        );
     }
 
     public function getArtistCards() {
