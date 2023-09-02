@@ -23,52 +23,37 @@
  * Note: if the HTML of your game interface is always the same, you don't have to place anything here.
  *
  */
-  
-require_once( APP_BASE_PATH."view/common/game.view.php" );
-  
-class view_ageofcomics_ageofcomics extends game_view
-{
-    protected function getGameName()
-    {
+
+require_once APP_BASE_PATH . "view/common/game.view.php";
+
+class view_ageofcomics_ageofcomics extends game_view {
+    protected function getGameName() {
         // Used for translations and stuff. Please do not modify.
         return "ageofcomics";
     }
 
-    private function getColorString($hexColor) {
-        switch($hexColor) {
-            case '8e514e':
-                return 'brown';
-            case 'e5977a':
-                return 'salmon';
-            case '5ba59f':
-                return 'teal';
-            case 'f5c86e':
-                return 'yellow';
-        }
-        return '';
-    }
-
     private function createPlayersSection($template, $players, $section) {
         $this->page->begin_block($template, $section);
-        foreach($players as $player) {
-            $this->page->insert_block($section, array(
+        foreach ($players as $player) {
+            $this->page->insert_block($section, [
                 "player_id" => $player->getId(),
                 "player_name" => $player->getName(),
                 "color" => $player->getColorAsText(),
-            ));
+            ]);
         }
     }
-    
-  	function build_page( $viewArgs )
-  	{	
+
+    function build_page($viewArgs) {
         $template = self::getGameName() . "_" . self::getGameName();
 
-  	    // Get players & players number
+        // Get players & players number
         $players = $this->game->playerManager->getPlayersInViewOrder();
-        $players_nbr = count( $players );
+        $players_nbr = count($players);
+
+        $this->tpl["SELECT_START_ITEMS"] = self::_("Select Starting Comic and Idea Tokens");
 
         $this->createPlayersSection($template, $players, "playerarea");
 
         /*********** Do not change anything below this line  ************/
-  	}
+    }
 }

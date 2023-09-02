@@ -19,9 +19,7 @@
     <div id="aoc-layout">
         <div id="aoc-select-start-items" class="whiteblock" style="display: none;">
             <div id="aoc-select-start-items-header">
-                <div id="aoc-select-start-items-header-text" class="aoc-squada">Select Starting Comic Genre and 2 Idea
-                    Tokens
-                </div>
+                <div id="aoc-select-start-items-header-text" class="aoc-squada">{SELECT_START_ITEMS}</div>
             </div>
             <div id="aoc-select-buttons">
                 <div id="aoc-select-comic-genre">
