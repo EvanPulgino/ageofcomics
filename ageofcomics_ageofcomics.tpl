@@ -29,8 +29,7 @@
                     <div id="aoc-select-starting-comic-horror" class="aoc-comic-card aoc-comic-horror-facedown"></div>
                     <div id="aoc-select-starting-comic-romance" class="aoc-comic-card aoc-comic-romance-facedown"></div>
                     <div id="aoc-select-starting-comic-scifi" class="aoc-comic-card aoc-comic-scifi-facedown"></div>
-                    <div id="aoc-select-starting-comic-superhero" class="aoc-comic-card aoc-comic-superhero-facedown">
-                    </div>
+                    <div id="aoc-select-starting-comic-superhero" class="aoc-comic-card aoc-comic-superhero-facedown"></div>
                     <div id="aoc-select-starting-comic-western" class="aoc-comic-card aoc-comic-western-facedown"></div>
                 </div>
                 <div id="aoc-select-ideas">

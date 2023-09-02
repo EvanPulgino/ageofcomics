@@ -95,15 +95,6 @@ class GameBody extends GameBasics {
   }
 
   /**
-   * Handle button click events
-   *
-   * @param {object} event - event triggered
-   */
-  onButtonClick(event: any): void {
-    this.debug("onButtonClick", event);
-  }
-
-  /**
    * Setups and subscribes to notifications
    */
   setupNotifications(): void {
@@ -112,6 +103,12 @@ class GameBody extends GameBasics {
         dojo.subscribe(m.substring(6), this, m);
       }
     }
+    this.notifqueue.setIgnoreNotificationCheck(
+      "gainStartingComic",
+      function (notif: any) {
+        return (notif.args.player_id == gameui.player_id);
+      }
+    );
   }
 
   /**
@@ -121,6 +118,13 @@ class GameBody extends GameBasics {
    */
   notif_message(notif: any): void {
     this.debug("notif", notif);
+  }
+
+  notif_gainStartingComic(notif: any): void {
+    this.cardController.gainStartingComic(notif.args.comic_card);
+  }
+  notif_gainStartingComicPrivate(notif: any): void {
+    this.cardController.gainStartingComic(notif.args.comic_card);
   }
 
   /**

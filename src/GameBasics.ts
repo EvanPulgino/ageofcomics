@@ -238,6 +238,14 @@ class GameBasics extends GameGui {
     return GENRES;
   }
 
+  getGenreId(genre: string): number {
+    for (var key in GENRES) {
+      if (GENRES[key] == genre) {
+        return parseInt(key);
+      }
+    }
+  }
+
   getGenreName(genreId: number) {
     return GENRES[genreId];
   }

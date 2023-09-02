@@ -44,6 +44,25 @@ class AOCCardManager extends APP_GameClass {
         $this->shuffleStartingDeck(CARD_TYPE_WRITER);
     }
 
+    public function gainStaringComicCard($playerId, $genreId) {
+        $sql =
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_genre = " .
+            $genreId .
+            " AND card_type = 3 AND card_owner IS NULL ";
+        $rows = self::getObjectListFromDB($sql);
+
+        shuffle($rows);
+        $card = new AOCComicCard($rows[0]);
+
+        $card->setPlayerId($playerId);
+        $card->setLocation(LOCATION_HAND);
+        $card->setLocationArg($card->getTypeId() * 100 + $card->getGenreId());
+
+        $this->saveCard($card);
+
+        return $card;
+    }
+
     public function getArtistCards() {
         $rows = $this->getCardsByType(CARD_TYPE_ARTIST);
 
@@ -118,7 +137,8 @@ class AOCCardManager extends APP_GameClass {
             "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_owner = " .
             $playerId .
             " AND card_location = " .
-            LOCATION_HAND;
+            LOCATION_HAND .
+            " ORDER BY card_location_arg";
         $rows = self::getObjectListFromDB($sql);
 
         $cards = [];
@@ -285,16 +305,23 @@ class AOCCardManager extends APP_GameClass {
 
             $artistCard->setPlayerId($player->getId());
             $artistCard->setLocation(LOCATION_HAND);
-            $artistCard->setLocationArg($artistCard->getTypeId() * 100 + $artistCard->getGenreId() + $artistCard->getValue());
+            $artistCard->setLocationArg(
+                $artistCard->getTypeId() * 100 +
+                    $artistCard->getGenreId() +
+                    $artistCard->getValue()
+            );
             $this->saveCard($artistCard);
 
             $writerCard->setPlayerId($player->getId());
             $writerCard->setLocation(LOCATION_HAND);
-            $writerCard->setLocationArg($writerCard->getTypeId() * 100 + $writerCard->getGenreId() + $writerCard->getValue());
+            $writerCard->setLocationArg(
+                $writerCard->getTypeId() * 100 +
+                    $writerCard->getGenreId() +
+                    $writerCard->getValue()
+            );
             $this->saveCard($writerCard);
         }
     }
-
 
     private function getCardsByType($cardType) {
         $sql =

@@ -225,6 +225,13 @@ var GameBasics = /** @class */ (function (_super) {
     GameBasics.prototype.getGenres = function () {
         return GENRES;
     };
+    GameBasics.prototype.getGenreId = function (genre) {
+        for (var key in GENRES) {
+            if (GENRES[key] == genre) {
+                return parseInt(key);
+            }
+        }
+    };
     GameBasics.prototype.getGenreName = function (genreId) {
         return GENRES[genreId];
     };
@@ -310,14 +317,6 @@ var GameBody = /** @class */ (function (_super) {
         this.debug("Ending game setup");
     };
     /**
-     * Handle button click events
-     *
-     * @param {object} event - event triggered
-     */
-    GameBody.prototype.onButtonClick = function (event) {
-        this.debug("onButtonClick", event);
-    };
-    /**
      * Setups and subscribes to notifications
      */
     GameBody.prototype.setupNotifications = function () {
@@ -326,6 +325,9 @@ var GameBody = /** @class */ (function (_super) {
                 dojo.subscribe(m.substring(6), this, m);
             }
         }
+        this.notifqueue.setIgnoreNotificationCheck("gainStartingComic", function (notif) {
+            return (notif.args.player_id == gameui.player_id);
+        });
     };
     /**
      * Handle 'message' notification
@@ -334,6 +336,12 @@ var GameBody = /** @class */ (function (_super) {
      */
     GameBody.prototype.notif_message = function (notif) {
         this.debug("notif", notif);
+    };
+    GameBody.prototype.notif_gainStartingComic = function (notif) {
+        this.cardController.gainStartingComic(notif.args.comic_card);
+    };
+    GameBody.prototype.notif_gainStartingComicPrivate = function (notif) {
+        this.cardController.gainStartingComic(notif.args.comic_card);
     };
     /**
      * Handle 'setupMoney' notification
@@ -456,25 +464,57 @@ var CardController = /** @class */ (function (_super) {
                 break;
         }
     };
-    CardController.prototype.createComicCard = function (card) {
+    CardController.prototype.createComicCard = function (card, location) {
         var cardDiv = '<div id="aoc-card-' +
             card.id +
-            '" class="aoc-comic-card ' +
+            '" class="aoc-card aoc-comic-card ' +
             card.cssClass +
+            '" order="' +
+            card.locationArg +
             '"></div>';
-        if (card.location == globalThis.LOCATION_HAND) {
-            this.createHtml(cardDiv, "aoc-hand-" + card.playerId);
+        if (!location) {
+            switch (card.location) {
+                case globalThis.LOCATION_HAND:
+                    this.createHtml(cardDiv, "aoc-hand-" + card.playerId);
+                    break;
+            }
+        }
+        else {
+            this.createHtml(cardDiv, location);
         }
     };
     CardController.prototype.createCreativeCard = function (card) {
         var cardDiv = '<div id="aoc-card-' +
             card.id +
-            '" class="aoc-creative-card ' +
+            '" class="aoc-card aoc-creative-card ' +
             card.cssClass +
+            '" order="' +
+            card.locationArg +
             '"></div>';
         if (card.location == globalThis.LOCATION_HAND) {
             this.createHtml(cardDiv, "aoc-hand-" + card.playerId);
         }
+    };
+    CardController.prototype.gainStartingComic = function (card) {
+        var location = "aoc-select-starting-comic-" + card.genre;
+        this.createComicCard(card, location);
+        this.slideCardToPlayerHand(card, location);
+    };
+    CardController.prototype.slideCardToPlayerHand = function (card, startLocation) {
+        var cardDiv = dojo.byId("aoc-card-" + card.id);
+        var handDiv = dojo.byId("aoc-hand-" + card.playerId);
+        var cardsInHand = dojo.query(".aoc-card", handDiv);
+        var cardToRightOfNewCard = null;
+        cardsInHand.forEach(function (cardInHand) {
+            if (cardInHand.getAttribute("order") > cardDiv.getAttribute("order")) {
+                cardToRightOfNewCard = cardInHand;
+            }
+        });
+        var animation = gameui.slideToObject(cardDiv, handDiv, 1000);
+        dojo.connect(animation, "onEnd", function () {
+            dojo.place(cardDiv, cardToRightOfNewCard, "before");
+        });
+        animation.play();
     };
     return CardController;
 }(GameBasics));
@@ -1107,8 +1147,24 @@ var PlayerSetup = /** @class */ (function () {
         }
     };
     PlayerSetup.prototype.confirmStartingItems = function (event) {
-        console.log("confirming starting items");
-        console.log(event);
+        var selectedComic = dojo.query(".aoc-card-selected", "aoc-select-comic-genre")[0];
+        var selectedComicGenre = this.game.getGenreId(selectedComic.id.split("-")[4]);
+        var selectedIdeas = dojo.query(".aoc-start-idea-selection");
+        var selectedIdeaGenres = "";
+        for (var i = 0; i < selectedIdeas.length; i++) {
+            var idea = selectedIdeas[i];
+            if (i == 0) {
+                selectedIdeaGenres += this.game.getGenreId(idea.id.split("-")[3]);
+                selectedIdeaGenres += ",";
+            }
+            else {
+                selectedIdeaGenres += this.game.getGenreId(idea.id.split("-")[3]);
+            }
+        }
+        this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_SELECT_START_ITEMS, {
+            comic: selectedComicGenre,
+            ideas: selectedIdeaGenres,
+        });
     };
     PlayerSetup.prototype.createOnClickEvents = function (startIdeas) {
         var genres = this.game.getGenres();
@@ -1170,11 +1226,11 @@ var PlayerSetup = /** @class */ (function () {
         var slotId = firstEmptySelectionDiv.id.split("-")[3];
         var tokenDiv = '<div id="aoc-selected-idea-box-' +
             slotId +
-            '"<div id="aoc-selected-idea-' +
+            '"><div id="aoc-selected-idea-' +
             genre +
-            '" class="aoc-idea-token aoc-idea-token-' +
+            '" class="aoc-start-idea-selection aoc-idea-token aoc-idea-token-' +
             genre +
-            '"></div>';
+            '"></div></div>';
         this.game.createHtml(tokenDiv, firstEmptySelectionDiv.id);
         dojo.toggleClass("aoc-idea-cancel-" + slotId, "aoc-hidden", false);
         this.setButtonConfirmationStatus();

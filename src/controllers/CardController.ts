@@ -12,7 +12,6 @@
  */
 
 class CardController extends GameBasics {
-
   setupPlayerHands(playerHands: any): void {
     for (var player_id in playerHands) {
       var hand = playerHands[player_id];
@@ -24,28 +23,37 @@ class CardController extends GameBasics {
   }
 
   createCard(card: any): void {
-      switch (card.typeId) {
-        case 1:
-          this.createCreativeCard(card);
-          break;
-        case 2:
-          this.createCreativeCard(card);
-          break;
-        case 3:
-          this.createComicCard(card);
-          break;
-      }
+    switch (card.typeId) {
+      case 1:
+        this.createCreativeCard(card);
+        break;
+      case 2:
+        this.createCreativeCard(card);
+        break;
+      case 3:
+        this.createComicCard(card);
+        break;
+    }
   }
 
-  createComicCard(card: any): void {
+  createComicCard(card: any, location?: any): void {
     var cardDiv =
       '<div id="aoc-card-' +
       card.id +
-      '" class="aoc-comic-card ' +
+      '" class="aoc-card aoc-comic-card ' +
       card.cssClass +
+      '" order="' +
+      card.locationArg +
       '"></div>';
-    if (card.location == globalThis.LOCATION_HAND) {
-      this.createHtml(cardDiv, "aoc-hand-" + card.playerId);
+
+    if (!location) {
+      switch (card.location) {
+        case globalThis.LOCATION_HAND:
+          this.createHtml(cardDiv, "aoc-hand-" + card.playerId);
+          break;
+      }
+    } else {
+      this.createHtml(cardDiv, location);
     }
   }
 
@@ -53,11 +61,38 @@ class CardController extends GameBasics {
     var cardDiv =
       '<div id="aoc-card-' +
       card.id +
-      '" class="aoc-creative-card ' +
+      '" class="aoc-card aoc-creative-card ' +
       card.cssClass +
+      '" order="' +
+      card.locationArg +
       '"></div>';
     if (card.location == globalThis.LOCATION_HAND) {
       this.createHtml(cardDiv, "aoc-hand-" + card.playerId);
     }
+  }
+
+  gainStartingComic(card: any): void {
+    var location = "aoc-select-starting-comic-" + card.genre;
+    this.createComicCard(card, location);
+    this.slideCardToPlayerHand(card, location);
+  }
+
+  slideCardToPlayerHand(card: any, startLocation: string): void {
+    var cardDiv = dojo.byId("aoc-card-" + card.id);
+    var handDiv = dojo.byId("aoc-hand-" + card.playerId);
+    var cardsInHand = dojo.query(".aoc-card", handDiv);
+    var cardToRightOfNewCard = null;
+    cardsInHand.forEach((cardInHand: any) => {
+      if (cardInHand.getAttribute("order") > cardDiv.getAttribute("order")) {
+        cardToRightOfNewCard = cardInHand;
+      }
+    });
+
+    var animation = gameui.slideToObject(cardDiv, handDiv, 1000);
+    dojo.connect(animation, "onEnd", () => {
+      dojo.place(cardDiv, cardToRightOfNewCard, "before");
+    });
+
+    animation.play();
   }
 }

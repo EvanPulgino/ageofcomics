@@ -190,8 +190,7 @@ class AgeOfComics extends Table {
     function __call($name, $args) {
         if (in_array($name, get_class_methods($this->gameStateActions))) {
             call_user_func([$this->gameStateActions, $name], $args);
-        }
-        elseif (in_array($name, get_class_methods($this->playerActions))) {
+        } elseif (in_array($name, get_class_methods($this->playerActions))) {
             call_user_func([$this->playerActions, $name], $args);
         }
     }

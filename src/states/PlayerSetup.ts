@@ -50,8 +50,31 @@ class PlayerSetup implements State {
   }
 
   confirmStartingItems(event): void {
-    console.log("confirming starting items");
-    console.log(event);
+    var selectedComic = dojo.query(
+      ".aoc-card-selected",
+      "aoc-select-comic-genre"
+    )[0];
+
+    var selectedComicGenre: number = this.game.getGenreId(
+      selectedComic.id.split("-")[4]
+    );
+
+    var selectedIdeas = dojo.query(".aoc-start-idea-selection");
+    var selectedIdeaGenres: string = "";
+    for (var i = 0; i < selectedIdeas.length; i++) {
+      var idea = selectedIdeas[i];
+      if (i == 0) {
+        selectedIdeaGenres += this.game.getGenreId(idea.id.split("-")[3]);
+        selectedIdeaGenres += ",";
+      } else {
+        selectedIdeaGenres += this.game.getGenreId(idea.id.split("-")[3]);
+      }
+    }
+
+    this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_SELECT_START_ITEMS, {
+      comic: selectedComicGenre,
+      ideas: selectedIdeaGenres,
+    });
   }
 
   createOnClickEvents(startIdeas): void {
@@ -145,11 +168,11 @@ class PlayerSetup implements State {
     var tokenDiv =
       '<div id="aoc-selected-idea-box-' +
       slotId +
-      '"<div id="aoc-selected-idea-' +
+      '"><div id="aoc-selected-idea-' +
       genre +
-      '" class="aoc-idea-token aoc-idea-token-' +
+      '" class="aoc-start-idea-selection aoc-idea-token aoc-idea-token-' +
       genre +
-      '"></div>';
+      '"></div></div>';
 
     this.game.createHtml(tokenDiv, firstEmptySelectionDiv.id);
 
@@ -171,7 +194,11 @@ class PlayerSetup implements State {
         false
       );
     } else {
-      dojo.toggleClass("aoc-confirm-starting-items", "aoc-button-disabled", true);
+      dojo.toggleClass(
+        "aoc-confirm-starting-items",
+        "aoc-button-disabled",
+        true
+      );
     }
   }
 }

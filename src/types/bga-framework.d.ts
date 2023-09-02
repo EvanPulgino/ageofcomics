@@ -177,15 +177,17 @@ declare class GameGui {
 
   onScreenWidthChange(): void;
 
+  attachToNewParent(mobile_obj: ElementOrId, target_objt: ElementOrId): void;
+  placeOnObject(mobile_obj: ElementOrId, target_obj: ElementOrId): void;
   slideToObject(
-    mobile_obj: string | Element,
-    target_obj: string | Element,
+    mobile_obj: ElementOrId,
+    target_obj: ElementOrId,
     duration?: number,
     delay?: number
   ): Animation;
   slideToObjectPos(
-    mobile_obj: string | Element,
-    target_obj: string | Element,
+    mobile_obj: ElementOrId,
+    target_obj: ElementOrId,
     target_x: number,
     target_y: number,
     duration?: number,
@@ -193,9 +195,9 @@ declare class GameGui {
   ): Animation;
   slideTemporaryObject(
     mobile_obj_html: string,
-    mobile_obj_parent: string | Element,
-    from: string | Element,
-    to: string | Element,
+    mobile_obj_parent: ElementOrId,
+    from: ElementOrId,
+    to: ElementOrId,
     duration?: number,
     delay?: number
   ): Animation;

@@ -71,7 +71,7 @@ $machinestates = [
         "args" => ARGS_PLAYER_SETUP,
         "action" => GAME_ACTION_PLAYER_SETUP,
         "possibleactions" => [PLAYER_ACTION_SELECT_START_ITEMS],
-        "transitions" => ["" => ST_GAME_END],
+        "transitions" => ["nextPlayerSetup" => ST_PLAYER_SETUP, "endPlayerSetup" => ST_GAME_END],
     ],
 
     ST_GAME_END => [

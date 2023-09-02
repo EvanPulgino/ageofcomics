@@ -3181,92 +3181,55 @@ html {
   z-index: 24;
 }
 
-.aoc-hand .aoc-creative-card:nth-child(1) {
-  left: 0;
+.aoc-hand .aoc-card:nth-child(1) {
+  left: 0 !important;
+  top: 0 !important;
   z-index: 1;
 }
 
-.aoc-hand .aoc-creative-card:nth-child(2) {
-  left: -80px;
+.aoc-hand .aoc-card:nth-child(2) {
+  left: -80px !important;
+  top: 0 !important;
   z-index: 2;
 }
 
-.aoc-hand .aoc-creative-card:nth-child(3) {
-  left: -160px;
+.aoc-hand .aoc-card:nth-child(3) {
+  left: -160px !important;
+  top: 0 !important;
   z-index: 3;
 }
 
-.aoc-hand .aoc-creative-card:nth-child(4) {
-  left: -240px;
+.aoc-hand .aoc-card:nth-child(4) {
+  left: -240px !important;
+  top: 0 !important;
   z-index: 4;
 }
 
-.aoc-hand .aoc-creative-card:nth-child(5) {
-  left: -320px;
+.aoc-hand .aoc-card:nth-child(5) {
+  left: -320px !important;
+  top: 0 !important;
   z-index: 5;
 }
 
-.aoc-hand .aoc-creative-card:nth-child(6) {
-  left: -400px;
+.aoc-hand .aoc-card:nth-child(6) {
+  left: -400px !important;
+  top: 0 !important;
   z-index: 6;
 }
 
-.aoc-hand .aoc-creative-card:nth-child(7) {
-  left: -480px;
+.aoc-hand .aoc-card:nth-child(7) {
+  left: -480px !important;
+  top: 0 !important;
   z-index: 7;
 }
 
-.aoc-hand .aoc-creative-card:nth-child(8) {
-  left: -560px;
+.aoc-hand .aoc-card:nth-child(8) {
+  left: -560px !important;
+  top: 0 !important;
   z-index: 8;
 }
 
-.aoc-hand .aoc-comic-card:nth-child(1) {
-  left: 0;
-  z-index: 1;
-}
-
-.aoc-hand .aoc-comic-card:nth-child(2) {
-  left: -80px;
-  z-index: 2;
-}
-
-.aoc-hand .aoc-comic-card:nth-child(3) {
-  left: -160px;
-  z-index: 3;
-}
-
-.aoc-hand .aoc-comic-card:nth-child(4) {
-  left: -240px;
-  z-index: 4;
-}
-
-.aoc-hand .aoc-comic-card:nth-child(5) {
-  left: -320px;
-  z-index: 5;
-}
-
-.aoc-hand .aoc-comic-card:nth-child(6) {
-  left: -400px;
-  z-index: 6;
-}
-
-.aoc-hand .aoc-comic-card:nth-child(7) {
-  left: -480px;
-  z-index: 7;
-}
-
-.aoc-hand .aoc-comic-card:nth-child(8) {
-  left: -560px;
-  z-index: 8;
-}
-
-.aoc-hand .aoc-comic-card:hover {
-  transform: scale(1.05);
-  z-index: 100;
-}
-
-.aoc-hand .aoc-creative-card:hover {
+.aoc-hand .aoc-card:hover {
   transform: scale(1.05);
   z-index: 100;
 }
