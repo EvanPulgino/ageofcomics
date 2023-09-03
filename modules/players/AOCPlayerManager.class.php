@@ -112,6 +112,11 @@ class AOCPlayerManager extends APP_GameClass {
         self::DbQuery($sql);
     }
 
+    public function isLastPlayerInTurnOrder($player) {
+        $playerCount = $this->getPlayerCount();
+        return $player->getTurnOrder() == $playerCount;
+    }
+
     public function gainStartingIdea($playerId, $genre) {
         $this->adjustPlayerIdeas($playerId, 1, $genre);
 

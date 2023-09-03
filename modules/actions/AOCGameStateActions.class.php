@@ -21,51 +21,61 @@ class AOCGameStateActions {
         $this->game = $game;
     }
 
-    function stPlayerSetup() {
+    function stNextPlayerSetup() {
+        $this->game->setGameStateValue(START_IDEAS, 0);
         $activePlayer = $this->game->playerManager->getActivePlayer();
-        switch ($activePlayer->getTurnOrder()) {
-            case 1:
-                $this->game->setGameStateValue(START_IDEAS, 2);
-                break;
-            case 2:
-                $this->game->setGameStateValue(START_IDEAS, 3);
-                break;
-            case 3:
-                $this->game->setGameStateValue(START_IDEAS, 2);
-                $this->game->playerManager->adjustPlayerMoney(
-                    $activePlayer->getId(),
-                    1
-                );
-                $this->game->notifyAllPlayers(
-                    "setupMoney",
-                    clienttranslate(
-                        '${player_name} gets 1 money for being third in turn order'
-                    ),
-                    [
-                        "player_name" => $activePlayer->getName(),
-                        "player" => $activePlayer->getUiData(),
-                        "money" => 1,
-                    ]
-                );
-                break;
-            case 4:
-                $this->game->setGameStateValue(START_IDEAS, 3);
-                $this->game->playerManager->adjustPlayerMoney(
-                    $activePlayer->getId(),
-                    1
-                );
-                $this->game->notifyAllPlayers(
-                    "setupMoney",
-                    clienttranslate(
-                        '${player_name} gets 1 money for being fourth in turn order'
-                    ),
-                    [
-                        "player_name" => $activePlayer->getName(),
-                        "player" => $activePlayer->getUiData(),
-                        "money" => 1,
-                    ]
-                );
-                break;
+        if (
+            $this->game->playerManager->isLastPlayerInTurnOrder($activePlayer)
+        ) {
+            $this->game->gamestate->nextState("endPlayerSetup");
+        } else {
+            $this->game->playerManager->activateNextPlayer();
+            $activePlayer = $this->game->playerManager->getActivePlayer();
+            switch ($activePlayer->getTurnOrder()) {
+                case 1:
+                    $this->game->setGameStateValue(START_IDEAS, 2);
+                    break;
+                case 2:
+                    $this->game->setGameStateValue(START_IDEAS, 3);
+                    break;
+                case 3:
+                    $this->game->setGameStateValue(START_IDEAS, 2);
+                    $this->game->playerManager->adjustPlayerMoney(
+                        $activePlayer->getId(),
+                        1
+                    );
+                    $this->game->notifyAllPlayers(
+                        "setupMoney",
+                        clienttranslate(
+                            '${player_name} gets 1 money for being third in turn order'
+                        ),
+                        [
+                            "player_name" => $activePlayer->getName(),
+                            "player" => $activePlayer->getUiData(),
+                            "money" => 1,
+                        ]
+                    );
+                    break;
+                case 4:
+                    $this->game->setGameStateValue(START_IDEAS, 3);
+                    $this->game->playerManager->adjustPlayerMoney(
+                        $activePlayer->getId(),
+                        1
+                    );
+                    $this->game->notifyAllPlayers(
+                        "setupMoney",
+                        clienttranslate(
+                            '${player_name} gets 1 money for being fourth in turn order'
+                        ),
+                        [
+                            "player_name" => $activePlayer->getName(),
+                            "player" => $activePlayer->getUiData(),
+                            "money" => 1,
+                        ]
+                    );
+                    break;
+            }
+            $this->game->gamestate->nextState("nextPlayerSetup");
         }
     }
 }

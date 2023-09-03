@@ -382,6 +382,7 @@ var GameState = /** @class */ (function () {
     function GameState(game) {
         this.gameEnd = new GameEnd(game);
         this.gameSetup = new GameSetup(game);
+        this.nextPlayerSetup = new NextPlayerSetup(game);
         this.playerSetup = new PlayerSetup(game);
     }
     return GameState;
@@ -816,7 +817,7 @@ var PlayerController = /** @class */ (function (_super) {
         }
     };
     PlayerController.prototype.adjustMoney = function (player, amount) {
-        this.updatePlayerCounter(player, "money", amount);
+        this.updatePlayerCounter(player.id, "money", amount);
     };
     PlayerController.prototype.createStartingIdeaToken = function (genre) {
         var randomId = Math.floor(Math.random() * 1000000);
@@ -1144,6 +1145,29 @@ var GameSetup = /** @class */ (function () {
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
+ * NextPlayerSetup.ts
+ *
+ * AgeOfComics game setup state
+ *
+ */
+var NextPlayerSetup = /** @class */ (function () {
+    function NextPlayerSetup(game) {
+        this.game = game;
+    }
+    NextPlayerSetup.prototype.onEnteringState = function (stateArgs) { };
+    NextPlayerSetup.prototype.onLeavingState = function () { };
+    NextPlayerSetup.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return NextPlayerSetup;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
  * PlayerSetup.ts
  *
  * AgeOfComics player setup state
@@ -1157,6 +1181,7 @@ var PlayerSetup = /** @class */ (function () {
         if (stateArgs.isCurrentPlayerActive) {
             dojo.style("aoc-select-start-items", "display", "block");
             var startIdeas = stateArgs.args.startIdeas;
+            console.log("startIdeas: " + startIdeas);
             for (var i = 1; i <= startIdeas; i++) {
                 this.createIdeaSelectionDiv(i);
             }
@@ -1167,6 +1192,7 @@ var PlayerSetup = /** @class */ (function () {
         dojo.style("aoc-select-start-items", "display", "none");
         dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
         dojo.query(".aoc-card-unselected").removeClass("aoc-card-unselected");
+        dojo.empty("aoc-select-containers");
     };
     PlayerSetup.prototype.onUpdateActionButtons = function (stateArgs) {
         var _this = this;
@@ -1187,9 +1213,9 @@ var PlayerSetup = /** @class */ (function () {
             var idea = selectedIdeas[i];
             if (i == 0) {
                 selectedIdeaGenres += this.game.getGenreId(idea.id.split("-")[3]);
-                selectedIdeaGenres += ",";
             }
             else {
+                selectedIdeaGenres += ",";
                 selectedIdeaGenres += this.game.getGenreId(idea.id.split("-")[3]);
             }
         }

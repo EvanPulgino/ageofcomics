@@ -84,7 +84,7 @@ class AgeOfComics extends Table {
         self::setGameStateInitialValue(TURNS_TAKEN, 0);
         self::setGameStateInitialValue(CURRENT_ROUND, 0);
         self::setGameStateInitialValue(TICKET_SUPPLY, 4);
-        self::setGameStateInitialValue(START_IDEAS, 0);
+        self::setGameStateInitialValue(START_IDEAS, 2);
         foreach (GENRES as $genreId => $genreName) {
             self::setGameStateInitialValue("ideas_space_{$genreName}", 1);
         }
@@ -102,7 +102,6 @@ class AgeOfComics extends Table {
         $this->salesOrderManager->setupNewGame(sizeof($aocPlayers));
         $this->cardManager->setupNewGame($aocPlayers);
 
-        // Activate first player (which is in general a good idea :) )
         $this->activeNextPlayer();
 
         /************ End of the game initialization *****/

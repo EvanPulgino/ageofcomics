@@ -69,9 +69,21 @@ $machinestates = [
         ),
         "type" => STATE_TYPE_ACTIVE_PLAYER,
         "args" => ARGS_PLAYER_SETUP,
-        "action" => GAME_ACTION_PLAYER_SETUP,
         "possibleactions" => [PLAYER_ACTION_SELECT_START_ITEMS],
-        "transitions" => ["nextPlayerSetup" => ST_PLAYER_SETUP, "endPlayerSetup" => ST_GAME_END],
+        "transitions" => [
+            "nextPlayerSetup" => ST_GAME_NEXT_PLAYER_SETUP
+        ],
+    ],
+
+    ST_GAME_NEXT_PLAYER_SETUP => [
+        "name" => NEXT_PLAYER_SETUP,
+        "description" => "",
+        "type" => STATE_TYPE_GAME,
+        "action" => GAME_ACTION_NEXT_PLAYER_SETUP,
+        "transitions" => [
+            "nextPlayerSetup" => ST_PLAYER_SETUP,
+            "endPlayerSetup" => ST_GAME_END,
+        ],
     ],
 
     ST_GAME_END => [

@@ -23,6 +23,7 @@ class PlayerSetup implements State {
     if (stateArgs.isCurrentPlayerActive) {
       dojo.style("aoc-select-start-items", "display", "block");
       var startIdeas = stateArgs.args.startIdeas;
+      console.log("startIdeas: " + startIdeas);
 
       for (var i = 1; i <= startIdeas; i++) {
         this.createIdeaSelectionDiv(i);
@@ -34,6 +35,7 @@ class PlayerSetup implements State {
     dojo.style("aoc-select-start-items", "display", "none");
     dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
     dojo.query(".aoc-card-unselected").removeClass("aoc-card-unselected");
+    dojo.empty("aoc-select-containers");
   }
   onUpdateActionButtons(stateArgs: any): void {
     if (stateArgs.isCurrentPlayerActive) {
@@ -65,8 +67,8 @@ class PlayerSetup implements State {
       var idea = selectedIdeas[i];
       if (i == 0) {
         selectedIdeaGenres += this.game.getGenreId(idea.id.split("-")[3]);
-        selectedIdeaGenres += ",";
       } else {
+        selectedIdeaGenres += ",";
         selectedIdeaGenres += this.game.getGenreId(idea.id.split("-")[3]);
       }
     }

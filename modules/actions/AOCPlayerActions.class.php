@@ -37,5 +37,7 @@ class AOCPlayerActions {
                 GENRES[$ideaGenre]
             );
         }
+
+        $this->game->gamestate->nextState("nextPlayerSetup");
     }
 }

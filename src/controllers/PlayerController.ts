@@ -26,7 +26,7 @@ class PlayerController extends GameBasics {
   }
 
   adjustMoney(player: any, amount: number): void {
-    this.updatePlayerCounter(player, "money", amount);
+    this.updatePlayerCounter(player.id, "money", amount);
   }
 
   createStartingIdeaToken(genre: string): any {
