@@ -21,8 +21,31 @@ class AOCGameStateActions {
         $this->game = $game;
     }
 
+    public function stCompleteSetup() {
+        $this->game->cardManager->shuffleStartingDeck(CARD_TYPE_ARTIST);
+        $this->game->cardManager->shuffleStartingDeck(CARD_TYPE_WRITER);
+        $this->game->cardManager->shuffleStartingDeck(CARD_TYPE_COMIC);
+
+        $artistCards = $this->game->cardManager->dealCardsToSupply(
+            CARD_TYPE_ARTIST
+        );
+        $writerCards = $this->game->cardManager->dealCardsToSupply(
+            CARD_TYPE_WRITER
+        );
+        $comicCards = $this->game->cardManager->dealCardsToSupply(CARD_TYPE_COMIC);
+
+        $this->game->notifyAllPlayers(
+            "completeSetup",
+            "test",
+            [
+                "artistCards" => $artistCards,
+                "writerCards" => $writerCards,
+                "comicCards" => $comicCards,
+            ]
+        );
+    }
+
     function stNextPlayerSetup() {
-        $this->game->setGameStateValue(START_IDEAS, 0);
         $activePlayer = $this->game->playerManager->getActivePlayer();
         if (
             $this->game->playerManager->isLastPlayerInTurnOrder($activePlayer)

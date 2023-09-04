@@ -41,6 +41,7 @@ class AgeOfComics extends Table {
             IDEAS_SPACE_WESTERN => 18,
             TICKET_SUPPLY => 19,
             START_IDEAS => 20,
+            CARD_SUPPLY_SIZE => 21,
         ]);
 
         // Initialize action managers
@@ -85,6 +86,10 @@ class AgeOfComics extends Table {
         self::setGameStateInitialValue(CURRENT_ROUND, 0);
         self::setGameStateInitialValue(TICKET_SUPPLY, 4);
         self::setGameStateInitialValue(START_IDEAS, 2);
+        self::setGameStateInitialValue(
+            CARD_SUPPLY_SIZE,
+            sizeof($aocPlayers) == 4 ? 4 : 3
+        );
         foreach (GENRES as $genreId => $genreName) {
             self::setGameStateInitialValue("ideas_space_{$genreName}", 1);
         }
@@ -124,18 +129,18 @@ class AgeOfComics extends Table {
                 CARD_TYPE_ARTIST,
                 $currentPlayerId
             ),
-            "artistDeck" => $this->cardManager->getDeckUiData(
-                CARD_TYPE_ARTIST,
-                $currentPlayerId
+            "artistDeck" => $this->cardManager->getDeckUiData(CARD_TYPE_ARTIST),
+            "artistSupply" => $this->cardManager->getSupplyCardsUiData(
+                CARD_TYPE_ARTIST
             ),
             "calendarTiles" => $this->calendarManager->getCalendarTilesUiData(),
             "comicCards" => $this->cardManager->getCardsUiData(
                 CARD_TYPE_COMIC,
                 $currentPlayerId
             ),
-            "comicDeck" => $this->cardManager->getDeckUiData(
-                CARD_TYPE_COMIC,
-                $currentPlayerId
+            "comicDeck" => $this->cardManager->getDeckUiData(CARD_TYPE_COMIC),
+            "comicSupply" => $this->cardManager->getSupplyCardsUiData(
+                CARD_TYPE_COMIC
             ),
             "constants" => get_defined_constants(true)["user"],
             "editors" => $this->editorManager->getEditorsUiData(),
@@ -157,9 +162,9 @@ class AgeOfComics extends Table {
                 CARD_TYPE_WRITER,
                 $currentPlayerId
             ),
-            "writerDeck" => $this->cardManager->getDeckUiData(
-                CARD_TYPE_WRITER,
-                $currentPlayerId
+            "writerDeck" => $this->cardManager->getDeckUiData(CARD_TYPE_WRITER),
+            "writerSupply" => $this->cardManager->getSupplyCardsUiData(
+                CARD_TYPE_WRITER
             ),
         ];
 

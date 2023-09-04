@@ -14,6 +14,7 @@
  */
 
 /** Actions */
+define("GAME_ACTION_COMPLETE_SETUP", "stCompleteSetup");
 define("GAME_ACTION_GAME_END", "stGameEnd");
 define("GAME_ACTION_GAME_SETUP", "stGameSetup");
 define("GAME_ACTION_PLAYER_SETUP", "stPlayerSetup");
@@ -210,6 +211,7 @@ define("RIPOFF_CARDS", [
 ]);
 
 /** Global Variables */
+define("CARD_SUPPLY_SIZE", "card_supply_size");
 define("CURRENT_ROUND", "current_round");
 define("IDEAS_SPACE_CRIME", "ideas_space_crime");
 define("IDEAS_SPACE_HORROR", "ideas_space_horror");
@@ -223,6 +225,7 @@ define("TURNS_TAKEN", "turns_taken");
 define("START_IDEAS", "start_ideas");
 
 /** Locations */
+define("LOCATION_VOID", -1);
 define("LOCATION_DECK", 0);
 define("LOCATION_DISCARD", 1);
 define("LOCATION_HAND", 2);
@@ -812,10 +815,12 @@ define("STATE_ARG_GAME_END", "argGameEnd");
 /** State IDs */
 define("ST_GAME_SETUP", 1);
 define("ST_PLAYER_SETUP", 2);
-define("ST_GAME_NEXT_PLAYER_SETUP", 3);
+define("ST_NEXT_PLAYER_SETUP", 3);
+define("ST_COMPLETE_SETUP", 4);
 define("ST_GAME_END", 99);
 
 /** State Names */
+define("COMPLETE_SETUP", "completeSetup");
 define("GAME_END", "gameEnd");
 define("GAME_SETUP", "gameSetup");
 define("NEXT_PLAYER_SETUP", "nextPlayerSetup");

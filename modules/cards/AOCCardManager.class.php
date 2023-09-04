@@ -38,10 +38,46 @@ class AOCCardManager extends APP_GameClass {
 
         // Deal starting cards
         $this->dealStartingCreative($players);
+    }
 
-        // Shuffle decks
-        $this->shuffleStartingDeck(CARD_TYPE_ARTIST);
-        $this->shuffleStartingDeck(CARD_TYPE_WRITER);
+    public function dealCardsToSupply($cardType) {
+        switch ($cardType) {
+            case CARD_TYPE_ARTIST:
+                $deck = $this->getArtistDeck();
+                break;
+            case CARD_TYPE_COMIC:
+                $deck = $this->getComicDeck();
+                break;
+            case CARD_TYPE_WRITER:
+                $deck = $this->getWriterDeck();
+                break;
+        }
+
+        $cardsInSupply = $this->getCardsByTypeInLocation(
+            $cardType,
+            LOCATION_SUPPLY
+        );
+
+        $numberOfCardsToDraw =
+            $this->game->getGameStateValue(CARD_SUPPLY_SIZE) -
+            count($cardsInSupply);
+        $cardsDrawn = array_splice($deck, 0, $numberOfCardsToDraw);
+
+        foreach ($cardsDrawn as $card) {
+            $card->setLocation(LOCATION_SUPPLY);
+            $card->setLocationArg(0);
+            $this->saveCard($card);
+        }
+
+        $updatedDeck = $this->getDeckUiData($cardType);
+        $updatedSupply = $this->getSupplyCardsUiData($cardType);
+
+        $uiData = [
+            "deck" => $updatedDeck,
+            "supply" => $updatedSupply,
+        ];
+
+        return $uiData;
     }
 
     public function gainStaringComicCard($playerId, $genreId) {
@@ -208,7 +244,7 @@ class AOCCardManager extends APP_GameClass {
         return $uiData;
     }
 
-    public function getDeckUiData($cardType, $currentPlayerId) {
+    public function getDeckUiData($cardType) {
         $cards = [];
         switch ($cardType) {
             case CARD_TYPE_ARTIST:
@@ -223,7 +259,7 @@ class AOCCardManager extends APP_GameClass {
         }
         $uiData = [];
         foreach ($cards as $card) {
-            $uiData[] = $card->getUiData($currentPlayerId);
+            $uiData[] = $card->getUiData(0);
         }
         return $uiData;
     }
@@ -248,6 +284,45 @@ class AOCCardManager extends APP_GameClass {
         return $uiData;
     }
 
+    public function getSupplyCardsUiData($cardType) {
+        $cards = $this->getCardsByTypeInLocation($cardType, LOCATION_SUPPLY);
+        $uiData = [];
+        foreach ($cards as $card) {
+            switch ($card["type"]) {
+                case CARD_TYPE_ARTIST:
+                    $uiData[] = (new AOCArtistCard($card))->getUiData(0);
+                    break;
+                case CARD_TYPE_COMIC:
+                    $uiData[] = (new AOCComicCard($card))->getUiData(0);
+                    break;
+                case CARD_TYPE_WRITER:
+                    $uiData[] = (new AOCWriterCard($card))->getUiData(0);
+                    break;
+            }
+        }
+        return $uiData;
+    }
+
+    public function shuffleStartingDeck($cardType) {
+        $rows = $this->getCardsByTypeInLocation($cardType, LOCATION_VOID);
+
+        $cards = [];
+        foreach ($rows as $row) {
+            $cards[] = new AOCCard($row);
+        }
+
+        shuffle($cards);
+
+        $locationArg = 0;
+        foreach ($cards as $card) {
+            $card->setLocation(LOCATION_DECK);
+            $card->setLocationArg($locationArg);
+            $locationArg++;
+        }
+
+        $this->saveCards($cards);
+    }
+
     private function createCreativeCards($creativeType) {
         $sql =
             "INSERT INTO card (card_type, card_type_arg, card_genre, card_location) VALUES ";
@@ -256,10 +331,10 @@ class AOCCardManager extends APP_GameClass {
         $typeName = $creativeType == CARD_TYPE_ARTIST ? ARTIST : WRITER;
 
         foreach ($this->genres as $genreKey) {
-            $values[] = "({$creativeType}, 10, {$genreKey}, 0)";
-            $values[] = "({$creativeType}, 21, {$genreKey}, 0)";
-            $values[] = "({$creativeType}, 22, {$genreKey}, 0)";
-            $values[] = "({$creativeType}, 30, {$genreKey}, 0)";
+            $values[] = "({$creativeType}, 10, {$genreKey}, -1)";
+            $values[] = "({$creativeType}, 21, {$genreKey}, -1)";
+            $values[] = "({$creativeType}, 22, {$genreKey}, -1)";
+            $values[] = "({$creativeType}, 30, {$genreKey}, -1)";
         }
 
         $sql .= implode(", ", $values);
@@ -273,7 +348,7 @@ class AOCCardManager extends APP_GameClass {
         foreach (COMIC_CARDS as $genreKey => $comics) {
             foreach ($comics as $bonusKey => $bonus) {
                 $values[] =
-                    "(" . CARD_TYPE_COMIC . ", {$bonusKey}, {$genreKey}, 0)";
+                    "(" . CARD_TYPE_COMIC . ", {$bonusKey}, {$genreKey}, -1)";
             }
         }
 
@@ -288,7 +363,7 @@ class AOCCardManager extends APP_GameClass {
         foreach (RIPOFF_CARDS as $genreKey => $ripoffs) {
             foreach ($ripoffs as $ripoffKey => $ripoff) {
                 $values[] =
-                    "(" . CARD_TYPE_RIPOFF . ", {$ripoffKey}, {$genreKey}, 0)";
+                    "(" . CARD_TYPE_RIPOFF . ", {$ripoffKey}, {$genreKey}, -1)";
             }
         }
 
@@ -356,6 +431,17 @@ class AOCCardManager extends APP_GameClass {
         return $rows;
     }
 
+    private function getCardsByTypeInLocation($cardType, $location) {
+        $sql =
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_type = " .
+            $cardType .
+            " AND card_location = " .
+            $location;
+        $rows = self::getObjectListFromDB($sql);
+
+        return $rows;
+    }
+
     private function getDeckByType($cardType) {
         $sql =
             "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_type = " .
@@ -377,28 +463,5 @@ class AOCCardManager extends APP_GameClass {
         foreach ($cards as $card) {
             $this->saveCard($card);
         }
-    }
-
-    private function shuffleStartingDeck($cardType) {
-        $rows = $this->getCardsByType($cardType);
-
-        $cards = [];
-        foreach ($rows as $row) {
-            $cards[] = new AOCCard($row);
-        }
-
-        $cardsInDeck = array_filter($cards, function ($card) {
-            return $card->getLocation() == LOCATION_DECK;
-        });
-
-        shuffle($cardsInDeck);
-
-        $locationArg = 0;
-        foreach ($cardsInDeck as $card) {
-            $card->setLocationArg($locationArg);
-            $locationArg++;
-        }
-
-        $this->saveCards($cardsInDeck);
     }
 }

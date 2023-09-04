@@ -20,6 +20,7 @@ class PlayerSetup implements State {
   }
 
   onEnteringState(stateArgs: any): void {
+    dojo.toggleClass("aoc-card-market", "aoc-hidden", true);
     if (stateArgs.isCurrentPlayerActive) {
       dojo.style("aoc-select-start-items", "display", "block");
       var startIdeas = stateArgs.args.startIdeas;
@@ -30,12 +31,14 @@ class PlayerSetup implements State {
       }
       this.createOnClickEvents(startIdeas);
     }
+    this.game.adaptViewportSize();
   }
   onLeavingState(): void {
     dojo.style("aoc-select-start-items", "display", "none");
     dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
     dojo.query(".aoc-card-unselected").removeClass("aoc-card-unselected");
     dojo.empty("aoc-select-containers");
+    this.game.adaptViewportSize();
   }
   onUpdateActionButtons(stateArgs: any): void {
     if (stateArgs.isCurrentPlayerActive) {

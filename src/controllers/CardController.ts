@@ -22,6 +22,20 @@ class CardController extends GameBasics {
     }
   }
 
+  setupDeck(deck: any): void {
+    for (var i in deck) {
+      var card = deck[i];
+      this.createCard(card);
+    }
+  }
+
+  setupSupply(cardSupply: any): void {
+    for (var i in cardSupply) {
+      var card = cardSupply[i];
+      this.createCard(card);
+    }
+  }
+
   createCard(card: any): void {
     switch (card.typeId) {
       case 1:
@@ -48,8 +62,14 @@ class CardController extends GameBasics {
 
     if (!location) {
       switch (card.location) {
+        case globalThis.LOCATION_DECK:
+          this.createHtml(cardDiv, "aoc-" + card.type + "-deck");
+          break;
         case globalThis.LOCATION_HAND:
           this.createHtml(cardDiv, "aoc-hand-" + card.playerId);
+          break;
+        case globalThis.LOCATION_SUPPLY:
+          this.createHtml(cardDiv, "aoc-" + card.type + "s-available");
           break;
       }
     } else {
@@ -66,8 +86,16 @@ class CardController extends GameBasics {
       '" order="' +
       card.locationArg +
       '"></div>';
-    if (card.location == globalThis.LOCATION_HAND) {
-      this.createHtml(cardDiv, "aoc-hand-" + card.playerId);
+    switch (card.location) {
+      case globalThis.LOCATION_DECK:
+        this.createHtml(cardDiv, "aoc-" + card.type + "-deck");
+        break;
+      case globalThis.LOCATION_HAND:
+        this.createHtml(cardDiv, "aoc-hand-" + card.playerId);
+        break;
+      case globalThis.LOCATION_SUPPLY:
+        this.createHtml(cardDiv, "aoc-" + card.type + "s-available");
+        break;
     }
   }
 

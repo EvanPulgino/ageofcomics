@@ -46,6 +46,30 @@ var GameBasics = /** @class */ (function (_super) {
         _this.gameState = new GameState(_this);
         return _this;
     }
+    GameBasics.prototype.adaptViewportSize = function () {
+        var t = dojo.marginBox("aoc-overall");
+        var r = t.w;
+        var s = 1500;
+        var height = dojo.marginBox("aoc-layout").h;
+        var viewportWidth = dojo.window.getBox().w;
+        var gameAreaWidth = viewportWidth < 980 ? viewportWidth : viewportWidth - 245;
+        if (r >= s) {
+            var i = (r - s) / 2;
+            dojo.style("aoc-gboard", "transform", "");
+            dojo.style("aoc-gboard", "left", i + "px");
+            dojo.style("aoc-gboard", "height", height + "px");
+            dojo.style("aoc-gboard", "width", gameAreaWidth + "px");
+        }
+        else {
+            var o = r / s;
+            i = (t.w - r) / 2;
+            var width = viewportWidth <= 245 ? gameAreaWidth : gameAreaWidth / o;
+            dojo.style("aoc-gboard", "transform", "scale(" + o + ")");
+            dojo.style("aoc-gboard", "left", i + "px");
+            dojo.style("aoc-gboard", "height", height * o + "px");
+            dojo.style("aoc-gboard", "width", width + "px");
+        }
+    };
     /**
      * UI setup entry point
      *
@@ -272,30 +296,6 @@ var GameBody = /** @class */ (function (_super) {
         dojo.connect(window, "onresize", _this, dojo.hitch(_this, "adaptViewportSize"));
         return _this;
     }
-    GameBody.prototype.adaptViewportSize = function () {
-        var t = dojo.marginBox("aoc-overall");
-        var r = t.w;
-        var s = 1500;
-        var height = dojo.marginBox("aoc-layout").h;
-        var viewportWidth = dojo.window.getBox().w;
-        var gameAreaWidth = viewportWidth < 980 ? viewportWidth : viewportWidth - 245;
-        if (r >= s) {
-            var i = (r - s) / 2;
-            dojo.style("aoc-gboard", "transform", "");
-            dojo.style("aoc-gboard", "left", i + "px");
-            dojo.style("aoc-gboard", "height", height + "px");
-            dojo.style("aoc-gboard", "width", gameAreaWidth + "px");
-        }
-        else {
-            var o = r / s;
-            i = (t.w - r) / 2;
-            var width = viewportWidth <= 245 ? gameAreaWidth : gameAreaWidth / o;
-            dojo.style("aoc-gboard", "transform", "scale(" + o + ")");
-            dojo.style("aoc-gboard", "left", i + "px");
-            dojo.style("aoc-gboard", "height", height * o + "px");
-            dojo.style("aoc-gboard", "width", width + "px");
-        }
-    };
     /**
      * UI setup entry point
      *
@@ -307,6 +307,12 @@ var GameBody = /** @class */ (function (_super) {
         this.playerController.setupPlayers(gamedata.playerInfo);
         this.calendarController.setupCalendar(gamedata.calendarTiles);
         this.cardController.setupPlayerHands(gamedata.playerHands);
+        this.cardController.setupDeck(gamedata.artistDeck);
+        this.cardController.setupDeck(gamedata.writerDeck);
+        this.cardController.setupDeck(gamedata.comicDeck);
+        this.cardController.setupSupply(gamedata.artistSupply);
+        this.cardController.setupSupply(gamedata.writerSupply);
+        this.cardController.setupSupply(gamedata.comicSupply);
         this.editorController.setupEditors(gamedata.editors);
         this.masteryController.setupMasteryTokens(gamedata.mastery);
         this.miniComicController.setupMiniComics(gamedata.miniComics);
@@ -341,6 +347,14 @@ var GameBody = /** @class */ (function (_super) {
      */
     GameBody.prototype.notif_message = function (notif) {
         this.debug("notif", notif);
+    };
+    GameBody.prototype.notif_completeSetup = function (notif) {
+        this.cardController.setupDeck(notif.args.artistCards.deck);
+        this.cardController.setupDeck(notif.args.writerCards.deck);
+        this.cardController.setupDeck(notif.args.comicCards.deck);
+        this.cardController.setupSupply(notif.args.artistCards.supply);
+        this.cardController.setupSupply(notif.args.writerCards.supply);
+        this.cardController.setupSupply(notif.args.comicCards.supply);
     };
     GameBody.prototype.notif_gainStartingComic = function (notif) {
         this.cardController.gainStartingComic(notif.args.comic_card);
@@ -380,6 +394,7 @@ var GameBody = /** @class */ (function (_super) {
  */
 var GameState = /** @class */ (function () {
     function GameState(game) {
+        this.completeSetup = new CompleteSetup(game);
         this.gameEnd = new GameEnd(game);
         this.gameSetup = new GameSetup(game);
         this.nextPlayerSetup = new NextPlayerSetup(game);
@@ -463,6 +478,18 @@ var CardController = /** @class */ (function (_super) {
             }
         }
     };
+    CardController.prototype.setupDeck = function (deck) {
+        for (var i in deck) {
+            var card = deck[i];
+            this.createCard(card);
+        }
+    };
+    CardController.prototype.setupSupply = function (cardSupply) {
+        for (var i in cardSupply) {
+            var card = cardSupply[i];
+            this.createCard(card);
+        }
+    };
     CardController.prototype.createCard = function (card) {
         switch (card.typeId) {
             case 1:
@@ -486,8 +513,14 @@ var CardController = /** @class */ (function (_super) {
             '"></div>';
         if (!location) {
             switch (card.location) {
+                case globalThis.LOCATION_DECK:
+                    this.createHtml(cardDiv, "aoc-" + card.type + "-deck");
+                    break;
                 case globalThis.LOCATION_HAND:
                     this.createHtml(cardDiv, "aoc-hand-" + card.playerId);
+                    break;
+                case globalThis.LOCATION_SUPPLY:
+                    this.createHtml(cardDiv, "aoc-" + card.type + "s-available");
                     break;
             }
         }
@@ -503,8 +536,16 @@ var CardController = /** @class */ (function (_super) {
             '" order="' +
             card.locationArg +
             '"></div>';
-        if (card.location == globalThis.LOCATION_HAND) {
-            this.createHtml(cardDiv, "aoc-hand-" + card.playerId);
+        switch (card.location) {
+            case globalThis.LOCATION_DECK:
+                this.createHtml(cardDiv, "aoc-" + card.type + "-deck");
+                break;
+            case globalThis.LOCATION_HAND:
+                this.createHtml(cardDiv, "aoc-hand-" + card.playerId);
+                break;
+            case globalThis.LOCATION_SUPPLY:
+                this.createHtml(cardDiv, "aoc-" + card.type + "s-available");
+                break;
         }
     };
     CardController.prototype.gainStartingComic = function (card) {
@@ -1099,6 +1140,31 @@ var TicketController = /** @class */ (function (_super) {
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
+ * CompleteSetup.ts
+ *
+ * AgeOfComics complete setup state
+ *
+ */
+var CompleteSetup = /** @class */ (function () {
+    function CompleteSetup(game) {
+        this.game = game;
+    }
+    CompleteSetup.prototype.onEnteringState = function (stateArgs) {
+        dojo.toggleClass("aoc-card-market", "aoc-hidden", false);
+    };
+    CompleteSetup.prototype.onLeavingState = function () { };
+    CompleteSetup.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return CompleteSetup;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
  * GameEnd.ts
  *
  * AgeOfComics game end state
@@ -1178,6 +1244,7 @@ var PlayerSetup = /** @class */ (function () {
         this.game = game;
     }
     PlayerSetup.prototype.onEnteringState = function (stateArgs) {
+        dojo.toggleClass("aoc-card-market", "aoc-hidden", true);
         if (stateArgs.isCurrentPlayerActive) {
             dojo.style("aoc-select-start-items", "display", "block");
             var startIdeas = stateArgs.args.startIdeas;
@@ -1187,12 +1254,14 @@ var PlayerSetup = /** @class */ (function () {
             }
             this.createOnClickEvents(startIdeas);
         }
+        this.game.adaptViewportSize();
     };
     PlayerSetup.prototype.onLeavingState = function () {
         dojo.style("aoc-select-start-items", "display", "none");
         dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
         dojo.query(".aoc-card-unselected").removeClass("aoc-card-unselected");
         dojo.empty("aoc-select-containers");
+        this.game.adaptViewportSize();
     };
     PlayerSetup.prototype.onUpdateActionButtons = function (stateArgs) {
         var _this = this;

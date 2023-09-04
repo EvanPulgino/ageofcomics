@@ -7,23 +7,21 @@
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * GameState.ts
+ * CompleteSetup.ts
  *
- * Class that holds all game states
+ * AgeOfComics complete setup state
  *
  */
 
-class GameState {
-  completeSetup: State;
-  gameEnd: State;
-  gameSetup: State;
-  nextPlayerSetup: State;
-  playerSetup: State;
+class CompleteSetup implements State {
+  game: any;
   constructor(game: any) {
-    this.completeSetup = new CompleteSetup(game);
-    this.gameEnd = new GameEnd(game);
-    this.gameSetup = new GameSetup(game);
-    this.nextPlayerSetup = new NextPlayerSetup(game);
-    this.playerSetup = new PlayerSetup(game);
+    this.game = game;
   }
+
+  onEnteringState(stateArgs: any): void {
+    dojo.toggleClass("aoc-card-market", "aoc-hidden", false);
+  }
+  onLeavingState(): void {}
+  onUpdateActionButtons(stateArgs: any): void {}
 }

@@ -45,7 +45,7 @@
                 </div>
             </div>
         </div>
-        <div id=" aoc-common-area">
+        <div id="aoc-common-area">
             <div id="aoc-board" class="aoc-board-image aoc-board-section aoc-board">
                 <div id="aoc-player-order">
                     <div id="aoc-player-order-space-1" class="aoc-player-order-space"></div>
@@ -182,7 +182,7 @@
                     <div id="aoc-tickets-space"></div>
                 </div>
             </div>
-            <div id="aoc-card-market" style="display: none;">
+            <div id="aoc-card-market">
                 <div id="aoc-writers-market" class="aoc-card-row-container aoc-card-market-row">
                     <div id="aoc-writer-deck" class="aoc-deck"></div>
                     <div id="aoc-writers-available" class="aoc-card-market-row"></div>

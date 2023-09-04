@@ -47,32 +47,6 @@ class GameBody extends GameBasics {
     );
   }
 
-  adaptViewportSize() {
-    var t = dojo.marginBox("aoc-overall");
-    var r = t.w;
-    var s = 1500;
-    var height = dojo.marginBox("aoc-layout").h;
-    var viewportWidth = dojo.window.getBox().w;
-    var gameAreaWidth =
-      viewportWidth < 980 ? viewportWidth : viewportWidth - 245;
-
-    if (r >= s) {
-      var i = (r - s) / 2;
-      dojo.style("aoc-gboard", "transform", "");
-      dojo.style("aoc-gboard", "left", i + "px");
-      dojo.style("aoc-gboard", "height", height + "px");
-      dojo.style("aoc-gboard", "width", gameAreaWidth + "px");
-    } else {
-      var o = r / s;
-      i = (t.w - r) / 2;
-      var width = viewportWidth <= 245 ? gameAreaWidth : gameAreaWidth / o;
-      dojo.style("aoc-gboard", "transform", "scale(" + o + ")");
-      dojo.style("aoc-gboard", "left", i + "px");
-      dojo.style("aoc-gboard", "height", height * o + "px");
-      dojo.style("aoc-gboard", "width", width + "px");
-    }
-  }
-
   /**
    * UI setup entry point
    *
@@ -84,6 +58,12 @@ class GameBody extends GameBasics {
     this.playerController.setupPlayers(gamedata.playerInfo);
     this.calendarController.setupCalendar(gamedata.calendarTiles);
     this.cardController.setupPlayerHands(gamedata.playerHands);
+    this.cardController.setupDeck(gamedata.artistDeck);
+    this.cardController.setupDeck(gamedata.writerDeck);
+    this.cardController.setupDeck(gamedata.comicDeck);
+    this.cardController.setupSupply(gamedata.artistSupply);
+    this.cardController.setupSupply(gamedata.writerSupply);
+    this.cardController.setupSupply(gamedata.comicSupply);
     this.editorController.setupEditors(gamedata.editors);
     this.masteryController.setupMasteryTokens(gamedata.mastery);
     this.miniComicController.setupMiniComics(gamedata.miniComics);
@@ -126,6 +106,16 @@ class GameBody extends GameBasics {
    */
   notif_message(notif: any): void {
     this.debug("notif", notif);
+  }
+
+  notif_completeSetup(notif: any): void {
+    this.cardController.setupDeck(notif.args.artistCards.deck);
+    this.cardController.setupDeck(notif.args.writerCards.deck);
+    this.cardController.setupDeck(notif.args.comicCards.deck);
+
+    this.cardController.setupSupply(notif.args.artistCards.supply);
+    this.cardController.setupSupply(notif.args.writerCards.supply);
+    this.cardController.setupSupply(notif.args.comicCards.supply);
   }
 
   notif_gainStartingComic(notif: any): void {
