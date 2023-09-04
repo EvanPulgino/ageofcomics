@@ -61,7 +61,7 @@ html {
 
 .aoc-start-idea-remove {
   border-radius: 10px;
-  color: red;
+  color: black;
   cursor: pointer;
   position: absolute;
   right: -12px;
@@ -73,6 +73,7 @@ html {
 }
 
 .aoc-selection-container:hover .aoc-start-idea-remove {
+  color: red;
   font-size: 350%;
   right: -2px;
   top: 2px;
@@ -315,7 +316,7 @@ html {
   position: absolute;
   z-index: 2;
   color: #000;
-  background-color: white;
+  background-color: transparent;
 }
 
 #aoc-show-chart-close:hover {

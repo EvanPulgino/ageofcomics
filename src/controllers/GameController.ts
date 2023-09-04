@@ -111,6 +111,7 @@ class GameController extends GameBasics {
         dojo.toggleClass(arrow, "aoc-hidden");
       }
     });
+    this.adaptViewportSize();
   }
 
   listView(): void {
@@ -127,6 +128,7 @@ class GameController extends GameBasics {
         dojo.toggleClass(arrow, "aoc-hidden");
       }
     });
+    this.adaptViewportSize();
   }
 
   nextPlayer(): void {

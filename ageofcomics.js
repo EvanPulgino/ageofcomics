@@ -713,6 +713,7 @@ var GameController = /** @class */ (function (_super) {
                 dojo.toggleClass(arrow, "aoc-hidden");
             }
         });
+        this.adaptViewportSize();
     };
     GameController.prototype.listView = function () {
         var playersSection = dojo.query("#aoc-players-section")[0];
@@ -728,6 +729,7 @@ var GameController = /** @class */ (function (_super) {
                 dojo.toggleClass(arrow, "aoc-hidden");
             }
         });
+        this.adaptViewportSize();
     };
     GameController.prototype.nextPlayer = function () {
         var visiblePlayerSection = dojo.query(".aoc-player-background-panel:not(.aoc-hidden)")[0];
