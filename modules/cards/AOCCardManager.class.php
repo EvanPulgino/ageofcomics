@@ -61,7 +61,8 @@ class AOCCardManager extends APP_GameClass {
         $numberOfCardsToDraw =
             $this->game->getGameStateValue(CARD_SUPPLY_SIZE) -
             count($cardsInSupply);
-        $cardsDrawn = array_splice($deck, 0, $numberOfCardsToDraw);
+        $startIndex = count($deck) - $numberOfCardsToDraw;
+        $cardsDrawn = array_splice($deck, $startIndex, $numberOfCardsToDraw);
 
         foreach ($cardsDrawn as $card) {
             $card->setLocation(LOCATION_SUPPLY);
