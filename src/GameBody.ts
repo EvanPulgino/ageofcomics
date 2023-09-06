@@ -71,7 +71,6 @@ class GameBody extends GameBasics {
     this.salesOrderController.setupSalesOrders(gamedata.salesOrders);
     this.ticketController.setupTickets(gamedata.ticketSupply);
     this.setupNotifications();
-    this.debug("Ending game setup");
   }
 
   /**
@@ -104,9 +103,7 @@ class GameBody extends GameBasics {
    *
    * @param {object} notif - notification data
    */
-  notif_message(notif: any): void {
-    this.debug("notif", notif);
-  }
+  notif_message(notif: any): void {}
 
   notif_completeSetup(notif: any): void {
     this.cardController.setupDeck(notif.args.artistCards.deck);

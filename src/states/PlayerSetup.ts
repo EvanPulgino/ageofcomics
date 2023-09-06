@@ -24,7 +24,6 @@ class PlayerSetup implements State {
     if (stateArgs.isCurrentPlayerActive) {
       dojo.style("aoc-select-start-items", "display", "block");
       var startIdeas = stateArgs.args.startIdeas;
-      console.log("startIdeas: " + startIdeas);
 
       for (var i = 1; i <= startIdeas; i++) {
         this.createIdeaSelectionDiv(i);

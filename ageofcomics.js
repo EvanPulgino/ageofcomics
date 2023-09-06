@@ -37,7 +37,6 @@ var GameBasics = /** @class */ (function (_super) {
     __extends(GameBasics, _super);
     function GameBasics() {
         var _this = _super.call(this) || this;
-        console.log("game constructor");
         _this.isDebug = window.location.host == "studio.boardgamearena.com";
         _this.debug = _this.isDebug ? console.info.bind(window.console) : function () { };
         _this.curstate = null;
@@ -76,7 +75,6 @@ var GameBasics = /** @class */ (function (_super) {
      * @param {object} gamedatas
      */
     GameBasics.prototype.setup = function (gamedata) {
-        this.debug("Starting game setup", gameui);
         this.debug("Game data", gamedata);
         this.defineGlobalConstants(gamedata.constants);
     };
@@ -320,7 +318,6 @@ var GameBody = /** @class */ (function (_super) {
         this.salesOrderController.setupSalesOrders(gamedata.salesOrders);
         this.ticketController.setupTickets(gamedata.ticketSupply);
         this.setupNotifications();
-        this.debug("Ending game setup");
     };
     /**
      * Setups and subscribes to notifications
@@ -345,9 +342,7 @@ var GameBody = /** @class */ (function (_super) {
      *
      * @param {object} notif - notification data
      */
-    GameBody.prototype.notif_message = function (notif) {
-        this.debug("notif", notif);
-    };
+    GameBody.prototype.notif_message = function (notif) { };
     GameBody.prototype.notif_completeSetup = function (notif) {
         this.cardController.setupDeck(notif.args.artistCards.deck);
         this.cardController.setupDeck(notif.args.writerCards.deck);
@@ -1249,7 +1244,6 @@ var PlayerSetup = /** @class */ (function () {
         if (stateArgs.isCurrentPlayerActive) {
             dojo.style("aoc-select-start-items", "display", "block");
             var startIdeas = stateArgs.args.startIdeas;
-            console.log("startIdeas: " + startIdeas);
             for (var i = 1; i <= startIdeas; i++) {
                 this.createIdeaSelectionDiv(i);
             }

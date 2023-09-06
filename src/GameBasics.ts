@@ -29,8 +29,6 @@ class GameBasics extends GameGui {
   gameState: GameState;
   constructor() {
     super();
-    console.log("game constructor");
-
     this.isDebug = window.location.host == "studio.boardgamearena.com";
     this.debug = this.isDebug ? console.info.bind(window.console) : () => {};
     this.curstate = null;
@@ -71,7 +69,6 @@ class GameBasics extends GameGui {
    * @param {object} gamedatas
    */
   setup(gamedata: any) {
-    this.debug("Starting game setup", gameui);
     this.debug("Game data", gamedata);
     this.defineGlobalConstants(gamedata.constants);
   }
