@@ -11,8 +11,13 @@
  *
  */
 
-class PlayerController extends GameBasics {
+class PlayerController {
+  ui: any;
   playerCounter: any;
+
+  constructor(ui: any) {
+    this.ui = ui;
+  }
 
   setupPlayers(playerData: any): void {
     this.playerCounter = {};
@@ -37,7 +42,7 @@ class PlayerController extends GameBasics {
       '" class="aoc-idea-token aoc-idea-token-' +
       genre +
       '" style="position:relative;z-index:1000;"></div>';
-    return this.createHtml(ideaTokenDiv, "aoc-select-starting-idea-" + genre);
+    return this.ui.createHtml(ideaTokenDiv, "aoc-select-starting-idea-" + genre);
   }
 
   createPlayerOrderToken(player: any): void {
@@ -47,7 +52,7 @@ class PlayerController extends GameBasics {
       '" class="aoc-player-order-token aoc-player-order-token-' +
       player.colorAsText +
       '"></div>';
-    this.createHtml(
+    this.ui.createHtml(
       playerOrderTokenDiv,
       "aoc-player-order-space-" + player.turnOrder
     );
@@ -60,7 +65,7 @@ class PlayerController extends GameBasics {
       '" class="aoc-agent aoc-agent-' +
       player.colorAsText +
       '"></div>';
-    this.createHtml(
+    this.ui.createHtml(
       playerAgentDiv,
       "aoc-map-agent-space-" + player.agentLocation
     );
@@ -80,7 +85,7 @@ class PlayerController extends GameBasics {
       player.colorAsText +
       '"></div>';
     if (player.cubeOneLocation == 5) {
-      this.createHtml(cubeDiv, "aoc-cube-one-space-" + player.id);
+      this.ui.createHtml(cubeDiv, "aoc-cube-one-space-" + player.id);
     }
   }
 
@@ -92,7 +97,7 @@ class PlayerController extends GameBasics {
       player.colorAsText +
       '"></div>';
     if (player.cubeOneLocation == 5) {
-      this.createHtml(cubeDiv, "aoc-cube-two-space-" + player.id);
+      this.ui.createHtml(cubeDiv, "aoc-cube-two-space-" + player.id);
     }
   }
 
@@ -104,7 +109,7 @@ class PlayerController extends GameBasics {
       player.colorAsText +
       '"></div>';
     if (player.cubeOneLocation == 5) {
-      this.createHtml(cubeDiv, "aoc-cube-three-space-" + player.id);
+      this.ui.createHtml(cubeDiv, "aoc-cube-three-space-" + player.id);
     }
   }
 
@@ -138,7 +143,7 @@ class PlayerController extends GameBasics {
       this.createPlayerPanelOtherSupplyDiv(player, "income") +
       "</div>" +
       "</div>";
-    this.createHtml(playerPanelDiv, "player_board_" + player.id);
+    this.ui.createHtml(playerPanelDiv, "player_board_" + player.id);
   }
 
   createPlayerPanelIdeaSupplyDiv(player: any, genre: string): any {
@@ -235,9 +240,7 @@ class PlayerController extends GameBasics {
 
   gainStartingIdea(playerId: any, genre: string): void {
     var ideaTokenDiv = this.createStartingIdeaToken(genre);
-    var playerPanelIcon = dojo.byId(
-      "aoc-player-" + genre + "-" + playerId
-    );
+    var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
     gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
     this.updatePlayerCounter(playerId, genre, 1);
   }

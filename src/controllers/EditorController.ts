@@ -11,22 +11,32 @@
  *
  */
 
-class EditorController extends GameBasics {
+class EditorController {
+  ui: any;
 
-    setupEditors(editors: any) : void {
-        for (var key in editors) {
-            this.createEditor(editors[key]);
-        }
-    }
+  constructor(ui: any) {
+    this.ui = ui;
+  }
 
-    createEditor(editor: any) : void {
-        var editorDiv = '<div id="aoc-editor-' + editor.id + '" class="aoc-editor ' + editor.cssClass + '"></div>';
-        if (editor.locationId == globalThis.LOCATION_EXTRA_EDITOR) {
-            var color = this.getPlayerColorAsString(editor.color);
-            this.createHtml(editorDiv,"aoc-extra-editor-space-" + color);
-        } else if (editor.locationId == globalThis.LOCATION_PLAYER_AREA) {
-            var color = this.getPlayerColorAsString(editor.color);
-            this.createHtml(editorDiv,"aoc-editor-container-" + editor.playerId);
-        }
+  setupEditors(editors: any): void {
+    for (var key in editors) {
+      this.createEditor(editors[key]);
     }
+  }
+
+  createEditor(editor: any): void {
+    var editorDiv =
+      '<div id="aoc-editor-' +
+      editor.id +
+      '" class="aoc-editor ' +
+      editor.cssClass +
+      '"></div>';
+    if (editor.locationId == globalThis.LOCATION_EXTRA_EDITOR) {
+      var color = this.ui.getPlayerColorAsString(editor.color);
+      this.ui.createHtml(editorDiv, "aoc-extra-editor-space-" + color);
+    } else if (editor.locationId == globalThis.LOCATION_PLAYER_AREA) {
+      var color = this.ui.getPlayerColorAsString(editor.color);
+      this.ui.createHtml(editorDiv, "aoc-editor-container-" + editor.playerId);
+    }
+  }
 }

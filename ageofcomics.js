@@ -39,6 +39,7 @@ var GameBasics = /** @class */ (function (_super) {
         var _this = _super.call(this) || this;
         _this.isDebug = window.location.host == "studio.boardgamearena.com";
         _this.debug = _this.isDebug ? console.info.bind(window.console) : function () { };
+        _this.debug("GameBasics constructor", _this);
         _this.curstate = null;
         _this.pendingUpdate = false;
         _this.currentPlayerWasActive = false;
@@ -281,16 +282,16 @@ var GameBody = /** @class */ (function (_super) {
     __extends(GameBody, _super);
     function GameBody() {
         var _this = _super.call(this) || this;
-        _this.gameController = new GameController();
-        _this.playerController = new PlayerController();
-        _this.calendarController = new CalendarController();
-        _this.cardController = new CardController();
-        _this.editorController = new EditorController();
-        _this.masteryController = new MasteryController();
-        _this.miniComicController = new MiniComicController();
-        _this.ripoffController = new RipoffController();
-        _this.salesOrderController = new SalesOrderController();
-        _this.ticketController = new TicketController();
+        _this.gameController = new GameController(_this);
+        _this.playerController = new PlayerController(_this);
+        _this.calendarController = new CalendarController(_this);
+        _this.cardController = new CardController(_this);
+        _this.editorController = new EditorController(_this);
+        _this.masteryController = new MasteryController(_this);
+        _this.miniComicController = new MiniComicController(_this);
+        _this.ripoffController = new RipoffController(_this);
+        _this.salesOrderController = new SalesOrderController(_this);
+        _this.ticketController = new TicketController(_this);
         dojo.connect(window, "onresize", _this, dojo.hitch(_this, "adaptViewportSize"));
         return _this;
     }
@@ -431,10 +432,9 @@ define([
  * CalendarController.ts
  *
  */
-var CalendarController = /** @class */ (function (_super) {
-    __extends(CalendarController, _super);
-    function CalendarController() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var CalendarController = /** @class */ (function () {
+    function CalendarController(ui) {
+        this.ui = ui;
     }
     CalendarController.prototype.setupCalendar = function (calendarTiles) {
         for (var key in calendarTiles) {
@@ -442,11 +442,15 @@ var CalendarController = /** @class */ (function (_super) {
         }
     };
     CalendarController.prototype.createCalendarTile = function (calendarTile) {
-        var calendarTileDiv = '<div id="aoc-calender-tile-' + calendarTile.id + '" class="aoc-calendar-tile ' + calendarTile.cssClass + '"></div>';
-        this.createHtml(calendarTileDiv, "aoc-calendar-slot-" + calendarTile.position);
+        var calendarTileDiv = '<div id="aoc-calender-tile-' +
+            calendarTile.id +
+            '" class="aoc-calendar-tile ' +
+            calendarTile.cssClass +
+            '"></div>';
+        this.ui.createHtml(calendarTileDiv, "aoc-calendar-slot-" + calendarTile.position);
     };
     return CalendarController;
-}(GameBasics));
+}());
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
@@ -459,10 +463,9 @@ var CalendarController = /** @class */ (function (_super) {
  * CardController.ts
  *
  */
-var CardController = /** @class */ (function (_super) {
-    __extends(CardController, _super);
-    function CardController() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var CardController = /** @class */ (function () {
+    function CardController(ui) {
+        this.ui = ui;
     }
     CardController.prototype.setupPlayerHands = function (playerHands) {
         for (var player_id in playerHands) {
@@ -509,18 +512,18 @@ var CardController = /** @class */ (function (_super) {
         if (!location) {
             switch (card.location) {
                 case globalThis.LOCATION_DECK:
-                    this.createHtml(cardDiv, "aoc-" + card.type + "-deck");
+                    this.ui.createHtml(cardDiv, "aoc-" + card.type + "-deck");
                     break;
                 case globalThis.LOCATION_HAND:
-                    this.createHtml(cardDiv, "aoc-hand-" + card.playerId);
+                    this.ui.createHtml(cardDiv, "aoc-hand-" + card.playerId);
                     break;
                 case globalThis.LOCATION_SUPPLY:
-                    this.createHtml(cardDiv, "aoc-" + card.type + "s-available");
+                    this.ui.createHtml(cardDiv, "aoc-" + card.type + "s-available");
                     break;
             }
         }
         else {
-            this.createHtml(cardDiv, location);
+            this.ui.createHtml(cardDiv, location);
         }
     };
     CardController.prototype.createCreativeCard = function (card) {
@@ -533,13 +536,13 @@ var CardController = /** @class */ (function (_super) {
             '"></div>';
         switch (card.location) {
             case globalThis.LOCATION_DECK:
-                this.createHtml(cardDiv, "aoc-" + card.type + "-deck");
+                this.ui.createHtml(cardDiv, "aoc-" + card.type + "-deck");
                 break;
             case globalThis.LOCATION_HAND:
-                this.createHtml(cardDiv, "aoc-hand-" + card.playerId);
+                this.ui.createHtml(cardDiv, "aoc-hand-" + card.playerId);
                 break;
             case globalThis.LOCATION_SUPPLY:
-                this.createHtml(cardDiv, "aoc-" + card.type + "s-available");
+                this.ui.createHtml(cardDiv, "aoc-" + card.type + "s-available");
                 break;
         }
     };
@@ -570,7 +573,7 @@ var CardController = /** @class */ (function (_super) {
         animation.play();
     };
     return CardController;
-}(GameBasics));
+}());
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
@@ -583,10 +586,9 @@ var CardController = /** @class */ (function (_super) {
  * EditorController.ts
  *
  */
-var EditorController = /** @class */ (function (_super) {
-    __extends(EditorController, _super);
-    function EditorController() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var EditorController = /** @class */ (function () {
+    function EditorController(ui) {
+        this.ui = ui;
     }
     EditorController.prototype.setupEditors = function (editors) {
         for (var key in editors) {
@@ -594,18 +596,22 @@ var EditorController = /** @class */ (function (_super) {
         }
     };
     EditorController.prototype.createEditor = function (editor) {
-        var editorDiv = '<div id="aoc-editor-' + editor.id + '" class="aoc-editor ' + editor.cssClass + '"></div>';
+        var editorDiv = '<div id="aoc-editor-' +
+            editor.id +
+            '" class="aoc-editor ' +
+            editor.cssClass +
+            '"></div>';
         if (editor.locationId == globalThis.LOCATION_EXTRA_EDITOR) {
-            var color = this.getPlayerColorAsString(editor.color);
-            this.createHtml(editorDiv, "aoc-extra-editor-space-" + color);
+            var color = this.ui.getPlayerColorAsString(editor.color);
+            this.ui.createHtml(editorDiv, "aoc-extra-editor-space-" + color);
         }
         else if (editor.locationId == globalThis.LOCATION_PLAYER_AREA) {
-            var color = this.getPlayerColorAsString(editor.color);
-            this.createHtml(editorDiv, "aoc-editor-container-" + editor.playerId);
+            var color = this.ui.getPlayerColorAsString(editor.color);
+            this.ui.createHtml(editorDiv, "aoc-editor-container-" + editor.playerId);
         }
     };
     return EditorController;
-}(GameBasics));
+}());
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
@@ -618,10 +624,9 @@ var EditorController = /** @class */ (function (_super) {
  * GameController.ts
  *
  */
-var GameController = /** @class */ (function (_super) {
-    __extends(GameController, _super);
-    function GameController() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var GameController = /** @class */ (function () {
+    function GameController(ui) {
+        this.ui = ui;
     }
     GameController.prototype.setup = function (gamedata) {
         this.createNeededGameElements(gamedata);
@@ -639,11 +644,11 @@ var GameController = /** @class */ (function (_super) {
     };
     GameController.prototype.createGameStatusPanelHtml = function () {
         var gameStatusPanelHtml = '<div id="aoc-game-status-panel" class="player-board"><div id="aoc-game-status" class="player_board_content"><div id="aoc-game-status-mastery-container" class="aoc-game-status-row"></div><div id="aoc-button-row" class="aoc-game-status-row"><a id="aoc-show-chart-button" class="aoc-status-button" href="#"><i class="aoc-icon-size fa6 fa6-solid fa6-chart-simple"></i></a><a id="aoc-carousel-button" class="aoc-status-button" href="#"><i class="aoc-icon-size fa6 fa6-solid fa6-arrows-left-right-to-line"></i></a><a id="aoc-list-button" class="aoc-status-button" href="#"><i class="aoc-icon-size fa6 fa6-solid fa6-list"></i></a></div></div></div>';
-        this.createHtml(gameStatusPanelHtml, "player_boards");
+        this.ui.createHtml(gameStatusPanelHtml, "player_boards");
     };
     GameController.prototype.createShowChartContainerHtml = function () {
         var showChartContainerHtml = '<div id="aoc-show-chart-container"><div id="aoc-show-chart-underlay"></div><div id="aoc-show-chart-wrapper"></div></div>';
-        this.createHtml(showChartContainerHtml, "overall-content");
+        this.ui.createHtml(showChartContainerHtml, "overall-content");
     };
     GameController.prototype.createChartHtml = function (players) {
         var chartWidth = 87 + players.length * 71;
@@ -661,7 +666,7 @@ var GameController = /** @class */ (function (_super) {
         }
         chartHtml +=
             '<div id="aoc-chart-end" class="aoc-board-image aoc-chart-end"></div></div></div>';
-        this.createHtml(chartHtml, "aoc-show-chart-wrapper");
+        this.ui.createHtml(chartHtml, "aoc-show-chart-wrapper");
     };
     GameController.prototype.createOnClickEvents = function () {
         dojo.connect($("aoc-show-chart-button"), "onclick", this, "showChart");
@@ -679,13 +684,13 @@ var GameController = /** @class */ (function (_super) {
     };
     GameController.prototype.createIdeaTokenOnBoard = function (genreId, exists) {
         if (exists) {
-            var genre = this.getGenreName(genreId);
+            var genre = this.ui.getGenreName(genreId);
             var ideaTokenDiv = '<div id="aoc-idea-token-' +
                 genre +
                 '" class="aoc-idea-token aoc-idea-token-' +
                 genre +
                 '"></div>';
-            this.createHtml(ideaTokenDiv, "aoc-action-ideas-" + genre);
+            this.ui.createHtml(ideaTokenDiv, "aoc-action-ideas-" + genre);
         }
     };
     GameController.prototype.showChart = function () {
@@ -708,7 +713,7 @@ var GameController = /** @class */ (function (_super) {
                 dojo.toggleClass(arrow, "aoc-hidden");
             }
         });
-        this.adaptViewportSize();
+        this.ui.adaptViewportSize();
     };
     GameController.prototype.listView = function () {
         var playersSection = dojo.query("#aoc-players-section")[0];
@@ -724,7 +729,7 @@ var GameController = /** @class */ (function (_super) {
                 dojo.toggleClass(arrow, "aoc-hidden");
             }
         });
-        this.adaptViewportSize();
+        this.ui.adaptViewportSize();
     };
     GameController.prototype.nextPlayer = function () {
         var visiblePlayerSection = dojo.query(".aoc-player-background-panel:not(.aoc-hidden)")[0];
@@ -763,7 +768,7 @@ var GameController = /** @class */ (function (_super) {
         dojo.toggleClass(previousPlayerSection, "aoc-hidden");
     };
     return GameController;
-}(GameBasics));
+}());
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
@@ -776,10 +781,9 @@ var GameController = /** @class */ (function (_super) {
  * MasteryController.ts
  *
  */
-var MasteryController = /** @class */ (function (_super) {
-    __extends(MasteryController, _super);
-    function MasteryController() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var MasteryController = /** @class */ (function () {
+    function MasteryController(ui) {
+        this.ui = ui;
     }
     MasteryController.prototype.setupMasteryTokens = function (masteryTokens) {
         for (var key in masteryTokens) {
@@ -789,11 +793,11 @@ var MasteryController = /** @class */ (function (_super) {
     MasteryController.prototype.createMasteryToken = function (masteryToken) {
         var masteryTokenDiv = '<div id="aoc-mastery-token-' + masteryToken.id + '" class="aoc-mastery-token aoc-mastery-token-' + masteryToken.genre + '"></div>';
         if (masteryToken.playerId == 0) {
-            this.createHtml(masteryTokenDiv, "aoc-game-status-mastery-container");
+            this.ui.createHtml(masteryTokenDiv, "aoc-game-status-mastery-container");
         }
     };
     return MasteryController;
-}(GameBasics));
+}());
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
@@ -806,10 +810,9 @@ var MasteryController = /** @class */ (function (_super) {
  * MiniComicController.ts
  *
  */
-var MiniComicController = /** @class */ (function (_super) {
-    __extends(MiniComicController, _super);
-    function MiniComicController() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var MiniComicController = /** @class */ (function () {
+    function MiniComicController(ui) {
+        this.ui = ui;
     }
     MiniComicController.prototype.setupMiniComics = function (miniComics) {
         for (var key in miniComics) {
@@ -817,16 +820,20 @@ var MiniComicController = /** @class */ (function (_super) {
         }
     };
     MiniComicController.prototype.createMiniComic = function (miniComic) {
-        var miniComicDiv = '<div id="aoc-mini-comic-' + miniComic.id + '" class="aoc-mini-comic ' + miniComic.cssClass + '"></div>';
+        var miniComicDiv = '<div id="aoc-mini-comic-' +
+            miniComic.id +
+            '" class="aoc-mini-comic ' +
+            miniComic.cssClass +
+            '"></div>';
         if (miniComic.location == globalThis.LOCATION_SUPPLY) {
-            this.createHtml(miniComicDiv, "aoc-mini-" + miniComic.type + "s-" + miniComic.genre);
+            this.ui.createHtml(miniComicDiv, "aoc-mini-" + miniComic.type + "s-" + miniComic.genre);
         }
         if (miniComic.location == globalThis.LOCATION_CHART) {
             // TODO: Add to chart location
         }
     };
     return MiniComicController;
-}(GameBasics));
+}());
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
@@ -839,10 +846,9 @@ var MiniComicController = /** @class */ (function (_super) {
  * PlayerController.ts
  *
  */
-var PlayerController = /** @class */ (function (_super) {
-    __extends(PlayerController, _super);
-    function PlayerController() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var PlayerController = /** @class */ (function () {
+    function PlayerController(ui) {
+        this.ui = ui;
     }
     PlayerController.prototype.setupPlayers = function (playerData) {
         this.playerCounter = {};
@@ -864,7 +870,7 @@ var PlayerController = /** @class */ (function (_super) {
             '" class="aoc-idea-token aoc-idea-token-' +
             genre +
             '" style="position:relative;z-index:1000;"></div>';
-        return this.createHtml(ideaTokenDiv, "aoc-select-starting-idea-" + genre);
+        return this.ui.createHtml(ideaTokenDiv, "aoc-select-starting-idea-" + genre);
     };
     PlayerController.prototype.createPlayerOrderToken = function (player) {
         var playerOrderTokenDiv = '<div id="aoc-player-order-token' +
@@ -872,7 +878,7 @@ var PlayerController = /** @class */ (function (_super) {
             '" class="aoc-player-order-token aoc-player-order-token-' +
             player.colorAsText +
             '"></div>';
-        this.createHtml(playerOrderTokenDiv, "aoc-player-order-space-" + player.turnOrder);
+        this.ui.createHtml(playerOrderTokenDiv, "aoc-player-order-space-" + player.turnOrder);
     };
     PlayerController.prototype.createPlayerAgent = function (player) {
         var playerAgentDiv = '<div id="aoc-agent' +
@@ -880,7 +886,7 @@ var PlayerController = /** @class */ (function (_super) {
             '" class="aoc-agent aoc-agent-' +
             player.colorAsText +
             '"></div>';
-        this.createHtml(playerAgentDiv, "aoc-map-agent-space-" + player.agentLocation);
+        this.ui.createHtml(playerAgentDiv, "aoc-map-agent-space-" + player.agentLocation);
     };
     PlayerController.prototype.createPlayerCubes = function (player) {
         this.createPlayerCubeOne(player);
@@ -894,7 +900,7 @@ var PlayerController = /** @class */ (function (_super) {
             player.colorAsText +
             '"></div>';
         if (player.cubeOneLocation == 5) {
-            this.createHtml(cubeDiv, "aoc-cube-one-space-" + player.id);
+            this.ui.createHtml(cubeDiv, "aoc-cube-one-space-" + player.id);
         }
     };
     PlayerController.prototype.createPlayerCubeTwo = function (player) {
@@ -904,7 +910,7 @@ var PlayerController = /** @class */ (function (_super) {
             player.colorAsText +
             '"></div>';
         if (player.cubeOneLocation == 5) {
-            this.createHtml(cubeDiv, "aoc-cube-two-space-" + player.id);
+            this.ui.createHtml(cubeDiv, "aoc-cube-two-space-" + player.id);
         }
     };
     PlayerController.prototype.createPlayerCubeThree = function (player) {
@@ -914,7 +920,7 @@ var PlayerController = /** @class */ (function (_super) {
             player.colorAsText +
             '"></div>';
         if (player.cubeOneLocation == 5) {
-            this.createHtml(cubeDiv, "aoc-cube-three-space-" + player.id);
+            this.ui.createHtml(cubeDiv, "aoc-cube-three-space-" + player.id);
         }
     };
     PlayerController.prototype.createPlayerPanel = function (player) {
@@ -946,7 +952,7 @@ var PlayerController = /** @class */ (function (_super) {
             this.createPlayerPanelOtherSupplyDiv(player, "income") +
             "</div>" +
             "</div>";
-        this.createHtml(playerPanelDiv, "player_board_" + player.id);
+        this.ui.createHtml(playerPanelDiv, "player_board_" + player.id);
     };
     PlayerController.prototype.createPlayerPanelIdeaSupplyDiv = function (player, genre) {
         var ideaSupplyDiv = '<div id="aoc-player-panel-' +
@@ -1038,7 +1044,7 @@ var PlayerController = /** @class */ (function (_super) {
         this.playerCounter[playerId][counterPanel].incValue(value);
     };
     return PlayerController;
-}(GameBasics));
+}());
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
@@ -1051,10 +1057,9 @@ var PlayerController = /** @class */ (function (_super) {
  * RipoffController.ts
  *
  */
-var RipoffController = /** @class */ (function (_super) {
-    __extends(RipoffController, _super);
-    function RipoffController() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var RipoffController = /** @class */ (function () {
+    function RipoffController(ui) {
+        this.ui = ui;
     }
     RipoffController.prototype.setupRipoffCards = function (ripoffCards) {
         for (var key in ripoffCards) {
@@ -1062,13 +1067,17 @@ var RipoffController = /** @class */ (function (_super) {
         }
     };
     RipoffController.prototype.createRipoffCard = function (ripoffCard) {
-        var ripoffCardDiv = '<div id="aoc-ripoff-card-' + ripoffCard.id + '" class="aoc-ripoff-card ' + ripoffCard.cssClass + '"></div>';
+        var ripoffCardDiv = '<div id="aoc-ripoff-card-' +
+            ripoffCard.id +
+            '" class="aoc-ripoff-card ' +
+            ripoffCard.cssClass +
+            '"></div>';
         if (ripoffCard.location == globalThis.LOCATION_DECK) {
-            this.createHtml(ripoffCardDiv, "aoc-ripoff-deck");
+            this.ui.createHtml(ripoffCardDiv, "aoc-ripoff-deck");
         }
     };
     return RipoffController;
-}(GameBasics));
+}());
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
@@ -1081,10 +1090,9 @@ var RipoffController = /** @class */ (function (_super) {
  * SalesOrderController.ts
  *
  */
-var SalesOrderController = /** @class */ (function (_super) {
-    __extends(SalesOrderController, _super);
-    function SalesOrderController() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var SalesOrderController = /** @class */ (function () {
+    function SalesOrderController(ui) {
+        this.ui = ui;
     }
     SalesOrderController.prototype.setupSalesOrders = function (salesOrders) {
         for (var key in salesOrders) {
@@ -1094,11 +1102,11 @@ var SalesOrderController = /** @class */ (function (_super) {
     SalesOrderController.prototype.createSalesOrder = function (salesOrder) {
         var salesOrderDiv = '<div id="aoc-salesorder-' + salesOrder.id + '" class="aoc-salesorder ' + salesOrder.cssClass + '"></div>';
         if (salesOrder.location == globalThis.LOCATION_MAP) {
-            this.createHtml(salesOrderDiv, "aoc-map-order-space-" + salesOrder.locationArg);
+            this.ui.createHtml(salesOrderDiv, "aoc-map-order-space-" + salesOrder.locationArg);
         }
     };
     return SalesOrderController;
-}(GameBasics));
+}());
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
@@ -1111,10 +1119,9 @@ var SalesOrderController = /** @class */ (function (_super) {
  * TicketController.ts
  *
  */
-var TicketController = /** @class */ (function (_super) {
-    __extends(TicketController, _super);
-    function TicketController() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var TicketController = /** @class */ (function () {
+    function TicketController(ui) {
+        this.ui = ui;
     }
     TicketController.prototype.setupTickets = function (ticketCount) {
         for (var i = 1; i <= ticketCount; i++) {
@@ -1123,10 +1130,10 @@ var TicketController = /** @class */ (function (_super) {
     };
     TicketController.prototype.createTicket = function (ticketNum) {
         var ticketDiv = '<div id="aoc-ticket-' + ticketNum + '" class="aoc-ticket"></div>';
-        this.createHtml(ticketDiv, "aoc-tickets-space");
+        this.ui.createHtml(ticketDiv, "aoc-tickets-space");
     };
     return TicketController;
-}(GameBasics));
+}());
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>

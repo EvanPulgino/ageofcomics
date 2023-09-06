@@ -11,7 +11,13 @@
  *
  */
 
-class CardController extends GameBasics {
+class CardController {
+  ui: any;
+
+  constructor(ui: any) {
+    this.ui = ui;
+  }
+
   setupPlayerHands(playerHands: any): void {
     for (var player_id in playerHands) {
       var hand = playerHands[player_id];
@@ -63,17 +69,17 @@ class CardController extends GameBasics {
     if (!location) {
       switch (card.location) {
         case globalThis.LOCATION_DECK:
-          this.createHtml(cardDiv, "aoc-" + card.type + "-deck");
+          this.ui.createHtml(cardDiv, "aoc-" + card.type + "-deck");
           break;
         case globalThis.LOCATION_HAND:
-          this.createHtml(cardDiv, "aoc-hand-" + card.playerId);
+          this.ui.createHtml(cardDiv, "aoc-hand-" + card.playerId);
           break;
         case globalThis.LOCATION_SUPPLY:
-          this.createHtml(cardDiv, "aoc-" + card.type + "s-available");
+          this.ui.createHtml(cardDiv, "aoc-" + card.type + "s-available");
           break;
       }
     } else {
-      this.createHtml(cardDiv, location);
+      this.ui.createHtml(cardDiv, location);
     }
   }
 
@@ -88,13 +94,13 @@ class CardController extends GameBasics {
       '"></div>';
     switch (card.location) {
       case globalThis.LOCATION_DECK:
-        this.createHtml(cardDiv, "aoc-" + card.type + "-deck");
+        this.ui.createHtml(cardDiv, "aoc-" + card.type + "-deck");
         break;
       case globalThis.LOCATION_HAND:
-        this.createHtml(cardDiv, "aoc-hand-" + card.playerId);
+        this.ui.createHtml(cardDiv, "aoc-hand-" + card.playerId);
         break;
       case globalThis.LOCATION_SUPPLY:
-        this.createHtml(cardDiv, "aoc-" + card.type + "s-available");
+        this.ui.createHtml(cardDiv, "aoc-" + card.type + "s-available");
         break;
     }
   }

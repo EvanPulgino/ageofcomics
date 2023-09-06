@@ -11,21 +11,34 @@
  *
  */
 
-class MiniComicController extends GameBasics {
+class MiniComicController {
+  ui: any;
 
-    setupMiniComics(miniComics: any) : void {
-        for (var key in miniComics) {
-            this.createMiniComic(miniComics[key]);
-        }
-    }
+  constructor(ui: any) {
+    this.ui = ui;
+  }
 
-    createMiniComic(miniComic: any) : void {
-        var miniComicDiv = '<div id="aoc-mini-comic-' + miniComic.id + '" class="aoc-mini-comic ' + miniComic.cssClass + '"></div>';
-        if (miniComic.location == globalThis.LOCATION_SUPPLY) {
-            this.createHtml(miniComicDiv,"aoc-mini-" + miniComic.type + "s-" + miniComic.genre);
-        }
-        if (miniComic.location == globalThis.LOCATION_CHART) {
-            // TODO: Add to chart location
-        }
+  setupMiniComics(miniComics: any): void {
+    for (var key in miniComics) {
+      this.createMiniComic(miniComics[key]);
     }
+  }
+
+  createMiniComic(miniComic: any): void {
+    var miniComicDiv =
+      '<div id="aoc-mini-comic-' +
+      miniComic.id +
+      '" class="aoc-mini-comic ' +
+      miniComic.cssClass +
+      '"></div>';
+    if (miniComic.location == globalThis.LOCATION_SUPPLY) {
+      this.ui.createHtml(
+        miniComicDiv,
+        "aoc-mini-" + miniComic.type + "s-" + miniComic.genre
+      );
+    }
+    if (miniComic.location == globalThis.LOCATION_CHART) {
+      // TODO: Add to chart location
+    }
+  }
 }

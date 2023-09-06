@@ -31,6 +31,7 @@ class GameBasics extends GameGui {
     super();
     this.isDebug = window.location.host == "studio.boardgamearena.com";
     this.debug = this.isDebug ? console.info.bind(window.console) : () => {};
+    this.debug("GameBasics constructor", this);
     this.curstate = null;
     this.pendingUpdate = false;
     this.currentPlayerWasActive = false;

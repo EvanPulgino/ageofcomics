@@ -11,7 +11,13 @@
  *
  */
 
-class GameController extends GameBasics {
+class GameController {
+  ui: any;
+
+  constructor(ui: any) {
+    this.ui = ui;
+  }
+
   setup(gamedata: any) {
     this.createNeededGameElements(gamedata);
     this.createIdeaTokensOnBoard(gamedata.ideasSpaceContents);
@@ -31,13 +37,13 @@ class GameController extends GameBasics {
   createGameStatusPanelHtml(): void {
     var gameStatusPanelHtml =
       '<div id="aoc-game-status-panel" class="player-board"><div id="aoc-game-status" class="player_board_content"><div id="aoc-game-status-mastery-container" class="aoc-game-status-row"></div><div id="aoc-button-row" class="aoc-game-status-row"><a id="aoc-show-chart-button" class="aoc-status-button" href="#"><i class="aoc-icon-size fa6 fa6-solid fa6-chart-simple"></i></a><a id="aoc-carousel-button" class="aoc-status-button" href="#"><i class="aoc-icon-size fa6 fa6-solid fa6-arrows-left-right-to-line"></i></a><a id="aoc-list-button" class="aoc-status-button" href="#"><i class="aoc-icon-size fa6 fa6-solid fa6-list"></i></a></div></div></div>';
-    this.createHtml(gameStatusPanelHtml, "player_boards");
+    this.ui.createHtml(gameStatusPanelHtml, "player_boards");
   }
 
   createShowChartContainerHtml(): void {
     var showChartContainerHtml =
       '<div id="aoc-show-chart-container"><div id="aoc-show-chart-underlay"></div><div id="aoc-show-chart-wrapper"></div></div>';
-    this.createHtml(showChartContainerHtml, "overall-content");
+    this.ui.createHtml(showChartContainerHtml, "overall-content");
   }
 
   createChartHtml(players: any): void {
@@ -57,7 +63,7 @@ class GameController extends GameBasics {
     }
     chartHtml +=
       '<div id="aoc-chart-end" class="aoc-board-image aoc-chart-end"></div></div></div>';
-    this.createHtml(chartHtml, "aoc-show-chart-wrapper");
+    this.ui.createHtml(chartHtml, "aoc-show-chart-wrapper");
   }
 
   createOnClickEvents(): void {
@@ -78,14 +84,14 @@ class GameController extends GameBasics {
 
   createIdeaTokenOnBoard(genreId: any, exists: boolean) {
     if (exists) {
-      var genre = this.getGenreName(genreId);
+      var genre = this.ui.getGenreName(genreId);
       var ideaTokenDiv =
         '<div id="aoc-idea-token-' +
         genre +
         '" class="aoc-idea-token aoc-idea-token-' +
         genre +
         '"></div>';
-      this.createHtml(ideaTokenDiv, "aoc-action-ideas-" + genre);
+      this.ui.createHtml(ideaTokenDiv, "aoc-action-ideas-" + genre);
     }
   }
 
@@ -111,7 +117,7 @@ class GameController extends GameBasics {
         dojo.toggleClass(arrow, "aoc-hidden");
       }
     });
-    this.adaptViewportSize();
+    this.ui.adaptViewportSize();
   }
 
   listView(): void {
@@ -128,7 +134,7 @@ class GameController extends GameBasics {
         dojo.toggleClass(arrow, "aoc-hidden");
       }
     });
-    this.adaptViewportSize();
+    this.ui.adaptViewportSize();
   }
 
   nextPlayer(): void {

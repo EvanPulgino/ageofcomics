@@ -11,7 +11,12 @@
  *
  */
 
-class TicketController extends GameBasics {
+class TicketController {
+    ui: any;
+
+    constructor(ui: any) {
+        this.ui = ui;
+    }
 
     setupTickets(ticketCount: any) : void {
         for (var i = 1; i <= ticketCount; i++) {
@@ -22,6 +27,6 @@ class TicketController extends GameBasics {
     createTicket(ticketNum: any) : void {
         var ticketDiv =
           '<div id="aoc-ticket-'+ticketNum+'" class="aoc-ticket"></div>';
-        this.createHtml(ticketDiv, "aoc-tickets-space");
+        this.ui.createHtml(ticketDiv, "aoc-tickets-space");
     }
 }

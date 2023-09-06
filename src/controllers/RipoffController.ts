@@ -11,19 +11,28 @@
  *
  */
 
-class RipoffController extends GameBasics {
+class RipoffController {
+  ui: any;
 
-    setupRipoffCards(ripoffCards: any) : void {
-        for (var key in ripoffCards) {
-            this.createRipoffCard(ripoffCards[key]);
-        }
+  constructor(ui: any) {
+    this.ui = ui;
+  }
+
+  setupRipoffCards(ripoffCards: any): void {
+    for (var key in ripoffCards) {
+      this.createRipoffCard(ripoffCards[key]);
     }
+  }
 
-    createRipoffCard(ripoffCard: any) : void {
-        var ripoffCardDiv = '<div id="aoc-ripoff-card-'+ripoffCard.id+'" class="aoc-ripoff-card '+ripoffCard.cssClass+'"></div>';
-        if(ripoffCard.location == globalThis.LOCATION_DECK) {
-            this.createHtml(ripoffCardDiv, "aoc-ripoff-deck");
-        }
+  createRipoffCard(ripoffCard: any): void {
+    var ripoffCardDiv =
+      '<div id="aoc-ripoff-card-' +
+      ripoffCard.id +
+      '" class="aoc-ripoff-card ' +
+      ripoffCard.cssClass +
+      '"></div>';
+    if (ripoffCard.location == globalThis.LOCATION_DECK) {
+      this.ui.createHtml(ripoffCardDiv, "aoc-ripoff-deck");
     }
-
+  }
 }

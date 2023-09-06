@@ -11,7 +11,12 @@
  *
  */
 
-class MasteryController extends GameBasics {
+class MasteryController {
+    ui: any;
+
+    constructor(ui: any) {
+        this.ui = ui;
+    }
 
     setupMasteryTokens(masteryTokens: any) : void {
         for (var key in masteryTokens) {
@@ -22,7 +27,7 @@ class MasteryController extends GameBasics {
     createMasteryToken(masteryToken: any) : void {
         var masteryTokenDiv = '<div id="aoc-mastery-token-'+masteryToken.id+'" class="aoc-mastery-token aoc-mastery-token-'+masteryToken.genre+'"></div>';
         if(masteryToken.playerId == 0) {
-            this.createHtml(
+            this.ui.createHtml(
               masteryTokenDiv,
               "aoc-game-status-mastery-container"
             );

@@ -11,17 +11,29 @@
  *
  */
 
- class CalendarController extends GameBasics {
+class CalendarController {
+  ui: any;
 
-    setupCalendar(calendarTiles: any) : void {
-        for (var key in calendarTiles) {
-            this.createCalendarTile(calendarTiles[key]);
-        }
+  constructor(ui: any) {
+    this.ui = ui;
+  }
+
+  setupCalendar(calendarTiles: any): void {
+    for (var key in calendarTiles) {
+      this.createCalendarTile(calendarTiles[key]);
     }
+  }
 
-    createCalendarTile(calendarTile: any) : void {
-        var calendarTileDiv = '<div id="aoc-calender-tile-' + calendarTile.id + '" class="aoc-calendar-tile ' + calendarTile.cssClass + '"></div>';
-        this.createHtml(calendarTileDiv,"aoc-calendar-slot-" + calendarTile.position);
-    }
-
- }
+  createCalendarTile(calendarTile: any): void {
+    var calendarTileDiv =
+      '<div id="aoc-calender-tile-' +
+      calendarTile.id +
+      '" class="aoc-calendar-tile ' +
+      calendarTile.cssClass +
+      '"></div>';
+    this.ui.createHtml(
+      calendarTileDiv,
+      "aoc-calendar-slot-" + calendarTile.position
+    );
+  }
+}

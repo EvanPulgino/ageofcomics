@@ -11,7 +11,12 @@
  *
  */
 
-class SalesOrderController extends GameBasics {
+class SalesOrderController {
+    ui: any;
+
+    constructor(ui: any) {
+        this.ui = ui;
+    }
 
     setupSalesOrders(salesOrders: any) : void {
         for (var key in salesOrders) {
@@ -23,7 +28,7 @@ class SalesOrderController extends GameBasics {
         var salesOrderDiv = '<div id="aoc-salesorder-' + salesOrder.id + '" class="aoc-salesorder ' + salesOrder.cssClass + '"></div>';
 
         if (salesOrder.location == globalThis.LOCATION_MAP) {
-            this.createHtml(salesOrderDiv, "aoc-map-order-space-" + salesOrder.locationArg);
+            this.ui.createHtml(salesOrderDiv, "aoc-map-order-space-" + salesOrder.locationArg);
         }
     }
 }

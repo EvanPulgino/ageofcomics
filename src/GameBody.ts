@@ -28,16 +28,16 @@ class GameBody extends GameBasics {
   ticketController: TicketController;
   constructor() {
     super();
-    this.gameController = new GameController();
-    this.playerController = new PlayerController();
-    this.calendarController = new CalendarController();
-    this.cardController = new CardController();
-    this.editorController = new EditorController();
-    this.masteryController = new MasteryController();
-    this.miniComicController = new MiniComicController();
-    this.ripoffController = new RipoffController();
-    this.salesOrderController = new SalesOrderController();
-    this.ticketController = new TicketController();
+    this.gameController = new GameController(this);
+    this.playerController = new PlayerController(this);
+    this.calendarController = new CalendarController(this);
+    this.cardController = new CardController(this);
+    this.editorController = new EditorController(this);
+    this.masteryController = new MasteryController(this);
+    this.miniComicController = new MiniComicController(this);
+    this.ripoffController = new RipoffController(this);
+    this.salesOrderController = new SalesOrderController(this);
+    this.ticketController = new TicketController(this);
 
     dojo.connect(
       window,
