@@ -38,7 +38,13 @@ class GameBasics extends GameGui {
     this.gameState = new GameState(this);
   }
 
-  adaptViewportSize() {
+  /**
+   * Change the viewport size based on current window size
+   * Called when window is resized and a few other places
+   *
+   * @returns {void}
+   */
+  adaptViewportSize(): void {
     var t = dojo.marginBox("aoc-overall");
     var r = t.w;
     var s = 1500;
@@ -67,9 +73,10 @@ class GameBasics extends GameGui {
   /**
    * UI setup entry point
    *
-   * @param {object} gamedatas
+   * @param {object} gamedata - game data
+   * @returns {void}
    */
-  setup(gamedata: any) {
+  setup(gamedata: object): void {
     this.debug("Game data", gamedata);
     this.defineGlobalConstants(gamedata.constants);
   }
@@ -78,8 +85,9 @@ class GameBasics extends GameGui {
    * Gives javascript access to PHP defined constants
    *
    * @param {object} constants - constants defined in PHP
+   * @returns {void}
    */
-  defineGlobalConstants(constants: any): void {
+  defineGlobalConstants(constants: object): void {
     for (var constant in constants) {
       if (!globalThis[constant]) {
         globalThis[constant] = constants[constant];
@@ -92,11 +100,11 @@ class GameBasics extends GameGui {
    *
    * @param {string} stateName - name of the state
    * @param {object} args - args passed to the state
+   * @returns {void}
    */
-  onEnteringState(stateName: string, args: { args: any }) {
+  onEnteringState(stateName: string, args: { args: any }): void {
     this.debug("onEnteringState: " + stateName, args, this.debugStateInfo());
     this.curstate = stateName;
-    // Call appropriate method
     args["isCurrentPlayerActive"] = gameui.isCurrentPlayerActive();
     this.gameState[stateName].onEnteringState(args);
 
@@ -110,8 +118,9 @@ class GameBasics extends GameGui {
    * Called when game leaves a state
    *
    * @param {string} stateName - name of the state
+   * @returns {void}
    */
-  onLeavingState(stateName: string) {
+  onLeavingState(stateName: string): void {
     this.debug("onLeavingState: " + stateName, this.debugStateInfo());
     this.currentPlayerWasActive = false;
     this.gameState[stateName].onLeavingState();
@@ -122,9 +131,10 @@ class GameBasics extends GameGui {
    *
    * @param {string} stateName - name of the state
    * @param {object} args - args passed to the state
+   * @returns {void}
    */
 
-  onUpdateActionButtons(stateName: string, args: any) {
+  onUpdateActionButtons(stateName: string, args: any): void {
     if (this.curstate != stateName) {
       // delay firing this until onEnteringState is called so they always called in same order
       this.pendingUpdate = true;
@@ -153,7 +163,7 @@ class GameBasics extends GameGui {
    *
    * @returns {object} state info
    */
-  debugStateInfo() {
+  debugStateInfo(): object {
     var iscurac = gameui.isCurrentPlayerActive();
     var replayMode = false;
     if (typeof g_replayFrom != "undefined") {
@@ -174,8 +184,13 @@ class GameBasics extends GameGui {
    * @param {string} action - name of the action
    * @param {object=} args - args passed to the action
    * @param {requestCallback=} handler - callback function
+   * @returns {void}
    */
-  ajaxcallwrapper(action: string, args?: any, handler?: (err: any) => void) {
+  ajaxcallwrapper(
+    action: string,
+    args?: any,
+    handler?: (err: any) => void
+  ): void {
     if (!args) {
       args = {};
     }
@@ -203,9 +218,9 @@ class GameBasics extends GameGui {
    *
    * @param {string} divstr - div to create
    * @param {string=} location - parent node to insert div into
-   * @returns div element
+   * @returns {any} div element
    */
-  createHtml(divstr: string, location?: string) {
+  createHtml(divstr: string, location?: string): any {
     const tempHolder = document.createElement("div");
     tempHolder.innerHTML = divstr;
     const div = tempHolder.firstElementChild;
@@ -216,12 +231,13 @@ class GameBasics extends GameGui {
 
   /**
    * Creates a div and inserts it into the DOM
+   *
    * @param {string=} id - id of div
    * @param {string=} classes - classes to add to div
    * @param {string=} location - parent node to insert div into
-   * @returns div element
+   * @returns {any}
    */
-  createDiv(id?: string | undefined, classes?: string, location?: string) {
+  createDiv(id?: string | undefined, classes?: string, location?: string): any {
     const div = document.createElement("div");
     if (id) div.id = id;
     if (classes) div.classList.add(...classes.split(" "));
@@ -258,10 +274,21 @@ class GameBasics extends GameGui {
     return this.inherited(arguments);
   }
 
-  getGenres(): string[] {
+  /**
+   * Get a map of all genre keys and values
+   *
+   * @returns {object} map of genre keys and values
+   */
+  getGenres(): object {
     return GENRES;
   }
 
+  /**
+   * Gets a genre key from a genre gam
+   *
+   * @param genre
+   * @returns {number} genre id
+   */
   getGenreId(genre: string): number {
     for (var key in GENRES) {
       if (GENRES[key] == genre) {
@@ -270,10 +297,22 @@ class GameBasics extends GameGui {
     }
   }
 
+  /**
+   * Gets a genre name from a genre id
+   *
+   * @param genreId
+   * @returns {string} genre name
+   */
   getGenreName(genreId: number) {
     return GENRES[genreId];
   }
 
+  /**
+   * Gets the name of a player's color from its hex value
+   * 
+   * @param playerColor 
+   * @returns {string} player color name
+   */
   getPlayerColorAsString(playerColor: string): string {
     return PLAYER_COLORS[playerColor];
   }

@@ -46,6 +46,12 @@ var GameBasics = /** @class */ (function (_super) {
         _this.gameState = new GameState(_this);
         return _this;
     }
+    /**
+     * Change the viewport size based on current window size
+     * Called when window is resized and a few other places
+     *
+     * @returns {void}
+     */
     GameBasics.prototype.adaptViewportSize = function () {
         var t = dojo.marginBox("aoc-overall");
         var r = t.w;
@@ -73,7 +79,8 @@ var GameBasics = /** @class */ (function (_super) {
     /**
      * UI setup entry point
      *
-     * @param {object} gamedatas
+     * @param {object} gamedata - game data
+     * @returns {void}
      */
     GameBasics.prototype.setup = function (gamedata) {
         this.debug("Game data", gamedata);
@@ -83,6 +90,7 @@ var GameBasics = /** @class */ (function (_super) {
      * Gives javascript access to PHP defined constants
      *
      * @param {object} constants - constants defined in PHP
+     * @returns {void}
      */
     GameBasics.prototype.defineGlobalConstants = function (constants) {
         for (var constant in constants) {
@@ -96,11 +104,11 @@ var GameBasics = /** @class */ (function (_super) {
      *
      * @param {string} stateName - name of the state
      * @param {object} args - args passed to the state
+     * @returns {void}
      */
     GameBasics.prototype.onEnteringState = function (stateName, args) {
         this.debug("onEnteringState: " + stateName, args, this.debugStateInfo());
         this.curstate = stateName;
-        // Call appropriate method
         args["isCurrentPlayerActive"] = gameui.isCurrentPlayerActive();
         this.gameState[stateName].onEnteringState(args);
         if (this.pendingUpdate) {
@@ -112,6 +120,7 @@ var GameBasics = /** @class */ (function (_super) {
      * Called when game leaves a state
      *
      * @param {string} stateName - name of the state
+     * @returns {void}
      */
     GameBasics.prototype.onLeavingState = function (stateName) {
         this.debug("onLeavingState: " + stateName, this.debugStateInfo());
@@ -123,6 +132,7 @@ var GameBasics = /** @class */ (function (_super) {
      *
      * @param {string} stateName - name of the state
      * @param {object} args - args passed to the state
+     * @returns {void}
      */
     GameBasics.prototype.onUpdateActionButtons = function (stateName, args) {
         if (this.curstate != stateName) {
@@ -167,6 +177,7 @@ var GameBasics = /** @class */ (function (_super) {
      * @param {string} action - name of the action
      * @param {object=} args - args passed to the action
      * @param {requestCallback=} handler - callback function
+     * @returns {void}
      */
     GameBasics.prototype.ajaxcallwrapper = function (action, args, handler) {
         if (!args) {
@@ -189,7 +200,7 @@ var GameBasics = /** @class */ (function (_super) {
      *
      * @param {string} divstr - div to create
      * @param {string=} location - parent node to insert div into
-     * @returns div element
+     * @returns {any} div element
      */
     GameBasics.prototype.createHtml = function (divstr, location) {
         var tempHolder = document.createElement("div");
@@ -202,10 +213,11 @@ var GameBasics = /** @class */ (function (_super) {
     };
     /**
      * Creates a div and inserts it into the DOM
+     *
      * @param {string=} id - id of div
      * @param {string=} classes - classes to add to div
      * @param {string=} location - parent node to insert div into
-     * @returns div element
+     * @returns {any}
      */
     GameBasics.prototype.createDiv = function (id, classes, location) {
         var _a;
@@ -245,9 +257,20 @@ var GameBasics = /** @class */ (function (_super) {
         //super.onScriptError(msg, url, linenumber);
         return this.inherited(arguments);
     };
+    /**
+     * Get a map of all genre keys and values
+     *
+     * @returns {object} map of genre keys and values
+     */
     GameBasics.prototype.getGenres = function () {
         return GENRES;
     };
+    /**
+     * Gets a genre key from a genre gam
+     *
+     * @param genre
+     * @returns {number} genre id
+     */
     GameBasics.prototype.getGenreId = function (genre) {
         for (var key in GENRES) {
             if (GENRES[key] == genre) {
@@ -255,9 +278,21 @@ var GameBasics = /** @class */ (function (_super) {
             }
         }
     };
+    /**
+     * Gets a genre name from a genre id
+     *
+     * @param genreId
+     * @returns {string} genre name
+     */
     GameBasics.prototype.getGenreName = function (genreId) {
         return GENRES[genreId];
     };
+    /**
+     * Gets the name of a player's color from its hex value
+     *
+     * @param playerColor
+     * @returns {string} player color name
+     */
     GameBasics.prototype.getPlayerColorAsString = function (playerColor) {
         return PLAYER_COLORS[playerColor];
     };
