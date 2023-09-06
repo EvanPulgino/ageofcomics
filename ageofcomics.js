@@ -1032,8 +1032,7 @@ var PlayerController = /** @class */ (function (_super) {
     };
     PlayerController.prototype.gainStartingIdea = function (playerId, genre) {
         var ideaTokenDiv = this.createStartingIdeaToken(genre);
-        console.log("gainStartingIdea", playerId, genre, ideaTokenDiv);
-        var playerPanelIcon = dojo.byId("aoc-player-panel-" + genre + "-" + playerId);
+        var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
         gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
         this.updatePlayerCounter(playerId, genre, 1);
     };
