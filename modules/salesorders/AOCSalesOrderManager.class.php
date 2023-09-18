@@ -53,6 +53,26 @@ class AOCSalesOrderManager extends APP_GameClass {
         return $uiData;
     }
 
+    public function flipSalesOrdersOnMap($genre) {
+        $sql = "UPDATE sales_order SET sales_order_flipped = 1 WHERE sales_order_genre = $genre AND sales_order_location = 9";
+        self::DbQuery($sql);
+        return $this->getFlippedSalesOrdersUiData($genre);
+    }
+
+    public function getFlippedSalesOrdersUiData($genre) {
+        $sql = "SELECT sales_order_id id, sales_order_genre genre, sales_order_value value, sales_order_fans fans, sales_order_owner playerId, sales_order_location location, sales_order_location_arg locationArg, sales_order_flipped flipped FROM sales_order WHERE sales_order_genre = $genre AND sales_order_location = 9";
+        $rows = self::getCollectionFromDb($sql);
+        $salesOrders = [];
+        foreach ($rows as $row) {
+            $salesOrders[] = new AOCSalesOrder($row);
+        }
+        $uiData = [];
+        foreach ($salesOrders as $salesOrder) {
+            $uiData[] = $salesOrder->getUiData();
+        }
+        return $uiData;
+    }
+
     private function createSalesOrderTiles($playerCount) {
         $salesOrderValues = $this->salesOrdersForPlayerCount[$playerCount];
         foreach (GENRE_KEYS as $genre) {
@@ -65,7 +85,10 @@ class AOCSalesOrderManager extends APP_GameClass {
 
     private function distributeSalesOrderTiles($playerCount) {
         $salesOrders = $this->getSalesOrders();
-        $placedSalesOrders = $this->shuffleSalesOrders($playerCount, $salesOrders);
+        $placedSalesOrders = $this->shuffleSalesOrders(
+            $playerCount,
+            $salesOrders
+        );
         $this->savePlacedSalesOrders($placedSalesOrders);
     }
 

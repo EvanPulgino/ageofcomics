@@ -19,11 +19,13 @@ class GameState {
   gameSetup: State;
   nextPlayerSetup: State;
   playerSetup: State;
+  startNewRound: State;
   constructor(game: any) {
     this.completeSetup = new CompleteSetup(game);
     this.gameEnd = new GameEnd(game);
     this.gameSetup = new GameSetup(game);
     this.nextPlayerSetup = new NextPlayerSetup(game);
     this.playerSetup = new PlayerSetup(game);
+    this.startNewRound = new StartNewRound(game);
   }
 }

@@ -7,22 +7,19 @@
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * CompleteSetup.ts
+ * StartNewRound.ts
  *
- * AgeOfComics complete setup state
+ * AgeOfComics start new round state
  *
  */
 
-class CompleteSetup implements State {
+class StartNewRound implements State {
   game: any;
   constructor(game: any) {
     this.game = game;
   }
 
-  onEnteringState(stateArgs: any): void {
-    dojo.toggleClass("aoc-card-market", "aoc-hidden", false);
-    this.game.adaptViewportSize();
-  }
+  onEnteringState(stateArgs: any): void {}
   onLeavingState(): void {}
   onUpdateActionButtons(stateArgs: any): void {}
 }

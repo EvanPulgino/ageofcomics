@@ -88,11 +88,18 @@ $machinestates = [
 
     ST_COMPLETE_SETUP => [
         "name" => COMPLETE_SETUP,
-        "description" => "Setup complete",
-        "descriptionmyturn" => "Setup complete",
-        "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "description" => "",
+        "type" => STATE_TYPE_GAME,
         "action" => GAME_ACTION_COMPLETE_SETUP,
-        "possibleActions" => ["anAction"],
+        "transitions" => ["startGame" => ST_START_NEW_ROUND],
+    ],
+
+    ST_START_NEW_ROUND => [
+        "name" => START_NEW_ROUND,
+        "description" => "Setting up new round",
+        "descriptionmyturn" => "Setting up new round",
+        "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "action" => GAME_ACTION_START_NEW_ROUND,
         "transitions" => ["" => ST_GAME_END],
     ],
 

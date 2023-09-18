@@ -387,6 +387,12 @@ var GameBody = /** @class */ (function (_super) {
         this.cardController.setupSupply(notif.args.writerCards.supply);
         this.cardController.setupSupply(notif.args.comicCards.supply);
     };
+    GameBody.prototype.notif_flipCalendarTiles = function (notif) {
+        this.calendarController.flipCalendarTiles(notif.args.flippedTiles);
+    };
+    GameBody.prototype.notif_flipSalesOrders = function (notif) {
+        this.salesOrderController.flipSalesOrders(notif.args.flippedSalesOrders);
+    };
     GameBody.prototype.notif_gainStartingComic = function (notif) {
         this.cardController.gainStartingComic(notif.args.comic_card);
     };
@@ -430,6 +436,7 @@ var GameState = /** @class */ (function () {
         this.gameSetup = new GameSetup(game);
         this.nextPlayerSetup = new NextPlayerSetup(game);
         this.playerSetup = new PlayerSetup(game);
+        this.startNewRound = new StartNewRound(game);
     }
     return GameState;
 }());
@@ -483,6 +490,16 @@ var CalendarController = /** @class */ (function () {
             calendarTile.cssClass +
             '"></div>';
         this.ui.createHtml(calendarTileDiv, "aoc-calendar-slot-" + calendarTile.position);
+    };
+    CalendarController.prototype.flipCalendarTile = function (calendarTile) {
+        var calendarTileDiv = dojo.byId("aoc-calender-tile-" + calendarTile.id);
+        dojo.removeClass(calendarTileDiv, "aoc-calendar-tile-facedown");
+        dojo.addClass(calendarTileDiv, calendarTile.cssClass);
+    };
+    CalendarController.prototype.flipCalendarTiles = function (calendarTiles) {
+        for (var key in calendarTiles) {
+            this.flipCalendarTile(calendarTiles[key]);
+        }
     };
     return CalendarController;
 }());
@@ -1135,9 +1152,23 @@ var SalesOrderController = /** @class */ (function () {
         }
     };
     SalesOrderController.prototype.createSalesOrder = function (salesOrder) {
-        var salesOrderDiv = '<div id="aoc-salesorder-' + salesOrder.id + '" class="aoc-salesorder ' + salesOrder.cssClass + '"></div>';
+        var salesOrderDiv = '<div id="aoc-salesorder-' +
+            salesOrder.id +
+            '" class="aoc-salesorder ' +
+            salesOrder.cssClass +
+            '"></div>';
         if (salesOrder.location == globalThis.LOCATION_MAP) {
             this.ui.createHtml(salesOrderDiv, "aoc-map-order-space-" + salesOrder.locationArg);
+        }
+    };
+    SalesOrderController.prototype.flipSalesOrder = function (salesOrder) {
+        var salesOrderDiv = dojo.byId("aoc-salesorder-" + salesOrder.id);
+        dojo.removeClass(salesOrderDiv, "aoc-salesorder-" + salesOrder.genre + "-facedown");
+        dojo.addClass(salesOrderDiv, salesOrder.cssClass);
+    };
+    SalesOrderController.prototype.flipSalesOrders = function (salesOrders) {
+        for (var key in salesOrders) {
+            this.flipSalesOrder(salesOrders[key]);
         }
     };
     return SalesOrderController;
@@ -1189,6 +1220,7 @@ var CompleteSetup = /** @class */ (function () {
     }
     CompleteSetup.prototype.onEnteringState = function (stateArgs) {
         dojo.toggleClass("aoc-card-market", "aoc-hidden", false);
+        this.game.adaptViewportSize();
     };
     CompleteSetup.prototype.onLeavingState = function () { };
     CompleteSetup.prototype.onUpdateActionButtons = function (stateArgs) { };
@@ -1410,6 +1442,29 @@ var PlayerSetup = /** @class */ (function () {
         }
     };
     return PlayerSetup;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * StartNewRound.ts
+ *
+ * AgeOfComics start new round state
+ *
+ */
+var StartNewRound = /** @class */ (function () {
+    function StartNewRound(game) {
+        this.game = game;
+    }
+    StartNewRound.prototype.onEnteringState = function (stateArgs) { };
+    StartNewRound.prototype.onLeavingState = function () { };
+    StartNewRound.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return StartNewRound;
 }());
 /**
  *------

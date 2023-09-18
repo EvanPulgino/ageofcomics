@@ -48,12 +48,34 @@ class AOCCalendarManager extends APP_GameClass {
     }
 
     /**
+     * Flip all calendar tiles for a round
+     * @param int $round The round to flip tiles for
+     * @return array An array of calendar tiles
+     */
+    public function flipCalendarTilesByRound($round) {
+        $sql = "UPDATE calendar_tile SET calendar_tile_flipped = 1 WHERE calendar_tile_round = $round";
+        self::DbQuery($sql);
+        return $this->getCalendarTilesByRound($round);
+    }
+
+    /**
      * Get all calendar tiles
      * @return AOCCalendarTile[] An array of calendar tiles
      */
     public function getCalendarTiles() {
         $sql =
             "SELECT calendar_tile_id id, calendar_tile_genre genre, calendar_tile_round round, calendar_tile_position position, calendar_tile_flipped flipped FROM calendar_tile";
+        $rows = self::getObjectListFromDB($sql);
+
+        $tiles = [];
+        foreach ($rows as $row) {
+            $tiles[] = new AOCCalendarTile($row);
+        }
+        return $tiles;
+    }
+
+    private function getCalendarTilesByRound($round) {
+        $sql = "SELECT calendar_tile_id id, calendar_tile_genre genre, calendar_tile_round round, calendar_tile_position position, calendar_tile_flipped flipped FROM calendar_tile WHERE calendar_tile_round = $round";
         $rows = self::getObjectListFromDB($sql);
 
         $tiles = [];

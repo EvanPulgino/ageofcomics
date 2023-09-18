@@ -115,6 +115,14 @@ class GameBody extends GameBasics {
     this.cardController.setupSupply(notif.args.comicCards.supply);
   }
 
+  notif_flipCalendarTiles(notif: any): void {
+    this.calendarController.flipCalendarTiles(notif.args.flippedTiles);
+  }
+
+  notif_flipSalesOrders(notif: any): void {
+    this.salesOrderController.flipSalesOrders(notif.args.flippedSalesOrders);
+  }
+
   notif_gainStartingComic(notif: any): void {
     this.cardController.gainStartingComic(notif.args.comic_card);
   }

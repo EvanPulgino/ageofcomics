@@ -32,17 +32,21 @@ class AOCGameStateActions {
         $writerCards = $this->game->cardManager->dealCardsToSupply(
             CARD_TYPE_WRITER
         );
-        $comicCards = $this->game->cardManager->dealCardsToSupply(CARD_TYPE_COMIC);
+        $comicCards = $this->game->cardManager->dealCardsToSupply(
+            CARD_TYPE_COMIC
+        );
 
         $this->game->notifyAllPlayers(
             "completeSetup",
-            "test",
+            clienttranslate("Setup complete"),
             [
                 "artistCards" => $artistCards,
                 "writerCards" => $writerCards,
                 "comicCards" => $comicCards,
             ]
         );
+
+        $this->game->gamestate->nextState("startGame");
     }
 
     function stNextPlayerSetup() {
@@ -50,6 +54,7 @@ class AOCGameStateActions {
         if (
             $this->game->playerManager->isLastPlayerInTurnOrder($activePlayer)
         ) {
+            $this->game->playerManager->activateNextPlayer();
             $this->game->gamestate->nextState("endPlayerSetup");
         } else {
             $this->game->playerManager->activateNextPlayer();
@@ -100,5 +105,46 @@ class AOCGameStateActions {
             }
             $this->game->gamestate->nextState("nextPlayerSetup");
         }
+    }
+
+    function stStartNewRound() {
+        // 1. Increment round number
+        $currentRound = $this->game->getGameStateValue(CURRENT_ROUND) + 1;
+        $this->game->setGameStateValue(CURRENT_ROUND, $currentRound);
+
+        // 2. Flip Calendar Tile(s)
+        $flippedTiles = $this->game->calendarManager->flipCalendarTilesByRound(
+            $currentRound
+        );
+        $flippedTilesUiData = array_map(function ($tile) {
+            return $tile->getUiData();
+        }, $flippedTiles);
+
+        $this->game->notifyAllPlayers(
+            "flipCalendarTiles",
+            clienttranslate('Flipping calendar tiles for round ${round}'),
+            [
+                "round" => $currentRound,
+                "flippedTiles" => $flippedTilesUiData,
+            ]
+        );
+
+        // 3. Flip Sales Orders on Map by Genre
+        foreach ($flippedTiles as $tile) {
+            $flippedSalesOrdersUiData = $this->game->salesOrderManager->flipSalesOrdersOnMap(
+                $tile->getGenreId()
+            );
+            $this->game->notifyAllPlayers(
+                "flipSalesOrders",
+                clienttranslate('Flipping ${genre} sales orders on map'),
+                [
+                    "genre" => $tile->getGenre(),
+                    "flippedSalesOrders" => $flippedSalesOrdersUiData,
+                ]
+            );
+        }
+
+        // 4. Refill Ideas
+        // 5. Add Hype
     }
 }

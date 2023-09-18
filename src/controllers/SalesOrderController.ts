@@ -12,23 +12,46 @@
  */
 
 class SalesOrderController {
-    ui: any;
+  ui: any;
 
-    constructor(ui: any) {
-        this.ui = ui;
+  constructor(ui: any) {
+    this.ui = ui;
+  }
+
+  setupSalesOrders(salesOrders: any): void {
+    for (var key in salesOrders) {
+      this.createSalesOrder(salesOrders[key]);
     }
+  }
 
-    setupSalesOrders(salesOrders: any) : void {
-        for (var key in salesOrders) {
-            this.createSalesOrder(salesOrders[key]);
-        }
+  createSalesOrder(salesOrder: any): void {
+    var salesOrderDiv =
+      '<div id="aoc-salesorder-' +
+      salesOrder.id +
+      '" class="aoc-salesorder ' +
+      salesOrder.cssClass +
+      '"></div>';
+
+    if (salesOrder.location == globalThis.LOCATION_MAP) {
+      this.ui.createHtml(
+        salesOrderDiv,
+        "aoc-map-order-space-" + salesOrder.locationArg
+      );
     }
+  }
 
-    createSalesOrder(salesOrder: any) : void {
-        var salesOrderDiv = '<div id="aoc-salesorder-' + salesOrder.id + '" class="aoc-salesorder ' + salesOrder.cssClass + '"></div>';
+  flipSalesOrder(salesOrder: any): void {
+    var salesOrderDiv = dojo.byId("aoc-salesorder-" + salesOrder.id);
+    dojo.removeClass(
+      salesOrderDiv,
+      "aoc-salesorder-" + salesOrder.genre + "-facedown"
+    );
+    dojo.addClass(salesOrderDiv, salesOrder.cssClass);
+  }
 
-        if (salesOrder.location == globalThis.LOCATION_MAP) {
-            this.ui.createHtml(salesOrderDiv, "aoc-map-order-space-" + salesOrder.locationArg);
-        }
+  flipSalesOrders(salesOrders: any): void {
+    for (var key in salesOrders) {
+      this.flipSalesOrder(salesOrders[key]);
     }
+  }
 }

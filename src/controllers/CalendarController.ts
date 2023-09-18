@@ -36,4 +36,16 @@ class CalendarController {
       "aoc-calendar-slot-" + calendarTile.position
     );
   }
+
+  flipCalendarTile(calendarTile: any): void {
+    var calendarTileDiv = dojo.byId("aoc-calender-tile-" + calendarTile.id);
+    dojo.removeClass(calendarTileDiv, "aoc-calendar-tile-facedown");
+    dojo.addClass(calendarTileDiv, calendarTile.cssClass);
+  }
+
+  flipCalendarTiles(calendarTiles: any): void {
+    for (var key in calendarTiles) {
+      this.flipCalendarTile(calendarTiles[key]);
+    }
+  }
 }
