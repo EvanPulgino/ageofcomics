@@ -54,7 +54,6 @@ class AOCGameStateActions {
         if (
             $this->game->playerManager->isLastPlayerInTurnOrder($activePlayer)
         ) {
-            $this->game->playerManager->activateNextPlayer();
             $this->game->gamestate->nextState("endPlayerSetup");
         } else {
             $this->game->playerManager->activateNextPlayer();
@@ -146,5 +145,8 @@ class AOCGameStateActions {
 
         // 4. Refill Ideas
         // 5. Add Hype
+
+        $this->game->playerManager->activateNextPlayer();
+        $this->game->gamestate->nextState("startActionsPhase");
     }
 }

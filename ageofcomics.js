@@ -436,6 +436,7 @@ var GameState = /** @class */ (function () {
         this.gameSetup = new GameSetup(game);
         this.nextPlayerSetup = new NextPlayerSetup(game);
         this.playerSetup = new PlayerSetup(game);
+        this.playerTurn = new PlayerTurn(game);
         this.startNewRound = new StartNewRound(game);
     }
     return GameState;
@@ -1442,6 +1443,29 @@ var PlayerSetup = /** @class */ (function () {
         }
     };
     return PlayerSetup;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * PlayerTurn.ts
+ *
+ * AgeOfComics player turn state
+ *
+ */
+var PlayerTurn = /** @class */ (function () {
+    function PlayerTurn(game) {
+        this.game = game;
+    }
+    PlayerTurn.prototype.onEnteringState = function (stateArgs) { };
+    PlayerTurn.prototype.onLeavingState = function () { };
+    PlayerTurn.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return PlayerTurn;
 }());
 /**
  *------

@@ -96,11 +96,23 @@ $machinestates = [
 
     ST_START_NEW_ROUND => [
         "name" => START_NEW_ROUND,
-        "description" => "Setting up new round",
-        "descriptionmyturn" => "Setting up new round",
-        "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "description" => "",
+        "type" => STATE_TYPE_GAME,
         "action" => GAME_ACTION_START_NEW_ROUND,
-        "transitions" => ["" => ST_GAME_END],
+        "transitions" => ["startActionsPhase" => ST_PLAYER_TURN],
+    ],
+
+    ST_PLAYER_TURN => [
+        "name" => PLAYER_TURN,
+        "description" => clienttranslate(
+            '${actplayer} must place an editor on an action space'
+        ),
+        "descriptionmyturn" => clienttranslate(
+            '${you} must place an editor on an action space'
+        ),
+        "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "possibleactions" => [],
+        "transitions" => ["nextPlayerTurn" => ST_GAME_END],
     ],
 
     ST_GAME_END => [

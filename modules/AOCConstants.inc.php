@@ -819,6 +819,7 @@ define("ST_PLAYER_SETUP", 2);
 define("ST_NEXT_PLAYER_SETUP", 3);
 define("ST_COMPLETE_SETUP", 4);
 define("ST_START_NEW_ROUND", 10);
+define("ST_PLAYER_TURN", 20);
 define("ST_GAME_END", 99);
 
 /** State Names */
@@ -827,6 +828,7 @@ define("GAME_END", "gameEnd");
 define("GAME_SETUP", "gameSetup");
 define("NEXT_PLAYER_SETUP", "nextPlayerSetup");
 define("PLAYER_SETUP", "playerSetup");
+define("PLAYER_TURN", "playerTurn");
 define("START_NEW_ROUND", "startNewRound");
 
 /** State Types */
