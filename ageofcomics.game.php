@@ -37,6 +37,7 @@ class AgeOfComics extends Table {
             TICKET_SUPPLY => 19,
             START_IDEAS => 20,
             CARD_SUPPLY_SIZE => 21,
+            MAX_ACTION_SPACES => 22,
         ]);
 
         // Initialize action managers
@@ -80,6 +81,7 @@ class AgeOfComics extends Table {
         // Init global values with their initial values
         self::setGameStateInitialValue(TOTAL_TURNS, sizeof($aocPlayers) * 20);
         self::setGameStateInitialValue(TURNS_TAKEN, 0);
+        self::setGameStateInitialValue(MAX_ACTION_SPACES, sizeof($aocPlayers) + 1);
         self::setGameStateInitialValue(CURRENT_ROUND, 0);
         self::setGameStateInitialValue(TICKET_SUPPLY, 4);
         self::setGameStateInitialValue(START_IDEAS, 2);

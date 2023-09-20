@@ -33,7 +33,32 @@
                     <div id="aoc-calendar-slot-40" class="aoc-calendar-slot"></div>
                     <div id="aoc-calendar-slot-50" class="aoc-calendar-slot"></div>
                 </div>
+                <div id="aoc-action-hire">
+                    <div id="aoc-action-hire-spaces">
+                        <div id="aoc-action-space-hire-1" class="aoc-action-space" space=" 10001"></div>
+                        <div id="aoc-action-space-hire-2" class="aoc-action-space" space="10002"></div>
+                        <div id="aoc-action-space-hire-3" class="aoc-action-space" space="10003"></div>
+                        <div id="aoc-action-space-hire-4" class="aoc-action-space" space="10004"></div>
+                        <div id="aoc-action-space-hire-5" class="aoc-action-space" space="10005"></div>
+                    </div>
+                </div>
+                <div id="aoc-action-develop">
+                    <div id="aoc-action-develop-spaces">
+                        <div id="aoc-action-space-develop-1" class="aoc-action-space" space="20001"></div>
+                        <div id="aoc-action-space-develop-2" class="aoc-action-space" space="20002"></div>
+                        <div id="aoc-action-space-develop-3" class="aoc-action-space" space="20003"></div>
+                        <div id="aoc-action-space-develop-4" class="aoc-action-space" space="20004"></div>
+                        <div id="aoc-action-space-develop-5" class="aoc-action-space" space="20005"></div>
+                    </div>
+                </div>
                 <div id="aoc-action-ideas">
+                    <div id="aoc-action-ideas-spaces">
+                        <div id="aoc-action-space-ideas-1" class="aoc-action-space" space="30001"></div>
+                        <div id="aoc-action-space-ideas-2" class="aoc-action-space" space="30002"></div>
+                        <div id="aoc-action-space-ideas-3" class="aoc-action-space" space="30003"></div>
+                        <div id="aoc-action-space-ideas-4" class="aoc-action-space" space="30004"></div>
+                        <div id="aoc-action-space-ideas-5" class="aoc-action-space" space="30005"></div>
+                    </div>
                     <div id="aoc-action-ideas-idea-spaces">
                         <div id="aoc-action-ideas-crime" class="aoc-action-ideas-idea-space"></div>
                         <div id="aoc-action-ideas-scifi" class="aoc-action-ideas-idea-space"></div>
@@ -41,6 +66,33 @@
                         <div id="aoc-action-ideas-romance" class="aoc-action-ideas-idea-space"></div>
                         <div id="aoc-action-ideas-western" class="aoc-action-ideas-idea-space"></div>
                         <div id="aoc-action-ideas-horror" class="aoc-action-ideas-idea-space"></div>
+                    </div>
+                </div>
+                <div id="aoc-action-print">
+                    <div id="aoc-action-print-spaces">
+                        <div id="aoc-action-space-print-1" class="aoc-action-space" space="40001"></div>
+                        <div id="aoc-action-space-print-2" class="aoc-action-space" space="40002"></div>
+                        <div id="aoc-action-space-print-3" class="aoc-action-space" space="40003"></div>
+                        <div id="aoc-action-space-print-4" class="aoc-action-space" space="40004"></div>
+                        <div id="aoc-action-space-print-5" class="aoc-action-space" space="40005"></div>
+                    </div>
+                </div>
+                <div id="aoc-action-royalties">
+                    <div id="aoc-action-royalties-spaces">
+                        <div id="aoc-action-space-royalties-1" class="aoc-action-space" space="50001"></div>
+                        <div id="aoc-action-space-royalties-2" class="aoc-action-space" space="50002"></div>
+                        <div id="aoc-action-space-royalties-3" class="aoc-action-space" space="50003"></div>
+                        <div id="aoc-action-space-royalties-4" class="aoc-action-space" space="50004"></div>
+                        <div id="aoc-action-space-royalties-5" class="aoc-action-space" space="50005"></div>
+                    </div>
+                </div>
+                <div id="aoc-action-sales">
+                    <div id="aoc-action-sales-spaces">
+                        <div id="aoc-action-space-sales-1" class="aoc-action-space" space="60001"></div>
+                        <div id="aoc-action-space-sales-2" class="aoc-action-space" space="60002"></div>
+                        <div id="aoc-action-space-sales-3" class="aoc-action-space" space="60003"></div>
+                        <div id="aoc-action-space-sales-4" class="aoc-action-space" space="60004"></div>
+                        <div id="aoc-action-space-sales-5" class="aoc-action-space" space="60005"></div>
                     </div>
                 </div>
                 <div id="aoc-mini-comics-section">
@@ -181,7 +233,8 @@
                     <div id="aoc-select-starting-comic-romance" class="aoc-comic-card aoc-comic-romance-facedown">
                     </div>
                     <div id="aoc-select-starting-comic-scifi" class="aoc-comic-card aoc-comic-scifi-facedown"></div>
-                    <div id="aoc-select-starting-comic-superhero" class="aoc-comic-card aoc-comic-superhero-facedown"></div>
+                    <div id="aoc-select-starting-comic-superhero" class="aoc-comic-card aoc-comic-superhero-facedown">
+                    </div>
                     <div id="aoc-select-starting-comic-western" class="aoc-comic-card aoc-comic-western-facedown">
                     </div>
                 </div>

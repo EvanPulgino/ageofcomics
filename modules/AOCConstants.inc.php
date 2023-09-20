@@ -224,7 +224,7 @@ define("TICKET_SUPPLY", "ticket_supply");
 define("TOTAL_TURNS", "total_turns");
 define("TURNS_TAKEN", "turns_taken");
 define("START_IDEAS", "start_ideas");
-
+define("MAX_ACTION_SPACES", "max_action_spaces");
 /** Locations */
 define("LOCATION_VOID", -1);
 define("LOCATION_DECK", 0);
