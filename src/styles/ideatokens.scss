@@ -87,8 +87,12 @@
 
 .aoc-action-ideas-idea-space {
   height: 44px;
-  position: absolute;
+  position: fixed;
   width: 44px;
+}
+
+.aoc-action-ideas-idea-space .aoc-idea-token:hover {
+  transform: scale(1.1);
 }
 
 #aoc-action-ideas-crime {

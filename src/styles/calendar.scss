@@ -5,10 +5,10 @@
  */
 
 .aoc-calendar-slot {
-    position: absolute;
-    height: 78px;
-    top: 104px;
-    width: 78px;
+  position: absolute;
+  height: 78px;
+  top: 104px;
+  width: 78px;
 }
 
 #aoc-calendar-slot-10 {
@@ -44,6 +44,10 @@
   -webkit-filter: drop-shadow(1px 1px 2px #000);
   height: 78px;
   width: 78px;
+}
+
+.aoc-calendar-tile:hover {
+  transform: scale(1.1);
 }
 
 .aoc-calendar-tile-facedown {

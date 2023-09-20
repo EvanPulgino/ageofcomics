@@ -101,7 +101,6 @@ html {
 
 #aoc-gboard .aoc-board {
   position: relative;
-  z-index: -1;
 }
 
 #aoc-layout {
@@ -586,10 +585,58 @@ html {
   width: 21px;
 }
 
+#aoc-action-hire {
+  height: 153px;
+  left: 17px;
+  position: absolute;
+  top: 207px;
+  width: 220px;
+}
+
+#aoc-action-develop {
+  height: 153px;
+  left: 256px;
+  position: absolute;
+  top: 207px;
+  width: 220px;
+}
+
+#aoc-action-ideas {
+  height: 153px;
+  left: 494px;
+  position: absolute;
+  top: 207px;
+  width: 352px;
+}
+
+#aoc-action-print {
+  height: 153px;
+  left: 17px;
+  position: absolute;
+  top: 487px;
+  width: 245px;
+}
+
+#aoc-action-royalties {
+  height: 153px;
+  left: 17px;
+  position: absolute;
+  top: 768px;
+  width: 340px;
+}
+
+#aoc-action-sales {
+  height: 153px;
+  left: 375px;
+  position: absolute;
+  top: 768px;
+  width: 357px;
+}
+
 .aoc-action-space {
   width: 31px;
   height: 20px;
-  position: absolute;
+  position: fixed;
 }
 
 #aoc-action-space-hire-1 {
@@ -609,12 +656,12 @@ html {
 
 #aoc-action-space-hire-4 {
   left: 30px;
-  top: 307px;
+  top: 306px;
 }
 
 #aoc-action-space-hire-5 {
   left: 30px;
-  top: 337px;
+  top: 336px;
 }
 
 #aoc-action-space-develop-1 {
@@ -634,12 +681,12 @@ html {
 
 #aoc-action-space-develop-4 {
   left: 269px;
-  top: 307px;
+  top: 306px;
 }
 
 #aoc-action-space-develop-5 {
   left: 269px;
-  top: 337px;
+  top: 336px;
 }
 
 #aoc-action-space-ideas-1 {
@@ -659,12 +706,12 @@ html {
 
 #aoc-action-space-ideas-4 {
   left: 508px;
-  top: 307px;
+  top: 306px;
 }
 
 #aoc-action-space-ideas-5 {
   left: 508px;
-  top: 337px;
+  top: 336px;
 }
 
 #aoc-action-space-print-1 {
@@ -684,12 +731,12 @@ html {
 
 #aoc-action-space-print-4 {
   left: 30px;
-  top: 588px;
+  top: 587px;
 }
 
 #aoc-action-space-print-5 {
   left: 30px;
-  top: 618px;
+  top: 617px;
 }
 
 #aoc-action-space-royalties-1 {
@@ -709,12 +756,12 @@ html {
 
 #aoc-action-space-royalties-4 {
   left: 30px;
-  top: 869px;
+  top: 868px;
 }
 
 #aoc-action-space-royalties-5 {
   left: 30px;
-  top: 899px;
+  top: 898px;
 }
 
 #aoc-action-space-sales-1 {
@@ -734,12 +781,12 @@ html {
 
 #aoc-action-space-sales-4 {
   left: 388px;
-  top: 869px;
+  top: 868px;
 }
 
 #aoc-action-space-sales-5 {
   left: 388px;
-  top: 899px;
+  top: 898px;
 }
 
 /**
@@ -789,6 +836,10 @@ html {
   width: 78px;
 }
 
+.aoc-calendar-tile:hover {
+  transform: scale(1.1);
+}
+
 .aoc-calendar-tile-facedown {
   background-position: 0 0;
 }
@@ -828,6 +879,10 @@ html {
   height: 62px;
   position: relative;
   width: 30.75px;
+}
+
+.aoc-editor:hover {
+  transform: scale(1.1);
 }
 
 .aoc-editor-salmon {
@@ -958,8 +1013,12 @@ html {
 
 .aoc-action-ideas-idea-space {
   height: 44px;
-  position: absolute;
+  position: fixed;
   width: 44px;
+}
+
+.aoc-action-ideas-idea-space .aoc-idea-token:hover {
+  transform: scale(1.1);
 }
 
 #aoc-action-ideas-crime {

@@ -1464,7 +1464,28 @@ var PlayerTurn = /** @class */ (function () {
     }
     PlayerTurn.prototype.onEnteringState = function (stateArgs) { };
     PlayerTurn.prototype.onLeavingState = function () { };
-    PlayerTurn.prototype.onUpdateActionButtons = function (stateArgs) { };
+    PlayerTurn.prototype.onUpdateActionButtons = function (stateArgs) {
+        if (stateArgs.isCurrentPlayerActive) {
+            gameui.addActionButton("aoc-take-hire-action", _("Hire"), function (event) {
+                console.log("hire");
+            });
+            gameui.addActionButton("aoc-take-develop-action", _("Develop"), function (event) {
+                console.log("develop");
+            });
+            gameui.addActionButton("aoc-take-ideas-action", _("Ideas"), function (event) {
+                console.log("ideas");
+            });
+            gameui.addActionButton("aoc-take-print-action", _("Print"), function (event) {
+                console.log("print");
+            });
+            gameui.addActionButton("aoc-take-royalties-action", _("Royalties"), function (event) {
+                console.log("royalties");
+            });
+            gameui.addActionButton("aoc-take-sales-action", _("Sales"), function (event) {
+                console.log("sales");
+            });
+        }
+    };
     return PlayerTurn;
 }());
 /**

@@ -21,5 +21,34 @@ class PlayerTurn implements State {
 
   onEnteringState(stateArgs: any): void {}
   onLeavingState(): void {}
-  onUpdateActionButtons(stateArgs: any): void {}
+  onUpdateActionButtons(stateArgs: any): void {
+    if (stateArgs.isCurrentPlayerActive) {
+      gameui.addActionButton("aoc-take-hire-action", _("Hire"), (event) => {
+        console.log("hire");
+      });
+      gameui.addActionButton(
+        "aoc-take-develop-action",
+        _("Develop"),
+        (event) => {
+          console.log("develop");
+        }
+      );
+      gameui.addActionButton("aoc-take-ideas-action", _("Ideas"), (event) => {
+        console.log("ideas");
+      });
+      gameui.addActionButton("aoc-take-print-action", _("Print"), (event) => {
+        console.log("print");
+      });
+      gameui.addActionButton(
+        "aoc-take-royalties-action",
+        _("Royalties"),
+        (event) => {
+          console.log("royalties");
+        }
+      );
+      gameui.addActionButton("aoc-take-sales-action", _("Sales"), (event) => {
+        console.log("sales");
+      });
+    }
+  }
 }
