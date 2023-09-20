@@ -61,6 +61,24 @@ class AOCEditorManager extends APP_GameClass {
         return $uiData;
     }
 
+    public function getNextActionSpaceForEditor($actionLocationCode) {
+        $maxSpaces = $this->game->getGameStateValue(MAX_ACTION_SPACES);
+        $editors = $this->getAllEditorsOnAnAction($actionLocationCode);
+        if (count($editors) < $maxSpaces) {
+            return $actionLocationCode + count($editors) + 1;
+        }
+        return 0;
+    }
+
+    public function getAllEditorsOnActionUiData($actionLocationCode) {
+        $editors = $this->getAllEditorsOnAnAction($actionLocationCode);
+        $uiData = [];
+        foreach ($editors as $editor) {
+            $uiData[] = $editor->getUiData();
+        }
+        return $uiData;
+    }
+
     /**
      * Move an editor to a new location
      * @param int $editorId - editor to move
@@ -88,5 +106,16 @@ class AOCEditorManager extends APP_GameClass {
         }
         $sql = "INSERT INTO editor (editor_owner, editor_color, editor_location) VALUES ($playerId, '$playerColor', $extraEditor)";
         self::DbQuery($sql);
+    }
+
+    private function getAllEditorsOnAnAction($actionLocationCode) {
+        $sql = "SELECT editor_id id, editor_owner owner, editor_color color, editor_location location FROM editor WHERE editor_location >= $actionLocationCode AND editor_location < $actionLocationCode + 6";
+        $rows = self::getObjectListFromDB($sql);
+
+        $editors = [];
+        foreach ($rows as $row) {
+            $editors[] = new AOCEditor($row);
+        }
+        return $editors;
     }
 }

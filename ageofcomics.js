@@ -1466,25 +1466,36 @@ var PlayerTurn = /** @class */ (function () {
     PlayerTurn.prototype.onLeavingState = function () { };
     PlayerTurn.prototype.onUpdateActionButtons = function (stateArgs) {
         if (stateArgs.isCurrentPlayerActive) {
-            gameui.addActionButton("aoc-take-hire-action", _("Hire"), function (event) {
-                console.log("hire");
-            });
-            gameui.addActionButton("aoc-take-develop-action", _("Develop"), function (event) {
-                console.log("develop");
-            });
-            gameui.addActionButton("aoc-take-ideas-action", _("Ideas"), function (event) {
-                console.log("ideas");
-            });
-            gameui.addActionButton("aoc-take-print-action", _("Print"), function (event) {
-                console.log("print");
-            });
-            gameui.addActionButton("aoc-take-royalties-action", _("Royalties"), function (event) {
-                console.log("royalties");
-            });
-            gameui.addActionButton("aoc-take-sales-action", _("Sales"), function (event) {
-                console.log("sales");
-            });
+            if (stateArgs.args.hireActionSpace > 0) {
+                this.highlightInteractiveActionElements("hire", "Hire");
+            }
+            if (stateArgs.args.developActionSpace > 0) {
+                this.highlightInteractiveActionElements("develop", "Develop");
+            }
+            if (stateArgs.args.ideasActionSpace > 0) {
+                this.highlightInteractiveActionElements("ideas", "Ideas");
+            }
+            if (stateArgs.args.printActionSpace > 0) {
+                this.highlightInteractiveActionElements("print", "Print");
+            }
+            if (stateArgs.args.royaltiesActionSpace > 0) {
+                this.highlightInteractiveActionElements("royalties", "Royalties");
+            }
+            if (stateArgs.args.salesActionSpace > 0) {
+                this.highlightInteractiveActionElements("sales", "Sales");
+            }
         }
+    };
+    PlayerTurn.prototype.highlightInteractiveActionElements = function (actionType, actionButtonText) {
+        var actionButtonDivId = "aoc-take-" + actionType + "-action";
+        var actionBoardElementId = "aoc-action-" + actionType;
+        // Create the action button
+        gameui.addActionButton(actionButtonDivId, _(actionButtonText), function (event) {
+            console.log(actionType);
+        });
+        dojo.addClass(actionButtonDivId, "aoc-button");
+        // Highlight the action board element
+        dojo.addClass(actionBoardElementId, "aoc-clickable");
     };
     return PlayerTurn;
 }());

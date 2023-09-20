@@ -81,7 +81,10 @@ class AgeOfComics extends Table {
         // Init global values with their initial values
         self::setGameStateInitialValue(TOTAL_TURNS, sizeof($aocPlayers) * 20);
         self::setGameStateInitialValue(TURNS_TAKEN, 0);
-        self::setGameStateInitialValue(MAX_ACTION_SPACES, sizeof($aocPlayers) + 1);
+        self::setGameStateInitialValue(
+            MAX_ACTION_SPACES,
+            sizeof($aocPlayers) + 1
+        );
         self::setGameStateInitialValue(CURRENT_ROUND, 0);
         self::setGameStateInitialValue(TICKET_SUPPLY, 4);
         self::setGameStateInitialValue(START_IDEAS, 2);
@@ -220,6 +223,29 @@ class AgeOfComics extends Table {
     function argsPlayerSetup() {
         return [
             "startIdeas" => self::getGameStateValue(START_IDEAS),
+        ];
+    }
+
+    function argsPlayerTurn() {
+        return [
+            "hireActionSpace" => $this->editorManager->getNextActionSpaceForEditor(
+                LOCATION_ACTION_HIRE
+            ),
+            "developActionSpace" => $this->editorManager->getNextActionSpaceForEditor(
+                LOCATION_ACTION_DEVELOP
+            ),
+            "ideasActionSpace" => $this->editorManager->getNextActionSpaceForEditor(
+                LOCATION_ACTION_IDEAS
+            ),
+            "printActionSpace" => $this->editorManager->getNextActionSpaceForEditor(
+                LOCATION_ACTION_PRINT
+            ),
+            "royaltiesActionSpace" => $this->editorManager->getNextActionSpaceForEditor(
+                LOCATION_ACTION_ROYALTIES
+            ),
+            "salesActionSpace" => $this->editorManager->getNextActionSpaceForEditor(
+                LOCATION_ACTION_SALES
+            ),
         ];
     }
 

@@ -68,7 +68,7 @@ $machinestates = [
             '${you} must select starting items'
         ),
         "type" => STATE_TYPE_ACTIVE_PLAYER,
-        "args" => ARGS_PLAYER_SETUP,
+        "args" => STATE_ARGS_PLAYER_SETUP,
         "possibleactions" => [PLAYER_ACTION_SELECT_START_ITEMS],
         "transitions" => [
             "nextPlayerSetup" => ST_NEXT_PLAYER_SETUP,
@@ -111,6 +111,7 @@ $machinestates = [
             '${you} must place an editor on an action space'
         ),
         "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "args" => STATE_ARGS_PLAYER_TURN,
         "possibleactions" => [],
         "transitions" => ["nextPlayerTurn" => ST_GAME_END],
     ],
@@ -120,6 +121,6 @@ $machinestates = [
         "description" => clienttranslate("End of game"),
         "type" => STATE_TYPE_MANAGER,
         "action" => GAME_ACTION_GAME_END,
-        "args" => STATE_ARG_GAME_END,
+        "args" => STATE_ARGS_GAME_END,
     ],
 ];

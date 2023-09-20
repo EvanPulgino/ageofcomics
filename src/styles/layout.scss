@@ -55,8 +55,18 @@ html {
   pointer-events: none !important;
 }
 
+.aoc-clickable {
+  border: 4px solid red;
+  cursor: pointer;
+}
+
+.aoc-clickable:hover {
+  border-color: green;
+}
+
 .aoc-button:hover {
   transform: scale(1.05);
+  background: green !important;
 }
 
 .aoc-start-idea-remove {

@@ -68,7 +68,6 @@
   position: relative;
   width: 100%;
   height: 100%;
-  z-index: -1;
 }
 
 .aoc-player-area-left {
@@ -94,22 +93,22 @@
 
 .aoc-player-area-brown {
   background-color: $brown;
-  background-image: linear-gradient(to right, $brown, #f5ead690);
+  background-image: linear-gradient(to right, #f5ead690, $brown);
 }
 
 .aoc-player-area-salmon {
   background-color: $salmon;
-  background-image: linear-gradient(to right, $salmon, #f5ead690);
+  background-image: linear-gradient(to right, #f5ead690, $salmon);
 }
 
 .aoc-player-area-teal {
   background-color: $teal;
-  background-image: linear-gradient(to right, $teal, #f5ead690);
+  background-image: linear-gradient(to right, #f5ead690, $teal);
 }
 
 .aoc-player-area-yellow {
   background-color: $yellow;
-  background-image: linear-gradient(to right, $yellow, #f5ead690);
+  background-image: linear-gradient(to right #f5ead690, $yellow);
 }
 
 .aoc-player-mastery-container {

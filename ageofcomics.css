@@ -64,8 +64,18 @@ html {
   pointer-events: none !important;
 }
 
+.aoc-clickable {
+  border: 4px solid red;
+  cursor: pointer;
+}
+
+.aoc-clickable:hover {
+  border-color: green;
+}
+
 .aoc-button:hover {
   transform: scale(1.05);
+  background: green !important;
 }
 
 .aoc-start-idea-remove {
@@ -1641,7 +1651,6 @@ html {
   position: relative;
   width: 100%;
   height: 100%;
-  z-index: -1;
 }
 
 .aoc-player-area-left {
@@ -1667,22 +1676,22 @@ html {
 
 .aoc-player-area-brown {
   background-color: #8e514e;
-  background-image: linear-gradient(to right, #8e514e, rgba(245, 234, 214, 0.5647058824));
+  background-image: linear-gradient(to right, rgba(245, 234, 214, 0.5647058824), #8e514e);
 }
 
 .aoc-player-area-salmon {
   background-color: #e5977a;
-  background-image: linear-gradient(to right, #e5977a, rgba(245, 234, 214, 0.5647058824));
+  background-image: linear-gradient(to right, rgba(245, 234, 214, 0.5647058824), #e5977a);
 }
 
 .aoc-player-area-teal {
   background-color: #5ba59f;
-  background-image: linear-gradient(to right, #5ba59f, rgba(245, 234, 214, 0.5647058824));
+  background-image: linear-gradient(to right, rgba(245, 234, 214, 0.5647058824), #5ba59f);
 }
 
 .aoc-player-area-yellow {
   background-color: #f5c86e;
-  background-image: linear-gradient(to right, #f5c86e, rgba(245, 234, 214, 0.5647058824));
+  background-image: linear-gradient(to right rgba(245, 234, 214, 0.5647058824), #f5c86e);
 }
 
 .aoc-player-mastery-container {

@@ -23,9 +23,6 @@ define("GAME_ACTION_START_NEW_ROUND", "stStartNewRound");
 
 define("PLAYER_ACTION_SELECT_START_ITEMS", "selectStartItems");
 
-/** State Args */
-define("ARGS_PLAYER_SETUP", "argsPlayerSetup");
-
 /** Genre Keys */
 define("GENRE_CRIME", 10);
 define("GENRE_HORROR", 20);
@@ -811,7 +808,9 @@ define("SALES_ORDER_CONNECTIONS", [
 ]);
 
 /** State Args */
-define("STATE_ARG_GAME_END", "argGameEnd");
+define("STATE_ARGS_GAME_END", "argGameEnd");
+define("STATE_ARGS_PLAYER_SETUP", "argsPlayerSetup");
+define("STATE_ARGS_PLAYER_TURN", "argsPlayerTurn");
 
 /** State IDs */
 define("ST_GAME_SETUP", 1);

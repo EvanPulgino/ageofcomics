@@ -23,32 +23,41 @@ class PlayerTurn implements State {
   onLeavingState(): void {}
   onUpdateActionButtons(stateArgs: any): void {
     if (stateArgs.isCurrentPlayerActive) {
-      gameui.addActionButton("aoc-take-hire-action", _("Hire"), (event) => {
-        console.log("hire");
-      });
-      gameui.addActionButton(
-        "aoc-take-develop-action",
-        _("Develop"),
-        (event) => {
-          console.log("develop");
-        }
-      );
-      gameui.addActionButton("aoc-take-ideas-action", _("Ideas"), (event) => {
-        console.log("ideas");
-      });
-      gameui.addActionButton("aoc-take-print-action", _("Print"), (event) => {
-        console.log("print");
-      });
-      gameui.addActionButton(
-        "aoc-take-royalties-action",
-        _("Royalties"),
-        (event) => {
-          console.log("royalties");
-        }
-      );
-      gameui.addActionButton("aoc-take-sales-action", _("Sales"), (event) => {
-        console.log("sales");
-      });
+      if (stateArgs.args.hireActionSpace > 0) {
+        this.highlightInteractiveActionElements("hire", "Hire");
+      }
+      if (stateArgs.args.developActionSpace > 0) {
+        this.highlightInteractiveActionElements("develop", "Develop");
+      }
+      if (stateArgs.args.ideasActionSpace > 0) {
+        this.highlightInteractiveActionElements("ideas", "Ideas");
+      }
+      if (stateArgs.args.printActionSpace > 0) {
+        this.highlightInteractiveActionElements("print", "Print");
+      }
+      if (stateArgs.args.royaltiesActionSpace > 0) {
+        this.highlightInteractiveActionElements("royalties", "Royalties");
+      }
+      if (stateArgs.args.salesActionSpace > 0) {
+        this.highlightInteractiveActionElements("sales", "Sales");
+      }
     }
+  }
+
+  highlightInteractiveActionElements(
+    actionType: string,
+    actionButtonText: string
+  ): void {
+    const actionButtonDivId = "aoc-take-" + actionType + "-action";
+    const actionBoardElementId = "aoc-action-" + actionType;
+
+    // Create the action button
+    gameui.addActionButton(actionButtonDivId, _(actionButtonText), (event) => {
+      console.log(actionType);
+    });
+    dojo.addClass(actionButtonDivId, "aoc-button");
+
+    // Highlight the action board element
+    dojo.addClass(actionBoardElementId, "aoc-clickable");
   }
 }
