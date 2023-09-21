@@ -143,6 +143,13 @@ class GameBody extends GameBasics {
     );
   }
 
+  notif_placeEditor(notif: any): void {
+    this.editorController.moveEditorToActionSpace(
+      notif.args.editor,
+      notif.args.space
+    );
+  }
+
   /**
    * Handle 'setupMoney' notification
    *
@@ -150,5 +157,9 @@ class GameBody extends GameBasics {
    */
   notif_setupMoney(notif: any): void {
     this.playerController.adjustMoney(notif.args.player, notif.args.money);
+  }
+
+  notif_takeRoyalties(notif: any): void {
+    this.playerController.adjustMoney(notif.args.player, notif.args.amount);
   }
 }

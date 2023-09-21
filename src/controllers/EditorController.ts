@@ -37,6 +37,21 @@ class EditorController {
     } else if (editor.locationId == globalThis.LOCATION_PLAYER_AREA) {
       var color = this.ui.getPlayerColorAsString(editor.color);
       this.ui.createHtml(editorDiv, "aoc-editor-container-" + editor.playerId);
+    } else {
+      const actionSpaceDiv = dojo.query(
+        "[space$=" + editor.locationId + "]"
+      )[0];
+      this.ui.createHtml(editorDiv, actionSpaceDiv.id);
     }
+  }
+
+  moveEditorToActionSpace(editor: any, actionSpace: any): void {
+    const editorDiv = dojo.byId("aoc-editor-" + editor.id);
+    const actionSpaceDiv = dojo.query("[space$=" + actionSpace + "]")[0];
+    var animation = gameui.slideToObject(editorDiv, actionSpaceDiv);
+    dojo.connect(animation, "onEnd", () => {
+      gameui.attachToNewParent(editorDiv, actionSpaceDiv);
+    });
+    animation.play();
   }
 }

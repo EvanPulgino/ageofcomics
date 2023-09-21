@@ -89,6 +89,15 @@ class AOCEditorManager extends APP_GameClass {
         self::DbQuery($sql);
     }
 
+    public function movePlayerEditorToActionSpace($playerId, $actionSpace) {
+        $editor = $this->getOnePlayerEditorFromPlayerArea($playerId);
+        $this->moveEditor(
+            $this->getOnePlayerEditorFromPlayerArea($playerId)->getId(),
+            $actionSpace
+        );
+        return $editor;
+    }
+
     /**
      * Create editor meeple for a player
      * @param AOCPlayer $player
@@ -117,5 +126,14 @@ class AOCEditorManager extends APP_GameClass {
             $editors[] = new AOCEditor($row);
         }
         return $editors;
+    }
+
+    private function getOnePlayerEditorFromPlayerArea($playerId) {
+        $sql =
+            "SELECT editor_id id, editor_owner owner, editor_color color, editor_location location FROM editor WHERE editor_owner = $playerId AND editor_location = " .
+            LOCATION_PLAYER_AREA;
+        $row = self::getObjectListFromDB($sql);
+
+        return new AOCEditor($row[0]);
     }
 }

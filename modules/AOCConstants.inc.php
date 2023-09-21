@@ -22,6 +22,7 @@ define("GAME_ACTION_NEXT_PLAYER_SETUP", "stNextPlayerSetup");
 define("GAME_ACTION_START_NEW_ROUND", "stStartNewRound");
 
 define("PLAYER_ACTION_SELECT_START_ITEMS", "selectStartItems");
+define("PLAYER_ACTION_TAKE_ROYALTIES", "takeRoyalties");
 
 /** Genre Keys */
 define("GENRE_CRIME", 10);

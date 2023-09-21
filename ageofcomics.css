@@ -934,6 +934,13 @@ html {
   left: 522px;
 }
 
+.aoc-action-space .aoc-editor {
+  position: absolute !important;
+  bottom: 0;
+  top: unset !important;
+  left: unset !important;
+}
+
 /**
  *
  * Style for the idea tokens

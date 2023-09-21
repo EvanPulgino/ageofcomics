@@ -405,6 +405,9 @@ var GameBody = /** @class */ (function (_super) {
     GameBody.prototype.notif_gainStartingIdeaPrivate = function (notif) {
         this.playerController.gainStartingIdea(notif.args.player_id, notif.args.genre);
     };
+    GameBody.prototype.notif_placeEditor = function (notif) {
+        this.editorController.moveEditorToActionSpace(notif.args.editor, notif.args.space);
+    };
     /**
      * Handle 'setupMoney' notification
      *
@@ -412,6 +415,9 @@ var GameBody = /** @class */ (function (_super) {
      */
     GameBody.prototype.notif_setupMoney = function (notif) {
         this.playerController.adjustMoney(notif.args.player, notif.args.money);
+    };
+    GameBody.prototype.notif_takeRoyalties = function (notif) {
+        this.playerController.adjustMoney(notif.args.player, notif.args.amount);
     };
     return GameBody;
 }(GameBasics));
@@ -662,6 +668,19 @@ var EditorController = /** @class */ (function () {
             var color = this.ui.getPlayerColorAsString(editor.color);
             this.ui.createHtml(editorDiv, "aoc-editor-container-" + editor.playerId);
         }
+        else {
+            var actionSpaceDiv = dojo.query("[space$=" + editor.locationId + "]")[0];
+            this.ui.createHtml(editorDiv, actionSpaceDiv.id);
+        }
+    };
+    EditorController.prototype.moveEditorToActionSpace = function (editor, actionSpace) {
+        var editorDiv = dojo.byId("aoc-editor-" + editor.id);
+        var actionSpaceDiv = dojo.query("[space$=" + actionSpace + "]")[0];
+        var animation = gameui.slideToObject(editorDiv, actionSpaceDiv);
+        dojo.connect(animation, "onEnd", function () {
+            gameui.attachToNewParent(editorDiv, actionSpaceDiv);
+        });
+        animation.play();
     };
     return EditorController;
 }());
@@ -1466,36 +1485,60 @@ var PlayerTurn = /** @class */ (function () {
     PlayerTurn.prototype.onLeavingState = function () { };
     PlayerTurn.prototype.onUpdateActionButtons = function (stateArgs) {
         if (stateArgs.isCurrentPlayerActive) {
-            if (stateArgs.args.hireActionSpace > 0) {
-                this.highlightInteractiveActionElements("hire", "Hire");
-            }
-            if (stateArgs.args.developActionSpace > 0) {
-                this.highlightInteractiveActionElements("develop", "Develop");
-            }
-            if (stateArgs.args.ideasActionSpace > 0) {
-                this.highlightInteractiveActionElements("ideas", "Ideas");
-            }
-            if (stateArgs.args.printActionSpace > 0) {
-                this.highlightInteractiveActionElements("print", "Print");
-            }
-            if (stateArgs.args.royaltiesActionSpace > 0) {
-                this.highlightInteractiveActionElements("royalties", "Royalties");
-            }
-            if (stateArgs.args.salesActionSpace > 0) {
-                this.highlightInteractiveActionElements("sales", "Sales");
-            }
+            this.highlightInteractiveActionElements("hire", "Hire", stateArgs.args.hireActionSpace);
+            this.highlightInteractiveActionElements("develop", "Develop", stateArgs.args.developActionSpace);
+            this.highlightInteractiveActionElements("ideas", "Ideas", stateArgs.args.ideasActionSpace);
+            this.highlightInteractiveActionElements("print", "Print", stateArgs.args.printActionSpace);
+            this.highlightInteractiveActionElements("royalties", "Royalties", stateArgs.args.royaltiesActionSpace);
+            this.highlightInteractiveActionElements("sales", "Sales", stateArgs.args.salesActionSpace);
         }
     };
-    PlayerTurn.prototype.highlightInteractiveActionElements = function (actionType, actionButtonText) {
+    PlayerTurn.prototype.highlightInteractiveActionElements = function (actionType, actionButtonText, actionSpace) {
+        var _this = this;
         var actionButtonDivId = "aoc-take-" + actionType + "-action";
         var actionBoardElementId = "aoc-action-" + actionType;
         // Create the action button
         gameui.addActionButton(actionButtonDivId, _(actionButtonText), function (event) {
-            console.log(actionType);
+            dojo.setAttr(actionButtonDivId, "data-action-space", actionSpace);
+            _this.selectAction(event);
         });
         dojo.addClass(actionButtonDivId, "aoc-button");
-        // Highlight the action board element
-        dojo.addClass(actionBoardElementId, "aoc-clickable");
+        if (actionSpace == 0) {
+            dojo.addClass(actionButtonDivId, "aoc-button-disabled");
+        }
+        else {
+            // Highlight the action board element
+            dojo.addClass(actionBoardElementId, "aoc-clickable");
+            dojo.setAttr(actionBoardElementId, "data-action-space", actionSpace);
+            // Add the click events
+            dojo.connect(dojo.byId(actionBoardElementId), "onclick", dojo.hitch(this, "selectAction"));
+        }
+    };
+    PlayerTurn.prototype.selectAction = function (event) {
+        var actionSpace = parseInt(dojo.getAttr(event.target, "data-action-space"));
+        switch (actionSpace) {
+            case 50001:
+                this.takeRoyalties(4, actionSpace);
+                break;
+            case 50002:
+                this.takeRoyalties(3, actionSpace);
+                break;
+            case 50003:
+                this.takeRoyalties(3, actionSpace);
+                break;
+            case 50004:
+                this.takeRoyalties(2, actionSpace);
+                break;
+            case 50005:
+                this.takeRoyalties(1, actionSpace);
+                break;
+        }
+    };
+    PlayerTurn.prototype.takeRoyalties = function (amount, space) {
+        this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_TAKE_ROYALTIES, {
+            amount: amount,
+            space: space,
+        });
     };
     return PlayerTurn;
 }());

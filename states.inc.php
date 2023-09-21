@@ -112,7 +112,7 @@ $machinestates = [
         ),
         "type" => STATE_TYPE_ACTIVE_PLAYER,
         "args" => STATE_ARGS_PLAYER_TURN,
-        "possibleactions" => [],
+        "possibleactions" => [PLAYER_ACTION_TAKE_ROYALTIES],
         "transitions" => ["nextPlayerTurn" => ST_GAME_END],
     ],
 

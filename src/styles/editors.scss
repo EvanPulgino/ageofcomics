@@ -54,3 +54,10 @@
 #aoc-extra-editor-space-brown {
   left: 522px;
 }
+
+.aoc-action-space .aoc-editor {
+  position: absolute !important;
+  bottom: 0;
+  top: unset !important;
+  left: unset !important;
+}
