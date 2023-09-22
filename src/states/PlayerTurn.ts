@@ -15,13 +15,16 @@
 
 class PlayerTurn implements State {
   game: any;
+  connections: any;
   constructor(game: any) {
     this.game = game;
+    this.connections = [];
   }
 
   onEnteringState(stateArgs: any): void {}
   onLeavingState(): void {
     dojo.query(".aoc-clickable").removeClass("aoc-clickable");
+    dojo.forEach(this.connections, dojo.disconnect);
   }
   onUpdateActionButtons(stateArgs: any): void {
     if (stateArgs.isCurrentPlayerActive) {
@@ -80,11 +83,11 @@ class PlayerTurn implements State {
       dojo.addClass(actionBoardElementId, "aoc-clickable");
       dojo.setAttr(actionBoardElementId, "data-action-space", actionSpace);
       // Add the click events
-      dojo.connect(
+      this.connections.push(dojo.connect(
         dojo.byId(actionBoardElementId),
         "onclick",
         dojo.hitch(this, "selectAction")
-      );
+      ));
     }
   }
 

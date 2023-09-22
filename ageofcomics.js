@@ -1504,10 +1504,12 @@ var PlayerSetup = /** @class */ (function () {
 var PlayerTurn = /** @class */ (function () {
     function PlayerTurn(game) {
         this.game = game;
+        this.connections = [];
     }
     PlayerTurn.prototype.onEnteringState = function (stateArgs) { };
     PlayerTurn.prototype.onLeavingState = function () {
         dojo.query(".aoc-clickable").removeClass("aoc-clickable");
+        dojo.forEach(this.connections, dojo.disconnect);
     };
     PlayerTurn.prototype.onUpdateActionButtons = function (stateArgs) {
         if (stateArgs.isCurrentPlayerActive) {
@@ -1537,7 +1539,7 @@ var PlayerTurn = /** @class */ (function () {
             dojo.addClass(actionBoardElementId, "aoc-clickable");
             dojo.setAttr(actionBoardElementId, "data-action-space", actionSpace);
             // Add the click events
-            dojo.connect(dojo.byId(actionBoardElementId), "onclick", dojo.hitch(this, "selectAction"));
+            this.connections.push(dojo.connect(dojo.byId(actionBoardElementId), "onclick", dojo.hitch(this, "selectAction")));
         }
     };
     PlayerTurn.prototype.selectAction = function (event) {

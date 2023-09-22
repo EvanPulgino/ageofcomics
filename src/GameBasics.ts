@@ -309,8 +309,8 @@ class GameBasics extends GameGui {
 
   /**
    * Gets the name of a player's color from its hex value
-   * 
-   * @param playerColor 
+   *
+   * @param playerColor
    * @returns {string} player color name
    */
   getPlayerColorAsString(playerColor: string): string {
