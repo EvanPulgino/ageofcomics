@@ -440,6 +440,7 @@ var GameState = /** @class */ (function () {
         this.completeSetup = new CompleteSetup(game);
         this.gameEnd = new GameEnd(game);
         this.gameSetup = new GameSetup(game);
+        this.nextPlayer = new NextPlayer(game);
         this.nextPlayerSetup = new NextPlayerSetup(game);
         this.playerSetup = new PlayerSetup(game);
         this.playerTurn = new PlayerTurn(game);
@@ -1301,9 +1302,32 @@ var GameSetup = /** @class */ (function () {
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
+ * NextPlayer.ts
+ *
+ * AgeOfComics next player state
+ *
+ */
+var NextPlayer = /** @class */ (function () {
+    function NextPlayer(game) {
+        this.game = game;
+    }
+    NextPlayer.prototype.onEnteringState = function (stateArgs) { };
+    NextPlayer.prototype.onLeavingState = function () { };
+    NextPlayer.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return NextPlayer;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
  * NextPlayerSetup.ts
  *
- * AgeOfComics game setup state
+ * AgeOfComics next player setup state
  *
  */
 var NextPlayerSetup = /** @class */ (function () {
@@ -1482,7 +1506,9 @@ var PlayerTurn = /** @class */ (function () {
         this.game = game;
     }
     PlayerTurn.prototype.onEnteringState = function (stateArgs) { };
-    PlayerTurn.prototype.onLeavingState = function () { };
+    PlayerTurn.prototype.onLeavingState = function () {
+        dojo.query(".aoc-clickable").removeClass("aoc-clickable");
+    };
     PlayerTurn.prototype.onUpdateActionButtons = function (stateArgs) {
         if (stateArgs.isCurrentPlayerActive) {
             this.highlightInteractiveActionElements("hire", "Hire", stateArgs.args.hireActionSpace);

@@ -7,13 +7,13 @@
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * NextPlayerSetup.ts
+ * NextPlayer.ts
  *
- * AgeOfComics next player setup state
+ * AgeOfComics next player state
  *
  */
 
-class NextPlayerSetup implements State {
+class NextPlayer implements State {
   game: any;
   constructor(game: any) {
     this.game = game;

@@ -18,6 +18,7 @@ define("GAME_ACTION_COMPLETE_SETUP", "stCompleteSetup");
 define("GAME_ACTION_GAME_END", "stGameEnd");
 define("GAME_ACTION_GAME_SETUP", "stGameSetup");
 define("GAME_ACTION_PLAYER_SETUP", "stPlayerSetup");
+define("GAME_ACTION_NEXT_PLAYER", "stNextPlayer");
 define("GAME_ACTION_NEXT_PLAYER_SETUP", "stNextPlayerSetup");
 define("GAME_ACTION_START_NEW_ROUND", "stStartNewRound");
 
@@ -820,12 +821,14 @@ define("ST_NEXT_PLAYER_SETUP", 3);
 define("ST_COMPLETE_SETUP", 4);
 define("ST_START_NEW_ROUND", 10);
 define("ST_PLAYER_TURN", 20);
+define("ST_NEXT_PLAYER", 29);
 define("ST_GAME_END", 99);
 
 /** State Names */
 define("COMPLETE_SETUP", "completeSetup");
 define("GAME_END", "gameEnd");
 define("GAME_SETUP", "gameSetup");
+define("NEXT_PLAYER", "nextPlayer");
 define("NEXT_PLAYER_SETUP", "nextPlayerSetup");
 define("PLAYER_SETUP", "playerSetup");
 define("PLAYER_TURN", "playerTurn");

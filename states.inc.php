@@ -112,8 +112,21 @@ $machinestates = [
         ),
         "type" => STATE_TYPE_ACTIVE_PLAYER,
         "args" => STATE_ARGS_PLAYER_TURN,
+        "updateGameProgression" => true,
         "possibleactions" => [PLAYER_ACTION_TAKE_ROYALTIES],
-        "transitions" => ["nextPlayerTurn" => ST_GAME_END],
+        "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
+    ],
+
+    ST_NEXT_PLAYER => [
+        "name" => NEXT_PLAYER,
+        "description" => "",
+        "type" => STATE_TYPE_GAME,
+        "action" => GAME_ACTION_NEXT_PLAYER,
+        "transitions" => [
+            "nextPlayerTurn" => ST_PLAYER_TURN,
+            "skipPlayer" => ST_NEXT_PLAYER,
+            "endActionsPhase" => ST_GAME_END,
+        ],
     ],
 
     ST_GAME_END => [

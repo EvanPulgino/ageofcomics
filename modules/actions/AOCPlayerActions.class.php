@@ -75,6 +75,7 @@ class AOCPlayerActions {
                 "amount" => $amount,
             ]
         );
-        // $this->game->gamestate->nextState("nextPlayer");
+        
+        $this->game->gamestate->nextState("nextPlayerTurn");
     }
 }

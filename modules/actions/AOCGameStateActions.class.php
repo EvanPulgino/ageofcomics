@@ -49,6 +49,28 @@ class AOCGameStateActions {
         $this->game->gamestate->nextState("startGame");
     }
 
+    function stNextPlayer() {
+        $turnsTaken = $this->game->getGameStateValue(TURNS_TAKEN);
+        $this->game->setGameStateValue(TURNS_TAKEN, $turnsTaken + 1);
+
+        if ($this->game->editorManager->getAllRemainingEditorsCount() === 0) {
+            $this->game->gamestate->nextState("endActionsPhase");
+            return;
+        }
+
+        $this->game->playerManager->activateNextPlayer();
+        $newActivePlayer = $this->game->playerManager->getActivePlayer();
+
+        if ($this->game->editorManager->getPlayerRemainingEditorsCount(
+            $newActivePlayer->getId()
+        ) === 0) {
+            $this->game->gamestate->nextState("skipPlayer");
+            return;
+        }
+
+        $this->game->gamestate->nextState("nextPlayerTurn");
+    }
+
     function stNextPlayerSetup() {
         $activePlayer = $this->game->playerManager->getActivePlayer();
         if (

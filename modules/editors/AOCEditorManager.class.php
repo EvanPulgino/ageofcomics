@@ -79,6 +79,20 @@ class AOCEditorManager extends APP_GameClass {
         return $uiData;
     }
 
+    public function getPlayerRemainingEditorsCount($playerId) {
+        $sql =
+            "SELECT COUNT(*) FROM editor WHERE editor_owner = $playerId AND editor_location = " .
+            LOCATION_PLAYER_AREA;
+        return self::getUniqueValueFromDB($sql);
+    }
+
+    public function getAllRemainingEditorsCount() {
+        $sql =
+            "SELECT COUNT(*) FROM editor WHERE editor_location = " .
+            LOCATION_PLAYER_AREA;
+        return self::getUniqueValueFromDB($sql);
+    }
+
     /**
      * Move an editor to a new location
      * @param int $editorId - editor to move

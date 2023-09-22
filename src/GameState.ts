@@ -17,6 +17,7 @@ class GameState {
   completeSetup: State;
   gameEnd: State;
   gameSetup: State;
+  nextPlayer: State;
   nextPlayerSetup: State;
   playerSetup: State;
   playerTurn: State;
@@ -25,6 +26,7 @@ class GameState {
     this.completeSetup = new CompleteSetup(game);
     this.gameEnd = new GameEnd(game);
     this.gameSetup = new GameSetup(game);
+    this.nextPlayer = new NextPlayer(game);
     this.nextPlayerSetup = new NextPlayerSetup(game);
     this.playerSetup = new PlayerSetup(game);
     this.playerTurn = new PlayerTurn(game);

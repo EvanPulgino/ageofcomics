@@ -20,7 +20,9 @@ class PlayerTurn implements State {
   }
 
   onEnteringState(stateArgs: any): void {}
-  onLeavingState(): void {}
+  onLeavingState(): void {
+    dojo.query(".aoc-clickable").removeClass("aoc-clickable");
+  }
   onUpdateActionButtons(stateArgs: any): void {
     if (stateArgs.isCurrentPlayerActive) {
       this.highlightInteractiveActionElements(
