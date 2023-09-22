@@ -96,29 +96,8 @@ class PlayerTurn implements State {
       dojo.getAttr(event.target, "data-action-space")
     );
 
-    switch (actionSpace) {
-      case 50001:
-        this.takeRoyalties(4, actionSpace);
-        break;
-      case 50002:
-        this.takeRoyalties(3, actionSpace);
-        break;
-      case 50003:
-        this.takeRoyalties(3, actionSpace);
-        break;
-      case 50004:
-        this.takeRoyalties(2, actionSpace);
-        break;
-      case 50005:
-        this.takeRoyalties(1, actionSpace);
-        break;
-    }
-  }
-
-  takeRoyalties(amount: number, space: number): void {
-    this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_TAKE_ROYALTIES, {
-      amount: amount,
-      space: space,
+    this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_SELECT_ACTION_SPACE, {
+      actionSpace: actionSpace,
     });
   }
 }

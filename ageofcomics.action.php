@@ -33,6 +33,16 @@ class action_ageofcomics extends APP_GameAction {
         }
     }
 
+    public function selectActionSpace() {
+        self::setAjaxMode();
+
+        $actionSpace = self::getArg("actionSpace", AT_posint, true);
+
+        $this->game->selectActionSpace($actionSpace);
+
+        self::ajaxResponse();
+    }
+
     public function selectStartItems() {
         self::setAjaxMode();
 

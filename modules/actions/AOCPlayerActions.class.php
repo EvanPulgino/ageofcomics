@@ -21,6 +21,57 @@ class AOCPlayerActions {
         $this->game = $game;
     }
 
+    function selectActionSpace($args) {
+        $activePlayerId = $this->game->getActivePlayerId();
+        $activePlayer = $this->game->playerManager->getPlayer($activePlayerId);
+        $space = $args[0];
+        $actionKey = floor($space / 10000);
+        $actionName = ACTION_STRING_FROM_KEY[$actionKey];
+
+        $editor = $this->game->editorManager->movePlayerEditorToActionSpace(
+            $activePlayerId,
+            $space
+        );
+        $this->game->notifyAllPlayers(
+            "placeEditor",
+            clienttranslate(
+                '${player_name} places an editor on the ${actionName} action'
+            ),
+            [
+                "player" => $activePlayer->getUiData(),
+                "player_name" => $activePlayer->getName(),
+                "editor" => $editor->getUiData(),
+                "space" => $space,
+                "actionName" => ucfirst($actionName),
+            ]
+        );
+
+        switch ($actionKey) {
+            case HIRE_ACTION:
+                $this->game->gamestate->nextState("performHire");
+                break;
+            case DEVELOP_ACTION:
+                $this->game->gamestate->nextState("performDevelop");
+                break;
+            case IDEAS_ACTION:
+                $this->game->gamestate->nextState("performIdeas");
+                break;
+            case PRINT_ACTION:
+                $this->game->gamestate->nextState("performPrint");
+                break;
+            case ROYALTIES_ACTION:
+                $this->game->playerManager->gainRoyalties(
+                    $activePlayer,
+                    $space
+                );
+                $this->game->gamestate->nextState("nextPlayerTurn");
+                break;
+            case SALES_ACTION:
+                $this->game->gamestate->nextState("performSales");
+                break;
+        }
+    }
+
     function selectStartItems($args) {
         $activePlayerId = $this->game->getActivePlayerId();
         $comicGenre = $args[0];
@@ -39,43 +90,5 @@ class AOCPlayerActions {
         }
 
         $this->game->gamestate->nextState("nextPlayerSetup");
-    }
-
-    function takeRoyalties($args) {
-        $activePlayerId = $this->game->getActivePlayerId();
-        $activePlayer = $this->game->playerManager->getPlayer($activePlayerId);
-        $amount = $args[0];
-        $space = $args[1];
-
-        $editor = $this->game->editorManager->movePlayerEditorToActionSpace(
-            $activePlayerId,
-            $space
-        );
-        $this->game->notifyAllPlayers(
-            "placeEditor",
-            clienttranslate(
-                '${player_name} places an editor on the Royalties action'
-            ),
-            [
-                "player" => $activePlayer->getUiData(),
-                "player_name" => $activePlayer->getName(),
-                "editor" => $editor->getUiData(),
-                "space" => $space,
-            ]
-        );
-
-        $this->game->playerManager->adjustPlayerMoney($activePlayerId, $amount);
-
-        $this->game->notifyAllPlayers(
-            "takeRoyalties",
-            clienttranslate('${player_name} takes royalties of $${amount}'),
-            [
-                "player" => $activePlayer->getUiData(),
-                "player_name" => $activePlayer->getName(),
-                "amount" => $amount,
-            ]
-        );
-        
-        $this->game->gamestate->nextState("nextPlayerTurn");
     }
 }

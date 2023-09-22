@@ -191,6 +191,7 @@ class GameBasics extends GameGui {
     args?: any,
     handler?: (err: any) => void
   ): void {
+    console.trace(action);
     if (!args) {
       args = {};
     }

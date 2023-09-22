@@ -22,6 +22,22 @@ define("GAME_ACTION_NEXT_PLAYER", "stNextPlayer");
 define("GAME_ACTION_NEXT_PLAYER_SETUP", "stNextPlayerSetup");
 define("GAME_ACTION_START_NEW_ROUND", "stStartNewRound");
 
+define("PLAYER_ACTION_COLLECT_SALES_ORDER", "collectSalesOrder");
+define("PLAYER_ACTION_DEVELOP_COMIC", "developComic");
+define("PLAYER_ACTION_DEVELOP_FROM_GENRE", "developFromGenre");
+define("PLAYER_ACTION_FLIP_SALES_ORDER", "flipSalesOrder");
+define("PLAYER_ACTION_GAIN_IDEA", "gainIdea");
+define("PLAYER_ACTION_GAIN_IDEA_FROM_BOARD", "gainIdeaFromBoard");
+define("PLAYER_ACTION_HIRE_ARTIST", "hireArtist");
+define("PLAYER_ACTION_HIRE_WRITER", "hireWriter");
+define("PLAYER_ACTION_MOVE_SALES_AGENT", "moveSalesAgent");
+define(
+    "PLAYER_ACTION_MOVE_SALES_AGENT_WITH_TICKET",
+    "moveSalesAgentWithTicket"
+);
+define("PLAYER_ACTION_PRINT_COMIC", "printComic");
+define("PLAYER_ACTION_PRINT_RIPOFF", "printRipoff");
+define("PLAYER_ACTION_SELECT_ACTION_SPACE", "selectActionSpace");
 define("PLAYER_ACTION_SELECT_START_ITEMS", "selectStartItems");
 define("PLAYER_ACTION_TAKE_ROYALTIES", "takeRoyalties");
 
@@ -208,6 +224,22 @@ define("RIPOFF_CARDS", [
         SUPER_TRANSPORT => BANDITS,
         PLUS_FOUR_MONEY => WILD_JENNY,
     ],
+]);
+
+define("HIRE_ACTION", 1);
+define("DEVELOP_ACTION", 2);
+define("IDEAS_ACTION", 3);
+define("PRINT_ACTION", 4);
+define("ROYALTIES_ACTION", 5);
+define("SALES_ACTION", 6);
+
+define("ACTION_STRING_FROM_KEY", [
+    HIRE_ACTION => "hire",
+    DEVELOP_ACTION => "develop",
+    IDEAS_ACTION => "ideas",
+    PRINT_ACTION => "print",
+    ROYALTIES_ACTION => "royalties",
+    SALES_ACTION => "sales",
 ]);
 
 /** Global Variables */
@@ -821,6 +853,11 @@ define("ST_NEXT_PLAYER_SETUP", 3);
 define("ST_COMPLETE_SETUP", 4);
 define("ST_START_NEW_ROUND", 10);
 define("ST_PLAYER_TURN", 20);
+define("ST_PERFORM_HIRE", 21);
+define("ST_PERFORM_DEVELOP", 22);
+define("ST_PERFORM_IDEAS", 23);
+define("ST_PERFORM_PRINT", 24);
+define("ST_PERFORM_SALES", 25);
 define("ST_NEXT_PLAYER", 29);
 define("ST_GAME_END", 99);
 
@@ -830,6 +867,11 @@ define("GAME_END", "gameEnd");
 define("GAME_SETUP", "gameSetup");
 define("NEXT_PLAYER", "nextPlayer");
 define("NEXT_PLAYER_SETUP", "nextPlayerSetup");
+define("PERFORM_DEVELOP", "performDevelop");
+define("PERFORM_HIRE", "performHire");
+define("PERFORM_IDEAS", "performIdeas");
+define("PERFORM_PRINT", "performPrint");
+define("PERFORM_SALES", "performSales");
 define("PLAYER_SETUP", "playerSetup");
 define("PLAYER_TURN", "playerTurn");
 define("START_NEW_ROUND", "startNewRound");

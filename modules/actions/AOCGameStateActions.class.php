@@ -53,7 +53,7 @@ class AOCGameStateActions {
         $turnsTaken = $this->game->getGameStateValue(TURNS_TAKEN);
         $this->game->setGameStateValue(TURNS_TAKEN, $turnsTaken + 1);
 
-        if ($this->game->editorManager->getAllRemainingEditorsCount() === 0) {
+        if ($this->game->editorManager->getAllRemainingEditorsCount() < 1) {
             $this->game->gamestate->nextState("endActionsPhase");
             return;
         }
@@ -61,9 +61,11 @@ class AOCGameStateActions {
         $this->game->playerManager->activateNextPlayer();
         $newActivePlayer = $this->game->playerManager->getActivePlayer();
 
-        if ($this->game->editorManager->getPlayerRemainingEditorsCount(
-            $newActivePlayer->getId()
-        ) === 0) {
+        if (
+            $this->game->editorManager->getPlayerRemainingEditorsCount(
+                $newActivePlayer->getId()
+            ) < 1
+        ) {
             $this->game->gamestate->nextState("skipPlayer");
             return;
         }

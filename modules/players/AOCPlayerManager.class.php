@@ -252,6 +252,36 @@ class AOCPlayerManager extends APP_GameClass {
         return $uiData;
     }
 
+    public function gainRoyalties($player, $actionSpace) {
+        $amount = $this->getRoyaltiesAmount($actionSpace);
+        $this->adjustPlayerMoney($player->getId(), $amount);
+
+        $this->game->notifyAllPlayers(
+            "takeRoyalties",
+            clienttranslate('${player_name} takes royalties of $${amount}'),
+            [
+                "player" => $player->getUiData(),
+                "player_name" => $player->getName(),
+                "amount" => $amount,
+            ]
+        );
+    }
+
+    private function getRoyaltiesAmount($actionSpace) {
+        switch ($actionSpace) {
+            case 50001:
+                return 4;
+            case 50002:
+                return 3;
+            case 50003:
+                return 3;
+            case 50004:
+                return 2;
+            case 50005:
+                return 1;
+        }
+    }
+
     private function findPlayerById($players, $playerId) {
         foreach ($players as $player) {
             if ($playerId == $player->getId()) {

@@ -113,7 +113,98 @@ $machinestates = [
         "type" => STATE_TYPE_ACTIVE_PLAYER,
         "args" => STATE_ARGS_PLAYER_TURN,
         "updateGameProgression" => true,
-        "possibleactions" => [PLAYER_ACTION_TAKE_ROYALTIES],
+        "possibleactions" => [
+            PLAYER_ACTION_SELECT_ACTION_SPACE
+        ],
+        "transitions" => [
+            "nextPlayerTurn" => ST_NEXT_PLAYER,
+            "performHire" => ST_PERFORM_HIRE,
+            "performDevelop" => ST_PERFORM_DEVELOP,
+            "performIdeas" => ST_PERFORM_IDEAS,
+            "performPrint" => ST_PERFORM_PRINT,
+            "performSales" => ST_PERFORM_SALES,
+        ],
+    ],
+
+    ST_PERFORM_HIRE => [
+        "name" => PERFORM_HIRE,
+        "description" => clienttranslate(
+            '${actplayer} must perform a hire action'
+        ),
+        "descriptionmyturn" => clienttranslate(
+            '${you} must perform a hire action'
+        ),
+        "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "possibleactions" => [
+            PLAYER_ACTION_HIRE_ARTIST,
+            PLAYER_ACTION_HIRE_WRITER,
+        ],
+        "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
+    ],
+
+    ST_PERFORM_DEVELOP => [
+        "name" => PERFORM_DEVELOP,
+        "description" => clienttranslate(
+            '${actplayer} must perform a develop action'
+        ),
+        "descriptionmyturn" => clienttranslate(
+            '${you} must perform a develop action'
+        ),
+        "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "possibleactions" => [
+            PLAYER_ACTION_DEVELOP_COMIC,
+            PLAYER_ACTION_DEVELOP_FROM_GENRE,
+        ],
+        "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
+    ],
+
+    ST_PERFORM_IDEAS => [
+        "name" => PERFORM_IDEAS,
+        "description" => clienttranslate(
+            '${actplayer} must perform an ideas action'
+        ),
+        "descriptionmyturn" => clienttranslate(
+            '${you} must perform an ideas action'
+        ),
+        "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "possibleactions" => [
+            PLAYER_ACTION_GAIN_IDEA,
+            PLAYER_ACTION_GAIN_IDEA_FROM_BOARD,
+        ],
+        "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
+    ],
+
+    ST_PERFORM_PRINT => [
+        "name" => PERFORM_PRINT,
+        "description" => clienttranslate(
+            '${actplayer} must perform a print action'
+        ),
+        "descriptionmyturn" => clienttranslate(
+            '${you} must perform a print action'
+        ),
+        "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "possibleactions" => [
+            PLAYER_ACTION_PRINT_COMIC,
+            PLAYER_ACTION_PRINT_RIPOFF,
+        ],
+        "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
+    ],
+
+    ST_PERFORM_SALES => [
+        "name" => PERFORM_SALES,
+        "description" => clienttranslate(
+            '${actplayer} must perform a sales action'
+        ),
+        "descriptionmyturn" => clienttranslate(
+            '${you} must perform a sales action'
+        ),
+        "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "possibleactions" => [
+            PLAYER_ACTION_MOVE_SALES_AGENT,
+            PLAYER_ACTION_MOVE_SALES_AGENT_WITH_TICKET,
+            PLAYER_ACTION_FLIP_SALES_ORDER,
+            PLAYER_ACTION_COLLECT_SALES_ORDER,
+        ],
         "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
     ],
 
