@@ -443,6 +443,11 @@ var GameState = /** @class */ (function () {
         this.gameSetup = new GameSetup(game);
         this.nextPlayer = new NextPlayer(game);
         this.nextPlayerSetup = new NextPlayerSetup(game);
+        this.performDevelop = new PerformDevelop(game);
+        this.performHire = new PerformHire(game);
+        this.performIdeas = new PerformIdeas(game);
+        this.performPrint = new PerformPrint(game);
+        this.performSales = new PerformSales(game);
         this.playerSetup = new PlayerSetup(game);
         this.playerTurn = new PlayerTurn(game);
         this.startNewRound = new StartNewRound(game);
@@ -1339,6 +1344,111 @@ var NextPlayerSetup = /** @class */ (function () {
     NextPlayerSetup.prototype.onLeavingState = function () { };
     NextPlayerSetup.prototype.onUpdateActionButtons = function (stateArgs) { };
     return NextPlayerSetup;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * PerformDevelop.ts
+ *
+ */
+var PerformDevelop = /** @class */ (function () {
+    function PerformDevelop(game) {
+        this.game = game;
+    }
+    PerformDevelop.prototype.onEnteringState = function (stateArgs) { };
+    PerformDevelop.prototype.onLeavingState = function () { };
+    PerformDevelop.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return PerformDevelop;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * PerformHire.ts
+ *
+ */
+var PerformHire = /** @class */ (function () {
+    function PerformHire(game) {
+        this.game = game;
+    }
+    PerformHire.prototype.onEnteringState = function (stateArgs) { };
+    PerformHire.prototype.onLeavingState = function () { };
+    PerformHire.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return PerformHire;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * PerformIdeas.ts
+ *
+ */
+var PerformIdeas = /** @class */ (function () {
+    function PerformIdeas(game) {
+        this.game = game;
+    }
+    PerformIdeas.prototype.onEnteringState = function (stateArgs) { };
+    PerformIdeas.prototype.onLeavingState = function () { };
+    PerformIdeas.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return PerformIdeas;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * PerformPrint.ts
+ *
+ */
+var PerformPrint = /** @class */ (function () {
+    function PerformPrint(game) {
+        this.game = game;
+    }
+    PerformPrint.prototype.onEnteringState = function (stateArgs) { };
+    PerformPrint.prototype.onLeavingState = function () { };
+    PerformPrint.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return PerformPrint;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * PerformSales.ts
+ *
+ */
+var PerformSales = /** @class */ (function () {
+    function PerformSales(game) {
+        this.game = game;
+    }
+    PerformSales.prototype.onEnteringState = function (stateArgs) { };
+    PerformSales.prototype.onLeavingState = function () { };
+    PerformSales.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return PerformSales;
 }());
 /**
  *------

@@ -19,6 +19,11 @@ class GameState {
   gameSetup: State;
   nextPlayer: State;
   nextPlayerSetup: State;
+  performDevelop: State;
+  performHire: State;
+  performIdeas: State;
+  performPrint: State;
+  performSales: State;
   playerSetup: State;
   playerTurn: State;
   startNewRound: State;
@@ -28,6 +33,11 @@ class GameState {
     this.gameSetup = new GameSetup(game);
     this.nextPlayer = new NextPlayer(game);
     this.nextPlayerSetup = new NextPlayerSetup(game);
+    this.performDevelop = new PerformDevelop(game);
+    this.performHire = new PerformHire(game);
+    this.performIdeas = new PerformIdeas(game);
+    this.performPrint = new PerformPrint(game);
+    this.performSales = new PerformSales(game);
     this.playerSetup = new PlayerSetup(game);
     this.playerTurn = new PlayerTurn(game);
     this.startNewRound = new StartNewRound(game);
