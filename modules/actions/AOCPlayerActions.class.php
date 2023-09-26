@@ -46,6 +46,8 @@ class AOCPlayerActions {
             ]
         );
 
+        $this->game->setGameStateValue(SELECTED_ACTION_SPACE, $space);
+
         switch ($actionKey) {
             case HIRE_ACTION:
                 $this->game->gamestate->nextState("performHire");

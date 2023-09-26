@@ -251,6 +251,7 @@ define("IDEAS_SPACE_ROMANCE", "ideas_space_romance");
 define("IDEAS_SPACE_SCIFI", "ideas_space_scifi");
 define("IDEAS_SPACE_SUPERHERO", "ideas_space_superhero");
 define("IDEAS_SPACE_WESTERN", "ideas_space_western");
+define("SELECTED_ACTION_SPACE", "selected_action_space");
 define("TICKET_SUPPLY", "ticket_supply");
 define("TOTAL_TURNS", "total_turns");
 define("TURNS_TAKEN", "turns_taken");
@@ -843,6 +844,9 @@ define("SALES_ORDER_CONNECTIONS", [
 
 /** State Args */
 define("STATE_ARGS_GAME_END", "argGameEnd");
+define("STATE_ARGS_PERFORM_IDEAS", "argsPerformIdeas");
+define("STATE_ARGS_PERFORM_PRINT", "argsPerformPrint");
+define("STATE_ARGS_PERFORM_SALES", "argsPerformSales");
 define("STATE_ARGS_PLAYER_SETUP", "argsPlayerSetup");
 define("STATE_ARGS_PLAYER_TURN", "argsPlayerTurn");
 

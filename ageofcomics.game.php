@@ -38,6 +38,7 @@ class AgeOfComics extends Table {
             START_IDEAS => 20,
             CARD_SUPPLY_SIZE => 21,
             MAX_ACTION_SPACES => 22,
+            SELECTED_ACTION_SPACE => 23,
         ]);
 
         // Initialize action managers
@@ -88,6 +89,7 @@ class AgeOfComics extends Table {
         self::setGameStateInitialValue(CURRENT_ROUND, 0);
         self::setGameStateInitialValue(TICKET_SUPPLY, 4);
         self::setGameStateInitialValue(START_IDEAS, 2);
+        self::setGameStateInitialValue(SELECTED_ACTION_SPACE, 0);
         self::setGameStateInitialValue(
             CARD_SUPPLY_SIZE,
             sizeof($aocPlayers) == 4 ? 4 : 3
@@ -218,6 +220,18 @@ class AgeOfComics extends Table {
      */
     function getViewingPlayerId() {
         return self::getCurrentPlayerId();
+    }
+
+    function argsPerformIdeas() {
+        return ["selectedActionSpace" => self::getGameStateValue(SELECTED_ACTION_SPACE)];
+    }
+
+    function argsPerformPrint() {
+        return ["selectedActionSpace" => self::getGameStateValue(SELECTED_ACTION_SPACE)];
+    }
+
+    function argsPerformSales() {
+        return ["selectedActionSpace" => self::getGameStateValue(SELECTED_ACTION_SPACE)];
     }
 
     function argsPlayerSetup() {

@@ -167,6 +167,7 @@ $machinestates = [
             '${you} must perform an ideas action'
         ),
         "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "args" => STATE_ARGS_PERFORM_IDEAS,
         "possibleactions" => [
             PLAYER_ACTION_GAIN_IDEA,
             PLAYER_ACTION_GAIN_IDEA_FROM_BOARD,
@@ -183,6 +184,7 @@ $machinestates = [
             '${you} must perform a print action'
         ),
         "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "args" => STATE_ARGS_PERFORM_PRINT,
         "possibleactions" => [
             PLAYER_ACTION_PRINT_COMIC,
             PLAYER_ACTION_PRINT_RIPOFF,
@@ -199,6 +201,7 @@ $machinestates = [
             '${you} must perform a sales action'
         ),
         "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "args" => STATE_ARGS_PERFORM_SALES,
         "possibleactions" => [
             PLAYER_ACTION_MOVE_SALES_AGENT,
             PLAYER_ACTION_MOVE_SALES_AGENT_WITH_TICKET,
