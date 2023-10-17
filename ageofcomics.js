@@ -185,6 +185,7 @@ var GameBasics = /** @class */ (function (_super) {
             args = {};
         }
         args.lock = true;
+        console.log(args);
         if (gameui.checkAction(action)) {
             gameui.ajaxcall("/" +
                 gameui.game_name +
@@ -1403,10 +1404,12 @@ var PerformIdeas = /** @class */ (function () {
     function PerformIdeas(game) {
         this.game = game;
         this.unselect = false;
+        this.ideasFromBoard = 0;
         this.connections = {};
     }
     PerformIdeas.prototype.onEnteringState = function (stateArgs) {
         var ideasFromBoard = stateArgs.args.ideasFromBoard;
+        this.ideasFromBoard = ideasFromBoard;
         this.createIdeaTokensFromSupplyActions();
         this.createIdeaTokensOnBoardActions(ideasFromBoard);
     };
@@ -1430,7 +1433,46 @@ var PerformIdeas = /** @class */ (function () {
         this.connections = {};
         dojo.byId("aoc-idea-token-selection").remove();
     };
-    PerformIdeas.prototype.onUpdateActionButtons = function (stateArgs) { };
+    PerformIdeas.prototype.onUpdateActionButtons = function (stateArgs) {
+        var _this = this;
+        if (stateArgs.isCurrentPlayerActive) {
+            gameui.addActionButton("aoc-confirm-gain-ideas", _("Confirm"), function (event) {
+                _this.confirmGainIdeas(event);
+            });
+            dojo.addClass("aoc-confirm-gain-ideas", "aoc-button-disabled");
+            dojo.addClass("aoc-confirm-gain-ideas", "aoc-button");
+        }
+    };
+    PerformIdeas.prototype.confirmGainIdeas = function (event) {
+        var selectedIdeasFromSupply = dojo.query(".aoc-supply-idea-selection");
+        var selectedIdeasFromSupplyGenres = "";
+        for (var i = 0; i < selectedIdeasFromSupply.length; i++) {
+            var idea = selectedIdeasFromSupply[i];
+            if (i == 0) {
+                selectedIdeasFromSupplyGenres += this.game.getGenreId(idea.id.split("-")[3]);
+            }
+            else {
+                selectedIdeasFromSupplyGenres +=
+                    "," + this.game.getGenreId(idea.id.split("-")[3]);
+            }
+        }
+        var selectedIdeasFromBoard = dojo.query(".aoc-selected");
+        var selectedIdeasFromBoardGenres = "";
+        for (var i = 0; i < selectedIdeasFromBoard.length; i++) {
+            var idea = selectedIdeasFromBoard[i];
+            if (i == 0) {
+                selectedIdeasFromBoardGenres += this.game.getGenreId(idea.id.split("-")[3]);
+            }
+            else {
+                selectedIdeasFromBoardGenres +=
+                    "," + this.game.getGenreId(idea.id.split("-")[3]);
+            }
+        }
+        this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_CONFIRM_GAIN_IDEAS, {
+            ideasFromBoard: selectedIdeasFromBoardGenres,
+            ideasFromSupply: selectedIdeasFromSupplyGenres,
+        });
+    };
     PerformIdeas.prototype.createIdeaSelectionDiv = function (idNum) {
         var ideaSelectionDiv = '<div id="aoc-supply-idea-selection-container-' +
             idNum +
@@ -1487,6 +1529,7 @@ var PerformIdeas = /** @class */ (function () {
         var ideaDiv = dojo.byId("aoc-selected-idea-box-" + slotId);
         ideaDiv.remove();
         dojo.toggleClass("aoc-idea-cancel-" + slotId, "aoc-hidden", true);
+        this.setButtonConfirmationStatus();
     };
     PerformIdeas.prototype.selectIdeaFromBoard = function (divId, ideasFromBoard) {
         dojo.byId(divId).classList.toggle("aoc-selected");
@@ -1509,6 +1552,7 @@ var PerformIdeas = /** @class */ (function () {
                 this.connections[ideaToActivate.id] = dojo.connect(dojo.byId(ideaToActivate.id), "onclick", dojo.hitch(this, "selectIdeaFromBoard", ideaToActivate.id, ideasFromBoard));
             }
         }
+        this.setButtonConfirmationStatus();
     };
     PerformIdeas.prototype.selectIdeaFromSupply = function (genre) {
         var firstEmptySelectionDiv = this.getFirstEmptyIdeaSelectionDiv();
@@ -1520,11 +1564,25 @@ var PerformIdeas = /** @class */ (function () {
             slotId +
             '"><div id="aoc-selected-idea-' +
             genre +
-            '" class="aoc-start-idea-selection aoc-idea-token aoc-idea-token-' +
+            '" class="aoc-supply-idea-selection aoc-idea-token aoc-idea-token-' +
             genre +
             '"></div></div>';
         this.game.createHtml(tokenDiv, firstEmptySelectionDiv.id);
         dojo.toggleClass("aoc-idea-cancel-" + slotId, "aoc-hidden", false);
+        this.setButtonConfirmationStatus();
+    };
+    PerformIdeas.prototype.setButtonConfirmationStatus = function () {
+        var firstEmptySelectionDiv = this.getFirstEmptyIdeaSelectionDiv();
+        var selectedIdeasFromBoard = dojo.query(".aoc-selected");
+        if (firstEmptySelectionDiv == null &&
+            selectedIdeasFromBoard.length == this.ideasFromBoard) {
+            dojo.addClass("aoc-confirm-gain-ideas", "aoc-button");
+            dojo.removeClass("aoc-confirm-gain-ideas", "aoc-button-disabled");
+        }
+        else {
+            dojo.addClass("aoc-confirm-gain-ideas", "aoc-button-disabled");
+            dojo.removeClass("aoc-confirm-gain-ideas", "aoc-button");
+        }
     };
     return PerformIdeas;
 }());

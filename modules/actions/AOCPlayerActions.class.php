@@ -21,6 +21,21 @@ class AOCPlayerActions {
         $this->game = $game;
     }
 
+    function confirmGainIdeas($args) {
+        $activePlayerId = $this->game->getActivePlayerId();
+        $activePlayer = $this->game->playerManager->getPlayer($activePlayerId);
+        $ideasFromBoard = explode(",", $args[0]);
+        $ideasFromSupply = explode(",", $args[1]);
+
+        // $this->game->playerManager->gainIdeas(
+        //     $activePlayer,
+        //     $ideasFromBoard,
+        //     $ideasFromSupply
+        // );
+
+        $this->game->gamestate->nextState("nextPlayerTurn");
+    }
+
     function selectActionSpace($args) {
         $activePlayerId = $this->game->getActivePlayerId();
         $activePlayer = $this->game->playerManager->getPlayer($activePlayerId);

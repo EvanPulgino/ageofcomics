@@ -14,15 +14,18 @@
 class PerformIdeas implements State {
   game: any;
   unselect: boolean;
+  ideasFromBoard: number;
   connections: any;
   constructor(game: any) {
     this.game = game;
     this.unselect = false;
+    this.ideasFromBoard = 0;
     this.connections = {};
   }
 
   onEnteringState(stateArgs: any): void {
     const ideasFromBoard = stateArgs.args.ideasFromBoard;
+    this.ideasFromBoard = ideasFromBoard;
 
     this.createIdeaTokensFromSupplyActions();
     this.createIdeaTokensOnBoardActions(ideasFromBoard);
@@ -51,7 +54,54 @@ class PerformIdeas implements State {
 
     dojo.byId("aoc-idea-token-selection").remove();
   }
-  onUpdateActionButtons(stateArgs: any): void {}
+  onUpdateActionButtons(stateArgs: any): void {
+    if (stateArgs.isCurrentPlayerActive) {
+      gameui.addActionButton(
+        "aoc-confirm-gain-ideas",
+        _("Confirm"),
+        (event) => {
+          this.confirmGainIdeas(event);
+        }
+      );
+      dojo.addClass("aoc-confirm-gain-ideas", "aoc-button-disabled");
+      dojo.addClass("aoc-confirm-gain-ideas", "aoc-button");
+    }
+  }
+
+  confirmGainIdeas(event): void {
+    var selectedIdeasFromSupply = dojo.query(".aoc-supply-idea-selection");
+    var selectedIdeasFromSupplyGenres: string = "";
+    for (var i = 0; i < selectedIdeasFromSupply.length; i++) {
+      var idea = selectedIdeasFromSupply[i];
+      if (i == 0) {
+        selectedIdeasFromSupplyGenres += this.game.getGenreId(
+          idea.id.split("-")[3]
+        );
+      } else {
+        selectedIdeasFromSupplyGenres +=
+          "," + this.game.getGenreId(idea.id.split("-")[3]);
+      }
+    }
+
+    var selectedIdeasFromBoard = dojo.query(".aoc-selected");
+    var selectedIdeasFromBoardGenres: string = "";
+    for (var i = 0; i < selectedIdeasFromBoard.length; i++) {
+      var idea = selectedIdeasFromBoard[i];
+      if (i == 0) {
+        selectedIdeasFromBoardGenres += this.game.getGenreId(
+          idea.id.split("-")[3]
+        );
+      } else {
+        selectedIdeasFromBoardGenres +=
+          "," + this.game.getGenreId(idea.id.split("-")[3]);
+      }
+    }
+
+    this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_CONFIRM_GAIN_IDEAS, {
+      ideasFromBoard: selectedIdeasFromBoardGenres,
+      ideasFromSupply: selectedIdeasFromSupplyGenres,
+    });
+  }
 
   createIdeaSelectionDiv(idNum: number): void {
     var ideaSelectionDiv =
@@ -144,6 +194,8 @@ class PerformIdeas implements State {
     ideaDiv.remove();
 
     dojo.toggleClass("aoc-idea-cancel-" + slotId, "aoc-hidden", true);
+
+    this.setButtonConfirmationStatus();
   }
 
   selectIdeaFromBoard(divId: string, ideasFromBoard: number): void {
@@ -179,6 +231,7 @@ class PerformIdeas implements State {
         );
       }
     }
+    this.setButtonConfirmationStatus();
   }
 
   selectIdeaFromSupply(genre: string): void {
@@ -195,12 +248,29 @@ class PerformIdeas implements State {
       slotId +
       '"><div id="aoc-selected-idea-' +
       genre +
-      '" class="aoc-start-idea-selection aoc-idea-token aoc-idea-token-' +
+      '" class="aoc-supply-idea-selection aoc-idea-token aoc-idea-token-' +
       genre +
       '"></div></div>';
 
     this.game.createHtml(tokenDiv, firstEmptySelectionDiv.id);
 
     dojo.toggleClass("aoc-idea-cancel-" + slotId, "aoc-hidden", false);
+
+    this.setButtonConfirmationStatus();
+  }
+
+  setButtonConfirmationStatus(): void {
+    var firstEmptySelectionDiv = this.getFirstEmptyIdeaSelectionDiv();
+    var selectedIdeasFromBoard = dojo.query(".aoc-selected");
+    if (
+      firstEmptySelectionDiv == null &&
+      selectedIdeasFromBoard.length == this.ideasFromBoard
+    ) {
+      dojo.addClass("aoc-confirm-gain-ideas", "aoc-button");
+      dojo.removeClass("aoc-confirm-gain-ideas", "aoc-button-disabled");
+    } else {
+      dojo.addClass("aoc-confirm-gain-ideas", "aoc-button-disabled");
+      dojo.removeClass("aoc-confirm-gain-ideas", "aoc-button");
+    }
   }
 }

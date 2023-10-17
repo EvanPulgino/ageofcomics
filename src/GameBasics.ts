@@ -196,6 +196,7 @@ class GameBasics extends GameGui {
       args = {};
     }
     args.lock = true;
+    console.log(args);
 
     if (gameui.checkAction(action)) {
       gameui.ajaxcall(

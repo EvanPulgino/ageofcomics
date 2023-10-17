@@ -166,10 +166,7 @@ $machinestates = [
         ),
         "type" => STATE_TYPE_ACTIVE_PLAYER,
         "args" => STATE_ARGS_PERFORM_IDEAS,
-        "possibleactions" => [
-            PLAYER_ACTION_GAIN_IDEA,
-            PLAYER_ACTION_GAIN_IDEA_FROM_BOARD,
-        ],
+        "possibleactions" => [PLAYER_ACTION_CONFIRM_GAIN_IDEAS],
         "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
     ],
 
