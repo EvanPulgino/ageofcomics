@@ -163,6 +163,25 @@ html {
   justify-content: center;
 }
 
+#aoc-idea-token-selection {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+  justify-content: center;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+#aoc-select-supply-ideas-containers {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+  justify-content: center;
+  padding-left: 10px;
+}
+
 #aoc-select-containers {
   align-items: center;
   display: flex;

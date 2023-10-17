@@ -1407,6 +1407,59 @@ var PerformIdeas = /** @class */ (function () {
     }
     PerformIdeas.prototype.onEnteringState = function (stateArgs) {
         var ideasFromBoard = stateArgs.args.ideasFromBoard;
+        this.createIdeaTokensFromSupplyActions();
+        this.createIdeaTokensOnBoardActions(ideasFromBoard);
+    };
+    PerformIdeas.prototype.onLeavingState = function () {
+        dojo.query(".aoc-clickable").removeClass("aoc-clickable");
+        dojo.query(".aoc-selected").removeClass("aoc-selected");
+        dojo.disconnect(this.connections["aoc-idea-token-crime"]);
+        dojo.disconnect(this.connections["aoc-idea-token-horror"]);
+        dojo.disconnect(this.connections["aoc-idea-token-romance"]);
+        dojo.disconnect(this.connections["aoc-idea-token-scifi"]);
+        dojo.disconnect(this.connections["aoc-idea-token-superhero"]);
+        dojo.disconnect(this.connections["aoc-idea-token-western"]);
+        dojo.disconnect(this.connections["aoc-select-supply-idea-token-crime"]);
+        dojo.disconnect(this.connections["aoc-select-supply-idea-token-horror"]);
+        dojo.disconnect(this.connections["aoc-select-supply-idea-token-romance"]);
+        dojo.disconnect(this.connections["aoc-select-supply-idea-token-scifi"]);
+        dojo.disconnect(this.connections["aoc-select-supply-idea-token-superhero"]);
+        dojo.disconnect(this.connections["aoc-select-supply-idea-token-western"]);
+        dojo.disconnect(this.connections["aoc-idea-cancel-1"]);
+        dojo.disconnect(this.connections["aoc-idea-cancel-2"]);
+        this.connections = {};
+        dojo.byId("aoc-idea-token-selection").remove();
+    };
+    PerformIdeas.prototype.onUpdateActionButtons = function (stateArgs) { };
+    PerformIdeas.prototype.createIdeaSelectionDiv = function (idNum) {
+        var ideaSelectionDiv = '<div id="aoc-supply-idea-selection-container-' +
+            idNum +
+            '" class="aoc-selection-container"><i id="aoc-idea-cancel-' +
+            idNum +
+            '" class="fa fa-lg fa-times-circle aoc-start-idea-remove aoc-hidden"></i></div>';
+        this.game.createHtml(ideaSelectionDiv, "aoc-select-supply-ideas-containers");
+        this.connections["aoc-idea-cancel-" + idNum] = dojo.connect(dojo.byId("aoc-idea-cancel-" + idNum), "onclick", dojo.hitch(this, "removeIdea", idNum));
+    };
+    PerformIdeas.prototype.createIdeaTokensFromSupplyActions = function () {
+        var ideaTokenSelectionDiv = "<div id='aoc-idea-token-selection'></div>";
+        this.game.createHtml(ideaTokenSelectionDiv, "page-title");
+        var genres = this.game.getGenres();
+        for (var key in genres) {
+            var genre = genres[key];
+            var ideaTokenDiv = "<div id='aoc-select-supply-idea-token-" +
+                genre +
+                "' class='aoc-idea-token aoc-idea-token-" +
+                genre +
+                "'></div>";
+            this.game.createHtml(ideaTokenDiv, "aoc-idea-token-selection");
+            this.connections["aoc-select-supply-idea-token-" + genre] = dojo.connect(dojo.byId("aoc-select-supply-idea-token-" + genre), "onclick", dojo.hitch(this, "selectIdeaFromSupply", genre));
+        }
+        var selectionBoxesDiv = "<div id='aoc-select-supply-ideas-containers'></div>";
+        this.game.createHtml(selectionBoxesDiv, "aoc-idea-token-selection");
+        this.createIdeaSelectionDiv(1);
+        this.createIdeaSelectionDiv(2);
+    };
+    PerformIdeas.prototype.createIdeaTokensOnBoardActions = function (ideasFromBoard) {
         if (ideasFromBoard > 0) {
             var ideaSpaces = dojo.byId("aoc-action-ideas-idea-spaces").children;
             for (var key in ideaSpaces) {
@@ -1420,18 +1473,21 @@ var PerformIdeas = /** @class */ (function () {
             }
         }
     };
-    PerformIdeas.prototype.onLeavingState = function () {
-        dojo.query(".aoc-clickable").removeClass("aoc-clickable");
-        dojo.query(".aoc-selected").removeClass("aoc-selected");
-        dojo.disconnect(this.connections["aoc-idea-token-crime"]);
-        dojo.disconnect(this.connections["aoc-idea-token-horror"]);
-        dojo.disconnect(this.connections["aoc-idea-token-romance"]);
-        dojo.disconnect(this.connections["aoc-idea-token-scifi"]);
-        dojo.disconnect(this.connections["aoc-idea-token-superhero"]);
-        dojo.disconnect(this.connections["aoc-idea-token-western"]);
-        this.connections = {};
+    PerformIdeas.prototype.getFirstEmptyIdeaSelectionDiv = function () {
+        var allDivs = dojo.query(".aoc-selection-container");
+        for (var i = 0; i < allDivs.length; i++) {
+            var div = allDivs[i];
+            if (div.children.length == 1) {
+                return div;
+            }
+        }
+        return null;
     };
-    PerformIdeas.prototype.onUpdateActionButtons = function (stateArgs) { };
+    PerformIdeas.prototype.removeIdea = function (slotId) {
+        var ideaDiv = dojo.byId("aoc-selected-idea-box-" + slotId);
+        ideaDiv.remove();
+        dojo.toggleClass("aoc-idea-cancel-" + slotId, "aoc-hidden", true);
+    };
     PerformIdeas.prototype.selectIdeaFromBoard = function (divId, ideasFromBoard) {
         dojo.byId(divId).classList.toggle("aoc-selected");
         dojo.byId(divId).classList.toggle("aoc-clickable");
@@ -1453,6 +1509,22 @@ var PerformIdeas = /** @class */ (function () {
                 this.connections[ideaToActivate.id] = dojo.connect(dojo.byId(ideaToActivate.id), "onclick", dojo.hitch(this, "selectIdeaFromBoard", ideaToActivate.id, ideasFromBoard));
             }
         }
+    };
+    PerformIdeas.prototype.selectIdeaFromSupply = function (genre) {
+        var firstEmptySelectionDiv = this.getFirstEmptyIdeaSelectionDiv();
+        if (firstEmptySelectionDiv == null) {
+            return;
+        }
+        var slotId = firstEmptySelectionDiv.id.split("-")[5];
+        var tokenDiv = '<div id="aoc-selected-idea-box-' +
+            slotId +
+            '"><div id="aoc-selected-idea-' +
+            genre +
+            '" class="aoc-start-idea-selection aoc-idea-token aoc-idea-token-' +
+            genre +
+            '"></div></div>';
+        this.game.createHtml(tokenDiv, firstEmptySelectionDiv.id);
+        dojo.toggleClass("aoc-idea-cancel-" + slotId, "aoc-hidden", false);
     };
     return PerformIdeas;
 }());
