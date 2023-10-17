@@ -223,15 +223,43 @@ class AgeOfComics extends Table {
     }
 
     function argsPerformIdeas() {
-        return ["selectedActionSpace" => self::getGameStateValue(SELECTED_ACTION_SPACE)];
+        $selectedActionSpace = self::getGameStateValue(SELECTED_ACTION_SPACE);
+        $ideasFromBoard = 0;
+
+        switch ($selectedActionSpace) {
+            case 30001:
+                $ideasFromBoard = 2;
+                break;
+            case 30002:
+                $ideasFromBoard = 1;
+                break;
+            case 30003:
+                $ideasFromBoard = 1;
+                break;
+            default:
+                break;
+        }
+
+        return [
+            "selectedActionSpace" => $selectedActionSpace,
+            "ideasFromBoard" => $ideasFromBoard,
+        ];
     }
 
     function argsPerformPrint() {
-        return ["selectedActionSpace" => self::getGameStateValue(SELECTED_ACTION_SPACE)];
+        return [
+            "selectedActionSpace" => self::getGameStateValue(
+                SELECTED_ACTION_SPACE
+            ),
+        ];
     }
 
     function argsPerformSales() {
-        return ["selectedActionSpace" => self::getGameStateValue(SELECTED_ACTION_SPACE)];
+        return [
+            "selectedActionSpace" => self::getGameStateValue(
+                SELECTED_ACTION_SPACE
+            ),
+        ];
     }
 
     function argsPlayerSetup() {

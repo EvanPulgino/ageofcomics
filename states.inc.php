@@ -113,9 +113,7 @@ $machinestates = [
         "type" => STATE_TYPE_ACTIVE_PLAYER,
         "args" => STATE_ARGS_PLAYER_TURN,
         "updateGameProgression" => true,
-        "possibleactions" => [
-            PLAYER_ACTION_SELECT_ACTION_SPACE
-        ],
+        "possibleactions" => [PLAYER_ACTION_SELECT_ACTION_SPACE],
         "transitions" => [
             "nextPlayerTurn" => ST_NEXT_PLAYER,
             "performHire" => ST_PERFORM_HIRE,
@@ -161,10 +159,10 @@ $machinestates = [
     ST_PERFORM_IDEAS => [
         "name" => PERFORM_IDEAS,
         "description" => clienttranslate(
-            '${actplayer} must perform an ideas action'
+            '${actplayer} must select ${ideasFromBoard} ideas from the board and 2 ideas from the supply'
         ),
         "descriptionmyturn" => clienttranslate(
-            '${you} must perform an ideas action'
+            '${you} must select ${ideasFromBoard} ideas from the board and 2 ideas from the supply'
         ),
         "type" => STATE_TYPE_ACTIVE_PLAYER,
         "args" => STATE_ARGS_PERFORM_IDEAS,
