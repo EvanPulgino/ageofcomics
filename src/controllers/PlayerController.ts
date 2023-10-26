@@ -42,7 +42,24 @@ class PlayerController {
       '" class="aoc-idea-token aoc-idea-token-' +
       genre +
       '" style="position:relative;z-index:1000;"></div>';
-    return this.ui.createHtml(ideaTokenDiv, "aoc-select-starting-idea-" + genre);
+    return this.ui.createHtml(
+      ideaTokenDiv,
+      "aoc-select-starting-idea-" + genre
+    );
+  }
+
+  createSupplyIdeaToken(genre: string): any {
+    var randomId = Math.floor(Math.random() * 1000000);
+    var ideaTokenDiv =
+      '<div id="' +
+      randomId +
+      '" class="aoc-idea-token aoc-idea-token-' +
+      genre +
+      '" style="position:relative;z-index:1000;"></div>';
+    return this.ui.createHtml(
+      ideaTokenDiv,
+      "aoc-select-supply-idea-token-" + genre
+    );
   }
 
   createPlayerOrderToken(player: any): void {
@@ -236,6 +253,20 @@ class PlayerController {
       "aoc-player-" + counterPanel + "-count-" + player.id
     );
     this.playerCounter[player.id][counterPanel].setValue(initialValue);
+  }
+
+  gainIdeaFromBoard(playerId: any, genre: string): void {
+    var ideaTokenDiv = dojo.byId("aoc-idea-token-" + genre);
+    var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
+    gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
+    this.updatePlayerCounter(playerId, genre, 1);
+  }
+
+  gainIdeaFromSupply(playerId: any, genre: string): void {
+    var ideaTokenDiv = this.createSupplyIdeaToken(genre);
+    var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
+    gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
+    this.updatePlayerCounter(playerId, genre, 1);
   }
 
   gainStartingIdea(playerId: any, genre: string): void {

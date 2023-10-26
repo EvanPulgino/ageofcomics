@@ -82,6 +82,8 @@ class GameBody extends GameBasics {
         dojo.subscribe(m.substring(6), this, m);
       }
     }
+    this.notifqueue.setSynchronous("gainIdeaFromBoard", 500);
+    this.notifqueue.setSynchronous("gainIdeaFromSupply", 500);
     this.notifqueue.setSynchronous("gainStartingIdea", 500);
     this.notifqueue.setSynchronous("gainStartingIdeaPrivate", 500);
     this.notifqueue.setIgnoreNotificationCheck(
@@ -123,6 +125,20 @@ class GameBody extends GameBasics {
     this.salesOrderController.flipSalesOrders(notif.args.flippedSalesOrders);
   }
 
+  notif_gainIdeaFromBoard(notif: any): void {
+    this.playerController.gainIdeaFromBoard(
+      notif.args.player.id,
+      notif.args.genre
+    );
+  }
+
+  notif_gainIdeaFromSupply(notif: any): void {
+    this.playerController.gainIdeaFromSupply(
+      notif.args.player.id,
+      notif.args.genre
+    );
+  }
+
   notif_gainStartingComic(notif: any): void {
     this.cardController.gainStartingComic(notif.args.comic_card);
   }
@@ -136,6 +152,7 @@ class GameBody extends GameBasics {
       notif.args.genre
     );
   }
+
   notif_gainStartingIdeaPrivate(notif: any): void {
     this.playerController.gainStartingIdea(
       notif.args.player_id,

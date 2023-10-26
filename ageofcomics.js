@@ -366,6 +366,8 @@ var GameBody = /** @class */ (function (_super) {
                 dojo.subscribe(m.substring(6), this, m);
             }
         }
+        this.notifqueue.setSynchronous("gainIdeaFromBoard", 500);
+        this.notifqueue.setSynchronous("gainIdeaFromSupply", 500);
         this.notifqueue.setSynchronous("gainStartingIdea", 500);
         this.notifqueue.setSynchronous("gainStartingIdeaPrivate", 500);
         this.notifqueue.setIgnoreNotificationCheck("gainStartingComic", function (notif) {
@@ -394,6 +396,12 @@ var GameBody = /** @class */ (function (_super) {
     };
     GameBody.prototype.notif_flipSalesOrders = function (notif) {
         this.salesOrderController.flipSalesOrders(notif.args.flippedSalesOrders);
+    };
+    GameBody.prototype.notif_gainIdeaFromBoard = function (notif) {
+        this.playerController.gainIdeaFromBoard(notif.args.player.id, notif.args.genre);
+    };
+    GameBody.prototype.notif_gainIdeaFromSupply = function (notif) {
+        this.playerController.gainIdeaFromSupply(notif.args.player.id, notif.args.genre);
     };
     GameBody.prototype.notif_gainStartingComic = function (notif) {
         this.cardController.gainStartingComic(notif.args.comic_card);
@@ -763,7 +771,7 @@ var GameController = /** @class */ (function () {
         }
     };
     GameController.prototype.createIdeaTokenOnBoard = function (genreId, exists) {
-        if (exists) {
+        if (exists == 1) {
             var genre = this.ui.getGenreName(genreId);
             var ideaTokenDiv = '<div id="aoc-idea-token-' +
                 genre +
@@ -952,6 +960,15 @@ var PlayerController = /** @class */ (function () {
             '" style="position:relative;z-index:1000;"></div>';
         return this.ui.createHtml(ideaTokenDiv, "aoc-select-starting-idea-" + genre);
     };
+    PlayerController.prototype.createSupplyIdeaToken = function (genre) {
+        var randomId = Math.floor(Math.random() * 1000000);
+        var ideaTokenDiv = '<div id="' +
+            randomId +
+            '" class="aoc-idea-token aoc-idea-token-' +
+            genre +
+            '" style="position:relative;z-index:1000;"></div>';
+        return this.ui.createHtml(ideaTokenDiv, "aoc-select-supply-idea-token-" + genre);
+    };
     PlayerController.prototype.createPlayerOrderToken = function (player) {
         var playerOrderTokenDiv = '<div id="aoc-player-order-token' +
             player.id +
@@ -1110,6 +1127,18 @@ var PlayerController = /** @class */ (function () {
         this.playerCounter[player.id][counterPanel] = new ebg.counter();
         this.playerCounter[player.id][counterPanel].create("aoc-player-" + counterPanel + "-count-" + player.id);
         this.playerCounter[player.id][counterPanel].setValue(initialValue);
+    };
+    PlayerController.prototype.gainIdeaFromBoard = function (playerId, genre) {
+        var ideaTokenDiv = dojo.byId("aoc-idea-token-" + genre);
+        var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
+        gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
+        this.updatePlayerCounter(playerId, genre, 1);
+    };
+    PlayerController.prototype.gainIdeaFromSupply = function (playerId, genre) {
+        var ideaTokenDiv = this.createSupplyIdeaToken(genre);
+        var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
+        gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
+        this.updatePlayerCounter(playerId, genre, 1);
     };
     PlayerController.prototype.gainStartingIdea = function (playerId, genre) {
         var ideaTokenDiv = this.createStartingIdeaToken(genre);

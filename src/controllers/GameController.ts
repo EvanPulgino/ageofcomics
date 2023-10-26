@@ -82,8 +82,8 @@ class GameController {
     }
   }
 
-  createIdeaTokenOnBoard(genreId: any, exists: boolean) {
-    if (exists) {
+  createIdeaTokenOnBoard(genreId: any, exists: number) {
+    if (exists == 1) {
       var genre = this.ui.getGenreName(genreId);
       var ideaTokenDiv =
         '<div id="aoc-idea-token-' +

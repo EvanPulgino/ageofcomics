@@ -27,11 +27,23 @@ class AOCPlayerActions {
         $ideasFromBoard = explode(",", $args[0]);
         $ideasFromSupply = explode(",", $args[1]);
 
-        // $this->game->playerManager->gainIdeas(
-        //     $activePlayer,
-        //     $ideasFromBoard,
-        //     $ideasFromSupply
-        // );
+        if ($ideasFromBoard[0] == "") {
+            $ideasFromBoard = [];
+        }
+        
+        foreach ($ideasFromBoard as $ideaGenre) {
+            $this->game->playerManager->gainIdeaFromBoard(
+                $activePlayer,
+                GENRES[$ideaGenre]
+            );
+        }
+
+        foreach ($ideasFromSupply as $ideaGenre) {
+            $this->game->playerManager->gainIdeaFromSupply(
+                $activePlayer,
+                GENRES[$ideaGenre]
+            );
+        }
 
         $this->game->gamestate->nextState("nextPlayerTurn");
     }

@@ -252,6 +252,39 @@ class AOCPlayerManager extends APP_GameClass {
         return $uiData;
     }
 
+    public function gainIdeaFromBoard($player, $genre) {
+        $this->adjustPlayerIdeas($player->getId(), 1, $genre);
+        $this->game->setGameStateValue("ideas_space_" . $genre, 0);
+
+        $this->game->notifyAllPlayers(
+            "gainIdeaFromBoard",
+            clienttranslate(
+                '${player_name} gains a ${genre} idea from the board'
+            ),
+            [
+                "player" => $player->getUiData(),
+                "player_name" => $player->getName(),
+                "genre" => $genre,
+            ]
+        );
+    }
+
+    public function gainIdeaFromSupply($player, $genre) {
+        $this->adjustPlayerIdeas($player->getId(), 1, $genre);
+
+        $this->game->notifyAllPlayers(
+            "gainIdeaFromSupply",
+            clienttranslate(
+                '${player_name} gains a ${genre} idea from the supply'
+            ),
+            [
+                "player" => $player->getUiData(),
+                "player_name" => $player->getName(),
+                "genre" => $genre,
+            ]
+        );
+    }
+
     public function gainRoyalties($player, $actionSpace) {
         $amount = $this->getRoyaltiesAmount($actionSpace);
         $this->adjustPlayerMoney($player->getId(), $amount);
