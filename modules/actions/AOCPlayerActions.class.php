@@ -30,7 +30,7 @@ class AOCPlayerActions {
         if ($ideasFromBoard[0] == "") {
             $ideasFromBoard = [];
         }
-        
+
         foreach ($ideasFromBoard as $ideaGenre) {
             $this->game->playerManager->gainIdeaFromBoard(
                 $activePlayer,
@@ -46,6 +46,66 @@ class AOCPlayerActions {
         }
 
         $this->game->gamestate->nextState("nextPlayerTurn");
+    }
+
+    function hireCreative($args) {
+        $activePlayerId = $this->game->getActivePlayerId();
+        $activePlayer = $this->game->playerManager->getPlayer($activePlayerId);
+        $cardId = $args[0];
+        $creativeType = $args[1];
+        $cardTypeId =
+            $creativeType == "artist" ? CARD_TYPE_ARTIST : CARD_TYPE_WRITER;
+
+        $card = $this->game->cardManager->drawCard(
+            $activePlayerId,
+            $cardId,
+            $cardTypeId
+        );
+
+        $this->game->notifyAllPlayers(
+            "hireCreative",
+            clienttranslate(
+                '${player_name} hires a value ${cardValue} ${creative}'
+            ),
+            [
+                "player" => $activePlayer->getUiData(),
+                "player_id" => $activePlayerId,
+                "player_name" => $activePlayer->getName(),
+                "card" => $card->getUiData(0),
+                "cardValue" => $card->getValue(),
+                "creative" => ucfirst($creativeType),
+            ]
+        );
+        $this->game->notifyPlayer(
+            $activePlayerId,
+            "hireCreativePrivate",
+            clienttranslate('You hire a value ${cardValue} ${creative}'),
+            [
+                "player" => $activePlayer->getUiData(),
+                "player_id" => $activePlayerId,
+                "player_name" => $activePlayer->getName(),
+                "card" => $card->getUiData($activePlayerId),
+                "cardValue" => $card->getValue(),
+                "creative" => ucfirst($creativeType),
+            ]
+        );
+
+        if ($creativeType == "artist") {
+            $this->game->setGameStateValue(CAN_HIRE_ARTIST, 0);
+        }
+
+        if ($creativeType == "writer") {
+            $this->game->setGameStateValue(CAN_HIRE_WRITER, 0);
+        }
+
+        if (
+            $this->game->getGameStateValue(CAN_HIRE_ARTIST) == 0 &&
+            $this->game->getGameStateValue(CAN_HIRE_WRITER) == 0
+        ) {
+            $this->game->gamestate->nextState("nextPlayerTurn");
+        } else {
+            $this->game->gamestate->nextState("performNextHire");
+        }
     }
 
     function selectActionSpace($args) {
@@ -77,6 +137,8 @@ class AOCPlayerActions {
 
         switch ($actionKey) {
             case HIRE_ACTION:
+                $this->game->setGameStateValue(CAN_HIRE_ARTIST, 1);
+                $this->game->setGameStateValue(CAN_HIRE_WRITER, 1);
                 $this->game->gamestate->nextState("performHire");
                 break;
             case DEVELOP_ACTION:

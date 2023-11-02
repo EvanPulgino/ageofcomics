@@ -35,11 +35,22 @@ class action_ageofcomics extends APP_GameAction {
 
     public function confirmGainIdeas() {
         self::setAjaxMode();
-        
+
         $ideasFromBoard = self::getArg("ideasFromBoard", AT_numberlist, true);
         $ideasFromSupply = self::getArg("ideasFromSupply", AT_numberlist, true);
 
         $this->game->confirmGainIdeas($ideasFromBoard, $ideasFromSupply);
+
+        self::ajaxResponse();
+    }
+
+    public function hireCreative() {
+        self::setAjaxMode();
+
+        $cardId = self::getArg("cardId", AT_posint, true);
+        $creativeType = self::getArg("creativeType", AT_alphanum, true);
+
+        $this->game->hireCreative($cardId, $creativeType);
 
         self::ajaxResponse();
     }

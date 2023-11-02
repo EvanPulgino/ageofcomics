@@ -13,11 +13,68 @@
 
 class PerformHire implements State {
   game: any;
+  connections: any;
   constructor(game: any) {
     this.game = game;
+    this.connections = {};
   }
 
-  onEnteringState(stateArgs: any): void {}
-  onLeavingState(): void {}
+  onEnteringState(stateArgs: any): void {
+    if (stateArgs.isCurrentPlayerActive) {
+      if (stateArgs.args.canHireArtist == 1) {
+        this.createHireActions("artist");
+      }
+      if (stateArgs.args.canHireWriter == 1) {
+        this.createHireActions("writer");
+      }
+    }
+  }
+
+  onLeavingState(): void {
+    dojo.query(".aoc-clickable").removeClass("aoc-clickable");
+    dojo.query(".aoc-selected").removeClass("aoc-selected");
+
+    for (var key in this.connections) {
+      dojo.disconnect(this.connections[key]);
+    }
+
+    this.connections = {};
+  }
+
   onUpdateActionButtons(stateArgs: any): void {}
+
+  createHireActions(creativeType: string): void {
+    var topCardOfDeck = dojo.byId("aoc-" + creativeType + "-deck").lastChild;
+    topCardOfDeck.classList.add("aoc-clickable");
+    var topCardOfDeckId = topCardOfDeck.id.split("-")[2];
+    this.connections[creativeType + topCardOfDeckId] = dojo.connect(
+      dojo.byId(topCardOfDeck.id),
+      "onclick",
+      dojo.hitch(this, this.hireCreative, topCardOfDeckId, creativeType)
+    );
+
+    var cardElements = dojo.byId(
+      "aoc-" + creativeType + "s-available"
+    ).children;
+
+    for (var key in cardElements) {
+      var card = cardElements[key];
+      if (card.id) {
+        card.classList.add("aoc-clickable");
+        var cardId = card.id.split("-")[2];
+        this.connections[creativeType + cardId] = dojo.connect(
+          dojo.byId(card.id),
+          "onclick",
+          dojo.hitch(this, this.hireCreative, cardId, creativeType)
+        );
+      }
+    }
+  }
+
+  hireCreative(cardId: number, creativeType: string): void {
+    this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_HIRE_CREATIVE, {
+      cardId: cardId,
+      creativeType: creativeType,
+    });
+  }
 }

@@ -127,17 +127,16 @@ $machinestates = [
     ST_PERFORM_HIRE => [
         "name" => PERFORM_HIRE,
         "description" => clienttranslate(
-            '${actplayer} must perform a hire action'
+            '${actplayer} must hire ${hireText}'
         ),
-        "descriptionmyturn" => clienttranslate(
-            '${you} must perform a hire action'
-        ),
+        "descriptionmyturn" => clienttranslate('${you} must hire ${hireText}'),
         "type" => STATE_TYPE_ACTIVE_PLAYER,
-        "possibleactions" => [
-            PLAYER_ACTION_HIRE_ARTIST,
-            PLAYER_ACTION_HIRE_WRITER,
+        "args" => STATE_ARGS_PERFORM_HIRE,
+        "possibleactions" => [PLAYER_ACTION_HIRE_CREATIVE],
+        "transitions" => [
+            "performNextHire" => ST_PERFORM_HIRE,
+            "nextPlayerTurn" => ST_NEXT_PLAYER,
         ],
-        "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
     ],
 
     ST_PERFORM_DEVELOP => [

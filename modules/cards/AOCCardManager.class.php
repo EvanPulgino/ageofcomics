@@ -81,6 +81,32 @@ class AOCCardManager extends APP_GameClass {
         return $uiData;
     }
 
+    public function drawCard($playerId, $cardId, $cardType) {
+        $sql =
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_id = " .
+            $cardId;
+        $row = self::getObjectFromDB($sql);
+        switch($cardType) {
+            case CARD_TYPE_ARTIST:
+                $card = new AOCArtistCard($row);
+                break;
+            case CARD_TYPE_COMIC:
+                $card = new AOCComicCard($row);
+                break;
+            case CARD_TYPE_WRITER:
+                $card = new AOCWriterCard($row);
+                break;
+        }
+
+        $card->setPlayerId($playerId);
+        $card->setLocation(LOCATION_HAND);
+        $card->setLocationArg($card->getTypeId() * 100 + $card->getGenreId());
+
+        $this->saveCard($card);
+
+        return $card;
+    }
+
     public function gainStaringComicCard($playerId, $genreId) {
         $sql =
             "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_genre = " .

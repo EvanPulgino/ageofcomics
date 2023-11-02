@@ -98,6 +98,13 @@ class GameBody extends GameBasics {
         return notif.args.player_id == gameui.player_id;
       }
     );
+    this.notifqueue.setIgnoreNotificationCheck(
+      "hireCreative",
+      function (notif: any) {
+        console.log(notif.args.player_id, gameui.player_id);
+        return notif.args.player_id == gameui.player_id;
+      }
+    );
   }
 
   /**
@@ -158,6 +165,16 @@ class GameBody extends GameBasics {
       notif.args.player_id,
       notif.args.genre
     );
+  }
+
+  notif_hireCreative(notif: any): void {
+    console.log("notif_hireCreative", notif);
+    this.cardController.slideCardToPlayerHand(notif.args.card, "");
+  }
+
+  notif_hireCreativePrivate(notif: any): void {
+    console.log("notif_hireCreativePrivate", notif);
+    this.cardController.slideCardToPlayerHand(notif.args.card, "");
   }
 
   notif_placeEditor(notif: any): void {

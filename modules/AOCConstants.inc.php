@@ -27,8 +27,7 @@ define("PLAYER_ACTION_DEVELOP_COMIC", "developComic");
 define("PLAYER_ACTION_DEVELOP_FROM_GENRE", "developFromGenre");
 define("PLAYER_ACTION_FLIP_SALES_ORDER", "flipSalesOrder");
 define("PLAYER_ACTION_CONFIRM_GAIN_IDEAS", "confirmGainIdeas");
-define("PLAYER_ACTION_HIRE_ARTIST", "hireArtist");
-define("PLAYER_ACTION_HIRE_WRITER", "hireWriter");
+define("PLAYER_ACTION_HIRE_CREATIVE", "hireCreative");
 define("PLAYER_ACTION_MOVE_SALES_AGENT", "moveSalesAgent");
 define(
     "PLAYER_ACTION_MOVE_SALES_AGENT_WITH_TICKET",
@@ -242,6 +241,8 @@ define("ACTION_STRING_FROM_KEY", [
 ]);
 
 /** Global Variables */
+define("CAN_HIRE_ARTIST", "can_hire_artist");
+define("CAN_HIRE_WRITER", "can_hire_writer");
 define("CARD_SUPPLY_SIZE", "card_supply_size");
 define("CURRENT_ROUND", "current_round");
 define("IDEAS_SPACE_CRIME", "ideas_space_crime");
@@ -843,6 +844,7 @@ define("SALES_ORDER_CONNECTIONS", [
 
 /** State Args */
 define("STATE_ARGS_GAME_END", "argGameEnd");
+define("STATE_ARGS_PERFORM_HIRE", "argsPerformHire");
 define("STATE_ARGS_PERFORM_IDEAS", "argsPerformIdeas");
 define("STATE_ARGS_PERFORM_PRINT", "argsPerformPrint");
 define("STATE_ARGS_PERFORM_SALES", "argsPerformSales");

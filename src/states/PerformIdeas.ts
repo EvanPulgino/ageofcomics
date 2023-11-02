@@ -24,11 +24,13 @@ class PerformIdeas implements State {
   }
 
   onEnteringState(stateArgs: any): void {
-    const ideasFromBoard = stateArgs.args.ideasFromBoard;
-    this.ideasFromBoard = ideasFromBoard;
+    if (stateArgs.isCurrentPlayerActive) {
+      const ideasFromBoard = stateArgs.args.ideasFromBoard;
+      this.ideasFromBoard = ideasFromBoard;
 
-    this.createIdeaTokensFromSupplyActions();
-    this.createIdeaTokensOnBoardActions(ideasFromBoard);
+      this.createIdeaTokensFromSupplyActions();
+      this.createIdeaTokensOnBoardActions(ideasFromBoard);
+    }
   }
 
   onLeavingState(): void {

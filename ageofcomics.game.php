@@ -39,6 +39,8 @@ class AgeOfComics extends Table {
             CARD_SUPPLY_SIZE => 21,
             MAX_ACTION_SPACES => 22,
             SELECTED_ACTION_SPACE => 23,
+            CAN_HIRE_ARTIST => 24,
+            CAN_HIRE_WRITER => 25,
         ]);
 
         // Initialize action managers
@@ -97,6 +99,8 @@ class AgeOfComics extends Table {
         foreach (GENRES as $genreId => $genreName) {
             self::setGameStateInitialValue("ideas_space_{$genreName}", 1);
         }
+        self::setGameStateInitialValue(CAN_HIRE_ARTIST, 0);
+        self::setGameStateInitialValue(CAN_HIRE_WRITER, 0);
 
         // Init game statistics
         // (note: statistics used in this file must be defined in your stats.inc.php file)
@@ -220,6 +224,26 @@ class AgeOfComics extends Table {
      */
     function getViewingPlayerId() {
         return self::getCurrentPlayerId();
+    }
+
+    function argsPerformHire() {
+        $canHireArtist = self::getGameStateValue(CAN_HIRE_ARTIST);
+        $canHireWriter = self::getGameStateValue(CAN_HIRE_WRITER);
+        $hireText = "";
+
+        if ($canHireArtist == 1 && $canHireWriter == 1) {
+            $hireText = "one Artist and one Writer";
+        } elseif ($canHireArtist == 1 && $canHireWriter == 0) {
+            $hireText = "one Artist";
+        } elseif ($canHireArtist == 0 && $canHireWriter == 1) {
+            $hireText = "one Writer";
+        }
+
+        return [
+            "canHireArtist" => $canHireArtist,
+            "canHireWriter" => $canHireWriter,
+            "hireText" => $hireText,
+        ];
     }
 
     function argsPerformIdeas() {

@@ -36,10 +36,7 @@ class AOCWriterCard extends AOCCard {
             "-" .
             $this->creativeKey;
         $this->facedownClass =
-            "aoc-" .
-            $this->getType() .
-            "-facedown-" .
-            $this->value;
+            "aoc-" . $this->getType() . "-facedown-" . $this->value;
     }
 
     public function getCreativeKey() {
@@ -68,6 +65,7 @@ class AOCWriterCard extends AOCCard {
             "value" => $this->getValue(),
             "fans" => $this->getFans(),
             "ideas" => $this->getIdeas(),
+            "facedownClass" => $this->facedownClass,
             "cssClass" => $this->deriveCssClass($currentPlayerId),
         ];
     }

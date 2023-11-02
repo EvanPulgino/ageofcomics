@@ -69,6 +69,7 @@ class AOCArtistCard extends AOCCard {
             "value" => $this->getValue(),
             "fans" => $this->getFans(),
             "ideas" => $this->getIdeas(),
+            "facedownClass" => $this->facedownClass,
             "cssClass" => $this->deriveCssClass($currentPlayerId),
         ];
     }

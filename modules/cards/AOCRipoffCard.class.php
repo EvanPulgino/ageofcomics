@@ -25,7 +25,12 @@ class AOCRipoffCard extends AOCCard {
         $this->ripoffKey = (int) $row["typeArg"];
         $this->name = RIPOFF_CARDS[$this->getGenreId()][$this->ripoffKey];
         $this->baseClass =
-            "aoc-" . $this->getType() . "-" . $this->getGenre() . "-" . $this->ripoffKey;
+            "aoc-" .
+            $this->getType() .
+            "-" .
+            $this->getGenre() .
+            "-" .
+            $this->ripoffKey;
         $this->facedownClass =
             "aoc-" . $this->getType() . "-" . $this->getGenre() . "-facedown";
     }
@@ -49,6 +54,7 @@ class AOCRipoffCard extends AOCCard {
             "playerId" => $this->getPlayerId(),
             "ripoffKey" => $this->getRipoffKey(),
             "name" => $this->getName(),
+            "facedownClass" => $this->facedownClass,
             "cssClass" => $this->deriveCssClass($currentPlayerId),
         ];
     }

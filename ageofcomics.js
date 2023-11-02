@@ -376,6 +376,10 @@ var GameBody = /** @class */ (function (_super) {
         this.notifqueue.setIgnoreNotificationCheck("gainStartingIdea", function (notif) {
             return notif.args.player_id == gameui.player_id;
         });
+        this.notifqueue.setIgnoreNotificationCheck("hireCreative", function (notif) {
+            console.log(notif.args.player_id, gameui.player_id);
+            return notif.args.player_id == gameui.player_id;
+        });
     };
     /**
      * Handle 'message' notification
@@ -414,6 +418,14 @@ var GameBody = /** @class */ (function (_super) {
     };
     GameBody.prototype.notif_gainStartingIdeaPrivate = function (notif) {
         this.playerController.gainStartingIdea(notif.args.player_id, notif.args.genre);
+    };
+    GameBody.prototype.notif_hireCreative = function (notif) {
+        console.log("notif_hireCreative", notif);
+        this.cardController.slideCardToPlayerHand(notif.args.card, "");
+    };
+    GameBody.prototype.notif_hireCreativePrivate = function (notif) {
+        console.log("notif_hireCreativePrivate", notif);
+        this.cardController.slideCardToPlayerHand(notif.args.card, "");
     };
     GameBody.prototype.notif_placeEditor = function (notif) {
         this.editorController.moveEditorToActionSpace(notif.args.editor, notif.args.space);
@@ -628,6 +640,17 @@ var CardController = /** @class */ (function () {
     };
     CardController.prototype.slideCardToPlayerHand = function (card, startLocation) {
         var cardDiv = dojo.byId("aoc-card-" + card.id);
+        var facedownCss = card.facedownClass;
+        if (cardDiv.classList.contains(facedownCss) &&
+            card.cssClass !== facedownCss) {
+            cardDiv.classList.remove(facedownCss);
+            cardDiv.classList.add(card.cssClass);
+        }
+        if (!cardDiv.classList.contains(facedownCss) &&
+            card.cssClass === facedownCss) {
+            cardDiv.classList.remove(card.cssClass);
+            cardDiv.classList.add(facedownCss);
+        }
         var handDiv = dojo.byId("aoc-hand-" + card.playerId);
         var cardsInHand = dojo.query(".aoc-card", handDiv);
         var cardToRightOfNewCard = null;
@@ -1411,10 +1434,48 @@ var PerformDevelop = /** @class */ (function () {
 var PerformHire = /** @class */ (function () {
     function PerformHire(game) {
         this.game = game;
+        this.connections = {};
     }
-    PerformHire.prototype.onEnteringState = function (stateArgs) { };
-    PerformHire.prototype.onLeavingState = function () { };
+    PerformHire.prototype.onEnteringState = function (stateArgs) {
+        if (stateArgs.isCurrentPlayerActive) {
+            if (stateArgs.args.canHireArtist == 1) {
+                this.createHireActions("artist");
+            }
+            if (stateArgs.args.canHireWriter == 1) {
+                this.createHireActions("writer");
+            }
+        }
+    };
+    PerformHire.prototype.onLeavingState = function () {
+        dojo.query(".aoc-clickable").removeClass("aoc-clickable");
+        dojo.query(".aoc-selected").removeClass("aoc-selected");
+        for (var key in this.connections) {
+            dojo.disconnect(this.connections[key]);
+        }
+        this.connections = {};
+    };
     PerformHire.prototype.onUpdateActionButtons = function (stateArgs) { };
+    PerformHire.prototype.createHireActions = function (creativeType) {
+        var topCardOfDeck = dojo.byId("aoc-" + creativeType + "-deck").lastChild;
+        topCardOfDeck.classList.add("aoc-clickable");
+        var topCardOfDeckId = topCardOfDeck.id.split("-")[2];
+        this.connections[creativeType + topCardOfDeckId] = dojo.connect(dojo.byId(topCardOfDeck.id), "onclick", dojo.hitch(this, this.hireCreative, topCardOfDeckId, creativeType));
+        var cardElements = dojo.byId("aoc-" + creativeType + "s-available").children;
+        for (var key in cardElements) {
+            var card = cardElements[key];
+            if (card.id) {
+                card.classList.add("aoc-clickable");
+                var cardId = card.id.split("-")[2];
+                this.connections[creativeType + cardId] = dojo.connect(dojo.byId(card.id), "onclick", dojo.hitch(this, this.hireCreative, cardId, creativeType));
+            }
+        }
+    };
+    PerformHire.prototype.hireCreative = function (cardId, creativeType) {
+        this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_HIRE_CREATIVE, {
+            cardId: cardId,
+            creativeType: creativeType,
+        });
+    };
     return PerformHire;
 }());
 /**
@@ -1437,10 +1498,12 @@ var PerformIdeas = /** @class */ (function () {
         this.connections = {};
     }
     PerformIdeas.prototype.onEnteringState = function (stateArgs) {
-        var ideasFromBoard = stateArgs.args.ideasFromBoard;
-        this.ideasFromBoard = ideasFromBoard;
-        this.createIdeaTokensFromSupplyActions();
-        this.createIdeaTokensOnBoardActions(ideasFromBoard);
+        if (stateArgs.isCurrentPlayerActive) {
+            var ideasFromBoard = stateArgs.args.ideasFromBoard;
+            this.ideasFromBoard = ideasFromBoard;
+            this.createIdeaTokensFromSupplyActions();
+            this.createIdeaTokensOnBoardActions(ideasFromBoard);
+        }
     };
     PerformIdeas.prototype.onLeavingState = function () {
         dojo.query(".aoc-clickable").removeClass("aoc-clickable");

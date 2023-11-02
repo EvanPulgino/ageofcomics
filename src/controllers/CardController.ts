@@ -113,6 +113,22 @@ class CardController {
 
   slideCardToPlayerHand(card: any, startLocation: string): void {
     var cardDiv = dojo.byId("aoc-card-" + card.id);
+    var facedownCss = card.facedownClass;
+    if (
+      cardDiv.classList.contains(facedownCss) &&
+      card.cssClass !== facedownCss
+    ) {
+      cardDiv.classList.remove(facedownCss);
+      cardDiv.classList.add(card.cssClass);
+    }
+    if (
+      !cardDiv.classList.contains(facedownCss) &&
+      card.cssClass === facedownCss
+    ) {
+      cardDiv.classList.remove(card.cssClass);
+      cardDiv.classList.add(facedownCss);
+    }
+
     var handDiv = dojo.byId("aoc-hand-" + card.playerId);
     var cardsInHand = dojo.query(".aoc-card", handDiv);
     var cardToRightOfNewCard = null;

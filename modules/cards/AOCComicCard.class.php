@@ -27,7 +27,12 @@ class AOCComicCard extends AOCCard {
         $this->fans = $this->bonus == PLUS_ONE_FAN ? 2 : 1;
         $this->name = COMIC_CARDS[$this->getGenreId()][$this->bonus];
         $this->baseClass =
-            "aoc-" . $this->getType() . "-" . $this->getGenre() . "-" . $this->bonus;
+            "aoc-" .
+            $this->getType() .
+            "-" .
+            $this->getGenre() .
+            "-" .
+            $this->bonus;
         $this->facedownClass =
             "aoc-" . $this->getType() . "-" . $this->getGenre() . "-facedown";
     }
@@ -55,6 +60,7 @@ class AOCComicCard extends AOCCard {
             "bonus" => $this->getBonus(),
             "fans" => $this->getFans(),
             "name" => $this->getName(),
+            "facedownClass" => $this->facedownClass,
             "cssClass" => $this->deriveCssClass($currentPlayerId),
         ];
     }
