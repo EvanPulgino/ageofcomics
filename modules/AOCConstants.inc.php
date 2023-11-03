@@ -38,6 +38,7 @@ define("PLAYER_ACTION_PRINT_RIPOFF", "printRipoff");
 define("PLAYER_ACTION_SELECT_ACTION_SPACE", "selectActionSpace");
 define("PLAYER_ACTION_SELECT_START_ITEMS", "selectStartItems");
 define("PLAYER_ACTION_TAKE_ROYALTIES", "takeRoyalties");
+define("PLAYER_ACTION_CONFIRM_DISCARD", "confirmDiscard");
 
 /** Genre Keys */
 define("GENRE_CRIME", 10);
@@ -843,6 +844,7 @@ define("SALES_ORDER_CONNECTIONS", [
 ]);
 
 /** State Args */
+define("STATE_ARGS_CHECK_HAND_SIZE", "argsCheckHandSize");
 define("STATE_ARGS_GAME_END", "argGameEnd");
 define("STATE_ARGS_PERFORM_HIRE", "argsPerformHire");
 define("STATE_ARGS_PERFORM_IDEAS", "argsPerformIdeas");
@@ -863,10 +865,12 @@ define("ST_PERFORM_DEVELOP", 22);
 define("ST_PERFORM_IDEAS", 23);
 define("ST_PERFORM_PRINT", 24);
 define("ST_PERFORM_SALES", 25);
+define("ST_CHECK_HAND_SIZE", 28);
 define("ST_NEXT_PLAYER", 29);
 define("ST_GAME_END", 99);
 
 /** State Names */
+define("CHECK_HAND_SIZE", "checkHandSize");
 define("COMPLETE_SETUP", "completeSetup");
 define("GAME_END", "gameEnd");
 define("GAME_SETUP", "gameSetup");

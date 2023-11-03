@@ -462,6 +462,7 @@ var GameBody = /** @class */ (function (_super) {
  */
 var GameState = /** @class */ (function () {
     function GameState(game) {
+        this.checkHandSize = new CheckHandSize(game);
         this.completeSetup = new CompleteSetup(game);
         this.gameEnd = new GameEnd(game);
         this.gameSetup = new GameSetup(game);
@@ -1297,6 +1298,29 @@ var TicketController = /** @class */ (function () {
         this.ui.createHtml(ticketDiv, "aoc-tickets-space");
     };
     return TicketController;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * CheckHandSize.ts
+ *
+ * AgeOfComics check hand size state
+ *
+ */
+var CheckHandSize = /** @class */ (function () {
+    function CheckHandSize(game) {
+        this.game = game;
+    }
+    CheckHandSize.prototype.onEnteringState = function (stateArgs) { };
+    CheckHandSize.prototype.onLeavingState = function () { };
+    CheckHandSize.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return CheckHandSize;
 }());
 /**
  *------

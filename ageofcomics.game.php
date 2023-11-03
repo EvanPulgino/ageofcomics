@@ -226,6 +226,12 @@ class AgeOfComics extends Table {
         return self::getCurrentPlayerId();
     }
 
+    function argsCheckHandSize() {
+        return [
+            "numberToDiscard" => 1,
+        ];
+    }
+
     function argsPerformHire() {
         $canHireArtist = self::getGameStateValue(CAN_HIRE_ARTIST);
         $canHireWriter = self::getGameStateValue(CAN_HIRE_WRITER);

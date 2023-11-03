@@ -14,6 +14,7 @@
  */
 
 class GameState {
+  checkHandSize: State;
   completeSetup: State;
   gameEnd: State;
   gameSetup: State;
@@ -28,6 +29,7 @@ class GameState {
   playerTurn: State;
   startNewRound: State;
   constructor(game: any) {
+    this.checkHandSize = new CheckHandSize(game);
     this.completeSetup = new CompleteSetup(game);
     this.gameEnd = new GameEnd(game);
     this.gameSetup = new GameSetup(game);

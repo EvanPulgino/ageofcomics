@@ -126,15 +126,14 @@ $machinestates = [
 
     ST_PERFORM_HIRE => [
         "name" => PERFORM_HIRE,
-        "description" => clienttranslate(
-            '${actplayer} must hire ${hireText}'
-        ),
+        "description" => clienttranslate('${actplayer} must hire ${hireText}'),
         "descriptionmyturn" => clienttranslate('${you} must hire ${hireText}'),
         "type" => STATE_TYPE_ACTIVE_PLAYER,
         "args" => STATE_ARGS_PERFORM_HIRE,
         "possibleactions" => [PLAYER_ACTION_HIRE_CREATIVE],
         "transitions" => [
             "performNextHire" => ST_PERFORM_HIRE,
+            "discardCards" => ST_CHECK_HAND_SIZE,
             "nextPlayerTurn" => ST_NEXT_PLAYER,
         ],
     ],
@@ -152,7 +151,10 @@ $machinestates = [
             PLAYER_ACTION_DEVELOP_COMIC,
             PLAYER_ACTION_DEVELOP_FROM_GENRE,
         ],
-        "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
+        "transitions" => [
+            "discardCards" => ST_CHECK_HAND_SIZE,
+            "nextPlayerTurn" => ST_NEXT_PLAYER,
+        ],
     ],
 
     ST_PERFORM_IDEAS => [
@@ -202,6 +204,20 @@ $machinestates = [
             PLAYER_ACTION_FLIP_SALES_ORDER,
             PLAYER_ACTION_COLLECT_SALES_ORDER,
         ],
+        "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
+    ],
+
+    ST_CHECK_HAND_SIZE => [
+        "name" => CHECK_HAND_SIZE,
+        "description" => clienttranslate(
+            '${actplayer} must discard ${numberToDiscard} cards'
+        ),
+        "descriptionmyturn" => clienttranslate(
+            '${you} must discard ${numberToDiscard} cards'
+        ),
+        "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "args" => STATE_ARGS_CHECK_HAND_SIZE,
+        "possibleActions" => [PLAYER_ACTION_CONFIRM_DISCARD],
         "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
     ],
 
