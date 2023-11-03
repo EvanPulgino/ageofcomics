@@ -377,7 +377,6 @@ var GameBody = /** @class */ (function (_super) {
             return notif.args.player_id == gameui.player_id;
         });
         this.notifqueue.setIgnoreNotificationCheck("hireCreative", function (notif) {
-            console.log(notif.args.player_id, gameui.player_id);
             return notif.args.player_id == gameui.player_id;
         });
     };
@@ -1316,10 +1315,78 @@ var TicketController = /** @class */ (function () {
 var CheckHandSize = /** @class */ (function () {
     function CheckHandSize(game) {
         this.game = game;
+        this.numberToDiscard = 0;
+        this.unselect = false;
+        this.connections = {};
     }
-    CheckHandSize.prototype.onEnteringState = function (stateArgs) { };
-    CheckHandSize.prototype.onLeavingState = function () { };
-    CheckHandSize.prototype.onUpdateActionButtons = function (stateArgs) { };
+    CheckHandSize.prototype.onEnteringState = function (stateArgs) {
+        if (stateArgs.isCurrentPlayerActive) {
+            this.numberToDiscard = stateArgs.args.numberToDiscard;
+            var cardsInHand = dojo.byId("aoc-hand-" + stateArgs.active_player).children;
+            for (var i = 0; i < cardsInHand.length; i++) {
+                dojo.addClass(cardsInHand[i], "aoc-clickable");
+                this.connections[cardsInHand[i].id] = dojo.connect(cardsInHand[i], "onclick", dojo.hitch(this, this.selectCard, cardsInHand[i]));
+            }
+        }
+    };
+    CheckHandSize.prototype.onLeavingState = function () {
+        dojo.query(".aoc-clickable").removeClass("aoc-clickable");
+        dojo.query(".aoc-selected").removeClass("aoc-selected");
+        for (var key in this.connections) {
+            dojo.disconnect(this.connections[key]);
+        }
+        this.connections = {};
+    };
+    CheckHandSize.prototype.onUpdateActionButtons = function (stateArgs) {
+        var _this = this;
+        if (stateArgs.isCurrentPlayerActive) {
+            gameui.addActionButton("aoc-confirm-discard", _("Confirm"), function (event) {
+                _this.confirmDiscard(event);
+            });
+            dojo.addClass("aoc-confirm-discard", "aoc-button-disabled");
+            dojo.addClass("aoc-confirm-discard", "aoc-button");
+        }
+    };
+    CheckHandSize.prototype.confirmDiscard = function (event) {
+        console.log("confirm discard");
+    };
+    CheckHandSize.prototype.selectCard = function (card) {
+        dojo.toggleClass(card, "aoc-clickable");
+        dojo.toggleClass(card, "aoc-selected");
+        this.updateConfirmationButtonStatus();
+    };
+    CheckHandSize.prototype.toggleCardStatus = function () {
+        var unselectedCards = dojo.query(".aoc-clickable");
+        for (var i = 0; i < unselectedCards.length; i++) {
+            var unselectedCard = unselectedCards[i];
+            dojo.toggleClass(unselectedCard, "aoc-clickable");
+            dojo.disconnect(this.connections[unselectedCard.id]);
+        }
+        this.unselect = true;
+    };
+    CheckHandSize.prototype.untoggleCardStatus = function () {
+        var cardsToUntoggle = dojo.query("div#aoc-hand-" +
+            this.game.player_id +
+            "> .aoc-card:not(.aoc-selected):not(.aoc-clickable)");
+        for (var i = 0; i < cardsToUntoggle.length; i++) {
+            var card = cardsToUntoggle[i];
+            dojo.toggleClass(card, "aoc-clickable");
+            this.connections[card.id] = dojo.connect(card, "onclick", dojo.hitch(this, this.selectCard, card));
+        }
+    };
+    CheckHandSize.prototype.updateConfirmationButtonStatus = function () {
+        var selectedCards = dojo.query(".aoc-selected");
+        if (selectedCards.length == this.numberToDiscard) {
+            this.toggleCardStatus();
+            dojo.removeClass("aoc-confirm-discard", "aoc-button-disabled");
+        }
+        else {
+            dojo.addClass("aoc-confirm-discard", "aoc-button-disabled");
+            if (this.unselect) {
+                this.untoggleCardStatus();
+            }
+        }
+    };
     return CheckHandSize;
 }());
 /**
@@ -1490,7 +1557,6 @@ var PerformHire = /** @class */ (function () {
     };
     PerformHire.prototype.onLeavingState = function () {
         dojo.query(".aoc-clickable").removeClass("aoc-clickable");
-        dojo.query(".aoc-selected").removeClass("aoc-selected");
         for (var key in this.connections) {
             dojo.disconnect(this.connections[key]);
         }

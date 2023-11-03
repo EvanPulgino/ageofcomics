@@ -32,7 +32,6 @@ class PerformHire implements State {
 
   onLeavingState(): void {
     dojo.query(".aoc-clickable").removeClass("aoc-clickable");
-    dojo.query(".aoc-selected").removeClass("aoc-selected");
 
     for (var key in this.connections) {
       dojo.disconnect(this.connections[key]);

@@ -63,7 +63,10 @@ class AOCPlayerActions {
         );
 
         if ($card->getIdeas() == 1) {
-            $this->game->playerManager->gainIdeaFromHiringCreative($activePlayer, $card);
+            $this->game->playerManager->gainIdeaFromHiringCreative(
+                $activePlayer,
+                $card
+            );
         }
 
         $this->game->notifyAllPlayers(
@@ -106,7 +109,11 @@ class AOCPlayerActions {
             $this->game->getGameStateValue(CAN_HIRE_ARTIST) == 0 &&
             $this->game->getGameStateValue(CAN_HIRE_WRITER) == 0
         ) {
-            $this->game->gamestate->nextState("nextPlayerTurn");
+            if (count($this->game->cardManager->getPlayerHand($activePlayerId)) > 6) {
+                $this->game->gamestate->nextState("discardCards");
+            } else {
+                $this->game->gamestate->nextState("nextPlayerTurn");
+            }
         } else {
             $this->game->gamestate->nextState("performNextHire");
         }

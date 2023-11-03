@@ -210,10 +210,10 @@ $machinestates = [
     ST_CHECK_HAND_SIZE => [
         "name" => CHECK_HAND_SIZE,
         "description" => clienttranslate(
-            '${actplayer} must discard ${numberToDiscard} cards'
+            '${actplayer} must discard ${numberToDiscard} card(s)'
         ),
         "descriptionmyturn" => clienttranslate(
-            '${you} must discard ${numberToDiscard} cards'
+            '${you} must discard ${numberToDiscard} card(s)'
         ),
         "type" => STATE_TYPE_ACTIVE_PLAYER,
         "args" => STATE_ARGS_CHECK_HAND_SIZE,

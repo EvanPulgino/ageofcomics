@@ -101,7 +101,6 @@ class GameBody extends GameBasics {
     this.notifqueue.setIgnoreNotificationCheck(
       "hireCreative",
       function (notif: any) {
-        console.log(notif.args.player_id, gameui.player_id);
         return notif.args.player_id == gameui.player_id;
       }
     );

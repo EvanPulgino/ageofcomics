@@ -228,7 +228,9 @@ class AgeOfComics extends Table {
 
     function argsCheckHandSize() {
         return [
-            "numberToDiscard" => 1,
+            "numberToDiscard" => count(
+                $this->cardManager->getPlayerHand(self::getActivePlayerId())
+            ) - 6,
         ];
     }
 
