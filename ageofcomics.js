@@ -1373,6 +1373,7 @@ var CheckHandSize = /** @class */ (function () {
             dojo.toggleClass(card, "aoc-clickable");
             this.connections[card.id] = dojo.connect(card, "onclick", dojo.hitch(this, this.selectCard, card));
         }
+        this.unselect = false;
     };
     CheckHandSize.prototype.updateConfirmationButtonStatus = function () {
         var selectedCards = dojo.query(".aoc-selected");
@@ -1751,6 +1752,7 @@ var PerformIdeas = /** @class */ (function () {
                 dojo.byId(ideaToActivate.id).classList.toggle("aoc-clickable");
                 this.connections[ideaToActivate.id] = dojo.connect(dojo.byId(ideaToActivate.id), "onclick", dojo.hitch(this, "selectIdeaFromBoard", ideaToActivate.id, ideasFromBoard));
             }
+            this.unselect = false;
         }
         this.setButtonConfirmationStatus();
     };

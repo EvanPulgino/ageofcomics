@@ -232,6 +232,7 @@ class PerformIdeas implements State {
           )
         );
       }
+      this.unselect = false;
     }
     this.setButtonConfirmationStatus();
   }

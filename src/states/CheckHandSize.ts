@@ -100,6 +100,7 @@ class CheckHandSize implements State {
         dojo.hitch(this, this.selectCard, card)
       );
     }
+    this.unselect = false;
   }
 
   updateConfirmationButtonStatus(): void {
