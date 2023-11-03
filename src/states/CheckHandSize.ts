@@ -65,7 +65,19 @@ class CheckHandSize implements State {
   }
 
   confirmDiscard(event): void {
-    console.log("confirm discard");
+    var cardsToDiscard = "";
+    var selectedCards = dojo.query(".aoc-selected");
+    for (var i = 0; i < selectedCards.length; i++) {
+      var card = selectedCards[i];
+      if (i == 0) {
+        cardsToDiscard += card.id.split("-")[2];
+      } else {
+        cardsToDiscard += "," + card.id.split("-")[2];
+      }
+    }
+    this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_CONFIRM_DISCARD, {
+        cardsToDiscard: cardsToDiscard,
+    });
   }
 
   selectCard(card: HTMLElement): void {

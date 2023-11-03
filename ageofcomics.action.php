@@ -33,6 +33,16 @@ class action_ageofcomics extends APP_GameAction {
         }
     }
 
+    public function confirmDiscard() {
+        self::setAjaxMode();
+
+        $cardsToDiscard = self::getArg("cardsToDiscard", AT_numberlist, true);
+
+        $this->game->confirmDiscard($cardsToDiscard);
+
+        self::ajaxResponse();
+    }
+
     public function confirmGainIdeas() {
         self::setAjaxMode();
 

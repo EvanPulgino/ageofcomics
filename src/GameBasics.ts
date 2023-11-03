@@ -191,12 +191,10 @@ class GameBasics extends GameGui {
     args?: any,
     handler?: (err: any) => void
   ): void {
-    console.trace(action);
     if (!args) {
       args = {};
     }
     args.lock = true;
-    console.log(args);
 
     if (gameui.checkAction(action)) {
       gameui.ajaxcall(

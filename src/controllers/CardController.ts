@@ -105,6 +105,13 @@ class CardController {
     }
   }
 
+  discardCard(card: any, playerId: any): void {
+    var cardDiv = dojo.byId("aoc-card-" + card.id);
+    dojo.place(cardDiv, "aoc-player-area-right-" + playerId);
+    var discardDiv = dojo.byId("aoc-game-status-panel");
+    gameui.slideToObjectAndDestroy(cardDiv, discardDiv, 1000);
+  }
+
   gainStartingComic(card: any): void {
     var location = "aoc-select-starting-comic-" + card.genre;
     this.createComicCard(card, location);

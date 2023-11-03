@@ -180,12 +180,10 @@ var GameBasics = /** @class */ (function (_super) {
      * @returns {void}
      */
     GameBasics.prototype.ajaxcallwrapper = function (action, args, handler) {
-        console.trace(action);
         if (!args) {
             args = {};
         }
         args.lock = true;
-        console.log(args);
         if (gameui.checkAction(action)) {
             gameui.ajaxcall("/" +
                 gameui.game_name +
@@ -366,6 +364,7 @@ var GameBody = /** @class */ (function (_super) {
                 dojo.subscribe(m.substring(6), this, m);
             }
         }
+        this.notifqueue.setSynchronous("discardCard", 500);
         this.notifqueue.setSynchronous("gainIdeaFromBoard", 500);
         this.notifqueue.setSynchronous("gainIdeaFromSupply", 500);
         this.notifqueue.setSynchronous("gainStartingIdea", 500);
@@ -393,6 +392,9 @@ var GameBody = /** @class */ (function (_super) {
         this.cardController.setupSupply(notif.args.artistCards.supply);
         this.cardController.setupSupply(notif.args.writerCards.supply);
         this.cardController.setupSupply(notif.args.comicCards.supply);
+    };
+    GameBody.prototype.notif_discardCard = function (notif) {
+        this.cardController.discardCard(notif.args.card, notif.args.player.id);
     };
     GameBody.prototype.notif_flipCalendarTiles = function (notif) {
         this.calendarController.flipCalendarTiles(notif.args.flippedTiles);
@@ -635,6 +637,12 @@ var CardController = /** @class */ (function () {
                 this.ui.createHtml(cardDiv, "aoc-" + card.type + "s-available");
                 break;
         }
+    };
+    CardController.prototype.discardCard = function (card, playerId) {
+        var cardDiv = dojo.byId("aoc-card-" + card.id);
+        dojo.place(cardDiv, "aoc-player-area-right-" + playerId);
+        var discardDiv = dojo.byId("aoc-game-status-panel");
+        gameui.slideToObjectAndDestroy(cardDiv, discardDiv, 1000);
     };
     CardController.prototype.gainStartingComic = function (card) {
         var location = "aoc-select-starting-comic-" + card.genre;
@@ -1348,7 +1356,20 @@ var CheckHandSize = /** @class */ (function () {
         }
     };
     CheckHandSize.prototype.confirmDiscard = function (event) {
-        console.log("confirm discard");
+        var cardsToDiscard = "";
+        var selectedCards = dojo.query(".aoc-selected");
+        for (var i = 0; i < selectedCards.length; i++) {
+            var card = selectedCards[i];
+            if (i == 0) {
+                cardsToDiscard += card.id.split("-")[2];
+            }
+            else {
+                cardsToDiscard += "," + card.id.split("-")[2];
+            }
+        }
+        this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_CONFIRM_DISCARD, {
+            cardsToDiscard: cardsToDiscard,
+        });
     };
     CheckHandSize.prototype.selectCard = function (card) {
         dojo.toggleClass(card, "aoc-clickable");

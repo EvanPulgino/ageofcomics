@@ -21,6 +21,31 @@ class AOCPlayerActions {
         $this->game = $game;
     }
 
+    function confirmDiscard($args) {
+        $activePlayerId = $this->game->getActivePlayerId();
+        $activePlayer = $this->game->playerManager->getPlayer($activePlayerId);
+        $cardsToDiscard = explode(",", $args[0]);
+
+        foreach ($cardsToDiscard as $cardId) {
+            $discardedCard = $this->game->cardManager->discardCard($cardId);
+            $this->game->notifyAllPlayers(
+                "discardCard",
+                clienttranslate('${player_name} discards ${type_singular}'),
+                [
+                    "player" => $activePlayer->getUiData(),
+                    "player_name" => $activePlayer->getName(),
+                    "card" => $discardedCard->getUiData($activePlayerId),
+                    "type_singular" =>
+                        $discardedCard->getTypeId() == 1
+                            ? "an artist"
+                            : "a writer",
+                ]
+            );
+        }
+
+        $this->game->gamestate->nextState("nextPlayerTurn");
+    }
+
     function confirmGainIdeas($args) {
         $activePlayerId = $this->game->getActivePlayerId();
         $activePlayer = $this->game->playerManager->getPlayer($activePlayerId);
@@ -109,7 +134,11 @@ class AOCPlayerActions {
             $this->game->getGameStateValue(CAN_HIRE_ARTIST) == 0 &&
             $this->game->getGameStateValue(CAN_HIRE_WRITER) == 0
         ) {
-            if (count($this->game->cardManager->getPlayerHand($activePlayerId)) > 6) {
+            if (
+                count(
+                    $this->game->cardManager->getPlayerHand($activePlayerId)
+                ) > 6
+            ) {
                 $this->game->gamestate->nextState("discardCards");
             } else {
                 $this->game->gamestate->nextState("nextPlayerTurn");

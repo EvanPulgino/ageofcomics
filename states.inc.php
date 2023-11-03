@@ -217,7 +217,7 @@ $machinestates = [
         ),
         "type" => STATE_TYPE_ACTIVE_PLAYER,
         "args" => STATE_ARGS_CHECK_HAND_SIZE,
-        "possibleActions" => [PLAYER_ACTION_CONFIRM_DISCARD],
+        "possibleactions" => [PLAYER_ACTION_CONFIRM_DISCARD],
         "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
     ],
 
