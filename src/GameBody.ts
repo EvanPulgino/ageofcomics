@@ -139,6 +139,14 @@ class GameBody extends GameBasics {
     );
   }
 
+  notif_gainIdeaFromHiringCreative(notif: any): void {
+    this.playerController.gainIdeaFromHiringCreative(
+      notif.args.player.id,
+      notif.args.genre,
+      notif.args.card.id
+    );
+  }
+
   notif_gainIdeaFromSupply(notif: any): void {
     this.playerController.gainIdeaFromSupply(
       notif.args.player.id,
@@ -149,6 +157,7 @@ class GameBody extends GameBasics {
   notif_gainStartingComic(notif: any): void {
     this.cardController.gainStartingComic(notif.args.comic_card);
   }
+  
   notif_gainStartingComicPrivate(notif: any): void {
     this.cardController.gainStartingComic(notif.args.comic_card);
   }

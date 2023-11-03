@@ -404,6 +404,9 @@ var GameBody = /** @class */ (function (_super) {
     GameBody.prototype.notif_gainIdeaFromBoard = function (notif) {
         this.playerController.gainIdeaFromBoard(notif.args.player.id, notif.args.genre);
     };
+    GameBody.prototype.notif_gainIdeaFromHiringCreative = function (notif) {
+        this.playerController.gainIdeaFromHiringCreative(notif.args.player.id, notif.args.genre, notif.args.card.id);
+    };
     GameBody.prototype.notif_gainIdeaFromSupply = function (notif) {
         this.playerController.gainIdeaFromSupply(notif.args.player.id, notif.args.genre);
     };
@@ -974,6 +977,15 @@ var PlayerController = /** @class */ (function () {
     PlayerController.prototype.adjustMoney = function (player, amount) {
         this.updatePlayerCounter(player.id, "money", amount);
     };
+    PlayerController.prototype.createIdeaOnCard = function (genre, cardId) {
+        var randomId = Math.floor(Math.random() * 1000000);
+        var ideaTokenDiv = '<div id="' +
+            randomId +
+            '" class="aoc-idea-token aoc-idea-token-' +
+            genre +
+            '" style="position:relative;z-index:1000;"></div>';
+        return this.ui.createHtml(ideaTokenDiv, "aoc-card-" + cardId);
+    };
     PlayerController.prototype.createStartingIdeaToken = function (genre) {
         var randomId = Math.floor(Math.random() * 1000000);
         var ideaTokenDiv = '<div id="' +
@@ -1153,6 +1165,12 @@ var PlayerController = /** @class */ (function () {
     };
     PlayerController.prototype.gainIdeaFromBoard = function (playerId, genre) {
         var ideaTokenDiv = dojo.byId("aoc-idea-token-" + genre);
+        var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
+        gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
+        this.updatePlayerCounter(playerId, genre, 1);
+    };
+    PlayerController.prototype.gainIdeaFromHiringCreative = function (playerId, genre, cardId) {
+        var ideaTokenDiv = this.createIdeaOnCard(genre, cardId);
         var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
         gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
         this.updatePlayerCounter(playerId, genre, 1);

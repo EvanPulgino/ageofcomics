@@ -34,6 +34,17 @@ class PlayerController {
     this.updatePlayerCounter(player.id, "money", amount);
   }
 
+  createIdeaOnCard(genre: string, cardId: any): any {
+    var randomId = Math.floor(Math.random() * 1000000);
+    var ideaTokenDiv =
+      '<div id="' +
+      randomId +
+      '" class="aoc-idea-token aoc-idea-token-' +
+      genre +
+      '" style="position:relative;z-index:1000;"></div>';
+    return this.ui.createHtml(ideaTokenDiv, "aoc-card-" + cardId);
+  }
+
   createStartingIdeaToken(genre: string): any {
     var randomId = Math.floor(Math.random() * 1000000);
     var ideaTokenDiv =
@@ -257,6 +268,13 @@ class PlayerController {
 
   gainIdeaFromBoard(playerId: any, genre: string): void {
     var ideaTokenDiv = dojo.byId("aoc-idea-token-" + genre);
+    var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
+    gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
+    this.updatePlayerCounter(playerId, genre, 1);
+  }
+
+  gainIdeaFromHiringCreative(playerId: any, genre: string, cardId: any) {
+    var ideaTokenDiv = this.createIdeaOnCard(genre, cardId);
     var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
     gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
     this.updatePlayerCounter(playerId, genre, 1);

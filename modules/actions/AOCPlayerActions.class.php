@@ -62,6 +62,10 @@ class AOCPlayerActions {
             $cardTypeId
         );
 
+        if ($card->getIdeas() == 1) {
+            $this->game->playerManager->gainIdeaFromHiringCreative($activePlayer, $card);
+        }
+
         $this->game->notifyAllPlayers(
             "hireCreative",
             clienttranslate(
