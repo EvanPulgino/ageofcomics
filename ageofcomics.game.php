@@ -479,17 +479,6 @@ class AgeOfComics extends Table {
         );
     }
 
-    /*
-        upgradeTableDb:
-        
-        You don't have to care about this until your game has been published on BGA.
-        Once your game is on BGA, this method is called everytime the system detects a game running with your old
-        Database scheme.
-        In this case, if you change your Database scheme, you just have to apply the needed changes in order to
-        update the game database and allow the game to continue to run with your new version.
-    
-    */
-
     /**
      * Called when system detects a game running with an old database schema.
      * Updates schema to match current version.
