@@ -32,14 +32,16 @@ class CheckHandSize implements State {
         "aoc-hand-" + stateArgs.active_player
       ).children;
 
-      for (var i = 0; i < cardsInHand.length; i++) {
-        dojo.addClass(cardsInHand[i], "aoc-clickable");
-        this.connections[cardsInHand[i].id] = dojo.connect(
-          cardsInHand[i],
-          "onclick",
-          dojo.hitch(this, this.selectCard, cardsInHand[i])
-        );
-      }
+      setTimeout(() => {
+        for (var i = 0; i < cardsInHand.length; i++) {
+          dojo.addClass(cardsInHand[i], "aoc-clickable");
+          this.connections[cardsInHand[i].id] = dojo.connect(
+            cardsInHand[i],
+            "onclick",
+            dojo.hitch(this, this.selectCard, cardsInHand[i])
+          );
+        }
+      }, 1000);
     }
   }
 
@@ -76,7 +78,7 @@ class CheckHandSize implements State {
       }
     }
     this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_CONFIRM_DISCARD, {
-        cardsToDiscard: cardsToDiscard,
+      cardsToDiscard: cardsToDiscard,
     });
   }
 

@@ -237,8 +237,36 @@ class AgeOfComics extends Table {
 
     function argsPerformDevelop() {
         $activePlayer = $this->playerManager->getActivePlayer();
+        $canDevelopFromDeck = $activePlayer->getMoney() >= 4;
+        $fromDeckText = $canDevelopFromDeck
+            ? clienttranslate(
+                "or pay \$4 to develop the next comic of a genre from the deck"
+            )
+            : "";
+
         return [
-            "canDevelopFromDeck" => $activePlayer->getMoney() >= 4,
+            "availableGenres" => [
+                "crime" => $this->cardManager->getAvailableComicCount(
+                    GENRE_CRIME
+                ),
+                "horror" => $this->cardManager->getAvailableComicCount(
+                    GENRE_HORROR
+                ),
+                "romance" => $this->cardManager->getAvailableComicCount(
+                    GENRE_ROMANCE
+                ),
+                "scifi" => $this->cardManager->getAvailableComicCount(
+                    GENRE_SCIFI
+                ),
+                "superhero" => $this->cardManager->getAvailableComicCount(
+                    GENRE_SUPERHERO
+                ),
+                "western" => $this->cardManager->getAvailableComicCount(
+                    GENRE_WESTERN
+                ),
+            ],
+            "canDevelopFromDeck" => $canDevelopFromDeck,
+            "fromDeckText" => $fromDeckText,
         ];
     }
 

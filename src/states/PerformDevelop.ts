@@ -22,7 +22,9 @@ class PerformDevelop implements State {
   onEnteringState(stateArgs: any): void {
     if (stateArgs.isCurrentPlayerActive) {
       this.createDevelopActions();
-      this.createDevelopFromDeckActions(stateArgs.args.canDevelopFromDeck);
+      if (stateArgs.args.canDevelopFromDeck) {
+        this.createDevelopFromDeckActions(stateArgs.args.availableGenres);
+      }
     }
   }
 
@@ -69,7 +71,7 @@ class PerformDevelop implements State {
     }
   }
 
-  createDevelopFromDeckActions(canDevelopFromDeck: boolean): void {
+  createDevelopFromDeckActions(availableGenres: any): void {
     var buttonRowDiv =
       "<div id='aoc-develop-from-deck-buttons' class='aoc-action-panel-row'><div id='aoc-seach-icon' class='aoc-search-icon'></div></div>";
     this.game.createHtml(buttonRowDiv, "page-title");
@@ -85,7 +87,7 @@ class PerformDevelop implements State {
         "'></div>";
       this.game.createHtml(buttonDiv, "aoc-develop-from-deck-buttons");
 
-      if (canDevelopFromDeck) {
+      if (availableGenres[genre] > 0) {
         dojo.addClass("aoc-develop-from-deck-" + genre, "aoc-image-clickable");
         this.connections["developFromDeck" + genre] = dojo.connect(
           dojo.byId("aoc-develop-from-deck-" + genre),

@@ -136,11 +136,11 @@ class GameBody extends GameBasics {
   }
 
   notif_developComic(notif: any): void {
-    this.cardController.slideCardToPlayerHand(notif.args.comic, "");
+    this.cardController.slideCardToPlayerHand(notif.args.comic);
   }
 
   notif_developComicPrivate(notif: any): void {
-    this.cardController.slideCardToPlayerHand(notif.args.comic, "");
+    this.cardController.slideCardToPlayerHand(notif.args.comic);
   }
 
   notif_discardCard(notif: any): void {
@@ -204,11 +204,11 @@ class GameBody extends GameBasics {
   }
 
   notif_hireCreative(notif: any): void {
-    this.cardController.slideCardToPlayerHand(notif.args.card, "");
+    this.cardController.slideCardToPlayerHand(notif.args.card);
   }
 
   notif_hireCreativePrivate(notif: any): void {
-    this.cardController.slideCardToPlayerHand(notif.args.card, "");
+    this.cardController.slideCardToPlayerHand(notif.args.card);
   }
 
   notif_placeEditor(notif: any): void {

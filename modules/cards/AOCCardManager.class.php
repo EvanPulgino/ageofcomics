@@ -114,21 +114,26 @@ class AOCCardManager extends APP_GameClass {
             "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_id = " .
             $cardId;
         $row = self::getObjectFromDB($sql);
+        $locationModifier = 0;
         switch ($cardType) {
             case CARD_TYPE_ARTIST:
                 $card = new AOCArtistCard($row);
+                $locationModifier = $card->getValue();
                 break;
             case CARD_TYPE_COMIC:
                 $card = new AOCComicCard($row);
                 break;
             case CARD_TYPE_WRITER:
                 $card = new AOCWriterCard($row);
+                $locationModifier = $card->getValue();
                 break;
         }
 
         $card->setPlayerId($playerId);
         $card->setLocation(LOCATION_HAND);
-        $card->setLocationArg($card->getTypeId() * 100 + $card->getGenreId());
+        $card->setLocationArg(
+            $card->getTypeId() * 100 + $card->getGenreId() + $locationModifier
+        );
 
         $this->saveCard($card);
 
@@ -196,6 +201,17 @@ class AOCCardManager extends APP_GameClass {
             $cards[] = new AOCArtistCard($row);
         }
         return $cards;
+    }
+
+    public function getAvailableComicCount($genreId) {
+        $sql =
+            "SELECT COUNT(*) FROM card WHERE card_type = " .
+            CARD_TYPE_COMIC .
+            " AND card_genre = " .
+            $genreId .
+            " AND card_owner = 0";
+        $count = self::getUniqueValueFromDB($sql);
+        return $count;
     }
 
     public function getComicCards() {

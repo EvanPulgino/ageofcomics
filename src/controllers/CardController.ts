@@ -109,22 +109,22 @@ class CardController {
     var cardDiv = dojo.byId("aoc-card-" + card.id);
     dojo.place(cardDiv, "aoc-player-area-right-" + playerId);
     var discardDiv = dojo.byId("aoc-game-status-panel");
-    gameui.slideToObjectAndDestroy(cardDiv, discardDiv, 1000);
+    gameui.slideToObjectAndDestroy(cardDiv, discardDiv, 500);
   }
 
   discardCardFromDeck(card: any): void {
     var cardDiv = dojo.byId("aoc-card-" + card.id);
     var discardDiv = dojo.byId("aoc-game-status-panel");
-    gameui.slideToObjectAndDestroy(cardDiv, discardDiv, 1000);
+    gameui.slideToObjectAndDestroy(cardDiv, discardDiv, 500);
   }
 
   gainStartingComic(card: any): void {
     var location = "aoc-select-starting-comic-" + card.genre;
     this.createComicCard(card, location);
-    this.slideCardToPlayerHand(card, location);
+    this.slideCardToPlayerHand(card);
   }
 
-  slideCardToPlayerHand(card: any, startLocation: string): void {
+  slideCardToPlayerHand(card: any): void {
     var cardDiv = dojo.byId("aoc-card-" + card.id);
     var facedownCss = card.facedownClass;
     var baseCss = card.baseClass;
@@ -143,17 +143,23 @@ class CardController {
       cardDiv.classList.add(facedownCss);
     }
 
+    dojo.setAttr(cardDiv, "order", card.locationArg);
+
     var handDiv = dojo.byId("aoc-hand-" + card.playerId);
     var cardsInHand = dojo.query(".aoc-card", handDiv);
     var cardToRightOfNewCard = null;
     cardsInHand.forEach((cardInHand: any) => {
-      if (cardInHand.getAttribute("order") > cardDiv.getAttribute("order")) {
+      if (
+        cardToRightOfNewCard == null &&
+        cardInHand.getAttribute("order") > cardDiv.getAttribute("order")
+      ) {
         cardToRightOfNewCard = cardInHand;
       }
     });
 
-    var animation = gameui.slideToObject(cardDiv, handDiv, 1000);
+    var animation = gameui.slideToObject(cardDiv, handDiv, 500);
     dojo.connect(animation, "onEnd", () => {
+      dojo.removeAttr(cardDiv, "style");
       if (cardToRightOfNewCard == null) {
         dojo.place(cardDiv, handDiv);
       } else {
