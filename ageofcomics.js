@@ -365,10 +365,14 @@ var GameBody = /** @class */ (function (_super) {
             }
         }
         this.notifqueue.setSynchronous("discardCard", 500);
+        this.notifqueue.setSynchronous("discardCardFromDeck", 500);
         this.notifqueue.setSynchronous("gainIdeaFromBoard", 500);
         this.notifqueue.setSynchronous("gainIdeaFromSupply", 500);
         this.notifqueue.setSynchronous("gainStartingIdea", 500);
         this.notifqueue.setSynchronous("gainStartingIdeaPrivate", 500);
+        this.notifqueue.setIgnoreNotificationCheck("developComic", function (notif) {
+            return notif.args.player_id == gameui.player_id;
+        });
         this.notifqueue.setIgnoreNotificationCheck("gainStartingComic", function (notif) {
             return notif.args.player_id == gameui.player_id;
         });
@@ -385,6 +389,9 @@ var GameBody = /** @class */ (function (_super) {
      * @param {object} notif - notification data
      */
     GameBody.prototype.notif_message = function (notif) { };
+    GameBody.prototype.notif_adjustMoney = function (notif) {
+        this.playerController.adjustMoney(notif.args.player, notif.args.amount);
+    };
     GameBody.prototype.notif_completeSetup = function (notif) {
         this.cardController.setupDeck(notif.args.artistCards.deck);
         this.cardController.setupDeck(notif.args.writerCards.deck);
@@ -393,8 +400,17 @@ var GameBody = /** @class */ (function (_super) {
         this.cardController.setupSupply(notif.args.writerCards.supply);
         this.cardController.setupSupply(notif.args.comicCards.supply);
     };
+    GameBody.prototype.notif_developComic = function (notif) {
+        this.cardController.slideCardToPlayerHand(notif.args.comic, "");
+    };
+    GameBody.prototype.notif_developComicPrivate = function (notif) {
+        this.cardController.slideCardToPlayerHand(notif.args.comic, "");
+    };
     GameBody.prototype.notif_discardCard = function (notif) {
         this.cardController.discardCard(notif.args.card, notif.args.player.id);
+    };
+    GameBody.prototype.notif_discardCardFromDeck = function (notif) {
+        this.cardController.discardCardFromDeck(notif.args.card);
     };
     GameBody.prototype.notif_flipCalendarTiles = function (notif) {
         this.calendarController.flipCalendarTiles(notif.args.flippedTiles);
@@ -424,15 +440,16 @@ var GameBody = /** @class */ (function (_super) {
         this.playerController.gainStartingIdea(notif.args.player_id, notif.args.genre);
     };
     GameBody.prototype.notif_hireCreative = function (notif) {
-        console.log("notif_hireCreative", notif);
         this.cardController.slideCardToPlayerHand(notif.args.card, "");
     };
     GameBody.prototype.notif_hireCreativePrivate = function (notif) {
-        console.log("notif_hireCreativePrivate", notif);
         this.cardController.slideCardToPlayerHand(notif.args.card, "");
     };
     GameBody.prototype.notif_placeEditor = function (notif) {
         this.editorController.moveEditorToActionSpace(notif.args.editor, notif.args.space);
+    };
+    GameBody.prototype.notif_reshuffleDiscardPile = function (notif) {
+        this.cardController.setupDeck(notif.args.deck);
     };
     /**
      * Handle 'setupMoney' notification
@@ -644,6 +661,11 @@ var CardController = /** @class */ (function () {
         var discardDiv = dojo.byId("aoc-game-status-panel");
         gameui.slideToObjectAndDestroy(cardDiv, discardDiv, 1000);
     };
+    CardController.prototype.discardCardFromDeck = function (card) {
+        var cardDiv = dojo.byId("aoc-card-" + card.id);
+        var discardDiv = dojo.byId("aoc-game-status-panel");
+        gameui.slideToObjectAndDestroy(cardDiv, discardDiv, 1000);
+    };
     CardController.prototype.gainStartingComic = function (card) {
         var location = "aoc-select-starting-comic-" + card.genre;
         this.createComicCard(card, location);
@@ -652,6 +674,7 @@ var CardController = /** @class */ (function () {
     CardController.prototype.slideCardToPlayerHand = function (card, startLocation) {
         var cardDiv = dojo.byId("aoc-card-" + card.id);
         var facedownCss = card.facedownClass;
+        var baseCss = card.baseClass;
         if (cardDiv.classList.contains(facedownCss) &&
             card.cssClass !== facedownCss) {
             cardDiv.classList.remove(facedownCss);
@@ -659,7 +682,7 @@ var CardController = /** @class */ (function () {
         }
         if (!cardDiv.classList.contains(facedownCss) &&
             card.cssClass === facedownCss) {
-            cardDiv.classList.remove(card.cssClass);
+            cardDiv.classList.remove(baseCss);
             cardDiv.classList.add(facedownCss);
         }
         var handDiv = dojo.byId("aoc-hand-" + card.playerId);
@@ -1544,10 +1567,72 @@ var NextPlayerSetup = /** @class */ (function () {
 var PerformDevelop = /** @class */ (function () {
     function PerformDevelop(game) {
         this.game = game;
+        this.connections = {};
     }
-    PerformDevelop.prototype.onEnteringState = function (stateArgs) { };
-    PerformDevelop.prototype.onLeavingState = function () { };
+    PerformDevelop.prototype.onEnteringState = function (stateArgs) {
+        if (stateArgs.isCurrentPlayerActive) {
+            this.createDevelopActions();
+            this.createDevelopFromDeckActions(stateArgs.args.canDevelopFromDeck);
+        }
+    };
+    PerformDevelop.prototype.onLeavingState = function () {
+        dojo.query(".aoc-clickable").removeClass("aoc-clickable");
+        for (var key in this.connections) {
+            dojo.disconnect(this.connections[key]);
+        }
+        this.connections = {};
+        var buttonRowDiv = dojo.byId("aoc-develop-from-deck-buttons");
+        if (buttonRowDiv) {
+            buttonRowDiv.remove();
+        }
+    };
     PerformDevelop.prototype.onUpdateActionButtons = function (stateArgs) { };
+    PerformDevelop.prototype.createDevelopActions = function () {
+        var topCardOfDeck = dojo.byId("aoc-comic-deck").lastChild;
+        topCardOfDeck.classList.add("aoc-clickable");
+        var topCardOfDeckId = topCardOfDeck.id.split("-")[2];
+        this.connections["comic" + topCardOfDeckId] = dojo.connect(dojo.byId(topCardOfDeck.id), "onclick", dojo.hitch(this, this.developComic, topCardOfDeckId));
+        var cardElements = dojo.byId("aoc-comics-available").children;
+        for (var key in cardElements) {
+            var card = cardElements[key];
+            if (card.id) {
+                card.classList.add("aoc-clickable");
+                var cardId = card.id.split("-")[2];
+                this.connections["comic" + cardId] = dojo.connect(dojo.byId(card.id), "onclick", dojo.hitch(this, this.developComic, cardId));
+            }
+        }
+    };
+    PerformDevelop.prototype.createDevelopFromDeckActions = function (canDevelopFromDeck) {
+        var buttonRowDiv = "<div id='aoc-develop-from-deck-buttons' class='aoc-action-panel-row'><div id='aoc-seach-icon' class='aoc-search-icon'></div></div>";
+        this.game.createHtml(buttonRowDiv, "page-title");
+        var genres = this.game.getGenres();
+        for (var key in genres) {
+            var genre = genres[key];
+            var buttonDiv = "<div id='aoc-develop-from-deck-" +
+                genre +
+                "' class='aoc-mini-comic-card aoc-mini-comic-card-" +
+                genre +
+                "'></div>";
+            this.game.createHtml(buttonDiv, "aoc-develop-from-deck-buttons");
+            if (canDevelopFromDeck) {
+                dojo.addClass("aoc-develop-from-deck-" + genre, "aoc-image-clickable");
+                this.connections["developFromDeck" + genre] = dojo.connect(dojo.byId("aoc-develop-from-deck-" + genre), "onclick", dojo.hitch(this, this.developComicFromDeck, genre));
+            }
+            else {
+                dojo.addClass("aoc-develop-from-deck-" + genre, "aoc-image-disabled");
+            }
+        }
+    };
+    PerformDevelop.prototype.developComic = function (comicId) {
+        this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_DEVELOP_COMIC, {
+            comicId: comicId,
+        });
+    };
+    PerformDevelop.prototype.developComicFromDeck = function (genre) {
+        this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_DEVELOP_FROM_GENRE, {
+            genre: genre,
+        });
+    };
     return PerformDevelop;
 }());
 /**
@@ -1653,7 +1738,10 @@ var PerformIdeas = /** @class */ (function () {
         dojo.disconnect(this.connections["aoc-idea-cancel-1"]);
         dojo.disconnect(this.connections["aoc-idea-cancel-2"]);
         this.connections = {};
-        dojo.byId("aoc-idea-token-selection").remove();
+        var selectionDiv = dojo.byId("aoc-idea-token-selection");
+        if (selectionDiv) {
+            selectionDiv.remove();
+        }
     };
     PerformIdeas.prototype.onUpdateActionButtons = function (stateArgs) {
         var _this = this;
@@ -1705,7 +1793,7 @@ var PerformIdeas = /** @class */ (function () {
         this.connections["aoc-idea-cancel-" + idNum] = dojo.connect(dojo.byId("aoc-idea-cancel-" + idNum), "onclick", dojo.hitch(this, "removeIdea", idNum));
     };
     PerformIdeas.prototype.createIdeaTokensFromSupplyActions = function () {
-        var ideaTokenSelectionDiv = "<div id='aoc-idea-token-selection'></div>";
+        var ideaTokenSelectionDiv = "<div id='aoc-idea-token-selection' class='aoc-action-panel-row'></div>";
         this.game.createHtml(ideaTokenSelectionDiv, "page-title");
         var genres = this.game.getGenres();
         for (var key in genres) {

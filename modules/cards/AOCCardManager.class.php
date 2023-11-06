@@ -81,6 +81,20 @@ class AOCCardManager extends APP_GameClass {
         return $uiData;
     }
 
+    public function developComic($playerId, $comicId) {
+        $sql =
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_id = " .
+            $comicId;
+        $row = self::getObjectFromDB($sql);
+        $card = new AOCComicCard($row);
+        $card->setPlayerId($playerId);
+        $card->setLocation(LOCATION_HAND);
+        $card->setLocationArg($card->getTypeId() * 100 + $card->getGenreId());
+        $this->saveCard($card);
+
+        return $card;
+    }
+
     public function discardCard($cardId) {
         $sql =
             "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_id = " .
@@ -88,6 +102,7 @@ class AOCCardManager extends APP_GameClass {
         $row = self::getObjectFromDB($sql);
         $card = new AOCCard($row);
         $card->setLocation(LOCATION_DISCARD);
+        $card->setLocationArg(0);
         $card->setPlayerId(0);
         $this->saveCard($card);
 
@@ -195,6 +210,16 @@ class AOCCardManager extends APP_GameClass {
 
     public function getComicDeck() {
         $rows = $this->getDeckByType(CARD_TYPE_COMIC);
+
+        $cards = [];
+        foreach ($rows as $row) {
+            $cards[] = new AOCComicCard($row);
+        }
+        return $cards;
+    }
+
+    public function getComicDeckDesc() {
+        $rows = $this->getDeckByTypeDesc(CARD_TYPE_COMIC);
 
         $cards = [];
         foreach ($rows as $row) {
@@ -363,6 +388,26 @@ class AOCCardManager extends APP_GameClass {
         $this->saveCards($cards);
     }
 
+    public function shuffleDiscardPile($cardType) {
+        $rows = $this->getCardsByTypeInLocation($cardType, LOCATION_DISCARD);
+
+        $cards = [];
+        foreach ($rows as $row) {
+            $cards[] = new AOCCard($row);
+        }
+
+        shuffle($cards);
+
+        $locationArg = 0;
+        foreach ($cards as $card) {
+            $card->setLocation(LOCATION_DECK);
+            $card->setLocationArg($locationArg);
+            $locationArg++;
+        }
+
+        $this->saveCards($cards);
+    }
+
     private function createCreativeCards($creativeType) {
         $sql =
             "INSERT INTO card (card_type, card_type_arg, card_genre, card_location) VALUES ";
@@ -489,6 +534,18 @@ class AOCCardManager extends APP_GameClass {
             " AND card_location = " .
             LOCATION_DECK .
             " ORDER BY card_location_arg";
+        $rows = self::getObjectListFromDB($sql);
+
+        return $rows;
+    }
+
+    private function getDeckByTypeDesc($cardType) {
+        $sql =
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_type = " .
+            $cardType .
+            " AND card_location = " .
+            LOCATION_DECK .
+            " ORDER BY card_location_arg DESC";
         $rows = self::getObjectListFromDB($sql);
 
         return $rows;

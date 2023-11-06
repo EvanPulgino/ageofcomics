@@ -54,7 +54,10 @@ class PerformIdeas implements State {
 
     this.connections = {};
 
-    dojo.byId("aoc-idea-token-selection").remove();
+    var selectionDiv = dojo.byId("aoc-idea-token-selection");
+    if (selectionDiv) {
+      selectionDiv.remove();
+    }
   }
   onUpdateActionButtons(stateArgs: any): void {
     if (stateArgs.isCurrentPlayerActive) {
@@ -126,7 +129,8 @@ class PerformIdeas implements State {
   }
 
   createIdeaTokensFromSupplyActions(): void {
-    var ideaTokenSelectionDiv = "<div id='aoc-idea-token-selection'></div>";
+    var ideaTokenSelectionDiv =
+      "<div id='aoc-idea-token-selection' class='aoc-action-panel-row'></div>";
     this.game.createHtml(ideaTokenSelectionDiv, "page-title");
 
     const genres = this.game.getGenres();

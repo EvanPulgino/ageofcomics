@@ -141,12 +141,13 @@ $machinestates = [
     ST_PERFORM_DEVELOP => [
         "name" => PERFORM_DEVELOP,
         "description" => clienttranslate(
-            '${actplayer} must perform a develop action'
+            '${actplayer} must develop a comic from the market or pay $4 to develop the next comic of a genre from the deck'
         ),
         "descriptionmyturn" => clienttranslate(
-            '${you} must perform a develop action'
+            '${you} must develop a comic from the market or pay $4 to develop the next comic of a genre from the deck'
         ),
         "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "args" => STATE_ARGS_PERFORM_DEVELOP,
         "possibleactions" => [
             PLAYER_ACTION_DEVELOP_COMIC,
             PLAYER_ACTION_DEVELOP_FROM_GENRE,

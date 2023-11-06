@@ -54,6 +54,26 @@ class action_ageofcomics extends APP_GameAction {
         self::ajaxResponse();
     }
 
+    public function developComic() {
+        self::setAjaxMode();
+
+        $comicId = self::getArg("comicId", AT_posint, true);
+
+        $this->game->developComic($comicId);
+
+        self::ajaxResponse();
+    }
+
+    public function developFromGenre() {
+        self::setAjaxMode();
+
+        $genre = self::getArg("genre", AT_alphanum, true);
+
+        $this->game->developFromGenre($genre);
+
+        self::ajaxResponse();
+    }
+
     public function hireCreative() {
         self::setAjaxMode();
 

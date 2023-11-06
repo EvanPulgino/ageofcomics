@@ -54,6 +54,7 @@ class AOCRipoffCard extends AOCCard {
             "playerId" => $this->getPlayerId(),
             "ripoffKey" => $this->getRipoffKey(),
             "name" => $this->getName(),
+            "baseClass" => $this->baseClass,
             "facedownClass" => $this->facedownClass,
             "cssClass" => $this->deriveCssClass($currentPlayerId),
         ];

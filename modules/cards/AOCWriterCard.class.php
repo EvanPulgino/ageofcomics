@@ -65,6 +65,7 @@ class AOCWriterCard extends AOCCard {
             "value" => $this->getValue(),
             "fans" => $this->getFans(),
             "ideas" => $this->getIdeas(),
+            "baseClass" => $this->baseClass,
             "facedownClass" => $this->facedownClass,
             "cssClass" => $this->deriveCssClass($currentPlayerId),
         ];

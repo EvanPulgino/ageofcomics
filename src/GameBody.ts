@@ -83,10 +83,17 @@ class GameBody extends GameBasics {
       }
     }
     this.notifqueue.setSynchronous("discardCard", 500);
+    this.notifqueue.setSynchronous("discardCardFromDeck", 500);
     this.notifqueue.setSynchronous("gainIdeaFromBoard", 500);
     this.notifqueue.setSynchronous("gainIdeaFromSupply", 500);
     this.notifqueue.setSynchronous("gainStartingIdea", 500);
     this.notifqueue.setSynchronous("gainStartingIdeaPrivate", 500);
+    this.notifqueue.setIgnoreNotificationCheck(
+      "developComic",
+      function (notif: any) {
+        return notif.args.player_id == gameui.player_id;
+      }
+    );
     this.notifqueue.setIgnoreNotificationCheck(
       "gainStartingComic",
       function (notif: any) {
@@ -114,6 +121,10 @@ class GameBody extends GameBasics {
    */
   notif_message(notif: any): void {}
 
+  notif_adjustMoney(notif: any): void {
+    this.playerController.adjustMoney(notif.args.player, notif.args.amount);
+  }
+
   notif_completeSetup(notif: any): void {
     this.cardController.setupDeck(notif.args.artistCards.deck);
     this.cardController.setupDeck(notif.args.writerCards.deck);
@@ -124,8 +135,20 @@ class GameBody extends GameBasics {
     this.cardController.setupSupply(notif.args.comicCards.supply);
   }
 
+  notif_developComic(notif: any): void {
+    this.cardController.slideCardToPlayerHand(notif.args.comic, "");
+  }
+
+  notif_developComicPrivate(notif: any): void {
+    this.cardController.slideCardToPlayerHand(notif.args.comic, "");
+  }
+
   notif_discardCard(notif: any): void {
     this.cardController.discardCard(notif.args.card, notif.args.player.id);
+  }
+
+  notif_discardCardFromDeck(notif: any): void {
+    this.cardController.discardCardFromDeck(notif.args.card);
   }
 
   notif_flipCalendarTiles(notif: any): void {
@@ -181,12 +204,10 @@ class GameBody extends GameBasics {
   }
 
   notif_hireCreative(notif: any): void {
-    console.log("notif_hireCreative", notif);
     this.cardController.slideCardToPlayerHand(notif.args.card, "");
   }
 
   notif_hireCreativePrivate(notif: any): void {
-    console.log("notif_hireCreativePrivate", notif);
     this.cardController.slideCardToPlayerHand(notif.args.card, "");
   }
 
@@ -195,6 +216,10 @@ class GameBody extends GameBasics {
       notif.args.editor,
       notif.args.space
     );
+  }
+
+  notif_reshuffleDiscardPile(notif: any): void {
+    this.cardController.setupDeck(notif.args.deck);
   }
 
   /**

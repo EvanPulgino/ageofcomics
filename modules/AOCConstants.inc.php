@@ -846,6 +846,7 @@ define("SALES_ORDER_CONNECTIONS", [
 /** State Args */
 define("STATE_ARGS_CHECK_HAND_SIZE", "argsCheckHandSize");
 define("STATE_ARGS_GAME_END", "argGameEnd");
+define("STATE_ARGS_PERFORM_DEVELOP", "argsPerformDevelop");
 define("STATE_ARGS_PERFORM_HIRE", "argsPerformHire");
 define("STATE_ARGS_PERFORM_IDEAS", "argsPerformIdeas");
 define("STATE_ARGS_PERFORM_PRINT", "argsPerformPrint");

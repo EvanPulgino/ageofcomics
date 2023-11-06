@@ -60,6 +60,7 @@ class AOCComicCard extends AOCCard {
             "bonus" => $this->getBonus(),
             "fans" => $this->getFans(),
             "name" => $this->getName(),
+            "baseClass" => $this->baseClass,
             "facedownClass" => $this->facedownClass,
             "cssClass" => $this->deriveCssClass($currentPlayerId),
         ];

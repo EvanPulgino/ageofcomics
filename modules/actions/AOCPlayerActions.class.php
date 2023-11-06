@@ -73,6 +73,148 @@ class AOCPlayerActions {
         $this->game->gamestate->nextState("nextPlayerTurn");
     }
 
+    function developComic($args) {
+        $activePlayerId = $this->game->getActivePlayerId();
+        $activePlayer = $this->game->playerManager->getPlayer($activePlayerId);
+        $comicId = $args[0];
+
+        $comic = $this->game->cardManager->developComic(
+            $activePlayerId,
+            $comicId
+        );
+
+        $this->game->notifyAllPlayers(
+            "developComic",
+            clienttranslate('${player_name} develops a ${genre} comic'),
+            [
+                "player" => $activePlayer->getUiData(),
+                "player_id" => $activePlayerId,
+                "player_name" => $activePlayer->getName(),
+                "genre" => $comic->getGenre(),
+                "comic" => $comic->getUiData(0),
+            ]
+        );
+        $this->game->notifyPlayer(
+            $activePlayerId,
+            "developComicPrivate",
+            clienttranslate('${player_name} develops a ${genre} comic'),
+            [
+                "player" => $activePlayer->getUiData(),
+                "player_id" => $activePlayerId,
+                "player_name" => $activePlayer->getName(),
+                "genre" => $comic->getGenre(),
+                "comic" => $comic->getUiData($activePlayerId),
+            ]
+        );
+
+        if (
+            count($this->game->cardManager->getPlayerHand($activePlayerId)) > 6
+        ) {
+            $this->game->gamestate->nextState("discardCards");
+        } else {
+            $this->game->gamestate->nextState("nextPlayerTurn");
+        }
+    }
+
+    function developFromGenre($args) {
+        $activePlayerId = $this->game->getActivePlayerId();
+        $activePlayer = $this->game->playerManager->getPlayer($activePlayerId);
+        $genre = $args[0];
+
+        $this->game->playerManager->adjustPlayerMoney($activePlayer->getId(), -4);
+        $this->game->notifyAllPlayers(
+            "adjustMoney",
+            clienttranslate('${player_name} pays $4 to develop a comic'),
+            [
+                "player" => $activePlayer->getUiData(),
+                "player_name" => $activePlayer->getName(),
+                "amount" => -4,
+            ]
+        );
+
+        $comicDeck = $this->game->cardManager->getComicDeckDesc();
+
+        $cardToDevelop = null;
+
+        while ($cardToDevelop == null) {
+            foreach ($comicDeck as $comicCard) {
+                if ($comicCard->getGenre() == $genre) {
+                    $cardToDevelop = $comicCard;
+                    break;
+                }
+
+                $this->game->cardManager->discardCard($comicCard->getId());
+                $this->game->notifyAllPlayers(
+                    "discardCardFromDeck",
+                    clienttranslate(
+                        '${player_name} discards a ${genre} comic from the deck'
+                    ),
+                    [
+                        "player" => $activePlayer->getUiData(),
+                        "player_name" => $activePlayer->getName(),
+                        "card" => $comicCard->getUiData($activePlayerId),
+                        "genre" => $comicCard->getGenre(),
+                    ]
+                );
+            }
+
+            if ($cardToDevelop == null) {
+                $this->game->cardManager->shuffleDiscardPile(CARD_TYPE_COMIC);
+                $comicDeck = $this->game->cardManager->getComicDeckDesc();
+                $this->game->notifyAllPlayers(
+                    "reshuffleDiscardPile",
+                    clienttranslate(
+                        '${player_name} reshuffles the comic discard pile'
+                    ),
+                    [
+                        "player" => $activePlayer->getUiData(),
+                        "player_name" => $activePlayer->getName(),
+                        "deck" => $this->game->cardManager->getDeckUiData(
+                            CARD_TYPE_COMIC
+                        ),
+                    ]
+                );
+            }
+        }
+
+        $comic = $this->game->cardManager->developComic(
+            $activePlayerId,
+            $cardToDevelop->getId()
+        );
+
+        $this->game->notifyAllPlayers(
+            "developComic",
+            clienttranslate('${player_name} develops a ${genre} comic'),
+            [
+                "player" => $activePlayer->getUiData(),
+                "player_id" => $activePlayerId,
+                "player_name" => $activePlayer->getName(),
+                "genre" => $comic->getGenre(),
+                "comic" => $comic->getUiData(0),
+            ]
+        );
+        $this->game->notifyPlayer(
+            $activePlayerId,
+            "developComicPrivate",
+            clienttranslate('${player_name} develops a ${genre} comic'),
+            [
+                "player" => $activePlayer->getUiData(),
+                "player_id" => $activePlayerId,
+                "player_name" => $activePlayer->getName(),
+                "genre" => $comic->getGenre(),
+                "comic" => $comic->getUiData($activePlayerId),
+            ]
+        );
+
+        if (
+            count($this->game->cardManager->getPlayerHand($activePlayerId)) > 6
+        ) {
+            $this->game->gamestate->nextState("discardCards");
+        } else {
+            $this->game->gamestate->nextState("nextPlayerTurn");
+        }
+    }
+
     function hireCreative($args) {
         $activePlayerId = $this->game->getActivePlayerId();
         $activePlayer = $this->game->playerManager->getPlayer($activePlayerId);

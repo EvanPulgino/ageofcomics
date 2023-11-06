@@ -112,6 +112,12 @@ class CardController {
     gameui.slideToObjectAndDestroy(cardDiv, discardDiv, 1000);
   }
 
+  discardCardFromDeck(card: any): void {
+    var cardDiv = dojo.byId("aoc-card-" + card.id);
+    var discardDiv = dojo.byId("aoc-game-status-panel");
+    gameui.slideToObjectAndDestroy(cardDiv, discardDiv, 1000);
+  }
+
   gainStartingComic(card: any): void {
     var location = "aoc-select-starting-comic-" + card.genre;
     this.createComicCard(card, location);
@@ -121,6 +127,7 @@ class CardController {
   slideCardToPlayerHand(card: any, startLocation: string): void {
     var cardDiv = dojo.byId("aoc-card-" + card.id);
     var facedownCss = card.facedownClass;
+    var baseCss = card.baseClass;
     if (
       cardDiv.classList.contains(facedownCss) &&
       card.cssClass !== facedownCss
@@ -132,7 +139,7 @@ class CardController {
       !cardDiv.classList.contains(facedownCss) &&
       card.cssClass === facedownCss
     ) {
-      cardDiv.classList.remove(card.cssClass);
+      cardDiv.classList.remove(baseCss);
       cardDiv.classList.add(facedownCss);
     }
 

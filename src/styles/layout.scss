@@ -163,11 +163,11 @@ html {
   justify-content: center;
 }
 
-#aoc-idea-token-selection {
+.aoc-action-panel-row {
   align-items: center;
   display: flex;
   flex-flow: row nowrap;
-  gap: 10px;
+  gap: 15px;
   justify-content: center;
   padding-bottom: 10px;
   padding-top: 15px;
@@ -363,4 +363,26 @@ html {
 .aoc-arrow:hover {
   transform: scale(1.2);
   cursor: pointer;
+}
+
+.aoc-search-icon {
+  background-image: url(./img/aoc_search_icon.png);
+  height: 44px;
+  width: 56px;
+}
+
+.aoc-image-clickable {
+  outline: 2px solid red;
+  cursor: pointer;
+}
+
+.aoc-image-clickable:hover {
+  transform: scale(1.05);
+  outline: 2px solid green !important;
+}
+
+.aoc-image-disabled {
+  opacity: 25% !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
 }
