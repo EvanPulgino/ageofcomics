@@ -14,6 +14,8 @@
  *
  * In this PHP file, you are going to defines the rules of the game.
  *
+ * @link https://en.doc.boardgamearena.com/Main_game_logic:_yourgamename.game.php
+ *
  */
 
 include "modules/autoload.php";
@@ -65,13 +67,12 @@ class AgeOfComics extends Table {
     }
 
     /**
-     * @param mixed $players
-     * @param mixed $options
-     * @return void
-     *
      * This method is called only once, when a new game is launched.
-     * In this method, you must setup the game according to the game rules, so that
-     * the game is ready to be played.
+     * In this method the initial game setup is performed.
+     *
+     * @param mixed $players Array of players
+     * @param mixed $options Array of game options
+     * @return void
      */
     protected function setupNewGame($players, $options = []) {
         // Setup players
@@ -120,15 +121,15 @@ class AgeOfComics extends Table {
         /************ End of the game initialization *****/
     }
 
-    /*
-        getAllDatas: 
-        
-        Gather all informations about current game situation (visible by the current player).
-        
-        The method is called each time the game interface is displayed to a player, ie:
-        _ when the game starts
-        _ when a player refreshes the game page (F5)
-    */
+    /**
+     * Gathers all information about current game situation (visible by the current player).
+     *
+     * The method is called each time the game interface is displayed to a player, ie:
+     * - when the game starts
+     * - when a player refreshes the game page (F5)
+     *
+     * @return array Array containing all the current game information that must be sent to the client
+     */
     protected function getAllDatas() {
         $currentPlayerId = self::getCurrentPlayerId();
 
@@ -179,22 +180,33 @@ class AgeOfComics extends Table {
         return $gamedata;
     }
 
-    /*
-        getGameProgression:
-        
-        Compute and return the current game progression.
-        The number returned must be an integer beween 0 (=the game just started) and
-        100 (= the game is finished or almost finished).
-    
-        This method is called each time we are in a game state with the "updateGameProgression" property set to true 
-        (see states.inc.php)
-    */
+    /**
+     * Compute and return the current game progression.
+     * The number returned must be an integer beween 0 (= the game just started) and
+     * 100 (= the game is finished or almost finished).
+     *
+     * This method is called each time we are in a game state with the "updateGameProgression" property set to true
+     *
+     * @link https://en.doc.boardgamearena.com/Your_game_state_machine:_states.inc.php#updateGameProgression
+     *
+     * @return int The percentage of the game completed rounded to nearest integer
+     */
     function getGameProgression() {
         return (self::getGameStateValue(TURNS_TAKEN) /
             self::getGameStateValue(TOTAL_TURNS)) *
             100;
     }
 
+    /**
+     * This method is called everytime the system tries to call an undefined method.
+     * It will look for functions that are defined in:
+     *  @see AOCGameStateActions
+     *  @see AOCPlayerActions
+     *
+     * @param string $name The name of the function being called
+     * @param array $args The arguments passed to the function
+     * @return void
+     */
     function __call($name, $args) {
         if (in_array($name, get_class_methods($this->gameStateActions))) {
             call_user_func([$this->gameStateActions, $name], $args);
@@ -204,8 +216,9 @@ class AgeOfComics extends Table {
     }
 
     /**
-     * Get current contents of ideas space
-     * @return array
+     * Gets the current contents of the ideas space
+     *
+     * @return array Array of contents of the Ideas space on the board
      */
     function getIdeasSpaceContents() {
         $ideasSpaceContents = [];
@@ -219,13 +232,24 @@ class AgeOfComics extends Table {
     }
 
     /**
-     * Public wrapper for getCurrentPlayerId()
-     * @return mixed
+     * Gets the player id of the player viewing the game
+     *
+     * This is a wrapper for the getCurrentPlayerId function so it can be accessed outside of the class
+     *
+     * @return int The id of the player viewing the game
      */
     function getViewingPlayerId() {
         return self::getCurrentPlayerId();
     }
 
+    /**
+     * Gets the list of args used by the CheckHandSize state
+     *
+     * Args:
+     *  - numberToDiscard => The number of cards the player must discard
+     *
+     * @return array The list of args used by the CheckHandSize state
+     */
     function argsCheckHandSize() {
         return [
             "numberToDiscard" =>
@@ -235,6 +259,16 @@ class AgeOfComics extends Table {
         ];
     }
 
+    /**
+     * Gets the list of args used by the PerformDevelop state
+     *
+     * Args:
+     * - availableGenres => The number of combined comics in the deck and discard for each genre
+     * - canDevelopFromDeck => Whether the player has enough money to develop a comic from the deck
+     * - fromDeckText => The text to display in the game state panel if the player can develop a comic from the deck
+     *
+     * @return array The list of args used by the PerformDevelop state
+     */
     function argsPerformDevelop() {
         $activePlayer = $this->playerManager->getActivePlayer();
         $canDevelopFromDeck = $activePlayer->getMoney() >= 4;
@@ -270,6 +304,16 @@ class AgeOfComics extends Table {
         ];
     }
 
+    /**
+     * Gets the list of args used by the PerformHire state
+     *
+     * Args:
+     * - canHireArtist => Whether the player has hired an artist on this turn or not
+     * - canHireWriter => Whether the player has hired a writer on this turn or not
+     * - hireText => The text to display in the game state panel based on the creatives a player has hired this turn
+     *
+     * @return array The list of args used by the PerformHire state
+     */
     function argsPerformHire() {
         $canHireArtist = self::getGameStateValue(CAN_HIRE_ARTIST);
         $canHireWriter = self::getGameStateValue(CAN_HIRE_WRITER);
@@ -290,6 +334,15 @@ class AgeOfComics extends Table {
         ];
     }
 
+    /**
+     * Gets the list of args used by the PerformIdeas state
+     *
+     * Args:
+     * - selectedActionSpace => The id of the action space where the player placed their editor
+     * - ideasFromBoard => The number of ideas the player can take from the board
+     *
+     * @return array The list of args used by the PerformIdeas state
+     */
     function argsPerformIdeas() {
         $selectedActionSpace = self::getGameStateValue(SELECTED_ACTION_SPACE);
         $ideasFromBoard = 0;
@@ -314,6 +367,14 @@ class AgeOfComics extends Table {
         ];
     }
 
+    /**
+     * Gets the list of args used by the PerformPrint state
+     *
+     * Args:
+     * - selectedActionSpace => The id of the action space where the player placed their editor
+     *
+     * @return array The list of args used by the PerformPrint state
+     */
     function argsPerformPrint() {
         return [
             "selectedActionSpace" => self::getGameStateValue(
@@ -322,6 +383,14 @@ class AgeOfComics extends Table {
         ];
     }
 
+    /**
+     * Gets the list of args used by the PerformSales state
+     *
+     * Args:
+     * - selectedActionSpace => The id of the action space where the player placed their editor
+     *
+     * @return array The list of args used by the PerformSales state
+     */
     function argsPerformSales() {
         return [
             "selectedActionSpace" => self::getGameStateValue(
@@ -330,12 +399,31 @@ class AgeOfComics extends Table {
         ];
     }
 
+    /**
+     * Gets the list of args used by the PlayerSetup state
+     *
+     * Args:
+     * - startIdeas => The number of starting ideas the player gets
+     *
+     * @return array The list of args used by the PlayerSetup state
+     */
     function argsPlayerSetup() {
         return [
             "startIdeas" => self::getGameStateValue(START_IDEAS),
         ];
     }
 
+    /**
+     * Gets the list of args used by the PlayerTurn state
+     *
+     * Args:
+     * - hireActionSpace => The id of the next available hire action space
+     * - developActionSpace => The id of the next available develop action space
+     * - ideasActionSpace => The id of the next available ideas action space
+     * - printActionSpace => The id of the next available print action space
+     * - royaltiesActionSpace => The id of the next available royalties action space
+     * - salesActionSpace => The id of the next available sales action space
+     */
     function argsPlayerTurn() {
         return [
             "hireActionSpace" => $this->editorManager->getNextActionSpaceForEditor(
@@ -359,19 +447,13 @@ class AgeOfComics extends Table {
         ];
     }
 
-    /*
-        zombieTurn:
-        
-        This method is called each time it is the turn of a player who has quit the game (= "zombie" player).
-        You can do whatever you want in order to make sure the turn of this player ends appropriately
-        (ex: pass).
-        
-        Important: your zombie code will be called when the player leaves the game. This action is triggered
-        from the main site and propagated to the gameserver from a server, not from a browser.
-        As a consequence, there is no current player associated to this action. In your zombieTurn function,
-        you must _never_ use getCurrentPlayerId() or getCurrentPlayerName(), otherwise it will fail with a "Not logged" error message. 
-    */
-
+    /**
+     * Called when it is the turn of a player who has quit the game
+     *
+     * @param array $state The current game state
+     * @param int $active_player The id of the active player
+     * @return void
+     */
     function zombieTurn($state, $active_player) {
         $statename = $state["name"];
 
@@ -408,6 +490,13 @@ class AgeOfComics extends Table {
     
     */
 
+    /**
+     * Called when system detects a game running with an old database schema.
+     * Updates schema to match current version.
+     *
+     * @param int $from_version The current version of this game database, in numerical form
+     * @return void
+     */
     function upgradeTableDb($from_version) {
         // $from_version is the current version of this game database, in numerical form.
         // For example, if the game was running with a release of your game named "140430-1345",
