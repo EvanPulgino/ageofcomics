@@ -11,7 +11,7 @@
  *
  * AOCConstants.inc.php
  *
- * @author @EvanPulgino
+ * @EvanPulgino
  */
 
 /** Game State Actions */
@@ -854,6 +854,12 @@ define("SALES_ORDER_CONNECTIONS", [
             LOCATION_ORDER_SPACE_12_7,
         ],
     ],
+]);
+
+define("SALES_ORDERS_FOR_PLAYER_COUNT", [
+    2 => [3, 3, 4, 5, 6],
+    3 => [3, 3, 4, 4, 5, 6],
+    4 => [3, 3, 3, 4, 4, 5, 6],
 ]);
 
 /** State Args */

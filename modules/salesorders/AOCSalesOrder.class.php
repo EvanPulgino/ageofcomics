@@ -9,10 +9,9 @@
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * AOCSalesOrder.class.php
+ * AOCSalesOrder object class
  *
- * AOCSalesOrder class
- *
+ * @EvanPulgino
  */
 
 class AOCSalesOrder {

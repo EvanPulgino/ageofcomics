@@ -19,7 +19,8 @@
  * this.ajaxcall( "/ageofcomics/ageofcomics/myAction.html", ...)
  *
  * @link https://en.doc.boardgamearena.com/Players_actions:_yourgamename.action.php
- * @author @EvanPulgino
+ *
+ * @EvanPulgino
  */
 
 class action_ageofcomics extends APP_GameAction {

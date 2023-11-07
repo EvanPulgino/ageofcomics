@@ -15,7 +15,8 @@
  * In this PHP file, you are going to defines the rules of the game.
  *
  * @link https://en.doc.boardgamearena.com/Main_game_logic:_yourgamename.game.php
- * @author @EvanPulgino
+ * 
+ * @EvanPulgino
  */
 
 include "modules/autoload.php";
