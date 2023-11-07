@@ -11,9 +11,10 @@
  *
  * AOCConstants.inc.php
  *
+ * @author @EvanPulgino
  */
 
-/** Actions */
+/** Game State Actions */
 define("GAME_ACTION_COMPLETE_SETUP", "stCompleteSetup");
 define("GAME_ACTION_GAME_END", "stGameEnd");
 define("GAME_ACTION_GAME_SETUP", "stGameSetup");
@@ -22,6 +23,7 @@ define("GAME_ACTION_NEXT_PLAYER", "stNextPlayer");
 define("GAME_ACTION_NEXT_PLAYER_SETUP", "stNextPlayerSetup");
 define("GAME_ACTION_START_NEW_ROUND", "stStartNewRound");
 
+/** Player Actions */
 define("PLAYER_ACTION_COLLECT_SALES_ORDER", "collectSalesOrder");
 define("PLAYER_ACTION_DEVELOP_COMIC", "developComic");
 define("PLAYER_ACTION_DEVELOP_FROM_GENRE", "developFromGenre");
@@ -93,56 +95,56 @@ define("SUPER_TRANSPORT", 3);
 define("PLUS_FOUR_MONEY", 4);
 
 /** Comic Names */
-define("ALIEN_WORLDS", "ALIEN WORLDS");
-define("ANGEL_OF_LIBERTY", "ANGEL of LIBERTY");
-define("CALL_THE_POLICE", "CALL the POLICE");
-define("CARMILLA", "CARMiLLA");
-define("FREEDOM_COMICS", "FREEDOM Comics");
-define("FUTURE_WONDER", "FUTURE Wonder");
-define("GANG_WARS", "GANG WARS!");
-define("HAUNTING_TALES", "HAUNTING TALES");
-define("HEARTBREAKERS", "Heartbreakers!");
-define("HEY_RANGER", "HEY RANGER");
-define("IT_LIVES", "IT LIVES");
-define("ITS_A_FELONY", "IT'S A FELONY");
-define("JUST_A_FEELING", "JUST A Feeling");
-define("KILLER_DAMES", "KiLLER Dames");
-define("KINGS_OF_THE_PLAINS", "KINGS OF THE PLAINS");
+define("ALIEN_WORLDS", "Alien Worlds");
+define("ANGEL_OF_LIBERTY", "Angel of Liberty");
+define("CALL_THE_POLICE", "Call the Police");
+define("CARMILLA", "Carmilla");
+define("FREEDOM_COMICS", "Freedom Comics");
+define("FUTURE_WONDER", "Future Wonder");
+define("GANG_WARS", "Gang Wars");
+define("HAUNTING_TALES", "Haunting Tales");
+define("HEARTBREAKERS", "Heartbreakers");
+define("HEY_RANGER", "Hey Ranger");
+define("IT_LIVES", "It Lives");
+define("ITS_A_FELONY", "It's a Felony");
+define("JUST_A_FEELING", "Just a Feeling");
+define("KILLER_DAMES", "Killer Dames");
+define("KINGS_OF_THE_PLAINS", "King of the Plains");
 define("LOVE_LETTER", "Love Letter");
 define("MISS_TIGER", "Miss Tiger");
-define("NEPTUNIO", "NEPTUNIO");
-define("OUTLAWS", "OUTLAWS");
-define("STAR_SPANGLED_DUO", "STAR-SPANGLED DUO!");
-define("STORIES_OF_TOMORROW", "STORIES OF TOMORROW");
-define("TEEN_DRAMA", "TEEN DRAMA");
-define("TRUE_TERROR", "TRUE TERROR");
-define("WILD_ANNIE", "WILD ANNIE");
+define("NEPTUNIO", "Neptunio");
+define("OUTLAWS", "Outlaws");
+define("STAR_SPANGLED_DUO", "Star-Spangled Duo");
+define("STORIES_OF_TOMORROW", "Stories of Tomorrow");
+define("TEEN_DRAMA", "Teen Drama");
+define("TRUE_TERROR", "True Terror");
+define("WILD_ANNIE", "Wild Annie");
 
 /** Ripoff Names */
-define("WEIRD_WORLDS", "WEIRD WORLDS");
-define("WINGS_OF_LIBERTY", "WINGS of LIBERTY");
-define("CALL_THE_COPS", "CALL the COPSs");
-define("VAMPYRIA", "VAMPYRiA");
-define("JUSTICE_COMICS", "JUSTICE Comics");
-define("FUTURE_MARVELS", "FUTURE Marvels");
-define("BANG_WARS", "BANG WARS!");
-define("HARROWING_TALES", "HARROWING TALES");
-define("TEARJERKERS", "Tearjerkers!");
-define("HI_RANGER", "HI RANGER");
-define("IT_WALKS", "IT WALKS");
-define("ITS_A_LARCENY", "IT'S A LARCENY");
-define("JUST_AN_EMOTION", "JUST AN Emotion");
-define("DEADLY_DAMES", "DEADLY Dames");
-define("KINGS_OF_THE_PEAKS", "KINGS OF THE PEAKS");
+define("BANDITS", "Bandits");
+define("BANG_WARS", "Bang Wars");
+define("CALL_THE_COPS", "Call the Cops");
+define("DEADLY_DAMES", "Deadly Dames");
+define("FUTURE_MARVELS", "Future Marvels");
+define("HARROWING_TALES", "Harrowing Tales");
+define("HI_RANGER", "Hi Ranger");
+define("IT_WALKS", "It Walks");
+define("ITS_A_LARCENY", "It's a Larceny");
+define("JUST_AN_EMOTION", "Just an Emotion");
+define("JUSTICE_COMICS", "Justice Comics");
+define("KINGS_OF_THE_PEAKS", "Kings of the Peaks");
+define("LEGENDS_OF_TOMORROW", "Legends of Tomorrow");
 define("LOVE_NOTES", "Love Notes");
 define("MISS_KITTY", "Miss Kitty");
-define("SATURNIO", "SATURNIO");
-define("BANDITS", "BANDITS");
-define("STAR_SPANGLED_DUDS", "STAR-SPANGLED DUDS!");
-define("LEGENDS_OF_TOMORROW", "LEGENDS OF TOMORROW");
-define("TWIN_DRAMA", "TWIN DRAMA");
-define("TRUE_HORROR", "TRUE HORROR");
-define("WILD_JENNY", "WILD JENNY");
+define("SATURNIO", "Saturnio");
+define("STAR_SPANGLED_DUDS", "Star-Spangled Duds");
+define("TEARJERKERS", "Tearjerkers");
+define("TWIN_DRAMA", "Twin Drama");
+define("TRUE_HORROR", "True Horror");
+define("VAMPYRIA", "Vampyria");
+define("WEIRD_WORLDS", "Weird Worlds");
+define("WILD_JENNY", "Wild Jenny");
+define("WINGS_OF_LIBERTY", "Wings of Liberty");
 
 /** Comic Card Breakdown */
 define("COMIC_CARDS", [
@@ -186,6 +188,7 @@ define("COMIC_CARDS", [
     ],
 ]);
 
+/** Ripoff Card Breakdown */
 define("RIPOFF_CARDS", [
     GENRE_CRIME => [
         PLUS_ONE_FAN => DEADLY_DAMES,
@@ -225,6 +228,7 @@ define("RIPOFF_CARDS", [
     ],
 ]);
 
+/** Action Keys */
 define("HIRE_ACTION", 1);
 define("DEVELOP_ACTION", 2);
 define("IDEAS_ACTION", 3);
@@ -232,6 +236,7 @@ define("PRINT_ACTION", 4);
 define("ROYALTIES_ACTION", 5);
 define("SALES_ACTION", 6);
 
+/** Action Names */
 define("ACTION_STRING_FROM_KEY", [
     HIRE_ACTION => "hire",
     DEVELOP_ACTION => "develop",
@@ -258,7 +263,8 @@ define("TOTAL_TURNS", "total_turns");
 define("TURNS_TAKEN", "turns_taken");
 define("START_IDEAS", "start_ideas");
 define("MAX_ACTION_SPACES", "max_action_spaces");
-/** Locations */
+
+/** Location Keys */
 define("LOCATION_VOID", -1);
 define("LOCATION_DECK", 0);
 define("LOCATION_DISCARD", 1);
@@ -270,17 +276,23 @@ define("LOCATION_CHART", 6);
 define("LOCATION_HYPE", 7);
 define("LOCATION_EXTRA_EDITOR", 8);
 define("LOCATION_MAP", 9);
+
+/** Action Space Keys */
 define("LOCATION_ACTION_SPACE_1", 1);
 define("LOCATION_ACTION_SPACE_2", 2);
 define("LOCATION_ACTION_SPACE_3", 3);
 define("LOCATION_ACTION_SPACE_4", 4);
 define("LOCATION_ACTION_SPACE_5", 5);
+
+/** Action Location Keys */
 define("LOCATION_ACTION_HIRE", 10000);
 define("LOCATION_ACTION_DEVELOP", 20000);
 define("LOCATION_ACTION_IDEAS", 30000);
 define("LOCATION_ACTION_PRINT", 40000);
 define("LOCATION_ACTION_ROYALTIES", 50000);
 define("LOCATION_ACTION_SALES", 60000);
+
+/** Sales Agent Space Keys */
 define("LOCATION_AGENT_SPACE_1_1", 101);
 define("LOCATION_AGENT_SPACE_1_2", 102);
 define("LOCATION_AGENT_SPACE_1_3", 103);
@@ -306,6 +318,7 @@ define("LOCATION_AGENT_SPACE_6_2", 602);
 define("LOCATION_AGENT_SPACE_6_3", 603);
 define("LOCATION_AGENT_SPACE_6_4", 604);
 
+/** Sales Order Space Keys */
 define("LOCATION_ORDER_SPACE_1_5", 105);
 define("LOCATION_ORDER_SPACE_2_3", 203);
 define("LOCATION_ORDER_SPACE_2_5", 205);

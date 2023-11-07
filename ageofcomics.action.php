@@ -12,13 +12,14 @@
  *
  * AgeOfComics main action entry point
  *
- *
  * In this file, you are describing all the methods that can be called from your
  * user interface logic (javascript).
  *
  * If you define a method "myAction" here, then you can call it from your javascript code with:
  * this.ajaxcall( "/ageofcomics/ageofcomics/myAction.html", ...)
  *
+ * @link https://en.doc.boardgamearena.com/Players_actions:_yourgamename.action.php
+ * @author @EvanPulgino
  */
 
 class action_ageofcomics extends APP_GameAction {
