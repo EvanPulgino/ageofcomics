@@ -88,6 +88,14 @@ define("COMIC", "comic");
 define("RIPOFF", "ripoff");
 define("WRITER", "writer");
 
+/** Card Type To Name */
+define("CARD_TYPE_TO_NAME", [
+    CARD_TYPE_ARTIST => ARTIST,
+    CARD_TYPE_COMIC => COMIC,
+    CARD_TYPE_RIPOFF => RIPOFF,
+    CARD_TYPE_WRITER => WRITER,
+]);
+
 /** Comic Bonuses */
 define("PLUS_ONE_FAN", 1);
 define("TWO_IDEAS", 2);
@@ -226,6 +234,12 @@ define("RIPOFF_CARDS", [
         SUPER_TRANSPORT => BANDITS,
         PLUS_FOUR_MONEY => WILD_JENNY,
     ],
+]);
+
+/** Combined Comic Breakdown */
+define("COMBINED_COMIC_CARDS", [
+    CARD_TYPE_COMIC => COMIC_CARDS,
+    CARD_TYPE_RIPOFF => RIPOFF_CARDS,
 ]);
 
 /** Action Keys */

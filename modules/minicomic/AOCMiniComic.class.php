@@ -8,10 +8,9 @@
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * AOCMiniComic.class.php
+ * AOCMiniComic object class
  *
- * Mini comic object
- *
+ * @EvanPulgino
  */
 
 class AOCMiniComic {
@@ -31,7 +30,7 @@ class AOCMiniComic {
     public function __construct($row) {
         $this->id = (int) $row["id"];
         $this->typeId = (int) $row["type"];
-        $this->type = $this->getTypeName($this->typeId);
+        $this->type = CARD_TYPE_TO_NAME[$this->typeId];
         $this->comicKey = (int) $row["typeArg"];
         $this->genreId = (int) $row["genre"];
         $this->genre = GENRES[$this->genreId];
@@ -39,11 +38,10 @@ class AOCMiniComic {
         $this->locationArg = (int) $row["locationArg"];
         $this->playerId = (int) $row["playerId"];
         $this->fans = (int) $row["fans"];
-        $this->name = $this->getComicName(
-            $this->typeId,
-            $this->genreId,
-            $this->comicKey
-        );
+        $this->name =
+            COMBINED_COMIC_CARDS[$this->typeId][$this->genreId][
+                $this->comicKey
+            ];
         $this->cssClass = $this->deriveCssClass();
     }
 
@@ -113,25 +111,16 @@ class AOCMiniComic {
         ];
     }
 
-    private function getComicName($typeId, $genreId, $comicKey) {
-        if ($typeId == CARD_TYPE_COMIC) {
-            return COMIC_CARDS[$genreId][$comicKey];
-        } else {
-            return RIPOFF_CARDS[$genreId][$comicKey];
-        }
-    }
-
-    private function getTypeName($key) {
-        switch ($key) {
-            case CARD_TYPE_COMIC:
-                return clienttranslate(COMIC);
-            case CARD_TYPE_RIPOFF:
-                return clienttranslate(RIPOFF);
-        }
-    }
-
+    /**
+     * Derives the CSS class for this mini comic based on its type, genre, and comic key.
+     *
+     * @return string The CSS class for this mini comic.
+     */
     private function deriveCssClass() {
-        $base = $this->typeId == CARD_TYPE_COMIC ? "aoc-mini-comic" : "aoc-mini-ripoff";
+        $base =
+            $this->typeId == CARD_TYPE_COMIC
+                ? "aoc-mini-comic"
+                : "aoc-mini-ripoff";
         $class = $base . "-" . $this->genreId . "-" . $this->comicKey;
         if ($this->fans > 10) {
             return $class . "-flipped";

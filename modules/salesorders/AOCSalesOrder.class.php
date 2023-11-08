@@ -83,6 +83,11 @@ class AOCSalesOrder {
         return $this->cssClass;
     }
 
+    /**
+     * Get the data formatted for the UI
+     *
+     * @return array
+     */
     public function getUiData() {
         return [
             "id" => $this->id,
@@ -98,6 +103,11 @@ class AOCSalesOrder {
         ];
     }
 
+    /**
+     * Derive the CSS class for the sales order based on its genre and flipped status
+     *
+     * @return string The CSS class for the sales order
+     */
     private function deriveCssClass() {
         $cssClass = "aoc-salesorder-" . $this->genre;
         if ($this->flipped) {

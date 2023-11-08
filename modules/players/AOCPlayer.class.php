@@ -9,7 +9,7 @@
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * AOCPlayer player class
+ * AOCPlayer player object class
  *
  * @EvanPulgino
  */
@@ -120,6 +120,11 @@ class AOCPlayer {
         return $this->multiActive;
     }
 
+    /**
+     * Get the data formatted for the UI
+     * 
+     * @return array
+     */
     public function getUiData() {
         return [
             "id" => $this->id,
