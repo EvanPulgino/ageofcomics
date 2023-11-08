@@ -9,10 +9,9 @@
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * AOCPlayer.class.php
+ * AOCPlayer player class
  *
- * Player object
- *
+ * @EvanPulgino
  */
 
 class AOCPlayer {
@@ -43,7 +42,7 @@ class AOCPlayer {
         $this->turnOrder = (int) $row["turnOrder"];
         $this->name = $row["name"];
         $this->color = $row["color"];
-        $this->colorAsText = $this->getColorString($row["color"]);
+        $this->colorAsText = PLAYER_COLORS[$row["color"]];
         $this->score = $row["score"];
         $this->scoreAux = $row["scoreAux"];
         $this->money = $row["money"];
@@ -144,19 +143,5 @@ class AOCPlayer {
             "cubeThreeLocation" => $this->cubeThreeLocation,
             "multiActive" => $this->multiActive,
         ];
-    }
-
-    private function getColorString($hexColor) {
-        switch($hexColor) {
-            case '8e514e':
-                return 'brown';
-            case 'e5977a':
-                return 'salmon';
-            case '5ba59f':
-                return 'teal';
-            case 'f5c86e':
-                return 'yellow';
-        }
-        return '';
     }
 }

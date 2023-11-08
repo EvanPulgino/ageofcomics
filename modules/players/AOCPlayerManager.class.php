@@ -9,10 +9,9 @@
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * AOCPlayerManager.class.php
+ * Player manager class, handles all player related logic
  *
- * Player manager class
- *
+ * @EvanPulgino
  */
 
 class AOCPlayerManager extends APP_GameClass {
@@ -24,6 +23,7 @@ class AOCPlayerManager extends APP_GameClass {
 
     /**
      * Setup players for a new game
+     * 
      * @param array $players An array of players
      * @return void
      */
@@ -57,6 +57,7 @@ class AOCPlayerManager extends APP_GameClass {
 
     /**
      * Activate the next player in turn order
+     *
      * @return void
      */
     public function activateNextPlayer() {
@@ -75,6 +76,7 @@ class AOCPlayerManager extends APP_GameClass {
 
     /**
      * Adjust how many ideas a player has
+     *
      * @param int $playerId The player's ID
      * @param int $ideas The number of ideas to adjust by
      * @param string $genre The genre of ideas to adjust
@@ -96,6 +98,7 @@ class AOCPlayerManager extends APP_GameClass {
      * @param int $money The amount of money to adjust by
      * @return void
      */
+
     public function adjustPlayerMoney($playerId, $money) {
         $sql = "UPDATE player SET player_money = player_money + $money WHERE player_id = $playerId";
         self::DbQuery($sql);
@@ -103,6 +106,7 @@ class AOCPlayerManager extends APP_GameClass {
 
     /**
      * Adjust how many points a player has
+     *
      * @param int $playerId The player's ID
      * @param int $score The number of points to adjust by
      * @return void
@@ -112,11 +116,89 @@ class AOCPlayerManager extends APP_GameClass {
         self::DbQuery($sql);
     }
 
-    public function isLastPlayerInTurnOrder($player) {
-        $playerCount = $this->getPlayerCount();
-        return $player->getTurnOrder() == $playerCount;
+    /**
+     * A player gains an idea from the board
+     *
+     * @param AOCPlayer $player The player gaining the idea
+     * @param string $genre The genre of the idea to gain
+     * @return void
+     */
+    public function gainIdeaFromBoard($player, $genre) {
+        $this->adjustPlayerIdeas($player->getId(), 1, $genre);
+        $this->game->setGameStateValue("ideas_space_" . $genre, 0);
+
+        $this->game->notifyAllPlayers(
+            "gainIdeaFromBoard",
+            clienttranslate(
+                '${player_name} gains a ${genre} idea from the board'
+            ),
+            [
+                "player" => $player->getUiData(),
+                "player_name" => $player->getName(),
+                "genre" => $genre,
+            ]
+        );
     }
 
+    /**
+     * A player gains an idea from hiring a value 1 creative
+     *
+     * @param AOCPlayer $player The player gaining the idea
+     * @param AOCCard $card The creative card that was hired
+     * @return void
+     */
+    public function gainIdeaFromHiringCreative($player, $card) {
+        $this->adjustPlayerIdeas($player->getId(), 1, $card->getGenre());
+
+        $this->game->notifyAllPlayers(
+            "gainIdeaFromHiringCreative",
+            clienttranslate(
+                '${player_name} gains a ${genre} idea from hiring ${card_type_singular}'
+            ),
+            [
+                "player" => $player->getUiData(),
+                "player_name" => $player->getName(),
+                "card" => $card->getUiData($player->getId()),
+                "genre" => $card->getGenre(),
+                "card_type_singular" =>
+                    $card->getTypeId() == CARD_TYPE_ARTIST
+                        ? "an artist"
+                        : "a writer",
+            ]
+        );
+    }
+
+    /**
+     * A player gains an idea from the supply
+     *
+     * @param AOCPlayer $player The player gaining the idea
+     * @param string $genre The genre of the idea to gain
+     * @return void
+     */
+    public function gainIdeaFromSupply($player, $genre) {
+        $this->adjustPlayerIdeas($player->getId(), 1, $genre);
+
+        $this->game->notifyAllPlayers(
+            "gainIdeaFromSupply",
+            clienttranslate(
+                '${player_name} gains a ${genre} idea from the supply'
+            ),
+            [
+                "player" => $player->getUiData(),
+                "player_name" => $player->getName(),
+                "genre" => $genre,
+            ]
+        );
+    }
+
+    /**
+     * A player gains a starting idea
+     *
+     * @param int $playerId The player's ID
+     * @param string $genre The genre of the idea to gain
+     *
+     * @return void
+     */
     public function gainStartingIdea($playerId, $genre) {
         $this->adjustPlayerIdeas($playerId, 1, $genre);
 
@@ -131,22 +213,11 @@ class AOCPlayerManager extends APP_GameClass {
                 "genre" => $genre,
             ]
         );
-        $this->game->notifyPlayer(
-            $playerId,
-            "gainStartingIdeaPrivate",
-            clienttranslate('You gain a ${genre} idea'),
-            [
-                "player_name" => $this->game->playerManager
-                    ->getPlayer($playerId)
-                    ->getName(),
-                "player_id" => $playerId,
-                "genre" => $genre,
-            ]
-        );
     }
 
     /**
      * Gets the active player as an AOCPlayer object
+     *
      * @return AOCPlayer The active player
      */
     public function getActivePlayer() {
@@ -154,7 +225,18 @@ class AOCPlayerManager extends APP_GameClass {
     }
 
     /**
+     * Gets an AOCPlayer object for the specified player ID
+     *
+     * @param mixed $playerId
+     * @return AOCPlayer Player object
+     */
+    public function getPlayer($playerId) {
+        return $this->getPlayers([$playerId])[0];
+    }
+
+    /**
      * Returns the number of players
+     *
      * @return int Number of players in the game
      */
     public function getPlayerCount() {
@@ -164,16 +246,8 @@ class AOCPlayerManager extends APP_GameClass {
     }
 
     /**
-     * Gets an AOCPlayer object for the specified player ID
-     * @param mixed $playerId
-     * @return AOCPlayer Player object
-     */
-    public function getPlayer($playerId) {
-        return $this->getPlayers([$playerId])[0];
-    }
-
-    /**
      * Gets the player ID for the specified turn order
+     *
      * @param int $turnOrder The turn order of the player
      * @return int The player ID
      */
@@ -184,7 +258,8 @@ class AOCPlayerManager extends APP_GameClass {
 
     /**
      * Returns an array of AOCPlayer objects for all/specified player IDs
-     * @param array<int> $playerIds An array of player IDs from database
+     *
+     * @param array<int> $playerIds An array of player IDs
      * @return array<AOCPlayer> An array of AOCPlayer objects
      */
     public function getPlayers($playerIds = null) {
@@ -202,6 +277,11 @@ class AOCPlayerManager extends APP_GameClass {
         return $players;
     }
 
+    /**
+     * Returns an array of AOCPlayer objects for all players in turn order
+     *
+     * @return array<AOCPlayer> An array of AOCPlayer objects
+     */
     public function getPlayersInViewOrder() {
         $players = $this->getPlayers();
         $playerCount = count($players);
@@ -239,8 +319,9 @@ class AOCPlayerManager extends APP_GameClass {
     }
 
     /**
-     * Get ui data of all/specified players in a list
-     * @param array<AOCPlayer> $players list of player objects
+     * Get all/specified players in a list formatted for the UI
+     *
+     * @param array<AOCPlayer> $players List of player objects
      * @return array
      */
     public function getPlayersUiData($playerIds = null) {
@@ -252,62 +333,15 @@ class AOCPlayerManager extends APP_GameClass {
         return $uiData;
     }
 
-    public function gainIdeaFromBoard($player, $genre) {
-        $this->adjustPlayerIdeas($player->getId(), 1, $genre);
-        $this->game->setGameStateValue("ideas_space_" . $genre, 0);
-
-        $this->game->notifyAllPlayers(
-            "gainIdeaFromBoard",
-            clienttranslate(
-                '${player_name} gains a ${genre} idea from the board'
-            ),
-            [
-                "player" => $player->getUiData(),
-                "player_name" => $player->getName(),
-                "genre" => $genre,
-            ]
-        );
-    }
-
-    public function gainIdeaFromHiringCreative($player, $card) {
-        $this->adjustPlayerIdeas($player->getId(), 1, $card->getGenre());
-
-        $this->game->notifyAllPlayers(
-            "gainIdeaFromHiringCreative",
-            clienttranslate(
-                '${player_name} gains a ${genre} idea from hiring ${card_type_singular}'
-            ),
-            [
-                "player" => $player->getUiData(),
-                "player_name" => $player->getName(),
-                "card" => $card->getUiData($player->getId()),
-                "genre" => $card->getGenre(),
-                "card_type_singular" =>
-                    $card->getTypeId() == CARD_TYPE_ARTIST
-                        ? "an artist"
-                        : "a writer",
-            ]
-        );
-    }
-
-    public function gainIdeaFromSupply($player, $genre) {
-        $this->adjustPlayerIdeas($player->getId(), 1, $genre);
-
-        $this->game->notifyAllPlayers(
-            "gainIdeaFromSupply",
-            clienttranslate(
-                '${player_name} gains a ${genre} idea from the supply'
-            ),
-            [
-                "player" => $player->getUiData(),
-                "player_name" => $player->getName(),
-                "genre" => $genre,
-            ]
-        );
-    }
-
+    /**
+     * A player gains money from the Royalties action
+     *
+     * @param AOCPlayer $player The player gaining the money
+     * @param int $actionSpace The ID of the Royalties action space
+     * @return void
+     */
     public function gainRoyalties($player, $actionSpace) {
-        $amount = $this->getRoyaltiesAmount($actionSpace);
+        $amount = ROYALTIES_AMOUNTS[$actionSpace];
         $this->adjustPlayerMoney($player->getId(), $amount);
 
         $this->game->notifyAllPlayers(
@@ -321,21 +355,24 @@ class AOCPlayerManager extends APP_GameClass {
         );
     }
 
-    private function getRoyaltiesAmount($actionSpace) {
-        switch ($actionSpace) {
-            case 50001:
-                return 4;
-            case 50002:
-                return 3;
-            case 50003:
-                return 3;
-            case 50004:
-                return 2;
-            case 50005:
-                return 1;
-        }
+    /**
+     * Checks if a player is the last player in turn order
+     *
+     * @param AOCPlayer $player The player to check
+     * @return bool True if the player is last in turn order, false otherwise
+     */
+    public function isLastPlayerInTurnOrder($player) {
+        $playerCount = $this->getPlayerCount();
+        return $player->getTurnOrder() == $playerCount;
     }
 
+    /**
+     * Gets a player object from an ID. This is needed in case the viewing player is a spectator
+     *
+     * @param AOCPlayer[] $players An array of player objects playing the game
+     * @param int $playerId The player's ID
+     * @return AOCPlayer|bool The player object or false if not found
+     */
     private function findPlayerById($players, $playerId) {
         foreach ($players as $player) {
             if ($playerId == $player->getId()) {
@@ -346,6 +383,14 @@ class AOCPlayerManager extends APP_GameClass {
         return false;
     }
 
+    /**
+     * Gets a player object based on their natural order.
+     * Natural order is set at the begining of the game and never changes (unlike turn order)
+     *
+     * @param AOCPlayer[] $players An array of player objects playing the game
+     * @param int $naturalOrder The player's natural order
+     * @return AOCPlayer|bool The player object or false if not found
+     */
     private function findPlayerByNaturalOrder($players, $naturalOrder) {
         foreach ($players as $player) {
             if ($naturalOrder == $player->getNaturalOrder()) {
@@ -359,6 +404,7 @@ class AOCPlayerManager extends APP_GameClass {
     /**
      * Syncs player turn order with randomly assigned natural order
      * This is only useful on game setup
+     * 
      * @return void
      */
     private function setTurnOrderToNaturalOrder() {

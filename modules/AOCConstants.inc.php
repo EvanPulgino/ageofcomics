@@ -376,6 +376,15 @@ define("PLAYER_COLORS", [
     PLAYER_COLOR_YELLOW => "yellow",
 ]);
 
+/** Royalties Space Values */
+define("ROYALTIES_AMOUNTS", [
+    50001 => 4,
+    50002 => 3,
+    50003 => 3,
+    50004 => 2,
+    50005 => 1,
+]);
+
 /** Sales Order Spaces by Player Count */
 define("SALES_ORDER_SPACES", [
     2 => [

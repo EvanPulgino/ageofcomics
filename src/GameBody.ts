@@ -87,7 +87,7 @@ class GameBody extends GameBasics {
     this.notifqueue.setSynchronous("gainIdeaFromBoard", 500);
     this.notifqueue.setSynchronous("gainIdeaFromSupply", 500);
     this.notifqueue.setSynchronous("gainStartingIdea", 500);
-    this.notifqueue.setSynchronous("gainStartingIdeaPrivate", 500);
+    
     this.notifqueue.setIgnoreNotificationCheck(
       "developComic",
       function (notif: any) {
@@ -96,12 +96,6 @@ class GameBody extends GameBasics {
     );
     this.notifqueue.setIgnoreNotificationCheck(
       "gainStartingComic",
-      function (notif: any) {
-        return notif.args.player_id == gameui.player_id;
-      }
-    );
-    this.notifqueue.setIgnoreNotificationCheck(
-      "gainStartingIdea",
       function (notif: any) {
         return notif.args.player_id == gameui.player_id;
       }
@@ -190,13 +184,6 @@ class GameBody extends GameBasics {
   }
 
   notif_gainStartingIdea(notif: any): void {
-    this.playerController.gainStartingIdea(
-      notif.args.player_id,
-      notif.args.genre
-    );
-  }
-
-  notif_gainStartingIdeaPrivate(notif: any): void {
     this.playerController.gainStartingIdea(
       notif.args.player_id,
       notif.args.genre
