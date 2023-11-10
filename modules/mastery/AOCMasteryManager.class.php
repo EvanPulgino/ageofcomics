@@ -24,6 +24,7 @@ class AOCMasteryManager extends APP_GameClass {
 
     /**
      * Setup mastery tokens for a new game
+     * 
      * @return void
      */
     public function setupNewGame() {
@@ -36,6 +37,7 @@ class AOCMasteryManager extends APP_GameClass {
 
     /**
      * Claim a mastery token
+     * 
      * @param int $playerId The player claiming the token
      * @param int $genre The genre of the mastery token
      * @param int $comicCount The number of comics the player has in the genre
@@ -49,7 +51,8 @@ class AOCMasteryManager extends APP_GameClass {
 
     /**
      * Get all mastery tokens
-     * @return AOCMasteryToken[]
+     * 
+     * @return AOCMasteryToken[] Array of all mastery tokens
      */
     public function getMasteryTokens() {
         $sql =
@@ -65,6 +68,7 @@ class AOCMasteryManager extends APP_GameClass {
 
     /**
      * Get all mastery tokens in UI data format
+     * 
      * @return array An array of mastery tokens in UI data format
      */
     public function getMasteryTokensUiData() {

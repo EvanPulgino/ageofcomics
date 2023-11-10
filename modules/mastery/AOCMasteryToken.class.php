@@ -9,10 +9,9 @@
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * AOCMasteryToken.class.php
+ * Object class for mastery tokens
  *
- * Object for mastery tokens
- *
+ * @EvanPulgino
  */
 
 class AOCMasteryToken {
@@ -46,6 +45,9 @@ class AOCMasteryToken {
         return $this->comicCount;
     }
 
+    /**
+     * Get the data formatted for for the UI
+     */
     public function getUiData() {
         return [
             "id" => $this->id,
