@@ -8,9 +8,7 @@
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * AOCEditorManager.class.php
- *
- * Editor manager class
+ * Editor meeple manager class, handles all editor meeple related logic
  *
  */
 
@@ -23,6 +21,7 @@ class AOCEditorManager extends APP_GameClass {
 
     /**
      * Setup editors for a new game
+     *
      * @param AOCPlayer[] $players An array of players
      * @return void
      */
@@ -34,7 +33,8 @@ class AOCEditorManager extends APP_GameClass {
 
     /**
      * Get all editors
-     * @return AOCEditor[]
+     *
+     * @return AOCEditor[] Array of all editors
      */
     public function getEditors() {
         $sql =
@@ -50,7 +50,8 @@ class AOCEditorManager extends APP_GameClass {
 
     /**
      * Get uiData for all editors
-     * @return array
+     *
+     * @return array Array of all editors uiData
      */
     public function getEditorsUiData() {
         $editors = $this->getEditors();
@@ -61,6 +62,12 @@ class AOCEditorManager extends APP_GameClass {
         return $uiData;
     }
 
+    /**
+     * Gets the next placeable action space for an action
+     *
+     * @param int $actionLocationCode - the location code of the action
+     * @return int - the location code of the next placeable action space
+     */
     public function getNextActionSpaceForEditor($actionLocationCode) {
         $maxSpaces = $this->game->getGameStateValue(MAX_ACTION_SPACES);
         $editors = $this->getAllEditorsOnAnAction($actionLocationCode);
@@ -70,6 +77,12 @@ class AOCEditorManager extends APP_GameClass {
         return 0;
     }
 
+    /**
+     * Gets the uiData of all editors on an action
+     *
+     * @param int $actionLocationCode - the location code of the action
+     * @return array - the uiData of all editors on the action
+     */
     public function getAllEditorsOnActionUiData($actionLocationCode) {
         $editors = $this->getAllEditorsOnAnAction($actionLocationCode);
         $uiData = [];
@@ -79,6 +92,12 @@ class AOCEditorManager extends APP_GameClass {
         return $uiData;
     }
 
+    /**
+     * Get a count of the number of editors a player has in their player area
+     *
+     * @param int $playerId - the ID of the player
+     * @return int - the number of editors the player has in their player area
+     */
     public function getPlayerRemainingEditorsCount($playerId) {
         $sql =
             "SELECT COUNT(*) FROM editor WHERE editor_owner = $playerId AND editor_location = " .
@@ -86,6 +105,11 @@ class AOCEditorManager extends APP_GameClass {
         return self::getUniqueValueFromDB($sql);
     }
 
+    /**
+     * Get a count of the number of editors remaining in all player areas
+     *
+     * @return int - the number of editors remaining in all player area
+     */
     public function getAllRemainingEditorsCount() {
         $sql =
             "SELECT COUNT(*) FROM editor WHERE editor_location = " .
@@ -95,14 +119,25 @@ class AOCEditorManager extends APP_GameClass {
 
     /**
      * Move an editor to a new location
+     *
      * @param int $editorId - editor to move
      * @param int $newLocation - new location
+     *
+     * @return void
      */
     public function moveEditor($editorId, $newLocation) {
         $sql = "UPDATE editor SET editor_location = $newLocation WHERE editor_id = $editorId";
         self::DbQuery($sql);
     }
 
+    /**
+     * Move an editor from a player's player area to an action space
+     *
+     * @param int $playerId - player to move editor from
+     * @param int $actionSpace - action space to move editor to
+     *
+     * @return AOCEditor - the editor that was moved
+     */
     public function movePlayerEditorToActionSpace($playerId, $actionSpace) {
         $editor = $this->getOnePlayerEditorFromPlayerArea($playerId);
         $this->moveEditor(
@@ -113,8 +148,9 @@ class AOCEditorManager extends APP_GameClass {
     }
 
     /**
-     * Create editor meeple for a player
-     * @param AOCPlayer $player
+     * Create editor meeples for a player
+     *
+     * @param AOCPlayer $player - the player to create editors for
      * @return void
      */
     private function createPlayerEditors(AOCPlayer $player) {
@@ -131,6 +167,12 @@ class AOCEditorManager extends APP_GameClass {
         self::DbQuery($sql);
     }
 
+    /**
+     * Get all editors on an action
+     *
+     * @param int $actionLocationCode - the location code of the action
+     * @return AOCEditor[] - all editors on the action
+     */
     private function getAllEditorsOnAnAction($actionLocationCode) {
         $sql = "SELECT editor_id id, editor_owner owner, editor_color color, editor_location location FROM editor WHERE editor_location >= $actionLocationCode AND editor_location < $actionLocationCode + 6";
         $rows = self::getObjectListFromDB($sql);
@@ -142,6 +184,12 @@ class AOCEditorManager extends APP_GameClass {
         return $editors;
     }
 
+    /**
+     * Get the first editor in a player's player area
+     *
+     * @param int $playerId - the ID of the player
+     * @return AOCEditor - the first editor in the player's player area
+     */
     private function getOnePlayerEditorFromPlayerArea($playerId) {
         $sql =
             "SELECT editor_id id, editor_owner owner, editor_color color, editor_location location FROM editor WHERE editor_owner = $playerId AND editor_location = " .
