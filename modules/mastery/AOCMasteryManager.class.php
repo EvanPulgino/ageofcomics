@@ -11,6 +11,7 @@
  *
  * Mastery token manager, handles all mastery token related logic
  *
+ * @EvanPulgino
  */
 
 class AOCMasteryManager extends APP_GameClass {

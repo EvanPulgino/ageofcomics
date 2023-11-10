@@ -60,13 +60,8 @@ class AOCMiniComic {
     private $comicKey;
 
     /**
-     * @var int $genreId The genre key of the mini comic:
-     * - 10 = Crime
-     * - 20 = Horror
-     * - 30 = Romance
-     * - 40 = Sci-Fi
-     * - 50 = Superhero
-     * - 60 = Western
+     * @var int $genreId The genre key of the mini comic
+     * @see GENRE_KEYS
      */
     private $genreId;
 
@@ -167,12 +162,6 @@ class AOCMiniComic {
 
     /**
      * Get the genre key of the mini comic:
-     * - 10 = Crime
-     * - 20 = Horror
-     * - 30 = Romance
-     * - 40 = Sci-Fi
-     * - 50 = Superhero
-     * - 60 = Western
      *
      * @return int The genre key of the mini comic
      */

@@ -41,13 +41,8 @@ class AOCMasteryToken {
     private $id;
 
     /**
-     * @var int $genreId The genre key of the mastery token:
-     * - 10 = Crime
-     * - 20 = Horror
-     * - 30 = Romance
-     * - 40 = Sci-Fi
-     * - 50 = Superhero
-     * - 60 = Western
+     * @var int $genreId The genre key of the mastery token
+     * @see GENRE_KEYS
      */
     private $genreId;
 
@@ -84,13 +79,7 @@ class AOCMasteryToken {
     }
 
     /**
-     * Get the genre key of the mastery token:
-     * - 10 = Crime
-     * - 20 = Horror
-     * - 30 = Romance
-     * - 40 = Sci-Fi
-     * - 50 = Superhero
-     * - 60 = Western
+     * Get the genre key of the mastery token
      *
      * @return int The genre key of the mastery token
      */

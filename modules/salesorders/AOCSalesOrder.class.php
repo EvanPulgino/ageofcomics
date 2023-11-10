@@ -38,7 +38,7 @@
  * Sales Order tiles are randomly placed face down on the map (only on spaces matching the player count) at the beginning of the game, showing only the genre of the tile.
  * There cannot be three or moder Sales Order tiles adjacent the same circle space on the map. If this would happen, tile placement is re-randomized until this is no longer the case.
  *
- * At the start of each round a Calendar tile depecting a genre is revealed, and all Sales Order tiles of that genre are flipped face up so that it's genre, value, and fans are now visible.
+ * At the start of each round 1 or 2 Calendar tiles depecting a genre are revealed, and all Sales Order tiles of that genre are flipped face up so that it's genre, value, and fans are now visible.
  * Players may also flip and reveal individual Sales Order tiles as a part of the 'Sales' action. Players can also claim Sales Order tiles as a part of the 'Sales' action.
  *
  * A Sales Order is immediately fulfilled the instant a player has a claimed Sales Order tile and a created Comic (original or rip-off) of the same genre and at least the value as the Sales Order.
@@ -57,13 +57,8 @@ class AOCSalesOrder {
     private $id;
 
     /**
-     * @var int $genreId The genre key of the sales order:
-     * - 10 = Crime
-     * - 20 = Horror
-     * - 30 = Romance
-     * - 40 = Sci-Fi
-     * - 50 = Superhero
-     * - 60 = Western
+     * @var int $genreId The genre key of the sales order
+     * @see GENRE_KEYS
      */
     private $genreId;
 

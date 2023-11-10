@@ -8,10 +8,9 @@
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * AOCCalendarManager.class.php
+ * Calendar tile manager, handles all calendar tile related logic
  *
- * Calendar manager class
- *
+ * @EvanPulgino
  */
 class AOCCalendarManager extends APP_GameClass {
     private $game;
@@ -22,6 +21,7 @@ class AOCCalendarManager extends APP_GameClass {
 
     /**
      * Setup calendar tiles for a new game
+     *
      * @return void
      */
     public function setupNewGame() {
@@ -39,6 +39,7 @@ class AOCCalendarManager extends APP_GameClass {
 
     /**
      * Flip a calendar tile
+     *
      * @param AOCCalendarTile $tile The tile to flip
      * @return void
      */
@@ -49,6 +50,7 @@ class AOCCalendarManager extends APP_GameClass {
 
     /**
      * Flip all calendar tiles for a round
+     *
      * @param int $round The round to flip tiles for
      * @return array An array of calendar tiles
      */
@@ -60,6 +62,7 @@ class AOCCalendarManager extends APP_GameClass {
 
     /**
      * Get all calendar tiles
+     *
      * @return AOCCalendarTile[] An array of calendar tiles
      */
     public function getCalendarTiles() {
@@ -74,6 +77,12 @@ class AOCCalendarManager extends APP_GameClass {
         return $tiles;
     }
 
+    /**
+     * Get all calendar tiles for a round
+     *
+     * @param int $round The round to get tiles for
+     * @return AOCCalendarTile[] An array of calendar tiles
+     */
     private function getCalendarTilesByRound($round) {
         $sql = "SELECT calendar_tile_id id, calendar_tile_genre genre, calendar_tile_round round, calendar_tile_position position, calendar_tile_flipped flipped FROM calendar_tile WHERE calendar_tile_round = $round";
         $rows = self::getObjectListFromDB($sql);
@@ -87,6 +96,7 @@ class AOCCalendarManager extends APP_GameClass {
 
     /**
      * Get all calendar tiles in UI data format
+     *
      * @return array An array of calendar tiles in UI data format
      */
     public function getCalendarTilesUiData() {

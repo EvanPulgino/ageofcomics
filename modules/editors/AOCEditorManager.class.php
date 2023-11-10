@@ -10,6 +10,7 @@
  *
  * Editor meeple manager class, handles all editor meeple related logic
  *
+ * @EvanPulgino
  */
 
 class AOCEditorManager extends APP_GameClass {
