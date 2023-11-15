@@ -8,17 +8,52 @@
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * AOCRipoffCard.class.php
+ * Object class for Ripoff cards.
  *
- * Ripoff card object
+ * Contains:
+ * - The ripoff key of the ripoff card, this maps to a specific comic card
+ * - The name of the ripoff card
+ * - The base CSS class for the ripoff card. This is the front of the card.
+ * - The CSS class for the ripoff card when it is face down. This is the back of the card.
  *
+ * Ripoff cards are a type of card in the game. They are created by players and provide fans and victory points.
+ *
+ * Ripoff cards are represented by the "card" table in the database.
+ *
+ * Extends the generic AOCCard class.
+ * @see AOCCard
+ *
+ * There is one Ripoff card for each Comic card in the game.
+ *
+ * Once a Comic has been printed by a player any other player is eligible to print the Ripoff version of the card.
+ * By using the Print action a player can print a Ripoff of an existing comic by taking the matching card and assignig a Writer card from their hand to it.
+ * The cost of the Ripoff is money equal to the combined value of the artist and the writer.
+ * 
+ * Ripoff cards provide players with fans but no bonus.
+ *
+ * @EvanPulgino
  */
 
 class AOCRipoffCard extends AOCCard {
-    private int $ripoffKey;
-    private string $name;
-    private string $baseClass;
-    private string $facedownClass;
+    /**
+     * @var int $ripoffKey The ripoff key of the ripoff card, this maps to a specific comic card
+     */
+    private $ripoffKey;
+
+    /**
+     * @var string $name The name of the ripoff card
+     */
+    private $name;
+
+    /**
+     * @var string $baseClass The base CSS class for the ripoff card. This is the front of the card.
+     */
+    private $baseClass;
+
+    /**
+     * @var string $facedownClass The CSS class for the ripoff card when it is face down. This is the back of the card.
+     */
+    private $facedownClass;
 
     public function __construct($row) {
         parent::__construct($row);
@@ -35,13 +70,40 @@ class AOCRipoffCard extends AOCCard {
             "aoc-" . $this->getType() . "-" . $this->getGenre() . "-facedown";
     }
 
+    /**
+     * @return int The ripoff key of the ripoff card, this maps to a specific comic card
+     */
     public function getRipoffKey() {
         return $this->ripoffKey;
     }
+
+    /**
+     * @return string The name of the ripoff card
+     */
     public function getName() {
         return $this->name;
     }
 
+    /**
+     * @return string The base CSS class for the ripoff card. This is the front of the card.
+     */
+    public function getBaseClass() {
+        return $this->baseClass;
+    }
+
+    /**
+     * @return string The CSS class for the ripoff card when it is face down. This is the back of the card.
+     */
+    public function getFacedownClass() {
+        return $this->facedownClass;
+    }
+
+    /**
+     * Get the data for the UI
+     *
+     * @param int $currentPlayerId The ID of the current player (the player viewing the card)
+     * @return array The data for the UI
+     */
     public function getUiData($currentPlayerId) {
         return [
             "id" => $this->getId(),
@@ -60,6 +122,14 @@ class AOCRipoffCard extends AOCCard {
         ];
     }
 
+    /**
+     * Derive the CSS class for the ripoff card based on its location and the current player.
+     *
+     * The ripoff card is always face up on the player mat, and always face down in the deck.
+     *
+     * @param int $currentPlayerId The ID of the current player (the player viewing the card)
+     * @return string The CSS class for the ripoff card
+     */
     private function deriveCssClass($currentPlayerId) {
         if ($this->getLocation() == LOCATION_PLAYER_MAT) {
             return $this->baseClass;

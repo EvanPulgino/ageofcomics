@@ -26,7 +26,7 @@ class AOCEditorManager extends APP_GameClass {
      * @param AOCPlayer[] $players An array of players
      * @return void
      */
-    public function setupNewGame(array $players) {
+    public function setupNewGame($players) {
         foreach ($players as $player) {
             $this->createPlayerEditors($player);
         }

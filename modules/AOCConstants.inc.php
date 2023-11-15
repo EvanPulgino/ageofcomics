@@ -88,8 +88,8 @@ define("COMIC", "comic");
 define("RIPOFF", "ripoff");
 define("WRITER", "writer");
 
-/** Card Type To Name */
-define("CARD_TYPE_TO_NAME", [
+/** Card Type Map */
+define("CARD_TYPES", [
     CARD_TYPE_ARTIST => ARTIST,
     CARD_TYPE_COMIC => COMIC,
     CARD_TYPE_RIPOFF => RIPOFF,

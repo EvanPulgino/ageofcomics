@@ -107,7 +107,7 @@ class AOCMiniComic {
     public function __construct($row) {
         $this->id = (int) $row["id"];
         $this->typeId = (int) $row["type"];
-        $this->type = CARD_TYPE_TO_NAME[$this->typeId];
+        $this->type = CARD_TYPES[$this->typeId];
         $this->comicKey = (int) $row["typeArg"];
         $this->genreId = (int) $row["genre"];
         $this->genre = GENRES[$this->genreId];
