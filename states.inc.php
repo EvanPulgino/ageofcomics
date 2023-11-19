@@ -79,6 +79,7 @@ $machinestates = [
         "name" => NEXT_PLAYER_SETUP,
         "description" => "",
         "type" => STATE_TYPE_GAME,
+        "args" => STATE_ARGS_NEXT_PLAYER_SETUP,
         "action" => GAME_ACTION_NEXT_PLAYER_SETUP,
         "transitions" => [
             "nextPlayerSetup" => ST_PLAYER_SETUP,
@@ -90,6 +91,7 @@ $machinestates = [
         "name" => COMPLETE_SETUP,
         "description" => "",
         "type" => STATE_TYPE_GAME,
+        "args" => STATE_ARGS_COMPLETE_SETUP,
         "action" => GAME_ACTION_COMPLETE_SETUP,
         "transitions" => ["startGame" => ST_START_NEW_ROUND],
     ],
@@ -98,6 +100,7 @@ $machinestates = [
         "name" => START_NEW_ROUND,
         "description" => "",
         "type" => STATE_TYPE_GAME,
+        "args" => STATE_ARGS_START_NEW_ROUND,
         "action" => GAME_ACTION_START_NEW_ROUND,
         "transitions" => ["startActionsPhase" => ST_PLAYER_TURN],
     ],
@@ -226,6 +229,7 @@ $machinestates = [
         "name" => NEXT_PLAYER,
         "description" => "",
         "type" => STATE_TYPE_GAME,
+        "args" => STATE_ARGS_NEXT_PLAYER,
         "action" => GAME_ACTION_NEXT_PLAYER,
         "transitions" => [
             "nextPlayerTurn" => ST_PLAYER_TURN,

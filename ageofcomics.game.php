@@ -15,7 +15,7 @@
  * In this PHP file, you are going to defines the rules of the game.
  *
  * @link https://en.doc.boardgamearena.com/Main_game_logic:_yourgamename.game.php
- * 
+ *
  * @EvanPulgino
  */
 
@@ -46,10 +46,6 @@ class AgeOfComics extends Table {
             CAN_HIRE_WRITER => 25,
         ]);
 
-        // Initialize action managers
-        $this->gameStateActions = new AOCGameStateActions($this);
-        $this->playerActions = new AOCPlayerActions($this);
-
         // Initialize player manager
         $this->playerManager = new AOCPlayerManager($this);
 
@@ -60,6 +56,20 @@ class AgeOfComics extends Table {
         $this->masteryManager = new AOCMasteryManager($this);
         $this->miniComicManager = new AOCMiniComicManager($this);
         $this->salesOrderManager = new AOCSalesOrderManager($this);
+
+        // Initialize states
+        $this->states[CHECK_HAND_SIZE] = new AOCCheckHandSizeState($this);
+        $this->states[COMPLETE_SETUP] = new AOCCompleteSetupState($this);
+        $this->states[NEXT_PLAYER] = new AOCNextPlayerState($this);
+        $this->states[NEXT_PLAYER_SETUP] = new AOCNextPlayerSetupState($this);
+        $this->states[PERFORM_DEVELOP] = new AOCPerformDevelopState($this);
+        $this->states[PERFORM_HIRE] = new AOCPerformHireState($this);
+        $this->states[PERFORM_IDEAS] = new AOCPerformIdeasState($this);
+        $this->states[PERFORM_PRINT] = new AOCPerformPrintState($this);
+        $this->states[PERFORM_SALES] = new AOCPerformSalesState($this);
+        $this->states[PLAYER_SETUP] = new AOCPlayerSetupState($this);
+        $this->states[PLAYER_TURN] = new AOCPlayerTurnState($this);
+        $this->states[START_NEW_ROUND] = new AOCStartNewRoundState($this);
     }
 
     protected function getGameName() {
@@ -200,19 +210,17 @@ class AgeOfComics extends Table {
 
     /**
      * This method is called everytime the system tries to call an undefined method.
-     * It will look for functions that are defined in:
-     *  @see AOCGameStateActions
-     *  @see AOCPlayerActions
+     * It will look for functions that are defined in the states and call them if they exist:
      *
      * @param string $name The name of the function being called
      * @param array $args The arguments passed to the function
      * @return void
      */
     function __call($name, $args) {
-        if (in_array($name, get_class_methods($this->gameStateActions))) {
-            call_user_func([$this->gameStateActions, $name], $args);
-        } elseif (in_array($name, get_class_methods($this->playerActions))) {
-            call_user_func([$this->playerActions, $name], $args);
+        foreach ($this->states as $state) {
+            if (in_array($name, get_class_methods($state))) {
+                call_user_func([$state, $name], $args);
+            }
         }
     }
 
@@ -243,209 +251,41 @@ class AgeOfComics extends Table {
         return self::getCurrentPlayerId();
     }
 
-    /**
-     * Gets the list of args used by the CheckHandSize state
-     *
-     * Args:
-     *  - numberToDiscard => The number of cards the player must discard
-     *
-     * @return array The list of args used by the CheckHandSize state
-     */
     function argsCheckHandSize() {
-        return [
-            "numberToDiscard" =>
-                count(
-                    $this->cardManager->getPlayerHand(self::getActivePlayerId())
-                ) - 6,
-        ];
+        return $this->states[CHECK_HAND_SIZE]->getArgs();
     }
-
-    /**
-     * Gets the list of args used by the PerformDevelop state
-     *
-     * Args:
-     * - availableGenres => The number of combined comics in the deck and discard for each genre
-     * - canDevelopFromDeck => Whether the player has enough money to develop a comic from the deck
-     * - fromDeckText => The text to display in the game state panel if the player can develop a comic from the deck
-     *
-     * @return array The list of args used by the PerformDevelop state
-     */
+    function argsCompleteSetup() {
+        return $this->states[COMPLETE_SETUP]->getArgs();
+    }
+    function argsNextPlayer() {
+        return $this->states[NEXT_PLAYER]->getArgs();
+    }
+    function argsNextPlayerSetup() {
+        return $this->states[NEXT_PLAYER_SETUP]->getArgs();
+    }
     function argsPerformDevelop() {
-        $activePlayer = $this->playerManager->getActivePlayer();
-        $canDevelopFromDeck = $activePlayer->getMoney() >= 4;
-        $fromDeckText = $canDevelopFromDeck
-            ? clienttranslate(
-                "or pay \$4 to develop the next comic of a genre from the deck"
-            )
-            : "";
-
-        return [
-            "availableGenres" => [
-                "crime" => $this->cardManager->getAvailableComicCount(
-                    GENRE_CRIME
-                ),
-                "horror" => $this->cardManager->getAvailableComicCount(
-                    GENRE_HORROR
-                ),
-                "romance" => $this->cardManager->getAvailableComicCount(
-                    GENRE_ROMANCE
-                ),
-                "scifi" => $this->cardManager->getAvailableComicCount(
-                    GENRE_SCIFI
-                ),
-                "superhero" => $this->cardManager->getAvailableComicCount(
-                    GENRE_SUPERHERO
-                ),
-                "western" => $this->cardManager->getAvailableComicCount(
-                    GENRE_WESTERN
-                ),
-            ],
-            "canDevelopFromDeck" => $canDevelopFromDeck,
-            "fromDeckText" => $fromDeckText,
-        ];
+        return $this->states[PERFORM_DEVELOP]->getArgs();
     }
-
-    /**
-     * Gets the list of args used by the PerformHire state
-     *
-     * Args:
-     * - canHireArtist => Whether the player has hired an artist on this turn or not
-     * - canHireWriter => Whether the player has hired a writer on this turn or not
-     * - hireText => The text to display in the game state panel based on the creatives a player has hired this turn
-     *
-     * @return array The list of args used by the PerformHire state
-     */
     function argsPerformHire() {
-        $canHireArtist = self::getGameStateValue(CAN_HIRE_ARTIST);
-        $canHireWriter = self::getGameStateValue(CAN_HIRE_WRITER);
-        $hireText = "";
-
-        if ($canHireArtist == 1 && $canHireWriter == 1) {
-            $hireText = "one Artist and one Writer";
-        } elseif ($canHireArtist == 1 && $canHireWriter == 0) {
-            $hireText = "one Artist";
-        } elseif ($canHireArtist == 0 && $canHireWriter == 1) {
-            $hireText = "one Writer";
-        }
-
-        return [
-            "canHireArtist" => $canHireArtist,
-            "canHireWriter" => $canHireWriter,
-            "hireText" => $hireText,
-        ];
+        return $this->states[PERFORM_HIRE]->getArgs();
     }
-
-    /**
-     * Gets the list of args used by the PerformIdeas state
-     *
-     * Args:
-     * - selectedActionSpace => The id of the action space where the player placed their editor
-     * - ideasFromBoard => The number of ideas the player can take from the board
-     *
-     * @return array The list of args used by the PerformIdeas state
-     */
     function argsPerformIdeas() {
-        $selectedActionSpace = self::getGameStateValue(SELECTED_ACTION_SPACE);
-        $ideasFromBoard = 0;
-
-        switch ($selectedActionSpace) {
-            case 30001:
-                $ideasFromBoard = 2;
-                break;
-            case 30002:
-                $ideasFromBoard = 1;
-                break;
-            case 30003:
-                $ideasFromBoard = 1;
-                break;
-            default:
-                break;
-        }
-
-        return [
-            "selectedActionSpace" => $selectedActionSpace,
-            "ideasFromBoard" => $ideasFromBoard,
-        ];
+        return $this->states[PERFORM_IDEAS]->getArgs();
     }
-
-    /**
-     * Gets the list of args used by the PerformPrint state
-     *
-     * Args:
-     * - selectedActionSpace => The id of the action space where the player placed their editor
-     *
-     * @return array The list of args used by the PerformPrint state
-     */
     function argsPerformPrint() {
-        return [
-            "selectedActionSpace" => self::getGameStateValue(
-                SELECTED_ACTION_SPACE
-            ),
-        ];
+        return $this->states[PERFORM_PRINT]->getArgs();
     }
-
-    /**
-     * Gets the list of args used by the PerformSales state
-     *
-     * Args:
-     * - selectedActionSpace => The id of the action space where the player placed their editor
-     *
-     * @return array The list of args used by the PerformSales state
-     */
     function argsPerformSales() {
-        return [
-            "selectedActionSpace" => self::getGameStateValue(
-                SELECTED_ACTION_SPACE
-            ),
-        ];
+        return $this->states[PERFORM_SALES]->getArgs();
     }
-
-    /**
-     * Gets the list of args used by the PlayerSetup state
-     *
-     * Args:
-     * - startIdeas => The number of starting ideas the player gets
-     *
-     * @return array The list of args used by the PlayerSetup state
-     */
     function argsPlayerSetup() {
-        return [
-            "startIdeas" => self::getGameStateValue(START_IDEAS),
-        ];
+        return $this->states[PLAYER_SETUP]->getArgs();
     }
-
-    /**
-     * Gets the list of args used by the PlayerTurn state
-     *
-     * Args:
-     * - hireActionSpace => The id of the next available hire action space
-     * - developActionSpace => The id of the next available develop action space
-     * - ideasActionSpace => The id of the next available ideas action space
-     * - printActionSpace => The id of the next available print action space
-     * - royaltiesActionSpace => The id of the next available royalties action space
-     * - salesActionSpace => The id of the next available sales action space
-     */
     function argsPlayerTurn() {
-        return [
-            "hireActionSpace" => $this->editorManager->getNextActionSpaceForEditor(
-                LOCATION_ACTION_HIRE
-            ),
-            "developActionSpace" => $this->editorManager->getNextActionSpaceForEditor(
-                LOCATION_ACTION_DEVELOP
-            ),
-            "ideasActionSpace" => $this->editorManager->getNextActionSpaceForEditor(
-                LOCATION_ACTION_IDEAS
-            ),
-            "printActionSpace" => $this->editorManager->getNextActionSpaceForEditor(
-                LOCATION_ACTION_PRINT
-            ),
-            "royaltiesActionSpace" => $this->editorManager->getNextActionSpaceForEditor(
-                LOCATION_ACTION_ROYALTIES
-            ),
-            "salesActionSpace" => $this->editorManager->getNextActionSpaceForEditor(
-                LOCATION_ACTION_SALES
-            ),
-        ];
+        return $this->states[PLAYER_TURN]->getArgs();
+    }
+    function argsStartNewRound() {
+        return $this->states[START_NEW_ROUND]->getArgs();
     }
 
     /**

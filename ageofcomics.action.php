@@ -103,7 +103,7 @@ class action_ageofcomics extends APP_GameAction {
         $comic = self::getArg("comic", AT_alphanum, true);
         $ideas = self::getArg("ideas", AT_numberlist, true);
 
-        $this->game->selectStartItems($comic, $ideas);
+        $this->game->selectStartItems($comic, explode(",", $ideas));
 
         self::ajaxResponse();
     }

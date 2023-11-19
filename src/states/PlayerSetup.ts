@@ -54,6 +54,8 @@ class PlayerSetup implements State {
   }
 
   confirmStartingItems(event): void {
+    dojo.addClass("aoc-confirm-starting-items", "aoc-button-disabled");
+
     var selectedComic = dojo.query(
       ".aoc-card-selected",
       "aoc-select-comic-genre"

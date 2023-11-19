@@ -887,7 +887,10 @@ define("SALES_ORDERS_FOR_PLAYER_COUNT", [
 
 /** State Args */
 define("STATE_ARGS_CHECK_HAND_SIZE", "argsCheckHandSize");
-define("STATE_ARGS_GAME_END", "argGameEnd");
+define("STATE_ARGS_COMPLETE_SETUP", "argsCompleteSetup");
+define("STATE_ARGS_GAME_END", "argsGameEnd");
+define("STATE_ARGS_NEXT_PLAYER", "argsNextPlayer");
+define("STATE_ARGS_NEXT_PLAYER_SETUP", "argsNextPlayerSetup");
 define("STATE_ARGS_PERFORM_DEVELOP", "argsPerformDevelop");
 define("STATE_ARGS_PERFORM_HIRE", "argsPerformHire");
 define("STATE_ARGS_PERFORM_IDEAS", "argsPerformIdeas");
@@ -895,6 +898,7 @@ define("STATE_ARGS_PERFORM_PRINT", "argsPerformPrint");
 define("STATE_ARGS_PERFORM_SALES", "argsPerformSales");
 define("STATE_ARGS_PLAYER_SETUP", "argsPlayerSetup");
 define("STATE_ARGS_PLAYER_TURN", "argsPlayerTurn");
+define("STATE_ARGS_START_NEW_ROUND", "argsStartNewRound");
 
 /** State IDs */
 define("ST_GAME_SETUP", 1);

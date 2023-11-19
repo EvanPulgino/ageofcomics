@@ -1988,6 +1988,7 @@ var PlayerSetup = /** @class */ (function () {
         }
     };
     PlayerSetup.prototype.confirmStartingItems = function (event) {
+        dojo.addClass("aoc-confirm-starting-items", "aoc-button-disabled");
         var selectedComic = dojo.query(".aoc-card-selected", "aoc-select-comic-genre")[0];
         var selectedComicGenre = this.game.getGenreId(selectedComic.id.split("-")[4]);
         var selectedIdeas = dojo.query(".aoc-start-idea-selection");
