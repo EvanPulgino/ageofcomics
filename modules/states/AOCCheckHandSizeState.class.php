@@ -25,41 +25,68 @@ class AOCCheckHandSizeState {
      * Gets the list of args used by the CheckHandSize state
      *
      * Args:
-     *  - numberToDiscard => The number of cards the player must discard
+     *  - numberToDiscard => The number of cards the player must discard (Number of cards in hand + hyped comics - 6)
      *
      * @return array The list of args used by the CheckHandSize state
      */
     function getArgs() {
+        $queryParams = [
+            "card_owner" => $this->game->getActivePlayerId(),
+            "NOT card_location" => LOCATION_PLAYER_MAT,
+        ];
+        $cardsInHand = $this->game->cardManager->findCards($queryParams);
+
         return [
-            "numberToDiscard" =>
-                count(
-                    $this->game->cardManager->getPlayerHand($this->game->getActivePlayerId())
-                ) - 6,
+            "numberToDiscard" => count($cardsInHand) - 6,
         ];
     }
 
-    function confirmDiscard($args) {
+    /**
+     * Discards the cards the player has selected, then moves to the next player's turn
+     *
+     * @param int[] $cardsToDiscard The list of card IDs the player has selected to discard
+     */
+    function confirmDiscard($cardsToDiscard) {
         $activePlayerId = $this->game->getActivePlayerId();
         $activePlayer = $this->game->playerManager->getPlayer($activePlayerId);
-        $cardsToDiscard = explode(",", $args[0]);
 
+        // Iterate through the cards to discard, and discard them
         foreach ($cardsToDiscard as $cardId) {
-            $discardedCard = $this->game->cardManager->discardCard($cardId);
+            // Get card object, set location to discard and player to none, then save
+            $cardToDiscard = $this->game->cardManager->getCard($cardId);
+            $cardToDiscard->setLocation(LOCATION_DISCARD);
+            $cardToDiscard->setLocationArg(0);
+            $cardToDiscard->setPlayerId(0);
+            $this->game->cardManager->saveCard($cardToDiscard);
+
+            // Get card string to display in notification
+            $cardText = "";
+            switch ($cardToDiscard->getTypeId()) {
+                case CARD_TYPE_ARTIST:
+                    $cardText = "an artist";
+                    break;
+                case CARD_TYPE_WRITER:
+                    $cardText = "a writer";
+                    break;
+                case CARD_TYPE_COMIC:
+                    $cardText = $cardToDiscard->getName();
+                    break;
+            }
+
+            // Notify all players that the card has been discarded
             $this->game->notifyAllPlayers(
                 "discardCard",
-                clienttranslate('${player_name} discards ${type_singular}'),
+                clienttranslate('${player_name} discards ${cardText}'),
                 [
                     "player" => $activePlayer->getUiData(),
                     "player_name" => $activePlayer->getName(),
-                    "card" => $discardedCard->getUiData($activePlayerId),
-                    "type_singular" =>
-                        $discardedCard->getTypeId() == 1
-                            ? "an artist"
-                            : "a writer",
+                    "card" => $cardToDiscard->getUiData($activePlayerId),
+                    "cardText" => $cardText,
                 ]
             );
         }
 
+        // Move to the next player's turn
         $this->game->gamestate->nextState("nextPlayerTurn");
     }
 }

@@ -122,29 +122,6 @@ class AOCCardManager extends APP_GameClass {
     }
 
     /**
-     * Discard a card:
-     * - Get the card from the database
-     * - Set the location, locationArg, and playerId
-     * - Save the card
-     *
-     * @param int $cardId The ID of the card being discarded
-     * @return AOCCard The card that was discarded
-     */
-    public function discardCard($cardId) {
-        $sql =
-            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_id = " .
-            $cardId;
-        $row = self::getObjectFromDB($sql);
-        $card = new AOCCard($row);
-        $card->setLocation(LOCATION_DISCARD);
-        $card->setLocationArg(0);
-        $card->setPlayerId(0);
-        $this->saveCard($card);
-
-        return $card;
-    }
-
-    /**
      * Draw a specific card into a player's hand:
      * - Get the card from the database
      * - Set the player ID, location, and locationArg
@@ -240,6 +217,82 @@ class AOCCardManager extends APP_GameClass {
                 "comic_card" => $card->getUiData($playerId),
             ]
         );
+    }
+
+    /**
+     * Search for all cards based on passed in query parameters
+     *
+     * @param array $queryParams An array of query parameters
+     * @return AOCCard[] All cards matching the query parameters
+     */
+    public function findCards($queryParams) {
+        $sql =
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card";
+        $where = [];
+        foreach ($queryParams as $key => $value) {
+            $where[] = $key . " = " . $value;
+        }
+        if (count($where) > 0) {
+            $sql .= " WHERE " . implode(" AND ", $where);
+        }
+        $rows = self::getObjectListFromDB($sql);
+
+        $cards = [];
+        foreach ($rows as $row) {
+            switch ($row["type"]) {
+                case CARD_TYPE_ARTIST:
+                    $cards[] = new AOCArtistCard($row);
+                    break;
+                case CARD_TYPE_COMIC:
+                    $cards[] = new AOCComicCard($row);
+                    break;
+                case CARD_TYPE_RIPOFF:
+                    $cards[] = new AOCRipoffCard($row);
+                    break;
+                case CARD_TYPE_WRITER:
+                    $cards[] = new AOCWriterCard($row);
+                    break;
+            }
+        }
+        return $cards;
+    }
+
+    /**
+     * Get a card object from the database
+     *
+     * @param int $cardId The ID of the card
+     * @return AOCCard The card
+     */
+    public function getCard($cardId) {
+        $sql =
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_id = " .
+            $cardId;
+        $row = self::getObjectFromDB($sql);
+
+        switch ($row["type"]) {
+            case CARD_TYPE_ARTIST:
+                return new AOCArtistCard($row);
+            case CARD_TYPE_COMIC:
+                return new AOCComicCard($row);
+            case CARD_TYPE_RIPOFF:
+                return new AOCRipoffCard($row);
+            case CARD_TYPE_WRITER:
+                return new AOCWriterCard($row);
+            default:
+                return new AOCCard($row);
+        }
+    }
+
+    /**
+     * Get the uiData for a specific card
+     *
+     * @param int $cardId The ID of the card
+     * @param int $currentPlayerId The ID of the current player (The player viewing the card)
+     * @return array The uiData for the card
+     */
+    public function getCardUiData($cardId, $currentPlayerId) {
+        $card = $this->getCard($cardId);
+        return $card->getUiData($currentPlayerId);
     }
 
     /**
@@ -787,7 +840,7 @@ class AOCCardManager extends APP_GameClass {
      * @param AOCCard $card The card to save
      * @return void
      */
-    private function saveCard($card) {
+    public function saveCard($card) {
         $sql = "UPDATE card SET card_location = {$card->getLocation()}, card_location_arg = {$card->getLocationArg()}, card_owner = {$card->getPlayerId()} WHERE card_id = {$card->getId()}";
         self::DbQuery($sql);
     }

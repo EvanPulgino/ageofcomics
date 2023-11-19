@@ -40,7 +40,7 @@ class action_ageofcomics extends APP_GameAction {
 
         $cardsToDiscard = self::getArg("cardsToDiscard", AT_numberlist, true);
 
-        $this->game->confirmDiscard($cardsToDiscard);
+        $this->game->states[CHECK_HAND_SIZE]->confirmDiscard(explode(",", $cardsToDiscard));
 
         self::ajaxResponse();
     }

@@ -112,11 +112,12 @@ class AOCPerformHireState {
             $this->game->getGameStateValue(CAN_HIRE_ARTIST) == 0 &&
             $this->game->getGameStateValue(CAN_HIRE_WRITER) == 0
         ) {
-            if (
-                count(
-                    $this->game->cardManager->getPlayerHand($activePlayerId)
-                ) > 6
-            ) {
+            $queryParams = [
+                "card_owner" => $this->game->getActivePlayerId(),
+                "NOT card_location" => LOCATION_PLAYER_MAT,
+            ];
+            $cardsInHand = $this->game->cardManager->findCards($queryParams);
+            if (count($cardsInHand) > 6) {
                 $this->game->gamestate->nextState("discardCards");
             } else {
                 $this->game->gamestate->nextState("nextPlayerTurn");
