@@ -46,58 +46,6 @@ class AOCCardManager extends APP_GameClass {
     }
 
     /**
-     * Deals cards to the supply
-     *
-     * @param int $cardType The type of card to deal
-     * @return array Array of updated deck and supply uiData
-     */
-    public function dealCardsToSupply($cardType) {
-        // Get deck of cards based on type
-        switch ($cardType) {
-            case CARD_TYPE_ARTIST:
-                $deck = $this->getArtistDeck();
-                break;
-            case CARD_TYPE_COMIC:
-                $deck = $this->getComicDeck();
-                break;
-            case CARD_TYPE_WRITER:
-                $deck = $this->getWriterDeck();
-                break;
-        }
-
-        // Get the cards currently in the supply
-        $cardsInSupply = $this->getCardsByTypeInLocation(
-            $cardType,
-            LOCATION_SUPPLY
-        );
-
-        // Determine how many cards to draw, and draw them
-        $numberOfCardsToDraw =
-            $this->game->getGameStateValue(CARD_SUPPLY_SIZE) -
-            count($cardsInSupply);
-        $startIndex = count($deck) - $numberOfCardsToDraw;
-        $cardsDrawn = array_splice($deck, $startIndex, $numberOfCardsToDraw);
-
-        // Set the location and locationArg for the cards drawn, then save them
-        foreach ($cardsDrawn as $card) {
-            $card->setLocation(LOCATION_SUPPLY);
-            $card->setLocationArg(0);
-            $this->saveCard($card);
-        }
-
-        // Get the updated deck and supply uiData
-        $updatedDeck = $this->getDeckUiData($cardType);
-        $updatedSupply = $this->getSupplyCardsUiData($cardType);
-
-        $uiData = [
-            "deck" => $updatedDeck,
-            "supply" => $updatedSupply,
-        ];
-
-        return $uiData;
-    }
-
-    /**
      * Develop (aka draw) a comic card:
      * - Get the card from the database
      * - Set the player ID, location, and locationArg
@@ -235,6 +183,39 @@ class AOCCardManager extends APP_GameClass {
         if (count($where) > 0) {
             $sql .= " WHERE " . implode(" AND ", $where);
         }
+        $rows = self::getObjectListFromDB($sql);
+
+        $cards = [];
+        foreach ($rows as $row) {
+            switch ($row["type"]) {
+                case CARD_TYPE_ARTIST:
+                    $cards[] = new AOCArtistCard($row);
+                    break;
+                case CARD_TYPE_COMIC:
+                    $cards[] = new AOCComicCard($row);
+                    break;
+                case CARD_TYPE_RIPOFF:
+                    $cards[] = new AOCRipoffCard($row);
+                    break;
+                case CARD_TYPE_WRITER:
+                    $cards[] = new AOCWriterCard($row);
+                    break;
+            }
+        }
+        return $cards;
+    }
+
+    public function findCardsOrderedBy($queryParams, $orderBy) {
+        $sql =
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card";
+        $where = [];
+        foreach ($queryParams as $key => $value) {
+            $where[] = $key . " = " . $value;
+        }
+        if (count($where) > 0) {
+            $sql .= " WHERE " . implode(" AND ", $where);
+        }
+        $sql .= " ORDER BY " . $orderBy;
         $rows = self::getObjectListFromDB($sql);
 
         $cards = [];
@@ -468,13 +449,28 @@ class AOCCardManager extends APP_GameClass {
     }
 
     /**
+     * Gets the uiData for a list of card objects
+     *
+     * @param AOCCard[] $cards An array of cards
+     * @param int $currentPlayerId The ID of the current player (The player viewing the cards)
+     * @return array The uiData for the cards
+     */
+    public function getCardsUiData($cards, $currentPlayerId) {
+        $uiData = [];
+        foreach ($cards as $card) {
+            $uiData[] = $card->getUiData($currentPlayerId);
+        }
+        return $uiData;
+    }
+
+    /**
      * Get the uiData for all cards of a specific type
      *
      * @param int $cardType The type of card
      * @param int $currentPlayerId The ID of the current player
      * @return array The uiData for all cards of the specified type
      */
-    public function getCardsUiData($cardType, $currentPlayerId) {
+    public function getAllCardsUiData($cardType, $currentPlayerId) {
         $cards = [];
         switch ($cardType) {
             case CARD_TYPE_ARTIST:
@@ -851,7 +847,7 @@ class AOCCardManager extends APP_GameClass {
      * @param AOCCard[] $cards The cards to save
      * @return void
      */
-    private function saveCards($cards) {
+    public function saveCards($cards) {
         foreach ($cards as $card) {
             $this->saveCard($card);
         }

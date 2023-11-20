@@ -11,6 +11,8 @@
  *
  * Backend functions used by the completeSetup State
  *
+ * This state is entered after all players have selected their starting components. Finishes game setup by creating Creative and Comic decks.
+ *
  * @EvanPulgino
  */
 
@@ -21,22 +23,23 @@ class AOCCompleteSetupState {
         $this->game = $game;
     }
 
-    function getArgs() { return []; }
+    /**
+     * Gets the list of args used by the CompleteSetup state
+     *
+     * Args:
+     *  - None
+     */
+    function getArgs() {
+        return [];
+    }
 
+    /**
+     * Shuffles the starting decks, deals cards to the supply, and moves to the next state
+     */
     public function stCompleteSetup() {
-        $this->game->cardManager->shuffleStartingDeck(CARD_TYPE_ARTIST);
-        $this->game->cardManager->shuffleStartingDeck(CARD_TYPE_WRITER);
-        $this->game->cardManager->shuffleStartingDeck(CARD_TYPE_COMIC);
-
-        $artistCards = $this->game->cardManager->dealCardsToSupply(
-            CARD_TYPE_ARTIST
-        );
-        $writerCards = $this->game->cardManager->dealCardsToSupply(
-            CARD_TYPE_WRITER
-        );
-        $comicCards = $this->game->cardManager->dealCardsToSupply(
-            CARD_TYPE_COMIC
-        );
+        $artistCards = $this->shuffleAndDealCardsByType(CARD_TYPE_ARTIST);
+        $writerCards = $this->shuffleAndDealCardsByType(CARD_TYPE_WRITER);
+        $comicCards = $this->shuffleAndDealCardsByType(CARD_TYPE_COMIC);
 
         $this->game->notifyAllPlayers(
             "completeSetup",
@@ -51,4 +54,83 @@ class AOCCompleteSetupState {
         $this->game->gamestate->nextState("startGame");
     }
 
+    /**
+     * Shuffles the starting deck of a given card type and deals cards to the supply.
+     *
+     * @param $cardType The type of card to shuffle and deal
+     * @return array The updated deck and supply UiData of the given card type
+     */
+    private function shuffleAndDealCardsByType($cardType) {
+        $this->shuffleStartingDeckByType($cardType);
+        $this->dealStartingCardsToSupplyByCardType($cardType);
+
+        $updatedDeck = $this->game->cardManager->findCardsOrderedBy(
+            [
+                "card_type" => $cardType,
+                "card_location" => LOCATION_DECK,
+            ],
+            "card_location_arg DESC"
+        );
+        $updatedSupply = $this->game->cardManager->findCards([
+            "card_type" => $cardType,
+            "card_location" => LOCATION_SUPPLY,
+        ]);
+
+        return [
+            "deck" => $this->game->cardManager->getCardsUiData($updatedDeck, 0),
+            "supply" => $this->game->cardManager->getCardsUiData(
+                $updatedSupply,
+                0
+            ),
+        ];
+    }
+
+    /**
+     * Shuffles the starting deck of a given card type.
+     * Since this is the start of the game all remaining cards of the given type should be in the "void".
+     *
+     * @param $cardType The type of card to shuffle
+     */
+    private function shuffleStartingDeckByType($cardType) {
+        $cards = $this->game->cardManager->findCards([
+            "card_type" => $cardType,
+            "card_location" => LOCATION_VOID,
+        ]);
+
+        shuffle($cards);
+
+        $locationArg = 0;
+        foreach ($cards as $card) {
+            $card->setLocation(LOCATION_DECK);
+            $card->setLocationArg($locationArg);
+            $this->game->cardManager->saveCard($card);
+            $locationArg++;
+        }
+    }
+
+    /**
+     * Deals the starting cards to the supply.
+     * The number of cards to deal varies by player count and is stored in the CARD_SUPPLY_SIZE game state variable.
+     *
+     * @param $cardType The type of card to deal
+     */
+    private function dealStartingCardsToSupplyByCardType($cardType) {
+        $deck = $this->game->cardManager->findCardsOrderedBy(
+            [
+                "card_type" => $cardType,
+                "card_location" => LOCATION_DECK,
+            ],
+            "card_location_arg DESC"
+        );
+
+        $numberOfCardsToDraw = $this->game->getGameStateValue(CARD_SUPPLY_SIZE);
+        $startIndex = count($deck) - $numberOfCardsToDraw;
+        $drawnCards = array_splice($deck, $startIndex, $numberOfCardsToDraw);
+
+        foreach ($drawnCards as $card) {
+            $card->setLocation(LOCATION_SUPPLY);
+            $card->setLocationArg(0);
+            $this->game->cardManager->saveCard($card);
+        }
+    }
 }

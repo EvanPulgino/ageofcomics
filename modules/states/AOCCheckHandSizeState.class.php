@@ -11,6 +11,8 @@
  *
  * Backend functions used by the checkHandSize State
  *
+ * This state is entered if a player has more than 6 cards in their hand (including hyped comics) after any action that gains cards (i.e. Hire, Develop)
+ *
  * @EvanPulgino
  */
 

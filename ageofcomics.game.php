@@ -145,7 +145,7 @@ class AgeOfComics extends Table {
         $currentPlayerId = self::getCurrentPlayerId();
 
         $gamedata = [
-            "artistCards" => $this->cardManager->getCardsUiData(
+            "artistCards" => $this->cardManager->getAllCardsUiData(
                 CARD_TYPE_ARTIST,
                 $currentPlayerId
             ),
@@ -154,7 +154,7 @@ class AgeOfComics extends Table {
                 CARD_TYPE_ARTIST
             ),
             "calendarTiles" => $this->calendarManager->getCalendarTilesUiData(),
-            "comicCards" => $this->cardManager->getCardsUiData(
+            "comicCards" => $this->cardManager->getAllCardsUiData(
                 CARD_TYPE_COMIC,
                 $currentPlayerId
             ),
@@ -172,13 +172,13 @@ class AgeOfComics extends Table {
                 $currentPlayerId
             ),
             "playerInfo" => $this->playerManager->getPlayersUiData(),
-            "ripoffCards" => $this->cardManager->getCardsUiData(
+            "ripoffCards" => $this->cardManager->getAllCardsUiData(
                 CARD_TYPE_RIPOFF,
                 $currentPlayerId
             ),
             "salesOrders" => $this->salesOrderManager->getSalesOrdersUiData(),
             "ticketSupply" => self::getGameStateValue(TICKET_SUPPLY),
-            "writerCards" => $this->cardManager->getCardsUiData(
+            "writerCards" => $this->cardManager->getAllCardsUiData(
                 CARD_TYPE_WRITER,
                 $currentPlayerId
             ),
