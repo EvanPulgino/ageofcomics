@@ -652,6 +652,9 @@ var CardController = /** @class */ (function () {
             case globalThis.LOCATION_DECK:
                 this.ui.createHtml(cardDiv, "aoc-" + card.type + "-deck");
                 break;
+            case globalThis.LOCATION_DISCARD:
+                this.ui.createHtml(cardDiv, "aoc-" + card.type + "s-discard");
+                break;
             case globalThis.LOCATION_HAND:
                 this.ui.createHtml(cardDiv, "aoc-hand-" + card.playerId);
                 break;
