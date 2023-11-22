@@ -32,11 +32,9 @@ class AOCCheckHandSizeState {
      * @return array The list of args used by the CheckHandSize state
      */
     function getArgs() {
-        $queryParams = [
-            "card_owner" => $this->game->getActivePlayerId(),
-            "NOT card_location" => LOCATION_PLAYER_MAT,
-        ];
-        $cardsInHand = $this->game->cardManager->findCards($queryParams);
+        $cardsInHand = $this->game->cardManager->getCountForHandSizeCheck(
+            $this->game->getActivePlayerId()
+        );
 
         return [
             "numberToDiscard" => count($cardsInHand) - 6,
@@ -54,16 +52,12 @@ class AOCCheckHandSizeState {
 
         // Iterate through the cards to discard, and discard them
         foreach ($cardsToDiscard as $cardId) {
-            // Get card object, set location to discard and player to none, then save
-            $cardToDiscard = $this->game->cardManager->getCard($cardId);
-            $cardToDiscard->setLocation(LOCATION_DISCARD);
-            $cardToDiscard->setLocationArg(0);
-            $cardToDiscard->setPlayerId(0);
-            $this->game->cardManager->saveCard($cardToDiscard);
+            // Discard the card
+            $discardedCard = $this->game->cardManager->discardCard($cardId);
 
             // Get card string to display in notification
             $cardText = "";
-            switch ($cardToDiscard->getTypeId()) {
+            switch ($discardedCard->getTypeId()) {
                 case CARD_TYPE_ARTIST:
                     $cardText = "an artist";
                     break;
@@ -71,7 +65,7 @@ class AOCCheckHandSizeState {
                     $cardText = "a writer";
                     break;
                 case CARD_TYPE_COMIC:
-                    $cardText = $cardToDiscard->getName();
+                    $cardText = $discardedCard->getName();
                     break;
             }
 
@@ -82,7 +76,7 @@ class AOCCheckHandSizeState {
                 [
                     "player" => $activePlayer->getUiData(),
                     "player_name" => $activePlayer->getName(),
-                    "card" => $cardToDiscard->getUiData($activePlayerId),
+                    "card" => $discardedCard->getUiData($activePlayerId),
                     "cardText" => $cardText,
                 ]
             );

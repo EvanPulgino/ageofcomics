@@ -15,14 +15,6 @@
 
 class AOCCardManager extends APP_GameClass {
     private $game;
-    private $genres = [
-        GENRE_CRIME,
-        GENRE_HORROR,
-        GENRE_ROMANCE,
-        GENRE_SCIFI,
-        GENRE_SUPERHERO,
-        GENRE_WESTERN,
-    ];
 
     public function __construct($game) {
         $this->game = $game;
@@ -64,6 +56,22 @@ class AOCCardManager extends APP_GameClass {
         $card->setPlayerId($playerId);
         $card->setLocation(LOCATION_HAND);
         $card->setLocationArg($card->getTypeId() * 100 + $card->getGenreId());
+        $this->saveCard($card);
+
+        return $card;
+    }
+
+    /**
+     * Send a specific card to its discard pile
+     *
+     * @param int $cardId The ID of the card being discarded
+     * @return AOCCard The card that was discarded
+     */
+    public function discardCard($cardId) {
+        $card = $this->getCard($cardId);
+        $card->setLocation(LOCATION_DISCARD);
+        $card->setLocationArg(0);
+        $card->setPlayerId(0);
         $this->saveCard($card);
 
         return $card;
@@ -165,6 +173,25 @@ class AOCCardManager extends APP_GameClass {
                 "comic_card" => $card->getUiData($playerId),
             ]
         );
+    }
+
+    /**
+     * Gets a count of the number of cards a player has in their hand or hype area.
+     * Used for checking if a player is over the hand size limit.
+     *
+     * @param int $playerId The ID of the player
+     * @return int The number of cards the player has in their hand or hype area
+     */
+    public function getCountForHandSizeCheck($playerId) {
+        $sql =
+            "COUNT(*) FROM card WHERE card_owner = " .
+            $playerId .
+            " AND card_location = " .
+            LOCATION_HAND .
+            "OR card_location = " .
+            LOCATION_HYPE;
+
+        return self::getUniqueValueFromDB($sql);
     }
 
     /**
@@ -651,7 +678,7 @@ class AOCCardManager extends APP_GameClass {
 
         $typeName = $creativeType == CARD_TYPE_ARTIST ? ARTIST : WRITER;
 
-        foreach ($this->genres as $genreKey) {
+        foreach (GENRE_KEYS as $genreKey) {
             $values[] = "({$creativeType}, 10, {$genreKey}, -1)";
             $values[] = "({$creativeType}, 21, {$genreKey}, -1)";
             $values[] = "({$creativeType}, 22, {$genreKey}, -1)";
