@@ -38,30 +38,6 @@ class AOCCardManager extends APP_GameClass {
     }
 
     /**
-     * Develop (aka draw) a comic card:
-     * - Get the card from the database
-     * - Set the player ID, location, and locationArg
-     * - Save the card
-     *
-     * @param int $playerId The ID of the player developing the comic
-     * @param int $comicId The ID of the comic being developed
-     * @return AOCComicCard The comic card that was developed
-     */
-    public function developComic($playerId, $comicId) {
-        $sql =
-            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_id = " .
-            $comicId;
-        $row = self::getObjectFromDB($sql);
-        $card = new AOCComicCard($row);
-        $card->setPlayerId($playerId);
-        $card->setLocation(LOCATION_HAND);
-        $card->setLocationArg($card->getTypeId() * 100 + $card->getGenreId());
-        $this->saveCard($card);
-
-        return $card;
-    }
-
-    /**
      * Send a specific card to its discard pile
      *
      * @param int $cardId The ID of the card being discarded
@@ -639,7 +615,7 @@ class AOCCardManager extends APP_GameClass {
      * Shuffle the discard pile of a specific card type:
      * - Get all cards of the specified type that are in the discard pile
      * - Shuffle the cards
-     * - Set the location and locationArg for the cards
+     * - Set the location (deck) and locationArg (deck position) for the cards
      * - Save the cards
      *
      * @param int $cardType The type of card
@@ -660,9 +636,8 @@ class AOCCardManager extends APP_GameClass {
             $card->setLocation(LOCATION_DECK);
             $card->setLocationArg($locationArg);
             $locationArg++;
+            $this->saveCard($card);
         }
-
-        $this->saveCards($cards);
     }
 
     /**

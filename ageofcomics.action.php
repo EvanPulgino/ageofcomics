@@ -40,7 +40,9 @@ class action_ageofcomics extends APP_GameAction {
 
         $cardsToDiscard = self::getArg("cardsToDiscard", AT_numberlist, true);
 
-        $this->game->states[CHECK_HAND_SIZE]->confirmDiscard(explode(",", $cardsToDiscard));
+        $this->game->states[CHECK_HAND_SIZE]->confirmDiscard(
+            explode(",", $cardsToDiscard)
+        );
 
         self::ajaxResponse();
     }
@@ -61,7 +63,7 @@ class action_ageofcomics extends APP_GameAction {
 
         $comicId = self::getArg("comicId", AT_posint, true);
 
-        $this->game->developComic($comicId);
+        $this->game->states[PERFORM_DEVELOP]->developComic($comicId);
 
         self::ajaxResponse();
     }
@@ -71,7 +73,7 @@ class action_ageofcomics extends APP_GameAction {
 
         $genre = self::getArg("genre", AT_alphanum, true);
 
-        $this->game->developFromGenre($genre);
+        $this->game->states[PERFORM_DEVELOP]->developFromGenre($genre);
 
         self::ajaxResponse();
     }

@@ -11,6 +11,10 @@
  *
  * Backend functions used by the performDevelop State
  *
+ * In this state, the player can develop (draw) a comic card.
+ * They can take a face-up card from the market or top of the deck.
+ * Or they can pay $4 to develop the next card of a specified genre from the deck.
+ *
  * @EvanPulgino
  */
 
@@ -66,16 +70,24 @@ class AOCPerformDevelopState {
         ];
     }
 
-    function developComic($args) {
+    /**
+     * A player develops a comic card
+     *
+     * @param int $comicId The id of the comic card to develop
+     * @return void
+     */
+    public function developComic($comicId) {
         $activePlayerId = $this->game->getActivePlayerId();
         $activePlayer = $this->game->playerManager->getPlayer($activePlayerId);
-        $comicId = $args[0];
 
-        $comic = $this->game->cardManager->developComic(
+        // Develop (draw) card from market
+        $comic = $this->game->cardManager->drawCard(
             $activePlayerId,
-            $comicId
+            $comicId,
+            CARD_TYPE_COMIC
         );
 
+        // Notify players of the card drawn. If not active player, only show the card back
         $this->game->notifyAllPlayers(
             "developComic",
             clienttranslate('${player_name} develops a ${genre} comic'),
@@ -87,6 +99,7 @@ class AOCPerformDevelopState {
                 "comic" => $comic->getUiData(0),
             ]
         );
+        // Notify active player of the card drawn. Show the face-up card
         $this->game->notifyPlayer(
             $activePlayerId,
             "developComicPrivate",
@@ -100,45 +113,93 @@ class AOCPerformDevelopState {
             ]
         );
 
-        if (
-            count($this->game->cardManager->getPlayerHand($activePlayerId)) > 6
-        ) {
+        // If the player has more than 6 cards in hand, transition to the discardCards state
+        // Otherwise, transition to the nextPlayerTurn state
+        if ($this->game->cardManager->getCountForHandSizeCheck($activePlayerId) > 6) {
             $this->game->gamestate->nextState("discardCards");
         } else {
             $this->game->gamestate->nextState("nextPlayerTurn");
         }
     }
 
-    function developFromGenre($args) {
+    /**
+     * A player develops a comic card of a specified genre from the deck
+     *
+     * @param string $genre The genre of the comic card to develop
+     * @return void
+     */
+    public function developFromGenre($genre) {
         $activePlayerId = $this->game->getActivePlayerId();
         $activePlayer = $this->game->playerManager->getPlayer($activePlayerId);
-        $genre = $args[0];
 
-        $this->game->playerManager->adjustPlayerMoney(
-            $activePlayer->getId(),
-            -4
+        // Player pays $4 to develop a comic from the deck
+        $this->payForDeckDevelop($activePlayer);
+
+        // Find and develop (draw) the next comic of the specified genre from the deck
+        $comicToDevelop = $this->findNextComicOfGenre($activePlayer, $genre);
+        $comic = $this->game->cardManager->drawCard(
+            $activePlayerId,
+            $comicToDevelop->getId(),
+            CARD_TYPE_COMIC
         );
+
+        // Notify players of the card drawn. If not active player, only show the card back
         $this->game->notifyAllPlayers(
-            "adjustMoney",
-            clienttranslate('${player_name} pays $4 to develop a comic'),
+            "developComic",
+            clienttranslate('${player_name} develops a ${genre} comic'),
             [
                 "player" => $activePlayer->getUiData(),
+                "player_id" => $activePlayerId,
                 "player_name" => $activePlayer->getName(),
-                "amount" => -4,
+                "genre" => $comic->getGenre(),
+                "comic" => $comic->getUiData(0),
+            ]
+        );
+        // Notify active player of the card drawn. Show the face-up card
+        $this->game->notifyPlayer(
+            $activePlayerId,
+            "developComicPrivate",
+            clienttranslate('${player_name} develops a ${genre} comic'),
+            [
+                "player" => $activePlayer->getUiData(),
+                "player_id" => $activePlayerId,
+                "player_name" => $activePlayer->getName(),
+                "genre" => $comic->getGenre(),
+                "comic" => $comic->getUiData($activePlayerId),
             ]
         );
 
+        // If the player has more than 6 cards in hand, transition to the discardCards state
+        // Otherwise, transition to the nextPlayerTurn state
+        if ($this->game->cardManager->getCountForHandSizeCheck($activePlayerId) > 6) {
+            $this->game->gamestate->nextState("discardCards");
+        } else {
+            $this->game->gamestate->nextState("nextPlayerTurn");
+        }
+    }
+
+    /**
+     * Finds the next comic card of a specified genre from the deck
+     *
+     * @param AOCPlayer $activePlayer The active player
+     * @param string $genre The genre of the comic card to find
+     * @return AOCComicCard The next comic card of the specified genre from the deck
+     */
+    private function findNextComicOfGenre($activePlayer, $genre) {
         $comicDeck = $this->game->cardManager->getComicDeckDesc();
 
-        $cardToDevelop = null;
+        $comicToDevelop = null;
 
-        while ($cardToDevelop == null) {
+        // While we haven't found a comic of the specified genre, discard cards from the deck
+        while ($comicToDevelop == null) {
             foreach ($comicDeck as $comicCard) {
+                // If we find a comic of the specified genre, return it
                 if ($comicCard->getGenre() == $genre) {
-                    $cardToDevelop = $comicCard;
+                    $comicToDevelop = $comicCard;
                     break;
                 }
 
+                // Otherwise, discard the card from the deck and notify players
                 $this->game->cardManager->discardCard($comicCard->getId());
                 $this->game->notifyAllPlayers(
                     "discardCardFromDeck",
@@ -148,13 +209,14 @@ class AOCPerformDevelopState {
                     [
                         "player" => $activePlayer->getUiData(),
                         "player_name" => $activePlayer->getName(),
-                        "card" => $comicCard->getUiData($activePlayerId),
+                        "card" => $comicCard->getUiData(0),
                         "genre" => $comicCard->getGenre(),
                     ]
                 );
             }
 
-            if ($cardToDevelop == null) {
+            // If we've discarded all cards from the deck, reshuffle the discard pile
+            if ($comicToDevelop == null) {
                 $this->game->cardManager->shuffleDiscardPile(CARD_TYPE_COMIC);
                 $comicDeck = $this->game->cardManager->getComicDeckDesc();
                 $this->game->notifyAllPlayers(
@@ -172,46 +234,28 @@ class AOCPerformDevelopState {
                 );
             }
         }
+        return $comicToDevelop;
+    }
 
-        $comic = $this->game->cardManager->developComic(
-            $activePlayerId,
-            $cardToDevelop->getId()
+    /**
+     * Active player spends $4 to develop a comic card from the deck
+     *
+     * @param AOCPlayer $activePlayer The active player
+     * @return void
+     */
+    private function payForDeckDevelop($activePlayer) {
+        $this->game->playerManager->adjustPlayerMoney(
+            $activePlayer->getId(),
+            -4
         );
-
         $this->game->notifyAllPlayers(
-            "developComic",
-            clienttranslate('${player_name} develops a ${genre} comic'),
+            "adjustMoney",
+            clienttranslate('${player_name} pays $4 to develop a comic'),
             [
                 "player" => $activePlayer->getUiData(),
-                "player_id" => $activePlayerId,
                 "player_name" => $activePlayer->getName(),
-                "genre" => $comic->getGenre(),
-                "comic" => $comic->getUiData(0),
+                "amount" => -4,
             ]
         );
-        $this->game->notifyPlayer(
-            $activePlayerId,
-            "developComicPrivate",
-            clienttranslate('${player_name} develops a ${genre} comic'),
-            [
-                "player" => $activePlayer->getUiData(),
-                "player_id" => $activePlayerId,
-                "player_name" => $activePlayer->getName(),
-                "genre" => $comic->getGenre(),
-                "comic" => $comic->getUiData($activePlayerId),
-            ]
-        );
-
-        $queryParams = [
-            "card_owner" => $this->game->getActivePlayerId(),
-            "NOT card_location" => LOCATION_PLAYER_MAT,
-        ];
-        $cardsInHand = $this->game->cardManager->findCards($queryParams);
-
-        if (count($cardsInHand) > 6) {
-            $this->game->gamestate->nextState("discardCards");
-        } else {
-            $this->game->gamestate->nextState("nextPlayerTurn");
-        }
     }
 }
