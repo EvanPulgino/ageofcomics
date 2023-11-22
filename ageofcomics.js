@@ -2173,11 +2173,10 @@ var PlayerTurn = /** @class */ (function () {
             dojo.addClass(actionBoardElementId, "aoc-clickable");
             dojo.setAttr(actionBoardElementId, "data-action-space", actionSpace);
             // Add the click events
-            this.connections.push(dojo.connect(dojo.byId(actionBoardElementId), "onclick", dojo.hitch(this, "selectAction")));
+            this.connections.push(dojo.connect(dojo.byId(actionBoardElementId), "onclick", dojo.hitch(this, this.selectAction, actionSpace)));
         }
     };
-    PlayerTurn.prototype.selectAction = function (event) {
-        var actionSpace = parseInt(dojo.getAttr(event.target, "data-action-space"));
+    PlayerTurn.prototype.selectAction = function (actionSpace) {
         this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_SELECT_ACTION_SPACE, {
             actionSpace: actionSpace,
         });

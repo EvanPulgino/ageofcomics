@@ -53,7 +53,7 @@ class action_ageofcomics extends APP_GameAction {
         $ideasFromBoard = self::getArg("ideasFromBoard", AT_numberlist, true);
         $ideasFromSupply = self::getArg("ideasFromSupply", AT_numberlist, true);
 
-        $this->game->confirmGainIdeas($ideasFromBoard, $ideasFromSupply);
+        $this->game->states[PERFORM_IDEAS]->confirmGainIdeas(explode(",", $ideasFromBoard), explode(",", $ideasFromSupply));
 
         self::ajaxResponse();
     }

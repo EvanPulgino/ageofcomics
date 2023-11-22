@@ -117,30 +117,6 @@ class AOCPlayerManager extends APP_GameClass {
     }
 
     /**
-     * A player gains an idea from the board
-     *
-     * @param AOCPlayer $player The player gaining the idea
-     * @param string $genre The genre of the idea to gain
-     * @return void
-     */
-    public function gainIdeaFromBoard($player, $genre) {
-        $this->adjustPlayerIdeas($player->getId(), 1, $genre);
-        $this->game->setGameStateValue("ideas_space_" . $genre, 0);
-
-        $this->game->notifyAllPlayers(
-            "gainIdeaFromBoard",
-            clienttranslate(
-                '${player_name} gains a ${genre} idea from the board'
-            ),
-            [
-                "player" => $player->getUiData(),
-                "player_name" => $player->getName(),
-                "genre" => $genre,
-            ]
-        );
-    }
-
-    /**
      * A player gains an idea from hiring a value 1 creative
      *
      * @param AOCPlayer $player The player gaining the idea
@@ -164,29 +140,6 @@ class AOCPlayerManager extends APP_GameClass {
                     $card->getTypeId() == CARD_TYPE_ARTIST
                         ? "an artist"
                         : "a writer",
-            ]
-        );
-    }
-
-    /**
-     * A player gains an idea from the supply
-     *
-     * @param AOCPlayer $player The player gaining the idea
-     * @param string $genre The genre of the idea to gain
-     * @return void
-     */
-    public function gainIdeaFromSupply($player, $genre) {
-        $this->adjustPlayerIdeas($player->getId(), 1, $genre);
-
-        $this->game->notifyAllPlayers(
-            "gainIdeaFromSupply",
-            clienttranslate(
-                '${player_name} gains a ${genre} idea from the supply'
-            ),
-            [
-                "player" => $player->getUiData(),
-                "player_name" => $player->getName(),
-                "genre" => $genre,
             ]
         );
     }
