@@ -160,11 +160,11 @@ class AOCCardManager extends APP_GameClass {
      */
     public function getCountForHandSizeCheck($playerId) {
         $sql =
-            "COUNT(*) FROM card WHERE card_owner = " .
+            "SELECT COUNT(*) FROM card WHERE card_owner = " .
             $playerId .
             " AND card_location = " .
             LOCATION_HAND .
-            "OR card_location = " .
+            " OR card_location = " .
             LOCATION_HYPE;
 
         return self::getUniqueValueFromDB($sql);
