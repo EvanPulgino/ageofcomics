@@ -117,34 +117,6 @@ class AOCPlayerManager extends APP_GameClass {
     }
 
     /**
-     * A player gains an idea from hiring a value 1 creative
-     *
-     * @param AOCPlayer $player The player gaining the idea
-     * @param AOCCard $card The creative card that was hired
-     * @return void
-     */
-    public function gainIdeaFromHiringCreative($player, $card) {
-        $this->adjustPlayerIdeas($player->getId(), 1, $card->getGenre());
-
-        $this->game->notifyAllPlayers(
-            "gainIdeaFromHiringCreative",
-            clienttranslate(
-                '${player_name} gains a ${genre} idea from hiring ${card_type_singular}'
-            ),
-            [
-                "player" => $player->getUiData(),
-                "player_name" => $player->getName(),
-                "card" => $card->getUiData($player->getId()),
-                "genre" => $card->getGenre(),
-                "card_type_singular" =>
-                    $card->getTypeId() == CARD_TYPE_ARTIST
-                        ? "an artist"
-                        : "a writer",
-            ]
-        );
-    }
-
-    /**
      * A player gains a starting idea
      *
      * @param int $playerId The player's ID

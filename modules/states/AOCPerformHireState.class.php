@@ -69,7 +69,7 @@ class AOCPerformHireState {
 
         // If the card is value 1, gain a matching idea
         if ($card->getIdeas() == 1) {
-            $this->game->playerManager->gainIdeaFromHiringCreative(
+            $this->gainIdeaFromHiringCreative(
                 $activePlayer,
                 $card
             );
@@ -134,5 +134,37 @@ class AOCPerformHireState {
             // If the player has not hired both an artist and a writer, move to the performNextHire state
             $this->game->gamestate->nextState("performNextHire");
         }
+    }
+
+    /**
+     * A player gains an idea from hiring a value 1 creative
+     *
+     * @param AOCPlayer $player The player gaining the idea
+     * @param AOCCard $card The creative card that was hired
+     * @return void
+     */
+    private function gainIdeaFromHiringCreative($player, $card) {
+        $this->game->playerManage->adjustPlayerIdeas(
+            $player->getId(),
+            1,
+            $card->getGenre()
+        );
+
+        $this->game->notifyAllPlayers(
+            "gainIdeaFromHiringCreative",
+            clienttranslate(
+                '${player_name} gains a ${genre} idea from hiring ${card_type_singular}'
+            ),
+            [
+                "player" => $player->getUiData(),
+                "player_name" => $player->getName(),
+                "card" => $card->getUiData($player->getId()),
+                "genre" => $card->getGenre(),
+                "card_type_singular" =>
+                    $card->getTypeId() == CARD_TYPE_ARTIST
+                        ? "an artist"
+                        : "a writer",
+            ]
+        );
     }
 }
