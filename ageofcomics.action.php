@@ -84,7 +84,7 @@ class action_ageofcomics extends APP_GameAction {
         $cardId = self::getArg("cardId", AT_posint, true);
         $creativeType = self::getArg("creativeType", AT_alphanum, true);
 
-        $this->game->hireCreative($cardId, $creativeType);
+        $this->game->states[PERFORM_HIRE]->hireCreative($cardId, $creativeType);
 
         self::ajaxResponse();
     }
