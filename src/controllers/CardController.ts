@@ -35,6 +35,13 @@ class CardController {
     }
   }
 
+  setupDiscard(discard: any): void {
+    for (var i in discard) {
+      var card = discard[i];
+      this.createCard(card);
+    }
+  }
+
   setupSupply(cardSupply: any): void {
     for (var i in cardSupply) {
       var card = cardSupply[i];
@@ -70,6 +77,9 @@ class CardController {
       switch (card.location) {
         case globalThis.LOCATION_DECK:
           this.ui.createHtml(cardDiv, "aoc-" + card.type + "-deck");
+          break;
+        case globalThis.LOCATION_DISCARD:
+          this.ui.createHtml(cardDiv, "aoc-" + card.type + "s-discard");
           break;
         case globalThis.LOCATION_HAND:
           this.ui.createHtml(cardDiv, "aoc-hand-" + card.playerId);
@@ -108,14 +118,31 @@ class CardController {
   discardCard(card: any, playerId: any): void {
     var cardDiv = dojo.byId("aoc-card-" + card.id);
     dojo.place(cardDiv, "aoc-player-area-right-" + playerId);
-    var discardDiv = dojo.byId("aoc-game-status-panel");
+    if (cardDiv.classList.contains(card.facedownClass)) {
+      cardDiv.classList.remove(card.facedownClass);
+      cardDiv.classList.add(card.baseClass);
+    }
+    var discardDiv = dojo.byId("aoc-" + card.type + "s-discard");
     gameui.slideToObjectAndDestroy(cardDiv, discardDiv, 500);
+    var animation = gameui.slideToObject(cardDiv, discardDiv, 500);
+    dojo.connect(animation, "onEnd", () => {
+      dojo.removeAttr(cardDiv, "style");
+      dojo.place(cardDiv, discardDiv);
+    });
+    animation.play();
   }
 
   discardCardFromDeck(card: any): void {
     var cardDiv = dojo.byId("aoc-card-" + card.id);
-    var discardDiv = dojo.byId("aoc-game-status-panel");
-    gameui.slideToObjectAndDestroy(cardDiv, discardDiv, 500);
+    cardDiv.classList.remove(card.facedownClass);
+    cardDiv.classList.add(card.baseClass);
+    var discardDiv = dojo.byId("aoc-" + card.type + "s-discard");
+    var animation = gameui.slideToObject(cardDiv, discardDiv, 500);
+    dojo.connect(animation, "onEnd", () => {
+      dojo.removeAttr(cardDiv, "style");
+      dojo.place(cardDiv, discardDiv);
+    });
+    animation.play();
   }
 
   gainStartingComic(card: any): void {

@@ -90,32 +90,36 @@ class AOCPerformDevelopState {
         // Notify players of the card drawn. If not active player, only show the card back
         $this->game->notifyAllPlayers(
             "developComic",
-            clienttranslate('${player_name} develops a ${genre} comic'),
+            clienttranslate('${player_name} develops ${comic_name}'),
             [
                 "player" => $activePlayer->getUiData(),
                 "player_id" => $activePlayerId,
                 "player_name" => $activePlayer->getName(),
-                "genre" => $comic->getGenre(),
                 "comic" => $comic->getUiData(0),
+                "comic_name" => $comic->getName(),
             ]
         );
         // Notify active player of the card drawn. Show the face-up card
         $this->game->notifyPlayer(
             $activePlayerId,
             "developComicPrivate",
-            clienttranslate('${player_name} develops a ${genre} comic'),
+            clienttranslate('${player_name} develops ${comic_name}'),
             [
                 "player" => $activePlayer->getUiData(),
                 "player_id" => $activePlayerId,
                 "player_name" => $activePlayer->getName(),
-                "genre" => $comic->getGenre(),
                 "comic" => $comic->getUiData($activePlayerId),
+                "comic_name" => $comic->getName(),
             ]
         );
 
         // If the player has more than 6 cards in hand, transition to the discardCards state
         // Otherwise, transition to the nextPlayerTurn state
-        if ($this->game->cardManager->getCountForHandSizeCheck($activePlayerId) > 6) {
+        if (
+            $this->game->cardManager->getCountForHandSizeCheck(
+                $activePlayerId
+            ) > 6
+        ) {
             $this->game->gamestate->nextState("discardCards");
         } else {
             $this->game->gamestate->nextState("nextPlayerTurn");
@@ -133,7 +137,7 @@ class AOCPerformDevelopState {
         $activePlayer = $this->game->playerManager->getPlayer($activePlayerId);
 
         // Player pays $4 to develop a comic from the deck
-        $this->payForDeckDevelop($activePlayer);
+        $this->payForDeckDevelop($activePlayer, $genre);
 
         // Find and develop (draw) the next comic of the specified genre from the deck
         $comicToDevelop = $this->findNextComicOfGenre($activePlayer, $genre);
@@ -159,19 +163,23 @@ class AOCPerformDevelopState {
         $this->game->notifyPlayer(
             $activePlayerId,
             "developComicPrivate",
-            clienttranslate('${player_name} develops a ${genre} comic'),
+            clienttranslate('${player_name} develops ${comic_name}'),
             [
                 "player" => $activePlayer->getUiData(),
                 "player_id" => $activePlayerId,
                 "player_name" => $activePlayer->getName(),
-                "genre" => $comic->getGenre(),
                 "comic" => $comic->getUiData($activePlayerId),
+                "comic_name" => $comic->getName(),
             ]
         );
 
         // If the player has more than 6 cards in hand, transition to the discardCards state
         // Otherwise, transition to the nextPlayerTurn state
-        if ($this->game->cardManager->getCountForHandSizeCheck($activePlayerId) > 6) {
+        if (
+            $this->game->cardManager->getCountForHandSizeCheck(
+                $activePlayerId
+            ) > 6
+        ) {
             $this->game->gamestate->nextState("discardCards");
         } else {
             $this->game->gamestate->nextState("nextPlayerTurn");
@@ -243,18 +251,21 @@ class AOCPerformDevelopState {
      * @param AOCPlayer $activePlayer The active player
      * @return void
      */
-    private function payForDeckDevelop($activePlayer) {
+    private function payForDeckDevelop($activePlayer, $genre) {
         $this->game->playerManager->adjustPlayerMoney(
             $activePlayer->getId(),
             -4
         );
         $this->game->notifyAllPlayers(
             "adjustMoney",
-            clienttranslate('${player_name} pays $4 to develop a comic'),
+            clienttranslate(
+                '${player_name} pays $4 to develop a ${genre} comic'
+            ),
             [
                 "player" => $activePlayer->getUiData(),
                 "player_name" => $activePlayer->getName(),
                 "amount" => -4,
+                "genre" => $genre,
             ]
         );
     }

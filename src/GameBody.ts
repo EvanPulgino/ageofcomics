@@ -61,6 +61,9 @@ class GameBody extends GameBasics {
     this.cardController.setupDeck(gamedata.artistDeck);
     this.cardController.setupDeck(gamedata.writerDeck);
     this.cardController.setupDeck(gamedata.comicDeck);
+    this.cardController.setupDiscard(gamedata.artistDiscard);
+    this.cardController.setupDiscard(gamedata.writerDiscard);
+    this.cardController.setupDiscard(gamedata.comicDiscard);
     this.cardController.setupSupply(gamedata.artistSupply);
     this.cardController.setupSupply(gamedata.writerSupply);
     this.cardController.setupSupply(gamedata.comicSupply);
@@ -87,7 +90,7 @@ class GameBody extends GameBasics {
     this.notifqueue.setSynchronous("gainIdeaFromBoard", 500);
     this.notifqueue.setSynchronous("gainIdeaFromSupply", 500);
     this.notifqueue.setSynchronous("gainStartingIdea", 500);
-    
+
     this.notifqueue.setIgnoreNotificationCheck(
       "developComic",
       function (notif: any) {

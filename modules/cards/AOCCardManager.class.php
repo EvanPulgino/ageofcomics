@@ -308,7 +308,6 @@ class AOCCardManager extends APP_GameClass {
         }
         return $cards;
     }
-
     /**
      * Get a count of remaining comics available for a specific genre
      *
@@ -462,6 +461,42 @@ class AOCCardManager extends APP_GameClass {
         $uiData = [];
         foreach ($cards as $card) {
             $uiData[] = $card->getUiData($currentPlayerId);
+        }
+        return $uiData;
+    }
+
+    /**
+     * Get the uiData for all cards of a specific type in a specific location
+     *
+     * @param int $cardType The type of card
+     * @param int $location The location of the card
+     * @param int $currentPlayerId The ID of the current player (The player viewing the cards)
+     */
+    public function getCardsByTypeInLocationUiData(
+        $cardType,
+        $location,
+        $currentPlayerId
+    ) {
+        $cards = $this->getCardsByTypeInLocation($cardType, $location);
+        $uiData = [];
+        foreach ($cards as $card) {
+            switch ($card["type"]) {
+                case CARD_TYPE_ARTIST:
+                    $uiData[] = (new AOCArtistCard($card))->getUiData(
+                        $currentPlayerId
+                    );
+                    break;
+                case CARD_TYPE_COMIC:
+                    $uiData[] = (new AOCComicCard($card))->getUiData(
+                        $currentPlayerId
+                    );
+                    break;
+                case CARD_TYPE_WRITER:
+                    $uiData[] = (new AOCWriterCard($card))->getUiData(
+                        $currentPlayerId
+                    );
+                    break;
+            }
         }
         return $uiData;
     }

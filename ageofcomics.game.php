@@ -150,6 +150,11 @@ class AgeOfComics extends Table {
                 $currentPlayerId
             ),
             "artistDeck" => $this->cardManager->getDeckUiData(CARD_TYPE_ARTIST),
+            "artistDiscard" => $this->cardManager->getCardsByTypeInLocationUiData(
+                CARD_TYPE_ARTIST,
+                LOCATION_DISCARD,
+                $currentPlayerId
+            ),
             "artistSupply" => $this->cardManager->getSupplyCardsUiData(
                 CARD_TYPE_ARTIST
             ),
@@ -159,6 +164,11 @@ class AgeOfComics extends Table {
                 $currentPlayerId
             ),
             "comicDeck" => $this->cardManager->getDeckUiData(CARD_TYPE_COMIC),
+            "comicDiscard" => $this->cardManager->getCardsByTypeInLocationUiData(
+                CARD_TYPE_COMIC,
+                LOCATION_DISCARD,
+                $currentPlayerId
+            ),
             "comicSupply" => $this->cardManager->getSupplyCardsUiData(
                 CARD_TYPE_COMIC
             ),
@@ -183,6 +193,11 @@ class AgeOfComics extends Table {
                 $currentPlayerId
             ),
             "writerDeck" => $this->cardManager->getDeckUiData(CARD_TYPE_WRITER),
+            "writerDiscard" => $this->cardManager->getCardsByTypeInLocationUiData(
+                CARD_TYPE_WRITER,
+                LOCATION_DISCARD,
+                $currentPlayerId
+            ),
             "writerSupply" => $this->cardManager->getSupplyCardsUiData(
                 CARD_TYPE_WRITER
             ),

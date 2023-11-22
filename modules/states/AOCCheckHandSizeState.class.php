@@ -37,7 +37,7 @@ class AOCCheckHandSizeState {
         );
 
         return [
-            "numberToDiscard" => count($cardsInHand) - 6,
+            "numberToDiscard" => $cardsInHand - 6,
         ];
     }
 

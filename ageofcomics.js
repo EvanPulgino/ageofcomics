@@ -344,6 +344,9 @@ var GameBody = /** @class */ (function (_super) {
         this.cardController.setupDeck(gamedata.artistDeck);
         this.cardController.setupDeck(gamedata.writerDeck);
         this.cardController.setupDeck(gamedata.comicDeck);
+        this.cardController.setupDiscard(gamedata.artistDiscard);
+        this.cardController.setupDiscard(gamedata.writerDiscard);
+        this.cardController.setupDiscard(gamedata.comicDiscard);
         this.cardController.setupSupply(gamedata.artistSupply);
         this.cardController.setupSupply(gamedata.writerSupply);
         this.cardController.setupSupply(gamedata.comicSupply);
@@ -584,6 +587,12 @@ var CardController = /** @class */ (function () {
             this.createCard(card);
         }
     };
+    CardController.prototype.setupDiscard = function (discard) {
+        for (var i in discard) {
+            var card = discard[i];
+            this.createCard(card);
+        }
+    };
     CardController.prototype.setupSupply = function (cardSupply) {
         for (var i in cardSupply) {
             var card = cardSupply[i];
@@ -615,6 +624,9 @@ var CardController = /** @class */ (function () {
             switch (card.location) {
                 case globalThis.LOCATION_DECK:
                     this.ui.createHtml(cardDiv, "aoc-" + card.type + "-deck");
+                    break;
+                case globalThis.LOCATION_DISCARD:
+                    this.ui.createHtml(cardDiv, "aoc-" + card.type + "s-discard");
                     break;
                 case globalThis.LOCATION_HAND:
                     this.ui.createHtml(cardDiv, "aoc-hand-" + card.playerId);
@@ -651,13 +663,30 @@ var CardController = /** @class */ (function () {
     CardController.prototype.discardCard = function (card, playerId) {
         var cardDiv = dojo.byId("aoc-card-" + card.id);
         dojo.place(cardDiv, "aoc-player-area-right-" + playerId);
-        var discardDiv = dojo.byId("aoc-game-status-panel");
+        if (cardDiv.classList.contains(card.facedownClass)) {
+            cardDiv.classList.remove(card.facedownClass);
+            cardDiv.classList.add(card.baseClass);
+        }
+        var discardDiv = dojo.byId("aoc-" + card.type + "s-discard");
         gameui.slideToObjectAndDestroy(cardDiv, discardDiv, 500);
+        var animation = gameui.slideToObject(cardDiv, discardDiv, 500);
+        dojo.connect(animation, "onEnd", function () {
+            dojo.removeAttr(cardDiv, "style");
+            dojo.place(cardDiv, discardDiv);
+        });
+        animation.play();
     };
     CardController.prototype.discardCardFromDeck = function (card) {
         var cardDiv = dojo.byId("aoc-card-" + card.id);
-        var discardDiv = dojo.byId("aoc-game-status-panel");
-        gameui.slideToObjectAndDestroy(cardDiv, discardDiv, 500);
+        cardDiv.classList.remove(card.facedownClass);
+        cardDiv.classList.add(card.baseClass);
+        var discardDiv = dojo.byId("aoc-" + card.type + "s-discard");
+        var animation = gameui.slideToObject(cardDiv, discardDiv, 500);
+        dojo.connect(animation, "onEnd", function () {
+            dojo.removeAttr(cardDiv, "style");
+            dojo.place(cardDiv, discardDiv);
+        });
+        animation.play();
     };
     CardController.prototype.gainStartingComic = function (card) {
         var location = "aoc-select-starting-comic-" + card.genre;

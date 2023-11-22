@@ -210,14 +210,29 @@
                 <div id="aoc-writers-market" class="aoc-card-row-container aoc-card-market-row">
                     <div id="aoc-writer-deck" class="aoc-deck"></div>
                     <div id="aoc-writers-available" class="aoc-card-market-row"></div>
+                    <div id="aoc-writers-discard" class="aoc-discard">
+                        <div id="aoc-writers-discard-cover" class="aoc-discard-cover">
+                            <div id="aoc-writers-trash" class="aoc-trash-icon"></div>
+                        </div>
+                    </div>
                 </div>
                 <div id="aoc-artists-market" class="aoc-card-row-container aoc-card-market-row">
                     <div id="aoc-artist-deck" class="aoc-deck"></div>
                     <div id="aoc-artists-available" class="aoc-card-market-row"></div>
+                    <div id="aoc-artists-discard" class="aoc-discard">
+                        <div id="aoc-artists-discard-cover" class="aoc-discard-cover">
+                            <div id="aoc-artists-trash" class="aoc-trash-icon"></div>
+                        </div>
+                    </div>
                 </div>
                 <div id="aoc-comics-market" class="aoc-card-row-container aoc-card-market-row">
                     <div id="aoc-comic-deck" class="aoc-deck"></div>
                     <div id="aoc-comics-available" class="aoc-card-market-row"></div>
+                    <div id="aoc-comics-discard" class="aoc-discard">
+                        <div id="aoc-comics-discard-cover" class="aoc-discard-cover">
+                            <div id="aoc-comics-trash" class="aoc-trash-icon"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

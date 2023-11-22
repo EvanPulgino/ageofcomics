@@ -220,14 +220,10 @@ html {
 #aoc-card-market {
   display: flex;
   flex-flow: column nowrap;
-  gap: 35px;
   justify-content: center;
 }
 
 .aoc-card-row-container {
-  border-radius: 10px;
-  height: 300px;
-  width: 1015px;
   filter: drop-shadow(4px 4px 4px black);
   -webkit-filter: drop-shadow(4px 4px 5px #000);
 }
@@ -236,11 +232,7 @@ html {
   align-items: center;
   display: flex;
   flex-flow: row nowrap;
-  gap: 25px;
   justify-content: flex-start;
-  padding-left: 20px;
-  padding-right: 5px;
-  padding-top: 10px;
 }
 
 #aoc-token-bank {
