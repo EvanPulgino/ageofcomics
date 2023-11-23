@@ -41,7 +41,7 @@ class AOCCardManager extends APP_GameClass {
      * Send a specific card to its discard pile
      *
      * @param int $cardId The ID of the card being discarded
-     * @return AOCCard The card that was discarded
+     * @return AOCArtistCard|AOCComicCard|AOCWriterCard The card that was discarded
      */
     public function discardCard($cardId) {
         $card = $this->getCard($cardId);
@@ -62,7 +62,7 @@ class AOCCardManager extends APP_GameClass {
      * @param int $playerId The ID of the player drawing the card
      * @param int $cardId The ID of the card being drawn
      * @param int $cardType The type of card being drawn
-     * @return AOCCard The card that was drawn
+     * @return AOCArtistCard|AOCComcCard|AOCWriterCard The card that was drawn
      */
     public function drawCard($playerId, $cardId, $cardType) {
         $sql =
@@ -96,100 +96,27 @@ class AOCCardManager extends APP_GameClass {
     }
 
     /**
-     * Gets a count of the number of cards a player has in their hand or hype area.
-     * Used for checking if a player is over the hand size limit.
+     * Get a count of remaining comics available for a specific genre
      *
-     * @param int $playerId The ID of the player
-     * @return int The number of cards the player has in their hand or hype area
+     * @param int $genreId The ID of the genre
+     * @return int The number of comics available for the genre
      */
-    public function getCountForHandSizeCheck($playerId) {
+    public function getAvailableComicCount($genreId) {
         $sql =
-            "SELECT COUNT(*) FROM card WHERE card_owner = " .
-            $playerId .
-            " AND card_location = " .
-            LOCATION_HAND .
-            " OR card_location = " .
-            LOCATION_HYPE;
-
-        return self::getUniqueValueFromDB($sql);
-    }
-
-    /**
-     * Search for all cards based on passed in query parameters
-     *
-     * @param array $queryParams An array of query parameters
-     * @return AOCCard[] All cards matching the query parameters
-     */
-    public function findCards($queryParams) {
-        $sql =
-            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card";
-        $where = [];
-        foreach ($queryParams as $key => $value) {
-            $where[] = $key . " = " . $value;
-        }
-        if (count($where) > 0) {
-            $sql .= " WHERE " . implode(" AND ", $where);
-        }
-        $rows = self::getObjectListFromDB($sql);
-
-        $cards = [];
-        foreach ($rows as $row) {
-            switch ($row["type"]) {
-                case CARD_TYPE_ARTIST:
-                    $cards[] = new AOCArtistCard($row);
-                    break;
-                case CARD_TYPE_COMIC:
-                    $cards[] = new AOCComicCard($row);
-                    break;
-                case CARD_TYPE_RIPOFF:
-                    $cards[] = new AOCRipoffCard($row);
-                    break;
-                case CARD_TYPE_WRITER:
-                    $cards[] = new AOCWriterCard($row);
-                    break;
-            }
-        }
-        return $cards;
-    }
-
-    public function findCardsOrderedBy($queryParams, $orderBy) {
-        $sql =
-            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card";
-        $where = [];
-        foreach ($queryParams as $key => $value) {
-            $where[] = $key . " = " . $value;
-        }
-        if (count($where) > 0) {
-            $sql .= " WHERE " . implode(" AND ", $where);
-        }
-        $sql .= " ORDER BY " . $orderBy;
-        $rows = self::getObjectListFromDB($sql);
-
-        $cards = [];
-        foreach ($rows as $row) {
-            switch ($row["type"]) {
-                case CARD_TYPE_ARTIST:
-                    $cards[] = new AOCArtistCard($row);
-                    break;
-                case CARD_TYPE_COMIC:
-                    $cards[] = new AOCComicCard($row);
-                    break;
-                case CARD_TYPE_RIPOFF:
-                    $cards[] = new AOCRipoffCard($row);
-                    break;
-                case CARD_TYPE_WRITER:
-                    $cards[] = new AOCWriterCard($row);
-                    break;
-            }
-        }
-        return $cards;
+            "SELECT COUNT(*) FROM card WHERE card_type = " .
+            CARD_TYPE_COMIC .
+            " AND card_genre = " .
+            $genreId .
+            " AND card_owner = 0";
+        $count = self::getUniqueValueFromDB($sql);
+        return $count;
     }
 
     /**
      * Get a card object from the database
      *
      * @param int $cardId The ID of the card
-     * @return AOCCard The card
+     * @return AOCArtistCard|AOCComicCard|AOCRipoffCard|AOCWriterCard The card
      */
     public function getCard($cardId) {
         $sql =
@@ -224,139 +151,162 @@ class AOCCardManager extends APP_GameClass {
     }
 
     /**
-     * Get all artist cards
+     * Get all cards of a specific type (optionally filtered by genre)
      *
-     * @return AOCArtistCard[] All artist cards
+     * @param int $cardType The type of card
+     * @param int|null $cardGenre The genre of the card, if any
+     * @return AOCArtsitCard[]|AOCComicCard[]|AOCRipoffCard[]|AOCWriterCard[] All cards of the specified type
      */
-    public function getArtistCards() {
-        $rows = $this->getCardsByType(CARD_TYPE_ARTIST);
-
-        $cards = [];
-        foreach ($rows as $row) {
-            $cards[] = new AOCArtistCard($row);
-        }
-        return $cards;
-    }
-
-    /**
-     * Get all artist cards in the deck
-     *
-     * @return AOCArtistCard[] All artist cards in the deck
-     */
-    public function getArtistDeck() {
-        $rows = $this->getDeckByType(CARD_TYPE_ARTIST);
-
-        $cards = [];
-        foreach ($rows as $row) {
-            $cards[] = new AOCArtistCard($row);
-        }
-        return $cards;
-    }
-    /**
-     * Get a count of remaining comics available for a specific genre
-     *
-     * @param int $genreId The ID of the genre
-     * @return int The number of comics available for the genre
-     */
-    public function getAvailableComicCount($genreId) {
+    public function getCardsOfType($cardType, $cardGenre = null) {
         $sql =
-            "SELECT COUNT(*) FROM card WHERE card_type = " .
-            CARD_TYPE_COMIC .
-            " AND card_genre = " .
-            $genreId .
-            " AND card_owner = 0";
-        $count = self::getUniqueValueFromDB($sql);
-        return $count;
-    }
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_type = " .
+            $cardType;
+        if ($cardGenre) {
+            $sql .= " AND card_genre = " . $cardGenre;
+        }
 
-    /**
-     * Get all comic cards
-     *
-     * @return AOCComicCard[] All comic cards
-     */
-    public function getComicCards() {
-        $rows = $this->getCardsByType(CARD_TYPE_COMIC);
+        $rows = self::getObjectListFromDB($sql);
 
         $cards = [];
         foreach ($rows as $row) {
-            $cards[] = new AOCComicCard($row);
+            switch ($row["type"]) {
+                case CARD_TYPE_ARTIST:
+                    $cards[] = new AOCArtistCard($row);
+                    break;
+                case CARD_TYPE_COMIC:
+                    $cards[] = new AOCComicCard($row);
+                    break;
+                case CARD_TYPE_RIPOFF:
+                    $cards[] = new AOCRipoffCard($row);
+                    break;
+                case CARD_TYPE_WRITER:
+                    $cards[] = new AOCWriterCard($row);
+                    break;
+            }
         }
+
         return $cards;
     }
 
     /**
-     * Get all comic cards in the deck
+     * Get the uiData for all cards of a specific type (optionally filtered by genre)
      *
-     * @return AOCComicCard[] All comic cards in the deck
+     * @param int $cardType The type of card
+     * @param int $currentPlayerId The ID of the current player
+     * @param int|null $cardGenre The genre of the card, if any
+     * @return array The uiData for all cards of the specified type
      */
-    public function getComicDeck() {
-        $rows = $this->getDeckByType(CARD_TYPE_COMIC);
+    public function getCardsOfTypeUiData(
+        $cardType,
+        $currentPlayerId,
+        $cardGenre = null
+    ) {
+        $cards = $this->getCardsOfType($cardType, $cardGenre);
+
+        $uiData = [];
+        foreach ($cards as $card) {
+            $uiData[] = $card->getUiData($currentPlayerId);
+        }
+        return $uiData;
+    }
+
+    /**
+     * Get all cards of a specific type in a specific location (optionally filtered by genre and sorted)
+     *
+     * @param int $cardType The type of card
+     * @param int $location The location of the card
+     * @param int|null $cardGenre The genre of the card, if any
+     * @param string|null $orderBy The order to sort the cards, if any
+     * @return AOCArtistCard[]|AOCComicCard[]|AOCRipoffCard[]|AOCWriterCard[] All cards of the specified type in the specified location
+     */
+    public function getCardsOfTypeInLocation(
+        $cardType,
+        $location,
+        $cardGenre = null,
+        $orderBy = null
+    ) {
+        $sql =
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_type = " .
+            $cardType .
+            " AND card_location = " .
+            $location;
+        if ($cardGenre) {
+            $sql .= " AND card_genre = " . $cardGenre;
+        }
+        if ($orderBy) {
+            $sql .= " ORDER BY " . $orderBy;
+        }
+
+        $rows = self::getObjectListFromDB($sql);
 
         $cards = [];
         foreach ($rows as $row) {
-            $cards[] = new AOCComicCard($row);
+            switch ($row["type"]) {
+                case CARD_TYPE_ARTIST:
+                    $cards[] = new AOCArtistCard($row);
+                    break;
+                case CARD_TYPE_COMIC:
+                    $cards[] = new AOCComicCard($row);
+                    break;
+                case CARD_TYPE_RIPOFF:
+                    $cards[] = new AOCRipoffCard($row);
+                    break;
+                case CARD_TYPE_WRITER:
+                    $cards[] = new AOCWriterCard($row);
+                    break;
+            }
         }
+
         return $cards;
     }
 
     /**
-     * Get all comic cards in the deck, in descending order
+     * Get the uiData for all cards of a specific type in a specific location (optionally filtered by genre and sorted)
      *
-     * @return AOCComicCard[] All comic cards in the deck, in descending order
+     * @param int $cardType The type of card
+     * @param int $location The location of the card
+     * @param int $currentPlayerId The ID of the current player (The player viewing the cards)
+     * @param int|null $cardGenre The genre of the card, if any
+     * @param string|null $orderBy The order to sort the cards, if any
      */
-    public function getComicDeckDesc() {
-        $rows = $this->getDeckByTypeDesc(CARD_TYPE_COMIC);
+    public function getCardsOfTypeInLocationUiData(
+        $cardType,
+        $location,
+        $currentPlayerId,
+        $cardGenre = null,
+        $orderBy = null
+    ) {
+        $cards = $this->getCardsOfTypeInLocation(
+            $cardType,
+            $location,
+            $cardGenre,
+            $orderBy
+        );
 
-        $cards = [];
-        foreach ($rows as $row) {
-            $cards[] = new AOCComicCard($row);
+        $uiData = [];
+        foreach ($cards as $card) {
+            $uiData[] = $card->getUiData($currentPlayerId);
         }
-        return $cards;
+        return $uiData;
     }
 
     /**
-     * Get all ripoff cards
+     * Gets a count of the number of cards a player has in their hand or hype area.
+     * Used for checking if a player is over the hand size limit.
      *
-     * @return AOCRipoffCard[] All ripoff cards
+     * @param int $playerId The ID of the player
+     * @return int The number of cards the player has in their hand or hype area
      */
-    public function getRipoffCards() {
-        $rows = $this->getCardsByType(CARD_TYPE_RIPOFF);
+    public function getCountForHandSizeCheck($playerId) {
+        $sql =
+            "SELECT COUNT(*) FROM card WHERE card_owner = " .
+            $playerId .
+            " AND card_location = " .
+            LOCATION_HAND .
+            " OR card_location = " .
+            LOCATION_HYPE;
 
-        $cards = [];
-        foreach ($rows as $row) {
-            $cards[] = new AOCRipoffCard($row);
-        }
-        return $cards;
-    }
-
-    /**
-     * Get all writer cards
-     *
-     * @return AOCWriterCard[] All writer cards
-     */
-    public function getWriterCards() {
-        $rows = $this->getCardsByType(CARD_TYPE_WRITER);
-
-        $cards = [];
-        foreach ($rows as $row) {
-            $cards[] = new AOCWriterCard($row);
-        }
-        return $cards;
-    }
-
-    /**
-     * Get all writer cards in the deck
-     *
-     * @return AOCWriterCard[] All writer cards in the deck
-     */
-    public function getWriterDeck() {
-        $rows = $this->getDeckByType(CARD_TYPE_WRITER);
-
-        $cards = [];
-        foreach ($rows as $row) {
-            $cards[] = new AOCWriterCard($row);
-        }
-        return $cards;
+        return self::getUniqueValueFromDB($sql);
     }
 
     /**
@@ -395,105 +345,13 @@ class AOCCardManager extends APP_GameClass {
     }
 
     /**
-     * Gets the uiData for a list of card objects
-     *
-     * @param AOCCard[] $cards An array of cards
-     * @param int $currentPlayerId The ID of the current player (The player viewing the cards)
-     * @return array The uiData for the cards
-     */
-    public function getCardsUiData($cards, $currentPlayerId) {
-        $uiData = [];
-        foreach ($cards as $card) {
-            $uiData[] = $card->getUiData($currentPlayerId);
-        }
-        return $uiData;
-    }
-
-    /**
-     * Get the uiData for all cards of a specific type in a specific location
-     *
-     * @param int $cardType The type of card
-     * @param int $location The location of the card
-     * @param int $currentPlayerId The ID of the current player (The player viewing the cards)
-     */
-    public function getCardsByTypeInLocationUiData(
-        $cardType,
-        $location,
-        $currentPlayerId
-    ) {
-        $cards = $this->getCardsByTypeInLocation($cardType, $location);
-        $uiData = [];
-        foreach ($cards as $card) {
-            switch ($card["type"]) {
-                case CARD_TYPE_ARTIST:
-                    $uiData[] = (new AOCArtistCard($card))->getUiData(
-                        $currentPlayerId
-                    );
-                    break;
-                case CARD_TYPE_COMIC:
-                    $uiData[] = (new AOCComicCard($card))->getUiData(
-                        $currentPlayerId
-                    );
-                    break;
-                case CARD_TYPE_WRITER:
-                    $uiData[] = (new AOCWriterCard($card))->getUiData(
-                        $currentPlayerId
-                    );
-                    break;
-            }
-        }
-        return $uiData;
-    }
-
-    /**
-     * Get the uiData for all cards of a specific type
-     *
-     * @param int $cardType The type of card
-     * @param int $currentPlayerId The ID of the current player
-     * @return array The uiData for all cards of the specified type
-     */
-    public function getAllCardsUiData($cardType, $currentPlayerId) {
-        $cards = [];
-        switch ($cardType) {
-            case CARD_TYPE_ARTIST:
-                $cards = $this->getArtistCards();
-                break;
-            case CARD_TYPE_COMIC:
-                $cards = $this->getComicCards();
-                break;
-            case CARD_TYPE_RIPOFF:
-                $cards = $this->getRipoffCards();
-                break;
-            case CARD_TYPE_WRITER:
-                $cards = $this->getWriterCards();
-                break;
-        }
-        $uiData = [];
-        foreach ($cards as $card) {
-            $uiData[] = $card->getUiData($currentPlayerId);
-        }
-        return $uiData;
-    }
-
-    /**
      * Get the uiData for all cards of a specific type in the deck
      *
      * @param int $cardType The type of card
      * @return array The uiData for all cards of the specified type in the deck
      */
     public function getDeckUiData($cardType) {
-        $cards = [];
-        switch ($cardType) {
-            case CARD_TYPE_ARTIST:
-                $cards = $this->getArtistDeck();
-                break;
-            case CARD_TYPE_COMIC:
-                $cards = $this->getComicDeck();
-                break;
-            case CARD_TYPE_WRITER:
-                $cards = $this->getWriterDeck();
-                break;
-        }
+        $cards = $this->getDeckByType($cardType);
         $uiData = [];
         foreach ($cards as $card) {
             $uiData[] = $card->getUiData(0);
@@ -536,31 +394,6 @@ class AOCCardManager extends APP_GameClass {
     }
 
     /**
-     * Get the uiData for all cards in the supply
-     *
-     * @param int $cardType The type of card
-     * @return array The uiData for all cards in the supply
-     */
-    public function getSupplyCardsUiData($cardType) {
-        $cards = $this->getCardsByTypeInLocation($cardType, LOCATION_SUPPLY);
-        $uiData = [];
-        foreach ($cards as $card) {
-            switch ($card["type"]) {
-                case CARD_TYPE_ARTIST:
-                    $uiData[] = (new AOCArtistCard($card))->getUiData(0);
-                    break;
-                case CARD_TYPE_COMIC:
-                    $uiData[] = (new AOCComicCard($card))->getUiData(0);
-                    break;
-                case CARD_TYPE_WRITER:
-                    $uiData[] = (new AOCWriterCard($card))->getUiData(0);
-                    break;
-            }
-        }
-        return $uiData;
-    }
-
-    /**
      * Shuffle the starting deck of a specific card type:
      * - Get all cards of the specified type that are in the void
      * - Shuffle the cards
@@ -571,7 +404,7 @@ class AOCCardManager extends APP_GameClass {
      * @return void
      */
     public function shuffleStartingDeck($cardType) {
-        $rows = $this->getCardsByTypeInLocation($cardType, LOCATION_VOID);
+        $rows = $this->getCardsOfTypeInLocation($cardType, LOCATION_VOID);
 
         $cards = [];
         foreach ($rows as $row) {
@@ -601,7 +434,7 @@ class AOCCardManager extends APP_GameClass {
      * @return void
      */
     public function shuffleDiscardPile($cardType) {
-        $rows = $this->getCardsByTypeInLocation($cardType, LOCATION_DISCARD);
+        $rows = $this->getCardsOfTypeInLocation($cardType, LOCATION_DISCARD);
 
         $cards = [];
         foreach ($rows as $row) {
@@ -691,8 +524,8 @@ class AOCCardManager extends APP_GameClass {
      */
     private function dealStartingCreative($players) {
         // Get all level 2 cards
-        $artistCards = $this->getArtistCards();
-        $writerCards = $this->getWriterCards();
+        $artistCards = $this->getCardsOfType(CARD_TYPE_ARTIST);
+        $writerCards = $this->getCardsOfType(CARD_TYPE_WRITER);
 
         $level2Artists = array_filter($artistCards, function ($card) {
             return $card->getValue() == 2;
@@ -743,39 +576,6 @@ class AOCCardManager extends APP_GameClass {
     }
 
     /**
-     * Get all cards of a specific type
-     *
-     * @param int $cardType The type of card
-     * @return array All cards of the specified type
-     */
-    private function getCardsByType($cardType) {
-        $sql =
-            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_type = " .
-            $cardType;
-        $rows = self::getObjectListFromDB($sql);
-
-        return $rows;
-    }
-
-    /**
-     * Get all cards of a specific type in a specific location
-     *
-     * @param int $cardType The type of card
-     * @param int $location The location of the card
-     * @return array All cards of the specified type in the specified location
-     */
-    private function getCardsByTypeInLocation($cardType, $location) {
-        $sql =
-            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_type = " .
-            $cardType .
-            " AND card_location = " .
-            $location;
-        $rows = self::getObjectListFromDB($sql);
-
-        return $rows;
-    }
-
-    /**
      * Get the card deck of a specific type
      *
      * @param int $cardType The type of card
@@ -790,7 +590,25 @@ class AOCCardManager extends APP_GameClass {
             " ORDER BY card_location_arg";
         $rows = self::getObjectListFromDB($sql);
 
-        return $rows;
+        $cards = [];
+        foreach ($rows as $row) {
+            switch ($row["type"]) {
+                case CARD_TYPE_ARTIST:
+                    $cards[] = new AOCArtistCard($row);
+                    break;
+                case CARD_TYPE_COMIC:
+                    $cards[] = new AOCComicCard($row);
+                    break;
+                case CARD_TYPE_RIPOFF:
+                    $cards[] = new AOCRipoffCard($row);
+                    break;
+                case CARD_TYPE_WRITER:
+                    $cards[] = new AOCWriterCard($row);
+                    break;
+            }
+        }
+
+        return $cards;
     }
 
     /**
@@ -808,7 +626,25 @@ class AOCCardManager extends APP_GameClass {
             " ORDER BY card_location_arg DESC";
         $rows = self::getObjectListFromDB($sql);
 
-        return $rows;
+        $cards = [];
+        foreach ($rows as $row) {
+            switch ($row["type"]) {
+                case CARD_TYPE_ARTIST:
+                    $cards[] = new AOCArtistCard($row);
+                    break;
+                case CARD_TYPE_COMIC:
+                    $cards[] = new AOCComicCard($row);
+                    break;
+                case CARD_TYPE_RIPOFF:
+                    $cards[] = new AOCRipoffCard($row);
+                    break;
+                case CARD_TYPE_WRITER:
+                    $cards[] = new AOCWriterCard($row);
+                    break;
+            }
+        }
+
+        return $cards;
     }
 
     /**

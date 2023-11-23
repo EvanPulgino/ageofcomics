@@ -42,6 +42,10 @@ define("PLAYER_ACTION_SELECT_ACTION_SPACE", "selectActionSpace");
 define("PLAYER_ACTION_SELECT_START_ITEMS", "selectStartItems");
 define("PLAYER_ACTION_CONFIRM_DISCARD", "confirmDiscard");
 
+/** Generic */
+define("CARD_LOCATION_ARG", "card_location_arg");
+define("CARD_LOCATION_ARG_DESC", "card_location_arg DESC");
+
 /** Genre Keys */
 define("GENRE_CRIME", 10);
 define("GENRE_HORROR", 20);

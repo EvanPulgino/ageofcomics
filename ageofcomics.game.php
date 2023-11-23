@@ -146,32 +146,48 @@ class AgeOfComics extends Table {
         $currentPlayerId = self::getCurrentPlayerId();
 
         $gamedata = [
-            "artistCards" => $this->cardManager->getAllCardsUiData(
+            "artistCards" => $this->cardManager->getCardsOfTypeUiData(
                 CARD_TYPE_ARTIST,
                 $currentPlayerId
             ),
-            "artistDeck" => $this->cardManager->getDeckUiData(CARD_TYPE_ARTIST),
-            "artistDiscard" => $this->cardManager->getCardsByTypeInLocationUiData(
+            "artistDeck" => $this->cardManager->getCardsOfTypeInLocationUiData(
+                CARD_TYPE_ARTIST,
+                LOCATION_DECK,
+                $currentPlayerId,
+                null,
+                CARD_LOCATION_ARG
+            ),
+            "artistDiscard" => $this->cardManager->getCardsOfTypeInLocationUiData(
                 CARD_TYPE_ARTIST,
                 LOCATION_DISCARD,
                 $currentPlayerId
             ),
-            "artistSupply" => $this->cardManager->getSupplyCardsUiData(
-                CARD_TYPE_ARTIST
+            "artistSupply" => $this->cardManager->getCardsOfTypeInLocationUiData(
+                CARD_TYPE_ARTIST,
+                LOCATION_SUPPLY,
+                $currentPlayerId
             ),
             "calendarTiles" => $this->calendarManager->getCalendarTilesUiData(),
-            "comicCards" => $this->cardManager->getAllCardsUiData(
+            "comicCards" => $this->cardManager->getCardsOfTypeUiData(
                 CARD_TYPE_COMIC,
                 $currentPlayerId
             ),
-            "comicDeck" => $this->cardManager->getDeckUiData(CARD_TYPE_COMIC),
-            "comicDiscard" => $this->cardManager->getCardsByTypeInLocationUiData(
+            "comicDeck" => $this->cardManager->getCardsOfTypeInLocationUiData(
+                CARD_TYPE_COMIC,
+                LOCATION_DECK,
+                $currentPlayerId,
+                null,
+                CARD_LOCATION_ARG
+            ),
+            "comicDiscard" => $this->cardManager->getCardsOfTypeInLocationUiData(
                 CARD_TYPE_COMIC,
                 LOCATION_DISCARD,
                 $currentPlayerId
             ),
-            "comicSupply" => $this->cardManager->getSupplyCardsUiData(
-                CARD_TYPE_COMIC
+            "comicSupply" => $this->cardManager->getCardsOfTypeInLocationUiData(
+                CARD_TYPE_COMIC,
+                LOCATION_SUPPLY,
+                $currentPlayerId
             ),
             "constants" => get_defined_constants(true)["user"],
             "editors" => $this->editorManager->getEditorsUiData(),
@@ -183,24 +199,32 @@ class AgeOfComics extends Table {
                 $currentPlayerId
             ),
             "playerInfo" => $this->playerManager->getPlayersUiData(),
-            "ripoffCards" => $this->cardManager->getAllCardsUiData(
+            "ripoffCards" => $this->cardManager->getCardsOfTypeUiData(
                 CARD_TYPE_RIPOFF,
                 $currentPlayerId
             ),
             "salesOrders" => $this->salesOrderManager->getSalesOrdersUiData(),
             "ticketSupply" => self::getGameStateValue(TICKET_SUPPLY),
-            "writerCards" => $this->cardManager->getAllCardsUiData(
+            "writerCards" => $this->cardManager->getCardsOfTypeUiData(
                 CARD_TYPE_WRITER,
                 $currentPlayerId
             ),
-            "writerDeck" => $this->cardManager->getDeckUiData(CARD_TYPE_WRITER),
-            "writerDiscard" => $this->cardManager->getCardsByTypeInLocationUiData(
+            "writerDeck" => $this->cardManager->getCardsOfTypeInLocationUiData(
+                CARD_TYPE_WRITER,
+                LOCATION_DECK,
+                $currentPlayerId,
+                null,
+                CARD_LOCATION_ARG
+            ),
+            "writerDiscard" => $this->cardManager->getCardsOfTypeInLocationUiData(
                 CARD_TYPE_WRITER,
                 LOCATION_DISCARD,
                 $currentPlayerId
             ),
-            "writerSupply" => $this->cardManager->getSupplyCardsUiData(
-                CARD_TYPE_WRITER
+            "writerSupply" => $this->cardManager->getCardsOfTypeInLocationUiData(
+                CARD_TYPE_WRITER,
+                LOCATION_SUPPLY,
+                $currentPlayerId
             ),
         ];
 

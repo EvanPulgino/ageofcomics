@@ -64,23 +64,18 @@ class AOCCompleteSetupState {
         $this->shuffleStartingDeckByType($cardType);
         $this->dealStartingCardsToSupplyByCardType($cardType);
 
-        $updatedDeck = $this->game->cardManager->findCardsOrderedBy(
-            [
-                "card_type" => $cardType,
-                "card_location" => LOCATION_DECK,
-            ],
-            "card_location_arg DESC"
-        );
-        $updatedSupply = $this->game->cardManager->findCards([
-            "card_type" => $cardType,
-            "card_location" => LOCATION_SUPPLY,
-        ]);
-
         return [
-            "deck" => $this->game->cardManager->getCardsUiData($updatedDeck, 0),
-            "supply" => $this->game->cardManager->getCardsUiData(
-                $updatedSupply,
-                0
+            "deck" => $this->game->cardManager->getCardsOfTypeInLocationUiData(
+                $cardType,
+                LOCATION_DECK,
+                0,
+                null,
+                CARD_LOCATION_ARG_DESC
+            ),
+            "supply" => $this->game->cardManager->getCardsOfTypeInLocationUiData(
+                $cardType,
+                LOCATION_SUPPLY,
+                0,
             ),
         ];
     }
@@ -92,10 +87,10 @@ class AOCCompleteSetupState {
      * @param $cardType The type of card to shuffle
      */
     private function shuffleStartingDeckByType($cardType) {
-        $cards = $this->game->cardManager->findCards([
-            "card_type" => $cardType,
-            "card_location" => LOCATION_VOID,
-        ]);
+        $cards = $this->game->cardManager->getCardsOfTypeInLocation(
+            $cardType,
+            LOCATION_VOID
+        );
 
         shuffle($cards);
 
@@ -115,12 +110,11 @@ class AOCCompleteSetupState {
      * @param $cardType The type of card to deal
      */
     private function dealStartingCardsToSupplyByCardType($cardType) {
-        $deck = $this->game->cardManager->findCardsOrderedBy(
-            [
-                "card_type" => $cardType,
-                "card_location" => LOCATION_DECK,
-            ],
-            "card_location_arg DESC"
+        $deck = $this->game->cardManager->getCardsOfTypeInLocation(
+            $cardType,
+            LOCATION_DECK,
+            null,
+            CARD_LOCATION_ARG_DESC
         );
 
         $numberOfCardsToDraw = $this->game->getGameStateValue(CARD_SUPPLY_SIZE);
