@@ -486,6 +486,7 @@ var GameState = /** @class */ (function () {
         this.performHire = new PerformHire(game);
         this.performIdeas = new PerformIdeas(game);
         this.performPrint = new PerformPrint(game);
+        this.performRoyalties = new PerformRoyalties(game);
         this.performSales = new PerformSales(game);
         this.playerSetup = new PlayerSetup(game);
         this.playerTurn = new PlayerTurn(game);
@@ -1950,6 +1951,27 @@ var PerformPrint = /** @class */ (function () {
     PerformPrint.prototype.onLeavingState = function () { };
     PerformPrint.prototype.onUpdateActionButtons = function (stateArgs) { };
     return PerformPrint;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * PerformRoyalties.ts
+ *
+ */
+var PerformRoyalties = /** @class */ (function () {
+    function PerformRoyalties(game) {
+        this.game = game;
+    }
+    PerformRoyalties.prototype.onEnteringState = function (stateArgs) { };
+    PerformRoyalties.prototype.onLeavingState = function () { };
+    PerformRoyalties.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return PerformRoyalties;
 }());
 /**
  *------

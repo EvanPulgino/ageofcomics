@@ -112,11 +112,7 @@ class AOCPlayerTurnState {
                 $this->game->gamestate->nextState("performPrint");
                 break;
             case ROYALTIES_ACTION:
-                $this->game->playerManager->gainRoyalties(
-                    $activePlayer,
-                    $actionSpace
-                );
-                $this->game->gamestate->nextState("nextPlayerTurn");
+                $this->game->gamestate->nextState("performRoyalties");
                 break;
             case SALES_ACTION:
                 $this->game->gamestate->nextState("performSales");

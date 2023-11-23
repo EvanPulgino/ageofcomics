@@ -123,6 +123,7 @@ $machinestates = [
             "performDevelop" => ST_PERFORM_DEVELOP,
             "performIdeas" => ST_PERFORM_IDEAS,
             "performPrint" => ST_PERFORM_PRINT,
+            "performRoyalties" => ST_PERFORM_ROYALTIES,
             "performSales" => ST_PERFORM_SALES,
         ],
     ],
@@ -189,6 +190,15 @@ $machinestates = [
             PLAYER_ACTION_PRINT_COMIC,
             PLAYER_ACTION_PRINT_RIPOFF,
         ],
+        "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
+    ],
+
+    ST_PERFORM_ROYALTIES => [
+        "name" => PERFORM_ROYALTIES,
+        "description" => "",
+        "type" => STATE_TYPE_GAME,
+        "args" => STATE_ARGS_PERFORM_ROYALTIES,
+        "action" => GAME_ACTION_GAIN_ROYALITES,
         "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
     ],
 

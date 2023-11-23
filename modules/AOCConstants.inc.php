@@ -16,6 +16,7 @@
 
 /** Game State Actions */
 define("GAME_ACTION_COMPLETE_SETUP", "stCompleteSetup");
+define("GAME_ACTION_GAIN_ROYALITES", "stGainRoyalties");
 define("GAME_ACTION_GAME_END", "stGameEnd");
 define("GAME_ACTION_GAME_SETUP", "stGameSetup");
 define("GAME_ACTION_PLAYER_SETUP", "stPlayerSetup");
@@ -39,7 +40,6 @@ define("PLAYER_ACTION_PRINT_COMIC", "printComic");
 define("PLAYER_ACTION_PRINT_RIPOFF", "printRipoff");
 define("PLAYER_ACTION_SELECT_ACTION_SPACE", "selectActionSpace");
 define("PLAYER_ACTION_SELECT_START_ITEMS", "selectStartItems");
-define("PLAYER_ACTION_TAKE_ROYALTIES", "takeRoyalties");
 define("PLAYER_ACTION_CONFIRM_DISCARD", "confirmDiscard");
 
 /** Genre Keys */
@@ -904,6 +904,7 @@ define("STATE_ARGS_PERFORM_DEVELOP", "argsPerformDevelop");
 define("STATE_ARGS_PERFORM_HIRE", "argsPerformHire");
 define("STATE_ARGS_PERFORM_IDEAS", "argsPerformIdeas");
 define("STATE_ARGS_PERFORM_PRINT", "argsPerformPrint");
+define("STATE_ARGS_PERFORM_ROYALTIES", "argsPerformRoyalties");
 define("STATE_ARGS_PERFORM_SALES", "argsPerformSales");
 define("STATE_ARGS_PLAYER_SETUP", "argsPlayerSetup");
 define("STATE_ARGS_PLAYER_TURN", "argsPlayerTurn");
@@ -920,7 +921,8 @@ define("ST_PERFORM_HIRE", 21);
 define("ST_PERFORM_DEVELOP", 22);
 define("ST_PERFORM_IDEAS", 23);
 define("ST_PERFORM_PRINT", 24);
-define("ST_PERFORM_SALES", 25);
+define("ST_PERFORM_ROYALTIES", 25);
+define("ST_PERFORM_SALES", 26);
 define("ST_CHECK_HAND_SIZE", 28);
 define("ST_NEXT_PLAYER", 29);
 define("ST_GAME_END", 99);
@@ -936,6 +938,7 @@ define("PERFORM_DEVELOP", "performDevelop");
 define("PERFORM_HIRE", "performHire");
 define("PERFORM_IDEAS", "performIdeas");
 define("PERFORM_PRINT", "performPrint");
+define("PERFORM_ROYALTIES", "performRoyalties");
 define("PERFORM_SALES", "performSales");
 define("PLAYER_SETUP", "playerSetup");
 define("PLAYER_TURN", "playerTurn");
