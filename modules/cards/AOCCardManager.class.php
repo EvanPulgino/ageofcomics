@@ -96,62 +96,6 @@ class AOCCardManager extends APP_GameClass {
     }
 
     /**
-     * A player gains a starting comic card of a specific genre:
-     * - Get all comic cards of the specified genre that are in the void
-     * - Shuffle the cards
-     * - Get the first card
-     * - Set the player ID, location, and locationArg
-     * - Save the card
-     * - Notify all players that the player gained a starting comic card
-     *
-     * @param int $playerId The ID of the player gaining the card
-     * @param int $genreId The ID of the genre of the card being gained
-     * @return void
-     */
-    public function gainStaringComicCard($playerId, $genreId) {
-        $sql =
-            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_genre = " .
-            $genreId .
-            " AND card_type = 3 AND card_owner IS NULL ";
-        $rows = self::getObjectListFromDB($sql);
-
-        shuffle($rows);
-        $card = new AOCComicCard($rows[0]);
-
-        $card->setPlayerId($playerId);
-        $card->setLocation(LOCATION_HAND);
-        $card->setLocationArg($card->getTypeId() * 100 + $card->getGenreId());
-
-        $this->saveCard($card);
-
-        $this->game->notifyAllPlayers(
-            "gainStartingComic",
-            clienttranslate('${player_name} gains a ${comic_genre} comic'),
-            [
-                "player_name" => $this->game->playerManager
-                    ->getPlayer($playerId)
-                    ->getName(),
-                "player_id" => $playerId,
-                "comic_genre" => $card->getGenre(),
-                "comic_card" => $card->getUiData(0),
-            ]
-        );
-        $this->game->notifyPlayer(
-            $playerId,
-            "gainStartingComicPrivate",
-            clienttranslate('${player_name} gain a ${comic_genre} comic'),
-            [
-                "player_name" => $this->game->playerManager
-                    ->getPlayer($playerId)
-                    ->getName(),
-                "player_id" => $playerId,
-                "comic_genre" => $card->getGenre(),
-                "comic_card" => $card->getUiData($playerId),
-            ]
-        );
-    }
-
-    /**
      * Gets a count of the number of cards a player has in their hand or hype area.
      * Used for checking if a player is over the hand size limit.
      *

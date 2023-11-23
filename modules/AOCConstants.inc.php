@@ -76,6 +76,15 @@ define("GENRES", [
     GENRE_WESTERN => WESTERN,
 ]);
 
+define("GENRES_NAME_TO_KEY", [
+    CRIME => GENRE_CRIME,
+    HORROR => GENRE_HORROR,
+    ROMANCE => GENRE_ROMANCE,
+    SCIFI => GENRE_SCIFI,
+    SUPERHERO => GENRE_SUPERHERO,
+    WESTERN => GENRE_WESTERN,
+]);
+
 /** Card Types */
 define("CARD_TYPE_ARTIST", 1);
 define("CARD_TYPE_WRITER", 2);

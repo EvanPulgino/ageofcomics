@@ -53,7 +53,10 @@ class action_ageofcomics extends APP_GameAction {
         $ideasFromBoard = self::getArg("ideasFromBoard", AT_numberlist, true);
         $ideasFromSupply = self::getArg("ideasFromSupply", AT_numberlist, true);
 
-        $this->game->states[PERFORM_IDEAS]->confirmGainIdeas(explode(",", $ideasFromBoard), explode(",", $ideasFromSupply));
+        $this->game->states[PERFORM_IDEAS]->confirmGainIdeas(
+            explode(",", $ideasFromBoard),
+            explode(",", $ideasFromSupply)
+        );
 
         self::ajaxResponse();
     }
@@ -102,10 +105,13 @@ class action_ageofcomics extends APP_GameAction {
     public function selectStartItems() {
         self::setAjaxMode();
 
-        $comic = self::getArg("comic", AT_alphanum, true);
-        $ideas = self::getArg("ideas", AT_numberlist, true);
+        $comicGenre = self::getArg("comic", AT_posint, true);
+        $ideaGenres = self::getArg("ideas", AT_numberlist, true);
 
-        $this->game->selectStartItems($comic, explode(",", $ideas));
+        $this->game->states[PLAYER_SETUP]->selectStartItems(
+            $comicGenre,
+            explode(",", $ideaGenres)
+        );
 
         self::ajaxResponse();
     }

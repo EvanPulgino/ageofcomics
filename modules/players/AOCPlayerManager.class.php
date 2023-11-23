@@ -117,30 +117,6 @@ class AOCPlayerManager extends APP_GameClass {
     }
 
     /**
-     * A player gains a starting idea
-     *
-     * @param int $playerId The player's ID
-     * @param string $genre The genre of the idea to gain
-     *
-     * @return void
-     */
-    public function gainStartingIdea($playerId, $genre) {
-        $this->adjustPlayerIdeas($playerId, 1, $genre);
-
-        $this->game->notifyAllPlayers(
-            "gainStartingIdea",
-            clienttranslate('${player_name} gains a ${genre} idea'),
-            [
-                "player_name" => $this->game->playerManager
-                    ->getPlayer($playerId)
-                    ->getName(),
-                "player_id" => $playerId,
-                "genre" => $genre,
-            ]
-        );
-    }
-
-    /**
      * Gets the active player as an AOCPlayer object
      *
      * @return AOCPlayer The active player
