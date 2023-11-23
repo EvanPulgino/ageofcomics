@@ -11,6 +11,16 @@
  *
  * Backend functions used by the startNewRound State
  *
+ * In this state, a new round is started by following these steps:
+ *  - 1. Increment round number
+ *  - 2. Flip Calendar Tile(s)
+ *  - 3. Flip Sales Orders on Map based on flipped Calendar Tile(s)
+ *  - 4. Refill Ideas on board
+ *  - 5. Add hype tokens to hyped comics
+ *  - 6. Move to next state:
+ *       - on first round, this is the startActionsPhase state
+ *       - on all other rounds, this is the increaseCreatives state
+ *
  * @EvanPulgino
  */
 
@@ -21,7 +31,9 @@ class AOCStartNewRoundState {
         $this->game = $game;
     }
 
-    function getArgs() { return []; }
+    function getArgs() {
+        return [];
+    }
 
     function stStartNewRound() {
         // 1. Increment round number
@@ -36,11 +48,18 @@ class AOCStartNewRoundState {
             return $tile->getUiData();
         }, $flippedTiles);
 
+        // Notify players of flipped tiles
         $this->game->notifyAllPlayers(
             "flipCalendarTiles",
-            clienttranslate('Flipping calendar tiles for round ${round}'),
+            clienttranslate(
+                'Flipping calendar ${tileString} for round ${round}'
+            ),
             [
                 "round" => $currentRound,
+                "tileString" =>
+                    count($flippedTiles) > 1
+                        ? clienttranslate("tiles")
+                        : clienttranslate("tile"),
                 "flippedTiles" => $flippedTilesUiData,
             ]
         );
@@ -50,6 +69,7 @@ class AOCStartNewRoundState {
             $flippedSalesOrdersUiData = $this->game->salesOrderManager->flipSalesOrdersOnMap(
                 $tile->getGenreId()
             );
+            // Notify players of flipped sales orders
             $this->game->notifyAllPlayers(
                 "flipSalesOrders",
                 clienttranslate('Flipping ${genre} sales orders on map'),
@@ -66,5 +86,4 @@ class AOCStartNewRoundState {
         $this->game->playerManager->activateNextPlayer();
         $this->game->gamestate->nextState("startActionsPhase");
     }
-
 }

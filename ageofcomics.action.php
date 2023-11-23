@@ -97,7 +97,7 @@ class action_ageofcomics extends APP_GameAction {
 
         $actionSpace = self::getArg("actionSpace", AT_posint, true);
 
-        $this->game->selectActionSpace($actionSpace);
+        $this->game->states[PLAYER_TURN]->selectActionSpace($actionSpace);
 
         self::ajaxResponse();
     }
