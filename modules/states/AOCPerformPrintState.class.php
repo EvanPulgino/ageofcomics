@@ -29,7 +29,7 @@ class AOCPerformPrintState {
      *
      * @return array The list of args used by the PerformPrint state
      */
-    function getArgs() {
+    public function getArgs() {
         return [
             "selectedActionSpace" =>
                 $this->game->getGameStateValue(SELECTED_ACTION_SPACE),

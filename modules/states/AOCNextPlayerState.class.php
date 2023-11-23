@@ -40,7 +40,7 @@ class AOCNextPlayerState {
      *
      * @return void
      */
-    function stNextPlayer() {
+    public function stNextPlayer() {
         // Get and increment number of turns taken by 1 (used for calculating game progression)
         $turnsTaken = $this->game->getGameStateValue(TURNS_TAKEN);
         $this->game->setGameStateValue(TURNS_TAKEN, $turnsTaken + 1);

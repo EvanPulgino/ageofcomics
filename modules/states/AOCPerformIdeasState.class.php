@@ -95,7 +95,7 @@ class AOCPerformIdeasState {
      * @param string $genre The genre of the idea to gain
      * @return void
      */
-    function gainIdeaFromBoard($player, $genre) {
+    private function gainIdeaFromBoard($player, $genre) {
         // Adjust the player's ideas
         $this->game->playerManager->adjustPlayerIdeas(
             $player->getId(),
@@ -127,7 +127,7 @@ class AOCPerformIdeasState {
      * @param string $genre The genre of the idea to gain
      * @return void
      */
-    function gainIdeaFromSupply($player, $genre) {
+    private function gainIdeaFromSupply($player, $genre) {
         // Adjust the player's ideas
         $this->game->playerManager->adjustPlayerIdeas(
             $player->getId(),

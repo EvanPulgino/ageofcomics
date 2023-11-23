@@ -29,7 +29,7 @@ class AOCNextPlayerSetupState {
      * Args:
      *  - None
      */
-    function getArgs() {
+    public function getArgs() {
         return [];
     }
 
@@ -39,7 +39,7 @@ class AOCNextPlayerSetupState {
      *
      * @return void
      */
-    function stNextPlayerSetup() {
+    public function stNextPlayerSetup() {
         // Get the active player
         $activePlayer = $this->game->playerManager->getActivePlayer();
 

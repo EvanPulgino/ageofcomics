@@ -29,7 +29,7 @@ class AOCCompleteSetupState {
      * Args:
      *  - None
      */
-    function getArgs() {
+    public function getArgs() {
         return [];
     }
 
