@@ -195,10 +195,10 @@ class AOCPerformDevelopState {
      */
     private function findNextComicOfGenre($activePlayer, $genre) {
         // Get the deck of comic cards
-        $comicDeck = $this->game->cardManager->getCardsOfTypeInLocation(
+        $comicDeck = $this->game->cardManager->getCardsOfType(
             CARD_TYPE_COMIC,
-            LOCATION_DECK,
             null,
+            LOCATION_DECK,
             CARD_LOCATION_ARG_DESC
         );
 
@@ -232,10 +232,10 @@ class AOCPerformDevelopState {
             // If we've discarded all cards from the deck, reshuffle the discard pile
             if ($comicToDevelop == null) {
                 $this->game->cardManager->shuffleDiscardPile(CARD_TYPE_COMIC);
-                $comicDeck = $this->game->cardManager->getCardsOfTypeInLocation(
+                $comicDeck = $this->game->cardManager->getCardsOfType(
                     CARD_TYPE_COMIC,
-                    LOCATION_DECK,
                     null,
+                    LOCATION_DECK,
                     CARD_LOCATION_ARG_DESC
                 );
                 $this->game->notifyAllPlayers(
@@ -246,8 +246,11 @@ class AOCPerformDevelopState {
                     [
                         "player" => $activePlayer->getUiData(),
                         "player_name" => $activePlayer->getName(),
-                        "deck" => $this->game->cardManager->getDeckUiData(
-                            CARD_TYPE_COMIC
+                        "deck" => $this->game->cardManager->getCardsOfType(
+                            CARD_TYPE_COMIC,
+                            null,
+                            LOCATION_DECK,
+                            CARD_LOCATION_ARG
                         ),
                     ]
                 );

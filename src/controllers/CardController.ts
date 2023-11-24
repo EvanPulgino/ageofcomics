@@ -19,6 +19,7 @@ class CardController {
   }
 
   setupPlayerHands(playerHands: any): void {
+    console.log("setupPlayerHands", playerHands);
     for (var player_id in playerHands) {
       var hand = playerHands[player_id];
       for (var i in hand) {

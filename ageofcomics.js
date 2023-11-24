@@ -574,6 +574,7 @@ var CardController = /** @class */ (function () {
         this.ui = ui;
     }
     CardController.prototype.setupPlayerHands = function (playerHands) {
+        console.log("setupPlayerHands", playerHands);
         for (var player_id in playerHands) {
             var hand = playerHands[player_id];
             for (var i in hand) {

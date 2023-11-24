@@ -293,16 +293,16 @@ define("MAX_ACTION_SPACES", "max_action_spaces");
 
 /** Location Keys */
 define("LOCATION_VOID", -1);
-define("LOCATION_DECK", 0);
-define("LOCATION_DISCARD", 1);
-define("LOCATION_HAND", 2);
-define("LOCATION_PLAYER_AREA", 3);
-define("LOCATION_SUPPLY", 4);
-define("LOCATION_PLAYER_MAT", 5);
-define("LOCATION_CHART", 6);
-define("LOCATION_HYPE", 7);
-define("LOCATION_EXTRA_EDITOR", 8);
-define("LOCATION_MAP", 9);
+define("LOCATION_DECK", 1);
+define("LOCATION_DISCARD", 2);
+define("LOCATION_HAND", 3);
+define("LOCATION_PLAYER_AREA", 4);
+define("LOCATION_SUPPLY", 5);
+define("LOCATION_PLAYER_MAT", 6);
+define("LOCATION_CHART", 7);
+define("LOCATION_HYPE", 8);
+define("LOCATION_EXTRA_EDITOR", 9);
+define("LOCATION_MAP", 10);
 
 /** Action Space Keys */
 define("LOCATION_ACTION_SPACE_1", 1);

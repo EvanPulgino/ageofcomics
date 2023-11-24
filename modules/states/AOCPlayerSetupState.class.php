@@ -65,10 +65,10 @@ class AOCPlayerSetupState {
      */
     private function gainStartingComic($player, $comicGenre) {
         // Find the comic of the chosen genre in the void
-        $genreComicsInVoid = $this->game->cardManager->getCardsOfTypeInLocation(
+        $genreComicsInVoid = $this->game->cardManager->getCardsOfType(
             CARD_TYPE_COMIC,
-            LOCATION_VOID,
-            $comicGenre
+            $comicGenre,
+            LOCATION_VOID
         );
 
         // Shuffle the array and pop the last element

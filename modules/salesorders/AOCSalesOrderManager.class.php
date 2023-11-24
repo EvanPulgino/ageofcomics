@@ -39,7 +39,9 @@ class AOCSalesOrderManager extends APP_GameClass {
      * @return array An array of the just flipped sales order tiles formatted for the UI
      */
     public function flipSalesOrdersOnMap($genre) {
-        $sql = "UPDATE sales_order SET sales_order_flipped = 1 WHERE sales_order_genre = $genre AND sales_order_location = 9";
+        $sql =
+            "UPDATE sales_order SET sales_order_flipped = 1 WHERE sales_order_genre = $genre AND sales_order_location = " .
+            LOCATION_MAP;
         self::DbQuery($sql);
         return $this->getFlippedSalesOrdersUiData($genre);
     }
@@ -51,7 +53,9 @@ class AOCSalesOrderManager extends APP_GameClass {
      * @return array An array of flipped sales order tiles formatted for the UI
      */
     public function getFlippedSalesOrdersUiData($genre) {
-        $sql = "SELECT sales_order_id id, sales_order_genre genre, sales_order_value value, sales_order_fans fans, sales_order_owner playerId, sales_order_location location, sales_order_location_arg locationArg, sales_order_flipped flipped FROM sales_order WHERE sales_order_genre = $genre AND sales_order_location = 9";
+        $sql =
+            "SELECT sales_order_id id, sales_order_genre genre, sales_order_value value, sales_order_fans fans, sales_order_owner playerId, sales_order_location location, sales_order_location_arg locationArg, sales_order_flipped flipped FROM sales_order WHERE sales_order_genre = $genre AND sales_order_location = " .
+            LOCATION_MAP;
         $rows = self::getCollectionFromDb($sql);
         $salesOrders = [];
         foreach ($rows as $row) {
@@ -102,9 +106,10 @@ class AOCSalesOrderManager extends APP_GameClass {
      */
     private function createSalesOrderTiles($playerCount) {
         $salesOrderValues = SALES_ORDERS_FOR_PLAYER_COUNT[$playerCount];
+        $map = LOCATION_MAP;
         foreach (GENRE_KEYS as $genre) {
             foreach ($salesOrderValues as $value) {
-                $sql = "INSERT INTO sales_order (sales_order_genre, sales_order_value, sales_order_fans, sales_order_location) VALUES ($genre, $value, $value-2, 9)";
+                $sql = "INSERT INTO sales_order (sales_order_genre, sales_order_value, sales_order_fans, sales_order_location) VALUES ($genre, $value, $value-2, $map)";
                 $this->game->DbQuery($sql);
             }
         }

@@ -150,44 +150,47 @@ class AgeOfComics extends Table {
                 CARD_TYPE_ARTIST,
                 $currentPlayerId
             ),
-            "artistDeck" => $this->cardManager->getCardsOfTypeInLocationUiData(
+            "artistDeck" => $this->cardManager->getCardsOfTypeUiData(
                 CARD_TYPE_ARTIST,
-                LOCATION_DECK,
                 $currentPlayerId,
                 null,
+                LOCATION_DECK,
                 CARD_LOCATION_ARG
             ),
-            "artistDiscard" => $this->cardManager->getCardsOfTypeInLocationUiData(
+            "artistDiscard" => $this->cardManager->getCardsOfTypeUiData(
                 CARD_TYPE_ARTIST,
-                LOCATION_DISCARD,
-                $currentPlayerId
+                $currentPlayerId,
+                null,
+                LOCATION_DISCARD
             ),
-            "artistSupply" => $this->cardManager->getCardsOfTypeInLocationUiData(
+            "artistSupply" => $this->cardManager->getCardsOfTypeUiData(
                 CARD_TYPE_ARTIST,
-                LOCATION_SUPPLY,
-                $currentPlayerId
+                $currentPlayerId,
+                null,
+                LOCATION_SUPPLY
             ),
             "calendarTiles" => $this->calendarManager->getCalendarTilesUiData(),
             "comicCards" => $this->cardManager->getCardsOfTypeUiData(
                 CARD_TYPE_COMIC,
                 $currentPlayerId
             ),
-            "comicDeck" => $this->cardManager->getCardsOfTypeInLocationUiData(
+            "comicDeck" => $this->cardManager->getCardsOfTypeUiData(
                 CARD_TYPE_COMIC,
-                LOCATION_DECK,
                 $currentPlayerId,
                 null,
+                LOCATION_DECK,
                 CARD_LOCATION_ARG
             ),
-            "comicDiscard" => $this->cardManager->getCardsOfTypeInLocationUiData(
+            "comicDiscard" => $this->cardManager->getCardsOfTypeUiData(
                 CARD_TYPE_COMIC,
                 LOCATION_DISCARD,
                 $currentPlayerId
             ),
-            "comicSupply" => $this->cardManager->getCardsOfTypeInLocationUiData(
+            "comicSupply" => $this->cardManager->getCardsOfTypeUiData(
                 CARD_TYPE_COMIC,
-                LOCATION_SUPPLY,
-                $currentPlayerId
+                $currentPlayerId,
+                null,
+                LOCATION_SUPPLY
             ),
             "constants" => get_defined_constants(true)["user"],
             "editors" => $this->editorManager->getEditorsUiData(),
@@ -209,22 +212,24 @@ class AgeOfComics extends Table {
                 CARD_TYPE_WRITER,
                 $currentPlayerId
             ),
-            "writerDeck" => $this->cardManager->getCardsOfTypeInLocationUiData(
+            "writerDeck" => $this->cardManager->getCardsOfTypeUiData(
                 CARD_TYPE_WRITER,
-                LOCATION_DECK,
                 $currentPlayerId,
                 null,
+                LOCATION_DECK,
                 CARD_LOCATION_ARG
             ),
-            "writerDiscard" => $this->cardManager->getCardsOfTypeInLocationUiData(
+            "writerDiscard" => $this->cardManager->getCardsOfTypeUiData(
                 CARD_TYPE_WRITER,
-                LOCATION_DISCARD,
-                $currentPlayerId
+                $currentPlayerId,
+                null,
+                LOCATION_DISCARD
             ),
-            "writerSupply" => $this->cardManager->getCardsOfTypeInLocationUiData(
+            "writerSupply" => $this->cardManager->getCardsOfTypeUiData(
                 CARD_TYPE_WRITER,
-                LOCATION_SUPPLY,
-                $currentPlayerId
+                $currentPlayerId,
+                null,
+                LOCATION_SUPPLY
             ),
         ];
 
