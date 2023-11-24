@@ -47,8 +47,8 @@ class AOCCheckHandSizeState {
      * @param int[] $cardsToDiscard The list of card IDs the player has selected to discard
      */
     public function confirmDiscard($cardsToDiscard) {
-        $activePlayerId = $this->game->getActivePlayerId();
-        $activePlayer = $this->game->playerManager->getPlayer($activePlayerId);
+        // Get the active player
+        $activePlayer = $this->game->playerManager->getActivePlayer();
 
         // Iterate through the cards to discard, and discard them
         foreach ($cardsToDiscard as $cardId) {
@@ -76,7 +76,7 @@ class AOCCheckHandSizeState {
                 [
                     "player" => $activePlayer->getUiData(),
                     "player_name" => $activePlayer->getName(),
-                    "card" => $discardedCard->getUiData($activePlayerId),
+                    "card" => $discardedCard->getUiData($activePlayer->getId()),
                     "cardText" => $cardText,
                 ]
             );

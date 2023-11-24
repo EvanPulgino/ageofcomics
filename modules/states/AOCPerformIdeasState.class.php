@@ -66,8 +66,7 @@ class AOCPerformIdeasState {
      * @return void
      */
     public function confirmGainIdeas($ideasFromBoard, $ideasFromSupply) {
-        $activePlayerId = $this->game->getActivePlayerId();
-        $activePlayer = $this->game->playerManager->getPlayer($activePlayerId);
+        $activePlayer = $this->game->playerManager->getActivePlayer();
 
         // If the player did not take any ideas from the board, set the array to an empty array
         if ($ideasFromBoard[0] == "") {

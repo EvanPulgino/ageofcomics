@@ -36,8 +36,13 @@ class AOCPerformDevelopState {
      * @return array The list of args used by the PerformDevelop state
      */
     public function getArgs() {
+        // Get the active player
         $activePlayer = $this->game->playerManager->getActivePlayer();
+
+        // Check if the player has enough money to develop a comic from the deck
         $canDevelopFromDeck = $activePlayer->getMoney() >= 4;
+
+        // Get the text to display in the game state panel if the player can develop a comic from the deck
         $fromDeckText = $canDevelopFromDeck
             ? clienttranslate(
                 "or pay \$4 to develop the next comic of a genre from the deck"
@@ -77,12 +82,12 @@ class AOCPerformDevelopState {
      * @return void
      */
     public function developComic($comicId) {
-        $activePlayerId = $this->game->getActivePlayerId();
-        $activePlayer = $this->game->playerManager->getPlayer($activePlayerId);
+        // Get the active player
+        $activePlayer = $this->game->playerManager->getActivePlayer();
 
         // Develop (draw) card from market
         $comic = $this->game->cardManager->drawCard(
-            $activePlayerId,
+            $activePlayer->getId(),
             $comicId,
             CARD_TYPE_COMIC
         );
@@ -93,7 +98,7 @@ class AOCPerformDevelopState {
             clienttranslate('${player_name} develops ${comic_name}'),
             [
                 "player" => $activePlayer->getUiData(),
-                "player_id" => $activePlayerId,
+                "player_id" => $activePlayer->getId(),
                 "player_name" => $activePlayer->getName(),
                 "comic" => $comic->getUiData(0),
                 "comic_name" => $comic->getName(),
@@ -101,14 +106,14 @@ class AOCPerformDevelopState {
         );
         // Notify active player of the card drawn. Show the face-up card
         $this->game->notifyPlayer(
-            $activePlayerId,
+            $activePlayer->getId(),
             "developComicPrivate",
             clienttranslate('${player_name} develops ${comic_name}'),
             [
                 "player" => $activePlayer->getUiData(),
-                "player_id" => $activePlayerId,
+                "player_id" => $activePlayer->getId(),
                 "player_name" => $activePlayer->getName(),
-                "comic" => $comic->getUiData($activePlayerId),
+                "comic" => $comic->getUiData($activePlayer->getId()),
                 "comic_name" => $comic->getName(),
             ]
         );
@@ -117,7 +122,7 @@ class AOCPerformDevelopState {
         // Otherwise, transition to the nextPlayerTurn state
         if (
             $this->game->cardManager->getCountForHandSizeCheck(
-                $activePlayerId
+                $activePlayer->getId()
             ) > 6
         ) {
             $this->game->gamestate->nextState("discardCards");
@@ -133,8 +138,8 @@ class AOCPerformDevelopState {
      * @return void
      */
     public function developFromGenre($genre) {
-        $activePlayerId = $this->game->getActivePlayerId();
-        $activePlayer = $this->game->playerManager->getPlayer($activePlayerId);
+        // Get the active player
+        $activePlayer = $this->game->playerManager->getActivePlayer();
 
         // Player pays $4 to develop a comic from the deck
         $this->payForDeckDevelop($activePlayer, $genre);
@@ -142,7 +147,7 @@ class AOCPerformDevelopState {
         // Find and develop (draw) the next comic of the specified genre from the deck
         $comicToDevelop = $this->findNextComicOfGenre($activePlayer, $genre);
         $comic = $this->game->cardManager->drawCard(
-            $activePlayerId,
+            $activePlayer->getId(),
             $comicToDevelop->getId(),
             CARD_TYPE_COMIC
         );
@@ -153,7 +158,7 @@ class AOCPerformDevelopState {
             clienttranslate('${player_name} develops a ${genre} comic'),
             [
                 "player" => $activePlayer->getUiData(),
-                "player_id" => $activePlayerId,
+                "player_id" => $activePlayer->getId(),
                 "player_name" => $activePlayer->getName(),
                 "genre" => $comic->getGenre(),
                 "comic" => $comic->getUiData(0),
@@ -161,14 +166,14 @@ class AOCPerformDevelopState {
         );
         // Notify active player of the card drawn. Show the face-up card
         $this->game->notifyPlayer(
-            $activePlayerId,
+            $activePlayer->getId(),
             "developComicPrivate",
             clienttranslate('${player_name} develops ${comic_name}'),
             [
                 "player" => $activePlayer->getUiData(),
-                "player_id" => $activePlayerId,
+                "player_id" => $activePlayer->getId(),
                 "player_name" => $activePlayer->getName(),
-                "comic" => $comic->getUiData($activePlayerId),
+                "comic" => $comic->getUiData($activePlayer->getId()),
                 "comic_name" => $comic->getName(),
             ]
         );
@@ -177,7 +182,7 @@ class AOCPerformDevelopState {
         // Otherwise, transition to the nextPlayerTurn state
         if (
             $this->game->cardManager->getCountForHandSizeCheck(
-                $activePlayerId
+                $activePlayer->getId()
             ) > 6
         ) {
             $this->game->gamestate->nextState("discardCards");

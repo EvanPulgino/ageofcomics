@@ -54,25 +54,21 @@ class AOCPerformHireState {
     }
 
     public function hireCreative($cardId, $creativeType) {
-        $activePlayerId = $this->game->getActivePlayerId();
-        $activePlayer = $this->game->playerManager->getPlayer($activePlayerId);
+        $activePlayer = $this->game->playerManager->getActivePlayer();
 
         $cardTypeId =
             $creativeType == "artist" ? CARD_TYPE_ARTIST : CARD_TYPE_WRITER;
 
         // Draw the chosen card into the player's hand
         $card = $this->game->cardManager->drawCard(
-            $activePlayerId,
+            $activePlayer->getId(),
             $cardId,
             $cardTypeId
         );
 
         // If the card is value 1, gain a matching idea
         if ($card->getIdeas() == 1) {
-            $this->gainIdeaFromHiringCreative(
-                $activePlayer,
-                $card
-            );
+            $this->gainIdeaFromHiringCreative($activePlayer, $card);
         }
 
         // Notify all players of the hire (with facedown card), and notify the active player privately (so they can see the card they hired)
@@ -83,7 +79,7 @@ class AOCPerformHireState {
             ),
             [
                 "player" => $activePlayer->getUiData(),
-                "player_id" => $activePlayerId,
+                "player_id" => $activePlayer->getId(),
                 "player_name" => $activePlayer->getName(),
                 "card" => $card->getUiData(0),
                 "cardValue" => $card->getValue(),
@@ -91,14 +87,14 @@ class AOCPerformHireState {
             ]
         );
         $this->game->notifyPlayer(
-            $activePlayerId,
+            $activePlayer->getId(),
             "hireCreativePrivate",
             clienttranslate('You hire a value ${cardValue} ${creative}'),
             [
                 "player" => $activePlayer->getUiData(),
-                "player_id" => $activePlayerId,
+                "player_id" => $activePlayer->getId(),
                 "player_name" => $activePlayer->getName(),
-                "card" => $card->getUiData($activePlayerId),
+                "card" => $card->getUiData($activePlayer->getId()),
                 "cardValue" => $card->getValue(),
                 "creative" => ucfirst($creativeType),
             ]
@@ -123,7 +119,7 @@ class AOCPerformHireState {
             // Otherwise, move to the nextPlayerTurn state
             if (
                 $this->game->cardManager->getCountForHandSizeCheck(
-                    $activePlayerId
+                    $activePlayer->getId()
                 ) > 6
             ) {
                 $this->game->gamestate->nextState("discardCards");
