@@ -340,16 +340,7 @@ var GameBody = /** @class */ (function (_super) {
         this.gameController.setup(gamedata);
         this.playerController.setupPlayers(gamedata.playerInfo);
         this.calendarController.setupCalendar(gamedata.calendarTiles);
-        this.cardController.setupPlayerHands(gamedata.playerHands);
-        this.cardController.setupDeck(gamedata.artistDeck);
-        this.cardController.setupDeck(gamedata.writerDeck);
-        this.cardController.setupDeck(gamedata.comicDeck);
-        this.cardController.setupDiscard(gamedata.artistDiscard);
-        this.cardController.setupDiscard(gamedata.writerDiscard);
-        this.cardController.setupDiscard(gamedata.comicDiscard);
-        this.cardController.setupSupply(gamedata.artistSupply);
-        this.cardController.setupSupply(gamedata.writerSupply);
-        this.cardController.setupSupply(gamedata.comicSupply);
+        this.cardController.setupCards(gamedata.cards);
         this.editorController.setupEditors(gamedata.editors);
         this.masteryController.setupMasteryTokens(gamedata.mastery);
         this.miniComicController.setupMiniComics(gamedata.miniComics);
@@ -392,12 +383,12 @@ var GameBody = /** @class */ (function (_super) {
         this.playerController.adjustMoney(notif.args.player, notif.args.amount);
     };
     GameBody.prototype.notif_completeSetup = function (notif) {
-        this.cardController.setupDeck(notif.args.artistCards.deck);
-        this.cardController.setupDeck(notif.args.writerCards.deck);
-        this.cardController.setupDeck(notif.args.comicCards.deck);
-        this.cardController.setupSupply(notif.args.artistCards.supply);
-        this.cardController.setupSupply(notif.args.writerCards.supply);
-        this.cardController.setupSupply(notif.args.comicCards.supply);
+        this.cardController.setupCards(notif.args.artistCards.deck);
+        this.cardController.setupCards(notif.args.writerCards.deck);
+        this.cardController.setupCards(notif.args.comicCards.deck);
+        this.cardController.setupCards(notif.args.artistCards.supply);
+        this.cardController.setupCards(notif.args.writerCards.supply);
+        this.cardController.setupCards(notif.args.comicCards.supply);
     };
     GameBody.prototype.notif_developComic = function (notif) {
         this.cardController.slideCardToPlayerHand(notif.args.comic);
@@ -445,7 +436,7 @@ var GameBody = /** @class */ (function (_super) {
         this.editorController.moveEditorToActionSpace(notif.args.editor, notif.args.space);
     };
     GameBody.prototype.notif_reshuffleDiscardPile = function (notif) {
-        this.cardController.setupDeck(notif.args.deck);
+        this.cardController.setupCards(notif.args.deck);
     };
     /**
      * Handle 'setupMoney' notification
@@ -573,83 +564,21 @@ var CardController = /** @class */ (function () {
     function CardController(ui) {
         this.ui = ui;
     }
-    CardController.prototype.setupPlayerHands = function (playerHands) {
-        console.log("setupPlayerHands", playerHands);
-        for (var player_id in playerHands) {
-            var hand = playerHands[player_id];
-            for (var i in hand) {
-                var card = hand[i];
-                this.createCard(card);
-            }
+    CardController.prototype.setupCards = function (cards) {
+        cards.sort(function (a, b) {
+            return a.locationArg - b.locationArg;
+        });
+        for (var i in cards) {
+            var card = cards[i];
+            this.createNewCard(card);
         }
     };
-    CardController.prototype.setupDeck = function (deck) {
-        for (var i in deck) {
-            var card = deck[i];
-            this.createCard(card);
-        }
-    };
-    CardController.prototype.setupDiscard = function (discard) {
-        for (var i in discard) {
-            var card = discard[i];
-            this.createCard(card);
-        }
-    };
-    CardController.prototype.setupSupply = function (cardSupply) {
-        for (var i in cardSupply) {
-            var card = cardSupply[i];
-            this.createCard(card);
-        }
-    };
-    CardController.prototype.createCard = function (card) {
-        switch (card.typeId) {
-            case 1:
-                this.createCreativeCard(card);
-                break;
-            case 2:
-                this.createCreativeCard(card);
-                break;
-            case 3:
-                this.createComicCard(card);
-                break;
-        }
-    };
-    CardController.prototype.createComicCard = function (card, location) {
-        var cardDiv = '<div id="aoc-card-' +
-            card.id +
-            '" class="aoc-card aoc-comic-card ' +
-            card.cssClass +
-            '" order="' +
-            card.locationArg +
-            '"></div>';
-        if (!location) {
-            switch (card.location) {
-                case globalThis.LOCATION_DECK:
-                    this.ui.createHtml(cardDiv, "aoc-" + card.type + "-deck");
-                    break;
-                case globalThis.LOCATION_DISCARD:
-                    this.ui.createHtml(cardDiv, "aoc-" + card.type + "s-discard");
-                    break;
-                case globalThis.LOCATION_HAND:
-                    this.ui.createHtml(cardDiv, "aoc-hand-" + card.playerId);
-                    break;
-                case globalThis.LOCATION_SUPPLY:
-                    this.ui.createHtml(cardDiv, "aoc-" + card.type + "s-available");
-                    break;
-            }
-        }
-        else {
+    CardController.prototype.createNewCard = function (card, location) {
+        var cardDiv = this.createCardDiv(card);
+        if (location) {
             this.ui.createHtml(cardDiv, location);
+            return;
         }
-    };
-    CardController.prototype.createCreativeCard = function (card) {
-        var cardDiv = '<div id="aoc-card-' +
-            card.id +
-            '" class="aoc-card aoc-creative-card ' +
-            card.cssClass +
-            '" order="' +
-            card.locationArg +
-            '"></div>';
         switch (card.location) {
             case globalThis.LOCATION_DECK:
                 this.ui.createHtml(cardDiv, "aoc-" + card.type + "-deck");
@@ -663,6 +592,32 @@ var CardController = /** @class */ (function () {
             case globalThis.LOCATION_SUPPLY:
                 this.ui.createHtml(cardDiv, "aoc-" + card.type + "s-available");
                 break;
+        }
+    };
+    CardController.prototype.createCardDiv = function (card) {
+        var id = "aoc-card-" + card.id;
+        var css = this.getCardDivCss(card);
+        var order = card.locationArg;
+        return "<div id=\"".concat(id, "\" class=\"").concat(css, "\" order=\"").concat(order, "\"></div>");
+    };
+    CardController.prototype.getCardDivCss = function (card) {
+        return ("aoc-card " +
+            card.cssClass +
+            " " +
+            this.getCardTypeCss(card.type) +
+            " " +
+            card.cssClass);
+    };
+    CardController.prototype.getCardTypeCss = function (cardType) {
+        switch (cardType) {
+            case "artist":
+                return "aoc-creative-card";
+            case "writer":
+                return "aoc-creative-card";
+            case "comic":
+                return "aoc-comic-card";
+            case "ripoff":
+                return "aoc-ripoff-card";
         }
     };
     CardController.prototype.discardCard = function (card, playerId) {
@@ -695,7 +650,7 @@ var CardController = /** @class */ (function () {
     };
     CardController.prototype.gainStartingComic = function (card) {
         var location = "aoc-select-starting-comic-" + card.genre;
-        this.createComicCard(card, location);
+        this.createNewCard(card, location);
         this.slideCardToPlayerHand(card);
     };
     CardController.prototype.slideCardToPlayerHand = function (card) {
@@ -2183,9 +2138,9 @@ var PlayerTurn = /** @class */ (function () {
         var actionButtonDivId = "aoc-take-" + actionType + "-action";
         var actionBoardElementId = "aoc-action-" + actionType;
         // Create the action button
-        gameui.addActionButton(actionButtonDivId, _(actionButtonText), function (event) {
+        gameui.addActionButton(actionButtonDivId, _(actionButtonText), function () {
             dojo.setAttr(actionButtonDivId, "data-action-space", actionSpace);
-            _this.selectAction(event);
+            _this.selectAction(actionSpace);
         });
         dojo.addClass(actionButtonDivId, "aoc-button");
         if (actionSpace == 0) {

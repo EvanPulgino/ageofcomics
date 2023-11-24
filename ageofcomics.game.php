@@ -146,91 +146,16 @@ class AgeOfComics extends Table {
         $currentPlayerId = self::getCurrentPlayerId();
 
         $gamedata = [
-            "artistCards" => $this->cardManager->getCardsOfTypeUiData(
-                CARD_TYPE_ARTIST,
-                $currentPlayerId
-            ),
-            "artistDeck" => $this->cardManager->getCardsOfTypeUiData(
-                CARD_TYPE_ARTIST,
-                $currentPlayerId,
-                null,
-                LOCATION_DECK,
-                CARD_LOCATION_ARG
-            ),
-            "artistDiscard" => $this->cardManager->getCardsOfTypeUiData(
-                CARD_TYPE_ARTIST,
-                $currentPlayerId,
-                null,
-                LOCATION_DISCARD
-            ),
-            "artistSupply" => $this->cardManager->getCardsOfTypeUiData(
-                CARD_TYPE_ARTIST,
-                $currentPlayerId,
-                null,
-                LOCATION_SUPPLY
-            ),
             "calendarTiles" => $this->calendarManager->getCalendarTilesUiData(),
-            "comicCards" => $this->cardManager->getCardsOfTypeUiData(
-                CARD_TYPE_COMIC,
-                $currentPlayerId
-            ),
-            "comicDeck" => $this->cardManager->getCardsOfTypeUiData(
-                CARD_TYPE_COMIC,
-                $currentPlayerId,
-                null,
-                LOCATION_DECK,
-                CARD_LOCATION_ARG
-            ),
-            "comicDiscard" => $this->cardManager->getCardsOfTypeUiData(
-                CARD_TYPE_COMIC,
-                LOCATION_DISCARD,
-                $currentPlayerId
-            ),
-            "comicSupply" => $this->cardManager->getCardsOfTypeUiData(
-                CARD_TYPE_COMIC,
-                $currentPlayerId,
-                null,
-                LOCATION_SUPPLY
-            ),
+            "cards" => $this->cardManager->getCardsUiData($currentPlayerId),
             "constants" => get_defined_constants(true)["user"],
             "editors" => $this->editorManager->getEditorsUiData(),
             "ideasSpaceContents" => $this->getIdeasSpaceContents(),
             "mastery" => $this->masteryManager->getMasteryTokensUiData(),
             "miniComics" => $this->miniComicManager->getMiniComicsUiData(),
-            "playerHands" => $this->cardManager->getPlayerHandsUiData(
-                $this->playerManager->getPlayers(),
-                $currentPlayerId
-            ),
             "playerInfo" => $this->playerManager->getPlayersUiData(),
-            "ripoffCards" => $this->cardManager->getCardsOfTypeUiData(
-                CARD_TYPE_RIPOFF,
-                $currentPlayerId
-            ),
             "salesOrders" => $this->salesOrderManager->getSalesOrdersUiData(),
             "ticketSupply" => self::getGameStateValue(TICKET_SUPPLY),
-            "writerCards" => $this->cardManager->getCardsOfTypeUiData(
-                CARD_TYPE_WRITER,
-                $currentPlayerId
-            ),
-            "writerDeck" => $this->cardManager->getCardsOfTypeUiData(
-                CARD_TYPE_WRITER,
-                $currentPlayerId,
-                null,
-                LOCATION_DECK,
-                CARD_LOCATION_ARG
-            ),
-            "writerDiscard" => $this->cardManager->getCardsOfTypeUiData(
-                CARD_TYPE_WRITER,
-                $currentPlayerId,
-                null,
-                LOCATION_DISCARD
-            ),
-            "writerSupply" => $this->cardManager->getCardsOfTypeUiData(
-                CARD_TYPE_WRITER,
-                $currentPlayerId,
-                null,
-                LOCATION_SUPPLY
-            ),
         ];
 
         return $gamedata;

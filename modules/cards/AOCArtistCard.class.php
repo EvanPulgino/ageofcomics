@@ -17,6 +17,7 @@
  * - The number of ideas the artist card provides when hired. Will always be 1 for 1-value artists and 0 for all others.
  * - The base CSS class for the artist card. This is the front of the card.
  * - The CSS class for the artist card when it is face down. This is the back of the card.
+ * - The sorting order of the artist card when it is in a player's hand
  *
  * Artists are one of the two types of creatives in the game. They are required to create comics.
  *
@@ -33,7 +34,7 @@
  * Each player starts the game with a random 2-value artist.
  *
  * During the game, more artists can be hired from the supply using the Hire action.
- * 
+ *
  * When a player prints a comic they are required to assign an Artist card from their hand to it.
  * If the artist card matches the genre of the comic, the comic gains +1 fan.
  *
@@ -69,7 +70,12 @@ class AOCArtistCard extends AOCCard {
     /**
      * @var string $facedownClass The CSS class for the artist card when it is face down. This is the back of the card.
      */
-    private string $facedownClass;
+    private $facedownClass;
+
+    /**
+     * @var int $handSortOrder The sorting order of the artist card when it is in a player's hand
+     */
+    private $handSortOrder;
 
     public function __construct($row) {
         parent::__construct($row);
@@ -86,6 +92,8 @@ class AOCArtistCard extends AOCCard {
             $this->creativeKey;
         $this->facedownClass =
             "aoc-" . $this->getType() . "-facedown-" . $this->value;
+        $this->handSortOrder =
+            $this->getGenreId() * 100 + $this->getTypeId() * 10 + $this->value;
     }
 
     /**
@@ -131,6 +139,13 @@ class AOCArtistCard extends AOCCard {
     }
 
     /**
+     * @return int The sorting order of the artist card when it is in a player's hand
+     */
+    public function getHandSortOrder() {
+        return $this->handSortOrder;
+    }
+
+    /**
      * Get the UI data for the artist card.
      *
      * @param int $currentPlayerId The ID of the current player (the player viewing the card)
@@ -153,6 +168,7 @@ class AOCArtistCard extends AOCCard {
             "baseClass" => $this->getBaseClass(),
             "facedownClass" => $this->getFacedownClass(),
             "cssClass" => $this->deriveCssClass($currentPlayerId),
+            "handSortOrder" => $this->getHandSortOrder(),
         ];
     }
 

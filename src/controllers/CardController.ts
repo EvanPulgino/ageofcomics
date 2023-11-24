@@ -18,91 +18,24 @@ class CardController {
     this.ui = ui;
   }
 
-  setupPlayerHands(playerHands: any): void {
-    console.log("setupPlayerHands", playerHands);
-    for (var player_id in playerHands) {
-      var hand = playerHands[player_id];
-      for (var i in hand) {
-        var card = hand[i];
-        this.createCard(card);
-      }
+  setupCards(cards: any[]): void {
+    cards.sort((a, b) => {
+      return a.locationArg - b.locationArg;
+    });
+    for (var i in cards) {
+      var card = cards[i];
+      this.createNewCard(card);
     }
   }
 
-  setupDeck(deck: any): void {
-    for (var i in deck) {
-      var card = deck[i];
-      this.createCard(card);
-    }
-  }
+  createNewCard(card: any, location?: string): void {
+    const cardDiv = this.createCardDiv(card);
 
-  setupDiscard(discard: any): void {
-    for (var i in discard) {
-      var card = discard[i];
-      this.createCard(card);
-    }
-  }
-
-  setupSupply(cardSupply: any): void {
-    for (var i in cardSupply) {
-      var card = cardSupply[i];
-      this.createCard(card);
-    }
-  }
-
-  createCard(card: any): void {
-    switch (card.typeId) {
-      case 1:
-        this.createCreativeCard(card);
-        break;
-      case 2:
-        this.createCreativeCard(card);
-        break;
-      case 3:
-        this.createComicCard(card);
-        break;
-    }
-  }
-
-  createComicCard(card: any, location?: any): void {
-    var cardDiv =
-      '<div id="aoc-card-' +
-      card.id +
-      '" class="aoc-card aoc-comic-card ' +
-      card.cssClass +
-      '" order="' +
-      card.locationArg +
-      '"></div>';
-
-    if (!location) {
-      switch (card.location) {
-        case globalThis.LOCATION_DECK:
-          this.ui.createHtml(cardDiv, "aoc-" + card.type + "-deck");
-          break;
-        case globalThis.LOCATION_DISCARD:
-          this.ui.createHtml(cardDiv, "aoc-" + card.type + "s-discard");
-          break;
-        case globalThis.LOCATION_HAND:
-          this.ui.createHtml(cardDiv, "aoc-hand-" + card.playerId);
-          break;
-        case globalThis.LOCATION_SUPPLY:
-          this.ui.createHtml(cardDiv, "aoc-" + card.type + "s-available");
-          break;
-      }
-    } else {
+    if (location) {
       this.ui.createHtml(cardDiv, location);
+      return;
     }
-  }
 
-  createCreativeCard(card: any): void {
-    var cardDiv =
-      '<div id="aoc-card-' +
-      card.id +
-      '" class="aoc-card aoc-creative-card ' +
-      card.cssClass +
-      '" order="' +
-      card.locationArg +
-      '"></div>';
     switch (card.location) {
       case globalThis.LOCATION_DECK:
         this.ui.createHtml(cardDiv, "aoc-" + card.type + "-deck");
@@ -116,6 +49,38 @@ class CardController {
       case globalThis.LOCATION_SUPPLY:
         this.ui.createHtml(cardDiv, "aoc-" + card.type + "s-available");
         break;
+    }
+  }
+
+  createCardDiv(card: any): string {
+    const id = "aoc-card-" + card.id;
+    const css = this.getCardDivCss(card);
+    const order = card.locationArg;
+
+    return `<div id="${id}" class="${css}" order="${order}"></div>`;
+  }
+
+  getCardDivCss(card: any): string {
+    return (
+      "aoc-card " +
+      card.cssClass +
+      " " +
+      this.getCardTypeCss(card.type) +
+      " " +
+      card.cssClass
+    );
+  }
+
+  getCardTypeCss(cardType: string): string {
+    switch (cardType) {
+      case "artist":
+        return "aoc-creative-card";
+      case "writer":
+        return "aoc-creative-card";
+      case "comic":
+        return "aoc-comic-card";
+      case "ripoff":
+        return "aoc-ripoff-card";
     }
   }
 
@@ -151,7 +116,7 @@ class CardController {
 
   gainStartingComic(card: any): void {
     var location = "aoc-select-starting-comic-" + card.genre;
-    this.createComicCard(card, location);
+    this.createNewCard(card, location);
     this.slideCardToPlayerHand(card);
   }
 

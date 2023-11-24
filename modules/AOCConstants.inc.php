@@ -90,9 +90,9 @@ define("GENRES_NAME_TO_KEY", [
 ]);
 
 /** Card Types */
-define("CARD_TYPE_ARTIST", 1);
+define("CARD_TYPE_ARTIST", 3);
 define("CARD_TYPE_WRITER", 2);
-define("CARD_TYPE_COMIC", 3);
+define("CARD_TYPE_COMIC", 1);
 define("CARD_TYPE_RIPOFF", 4);
 
 /** Card Type Names */

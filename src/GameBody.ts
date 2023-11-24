@@ -57,16 +57,7 @@ class GameBody extends GameBasics {
     this.gameController.setup(gamedata);
     this.playerController.setupPlayers(gamedata.playerInfo);
     this.calendarController.setupCalendar(gamedata.calendarTiles);
-    this.cardController.setupPlayerHands(gamedata.playerHands);
-    this.cardController.setupDeck(gamedata.artistDeck);
-    this.cardController.setupDeck(gamedata.writerDeck);
-    this.cardController.setupDeck(gamedata.comicDeck);
-    this.cardController.setupDiscard(gamedata.artistDiscard);
-    this.cardController.setupDiscard(gamedata.writerDiscard);
-    this.cardController.setupDiscard(gamedata.comicDiscard);
-    this.cardController.setupSupply(gamedata.artistSupply);
-    this.cardController.setupSupply(gamedata.writerSupply);
-    this.cardController.setupSupply(gamedata.comicSupply);
+    this.cardController.setupCards(gamedata.cards);
     this.editorController.setupEditors(gamedata.editors);
     this.masteryController.setupMasteryTokens(gamedata.mastery);
     this.miniComicController.setupMiniComics(gamedata.miniComics);
@@ -123,13 +114,13 @@ class GameBody extends GameBasics {
   }
 
   notif_completeSetup(notif: any): void {
-    this.cardController.setupDeck(notif.args.artistCards.deck);
-    this.cardController.setupDeck(notif.args.writerCards.deck);
-    this.cardController.setupDeck(notif.args.comicCards.deck);
+    this.cardController.setupCards(notif.args.artistCards.deck);
+    this.cardController.setupCards(notif.args.writerCards.deck);
+    this.cardController.setupCards(notif.args.comicCards.deck);
 
-    this.cardController.setupSupply(notif.args.artistCards.supply);
-    this.cardController.setupSupply(notif.args.writerCards.supply);
-    this.cardController.setupSupply(notif.args.comicCards.supply);
+    this.cardController.setupCards(notif.args.artistCards.supply);
+    this.cardController.setupCards(notif.args.writerCards.supply);
+    this.cardController.setupCards(notif.args.comicCards.supply);
   }
 
   notif_developComic(notif: any): void {
@@ -209,7 +200,7 @@ class GameBody extends GameBasics {
   }
 
   notif_reshuffleDiscardPile(notif: any): void {
-    this.cardController.setupDeck(notif.args.deck);
+    this.cardController.setupCards(notif.args.deck);
   }
 
   /**

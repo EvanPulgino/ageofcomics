@@ -66,6 +66,11 @@ class AOCWriterCard extends AOCCard {
      */
     private $facedownClass;
 
+    /**
+     * @var int $handSortOrder The sorting order of the writer card when it is in a player's hand
+     */
+    private $handSortOrder;
+
     public function __construct($row) {
         parent::__construct($row);
         $this->creativeKey = (int) $row["typeArg"];
@@ -81,6 +86,7 @@ class AOCWriterCard extends AOCCard {
             $this->creativeKey;
         $this->facedownClass =
             "aoc-" . $this->getType() . "-facedown-" . $this->value;
+        $this->handSortOrder = $this->getGenreId() * 100 + $this->getTypeId() * 10 +$this->value;
     }
 
     /**
@@ -124,6 +130,13 @@ class AOCWriterCard extends AOCCard {
     }
 
     /**
+     * @return int The sorting order of the writer card when it is in a player's hand
+     */
+    public function getHandSortOrder() {
+        return $this->handSortOrder;
+    }
+
+    /**
      * Get the data for the UI to render the card
      *
      * @param int $currentPlayerId The ID of the current player (the player viewing the card)
@@ -142,9 +155,13 @@ class AOCWriterCard extends AOCCard {
             "value" => $this->getValue(),
             "fans" => $this->getFans(),
             "ideas" => $this->getIdeas(),
-            "baseClass" => $this->baseClass,
-            "facedownClass" => $this->facedownClass,
+            "baseClass" => $this->getBaseClass(),
+            "facedownClass" => $this->getFacedownClass(),
             "cssClass" => $this->deriveCssClass($currentPlayerId),
+            "handSortOrder" =>
+                $this->getGenreId() * 100 +
+                $this->getTypeId() * 10 +
+                $this->value,
         ];
     }
 

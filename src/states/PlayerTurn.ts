@@ -70,9 +70,9 @@ class PlayerTurn implements State {
     const actionBoardElementId = "aoc-action-" + actionType;
 
     // Create the action button
-    gameui.addActionButton(actionButtonDivId, _(actionButtonText), (event) => {
+    gameui.addActionButton(actionButtonDivId, _(actionButtonText), () => {
       dojo.setAttr(actionButtonDivId, "data-action-space", actionSpace);
-      this.selectAction(event);
+      this.selectAction(actionSpace);
     });
 
     dojo.addClass(actionButtonDivId, "aoc-button");

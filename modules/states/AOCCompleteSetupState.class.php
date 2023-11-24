@@ -65,16 +65,15 @@ class AOCCompleteSetupState {
         $this->dealStartingCardsToSupplyByCardType($cardType);
 
         return [
-            "deck" => $this->game->cardManager->getCardsOfTypeUiData(
-                $cardType,
+            "deck" => $this->game->cardManager->getCardsUiData(
                 0,
+                $cardType,
                 null,
-                LOCATION_DECK,
-                CARD_LOCATION_ARG_DESC
+                LOCATION_DECK
             ),
-            "supply" => $this->game->cardManager->getCardsOfTypeUiData(
-                $cardType,
+            "supply" => $this->game->cardManager->getCardsUiData(
                 0,
+                $cardType,
                 null,
                 LOCATION_SUPPLY
             ),
@@ -88,7 +87,7 @@ class AOCCompleteSetupState {
      * @param $cardType The type of card to shuffle
      */
     private function shuffleStartingDeckByType($cardType) {
-        $cards = $this->game->cardManager->getCardsOfType(
+        $cards = $this->game->cardManager->getCards(
             $cardType,
             null,
             LOCATION_VOID,
@@ -113,7 +112,7 @@ class AOCCompleteSetupState {
      * @param $cardType The type of card to deal
      */
     private function dealStartingCardsToSupplyByCardType($cardType) {
-        $deck = $this->game->cardManager->getCardsOfType(
+        $deck = $this->game->cardManager->getCards(
             $cardType,
             null,
             LOCATION_DECK,

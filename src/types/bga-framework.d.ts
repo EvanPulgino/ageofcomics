@@ -63,7 +63,6 @@ declare interface Game {
   onLeavingState: (stateName: string) => void;
   onUpdateActionButtons: (stateName: string, args: any) => void;
   setupNotifications: () => void;
-  //format_string_recursive: (log: string, args: any) => void;
 }
 
 declare interface Notif<T> {

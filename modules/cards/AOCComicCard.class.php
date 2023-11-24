@@ -73,6 +73,11 @@ class AOCComicCard extends AOCCard {
      */
     private $facedownClass;
 
+    /**
+     * @var int $handSortOrder The sorting order of the comic card when it is in a player's hand
+     */
+    private $handSortOrder;
+
     public function __construct($row) {
         parent::__construct($row);
         $this->bonus = (int) $row["typeArg"];
@@ -87,6 +92,8 @@ class AOCComicCard extends AOCCard {
             $this->bonus;
         $this->facedownClass =
             "aoc-" . $this->getType() . "-" . $this->getGenre() . "-facedown";
+        $this->handSortOrder =
+            $this->getGenreId() * 100 + $this->getTypeId() * 10;
     }
 
     /**
@@ -130,6 +137,13 @@ class AOCComicCard extends AOCCard {
     }
 
     /**
+     * @return int The sorting order of the comic card when it is in a player's hand
+     */
+    public function getHandSortOrder() {
+        return $this->handSortOrder;
+    }
+
+    /**
      * Get the UI data for the comic card
      *
      * @param int $currentPlayerId The database ID of the current player (the player viewing the card)
@@ -151,6 +165,7 @@ class AOCComicCard extends AOCCard {
             "baseClass" => $this->baseClass,
             "facedownClass" => $this->facedownClass,
             "cssClass" => $this->deriveCssClass($currentPlayerId),
+            "handSortOrder" => $this->getHandSortOrder(),
         ];
     }
 
