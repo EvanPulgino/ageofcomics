@@ -117,9 +117,9 @@ class AOCPlayerSetupState {
         // For each idea genre, gain an idea of that genre
         foreach ($ideaGenres as $ideaGenre) {
             $this->game->playerManager->adjustPlayerIdeas(
-                $player->getId(),
+                $player,
                 1,
-                GENRES[$ideaGenre]
+                $ideaGenre
             );
 
             // Notify all players of the idea gained

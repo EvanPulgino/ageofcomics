@@ -141,9 +141,9 @@ class AOCPerformHireState {
      */
     private function gainIdeaFromHiringCreative($player, $card) {
         $this->game->playerManager->adjustPlayerIdeas(
-            $player->getId(),
+            $player,
             1,
-            $card->getGenre()
+            $card->getGenreId()
         );
 
         $this->game->notifyAllPlayers(

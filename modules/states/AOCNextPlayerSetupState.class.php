@@ -65,7 +65,7 @@ class AOCNextPlayerSetupState {
                     // Third player gets 2 ideas and 1 extra money
                     $this->game->setGameStateValue(START_IDEAS, 2);
                     $this->game->playerManager->adjustPlayerMoney(
-                        $activePlayer->getId(),
+                        $activePlayer,
                         1
                     );
 
@@ -86,7 +86,7 @@ class AOCNextPlayerSetupState {
                     // Fourth player gets 3 ideas and 1 extra money
                     $this->game->setGameStateValue(START_IDEAS, 3);
                     $this->game->playerManager->adjustPlayerMoney(
-                        $activePlayer->getId(),
+                        $activePlayer,
                         1
                     );
 

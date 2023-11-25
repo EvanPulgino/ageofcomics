@@ -185,6 +185,8 @@ class AOCPlayer {
 
     /**
      * Get the database ID of the player
+     *
+     * @return int
      */
     public function getId() {
         return $this->id;
@@ -192,6 +194,8 @@ class AOCPlayer {
 
     /**
      * Get the natural order of the player, this is set by the system and does not change
+     *
+     * @return int
      */
     public function getNaturalOrder() {
         return $this->naturalOrder;
@@ -199,6 +203,8 @@ class AOCPlayer {
 
     /**
      * Get the turn order of the player, this the order players take turns during a round
+     *
+     * @return int
      */
     public function getTurnOrder() {
         return $this->turnOrder;
@@ -206,6 +212,8 @@ class AOCPlayer {
 
     /**
      * Get the player's name
+     *
+     * @return string
      */
     public function getName() {
         return $this->name;
@@ -213,6 +221,8 @@ class AOCPlayer {
 
     /**
      * Get the player's color as a hex code
+     *
+     * @return string
      */
     public function getColor() {
         return $this->color;
@@ -224,6 +234,8 @@ class AOCPlayer {
      * - e5977a = Salmon
      * - 5ba59f = Teal
      * - f5c86e = Yellow
+     *
+     * @return string
      */
     public function getColorAsText() {
         return $this->colorAsText;
@@ -231,6 +243,8 @@ class AOCPlayer {
 
     /**
      * Get the player's score
+     *
+     * @return int
      */
     public function getScore() {
         return $this->score;
@@ -238,6 +252,9 @@ class AOCPlayer {
 
     /**
      * Set the player's score
+     *
+     * @param int $score The player's score
+     * @return void
      */
     public function setScore($score) {
         $this->score = $score;
@@ -245,6 +262,8 @@ class AOCPlayer {
 
     /**
      * Get the player's auxiliary score, this is used to break ties at the end of the fame
+     *
+     * @return int
      */
     public function getScoreAux() {
         return $this->scoreAux;
@@ -252,6 +271,9 @@ class AOCPlayer {
 
     /**
      * Set the player's auxiliary score, this is used to break ties at the end of the fame
+     *
+     * @param int $scoreAux The player's auxiliary score
+     * @return void
      */
     public function setScoreAux($scoreAux) {
         $this->scoreAux = $scoreAux;
@@ -259,6 +281,8 @@ class AOCPlayer {
 
     /**
      * Get the player's money
+     *
+     * @return int
      */
     public function getMoney() {
         return $this->money;
@@ -266,6 +290,9 @@ class AOCPlayer {
 
     /**
      * Set the player's money
+     *
+     * @param int $money The player's money
+     * @return void
      */
     public function setMoney($money) {
         $this->money = $money;
@@ -273,6 +300,8 @@ class AOCPlayer {
 
     /**
      * Get the number of crime ideas the player has
+     *
+     * @return int
      */
     public function getCrimeIdeas() {
         return $this->crimeIdeas;
@@ -280,6 +309,9 @@ class AOCPlayer {
 
     /**
      * Set the number of crime ideas the player has
+     *
+     * @param int $crimeIdeas The number of crime ideas the player has
+     * @return void
      */
     public function setCrimeIdeas($crimeIdeas) {
         $this->crimeIdeas = $crimeIdeas;
@@ -287,6 +319,8 @@ class AOCPlayer {
 
     /**
      * Get the number of horror ideas the player has
+     *
+     * @return int
      */
     public function getHorrorIdeas() {
         return $this->horrorIdeas;
@@ -294,6 +328,9 @@ class AOCPlayer {
 
     /**
      * Set the number of horror ideas the player has
+     *
+     * @param int $horrorIdeas The number of horror ideas the player has
+     * @return void
      */
     public function setHorrorIdeas($horrorIdeas) {
         $this->horrorIdeas = $horrorIdeas;
@@ -301,6 +338,8 @@ class AOCPlayer {
 
     /**
      * Get the number of romance ideas the player has
+     *
+     * @return int
      */
     public function getRomanceIdeas() {
         return $this->romanceIdeas;
@@ -308,6 +347,9 @@ class AOCPlayer {
 
     /**
      * Set the number of romance ideas the player has
+     *
+     * @param int $romanceIdeas The number of romance ideas the player has
+     * @return void
      */
     public function setRomanceIdeas($romanceIdeas) {
         $this->romanceIdeas = $romanceIdeas;
@@ -315,6 +357,8 @@ class AOCPlayer {
 
     /**
      * Get the number of scifi ideas the player has
+     *
+     * @return int
      */
     public function getScifiIdeas() {
         return $this->scifiIdeas;
@@ -322,6 +366,9 @@ class AOCPlayer {
 
     /**
      * Set the number of scifi ideas the player has
+     *
+     * @param int $scifiIdeas The number of scifi ideas the player has
+     * @return void
      */
     public function setScifiIdeas($scifiIdeas) {
         $this->scifiIdeas = $scifiIdeas;
@@ -329,6 +376,8 @@ class AOCPlayer {
 
     /**
      * Get the number of superhero ideas the player has
+     *
+     * @return int
      */
     public function getSuperheroIdeas() {
         return $this->superheroIdeas;
@@ -336,6 +385,9 @@ class AOCPlayer {
 
     /**
      * Set the number of superhero ideas the player has
+     *
+     * @param int $superheroIdeas The number of superhero ideas the player has
+     * @return void
      */
     public function setSuperheroIdeas($superheroIdeas) {
         $this->superheroIdeas = $superheroIdeas;
@@ -343,6 +395,8 @@ class AOCPlayer {
 
     /**
      * Get the number of western ideas the player has
+     *
+     * @return int
      */
     public function getWesternIdeas() {
         return $this->westernIdeas;
@@ -350,13 +404,73 @@ class AOCPlayer {
 
     /**
      * Set the number of western ideas the player has
+     *
+     * @param int $westernIdeas The number of western ideas the player has
+     * @return void
      */
     public function setWesternIdeas($westernIdeas) {
         $this->westernIdeas = $westernIdeas;
     }
 
     /**
+     * Get the number of ideas the player has of the given genre
+     *
+     * @param int $genreKey The genre key of the ideas to get
+     * @return int
+     */
+    public function getIdeas($genreKey) {
+        switch ($genreKey) {
+            case GENRE_CRIME:
+                return $this->crimeIdeas;
+            case GENRE_HORROR:
+                return $this->horrorIdeas;
+            case GENRE_ROMANCE:
+                return $this->romanceIdeas;
+            case GENRE_SCIFI:
+                return $this->scifiIdeas;
+            case GENRE_SUPERHERO:
+                return $this->superheroIdeas;
+            case GENRE_WESTERN:
+                return $this->westernIdeas;
+            default:
+                return 0;
+        }
+    }
+
+    /**
+     * Set the number of ideas the player has of the given genre
+     *
+     * @param int $genreKey The genre key of the ideas to set
+     * @param int $ideas The number of ideas the player has of the given genre
+     * @return void
+     */
+    public function setIdeas($genreKey, $ideas) {
+        switch ($genreKey) {
+            case GENRE_CRIME:
+                $this->crimeIdeas = $ideas;
+                break;
+            case GENRE_HORROR:
+                $this->horrorIdeas = $ideas;
+                break;
+            case GENRE_ROMANCE:
+                $this->romanceIdeas = $ideas;
+                break;
+            case GENRE_SCIFI:
+                $this->scifiIdeas = $ideas;
+                break;
+            case GENRE_SUPERHERO:
+                $this->superheroIdeas = $ideas;
+                break;
+            case GENRE_WESTERN:
+                $this->westernIdeas = $ideas;
+                break;
+        }
+    }
+
+    /**
      * Get the location of the player's sales agent on the map
+     *
+     * @return int
      */
     public function getAgentLocation() {
         return $this->agentLocation;
@@ -364,6 +478,9 @@ class AOCPlayer {
 
     /**
      * Set the location of the player's sales agent on the map
+     *
+     * @param int $agentLocation The location of the player's sales agent on the map
+     * @return void
      */
     public function setAgentLocation($agentLocation) {
         $this->agentLocation = $agentLocation;
@@ -378,6 +495,8 @@ class AOCPlayer {
      * - 40000 = On the Print action
      * - 50000 = On the Royalties action
      * - 60000 = On the Sales action
+     *
+     * @return int
      */
     public function getCubeOneLocation() {
         return $this->cubeOneLocation;
@@ -392,6 +511,9 @@ class AOCPlayer {
      * - 40000 = On the Print action
      * - 50000 = On the Royalties action
      * - 60000 = On the Sales action
+     *
+     * @param int $cubeOneLocation The location of the player's first special action cube
+     * @return void
      */
     public function setCubeOneLocation($cubeOneLocation) {
         $this->cubeOneLocation = $cubeOneLocation;
@@ -406,6 +528,8 @@ class AOCPlayer {
      * - 40000 = On the Print action
      * - 50000 = On the Royalties action
      * - 60000 = On the Sales action
+     *
+     * @return int
      */
     public function getCubeTwoLocation() {
         return $this->cubeTwoLocation;
@@ -420,6 +544,9 @@ class AOCPlayer {
      * - 40000 = On the Print action
      * - 50000 = On the Royalties action
      * - 60000 = On the Sales action
+     *
+     * @param int $cubeTwoLocation The location of the player's second special action cube
+     * @return void
      */
     public function setCubeTwoLocation($cubeTwoLocation) {
         $this->cubeTwoLocation = $cubeTwoLocation;
@@ -434,6 +561,8 @@ class AOCPlayer {
      * - 40000 = On the Print action
      * - 50000 = On the Royalties action
      * - 60000 = On the Sales action
+     *
+     * @return int
      */
     public function getCubeThreeLocation() {
         return $this->cubeThreeLocation;
@@ -448,6 +577,9 @@ class AOCPlayer {
      * - 40000 = On the Print action
      * - 50000 = On the Royalties action
      * - 60000 = On the Sales action
+     *
+     * @param int $cubeThreeLocation The location of the player's third special action cube
+     * @return void
      */
     public function setCubeThreeLocation($cubeThreeLocation) {
         $this->cubeThreeLocation = $cubeThreeLocation;
@@ -455,6 +587,8 @@ class AOCPlayer {
 
     /**
      * Get whether the player is active in a multi-active state
+     *
+     * @return bool
      */
     public function isMultiActive() {
         return $this->multiActive;

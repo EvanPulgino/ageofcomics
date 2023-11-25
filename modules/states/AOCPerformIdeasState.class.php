@@ -75,12 +75,12 @@ class AOCPerformIdeasState {
 
         // For each idea the player took from the board, gain that idea
         foreach ($ideasFromBoard as $ideaGenre) {
-            $this->gainIdeaFromBoard($activePlayer, GENRES[$ideaGenre]);
+            $this->gainIdeaFromBoard($activePlayer, $ideaGenre);
         }
 
         // For each idea the player took from the supply, gain that idea
         foreach ($ideasFromSupply as $ideaGenre) {
-            $this->gainIdeaFromSupply($activePlayer, GENRES[$ideaGenre]);
+            $this->gainIdeaFromSupply($activePlayer, $ideaGenre);
         }
 
         // Set the state to the next player's turn
@@ -91,19 +91,15 @@ class AOCPerformIdeasState {
      * A player gains an idea from the board
      *
      * @param AOCPlayer $player The player gaining the idea
-     * @param string $genre The genre of the idea to gain
+     * @param int $genre The genre key of the idea to gain
      * @return void
      */
     private function gainIdeaFromBoard($player, $genre) {
         // Adjust the player's ideas
-        $this->game->playerManager->adjustPlayerIdeas(
-            $player->getId(),
-            1,
-            $genre
-        );
+        $this->game->playerManager->adjustPlayerIdeas($player, 1, $genre);
 
         // Remove the idea from the board
-        $this->game->setGameStateValue("ideas_space_" . $genre, 0);
+        $this->game->setGameStateValue("ideas_space_" . GENRES[$genre], 0);
 
         // Notify all players of the gain
         $this->game->notifyAllPlayers(
@@ -114,7 +110,7 @@ class AOCPerformIdeasState {
             [
                 "player" => $player->getUiData(),
                 "player_name" => $player->getName(),
-                "genre" => $genre,
+                "genre" => GENRES[$genre],
             ]
         );
     }
@@ -123,16 +119,12 @@ class AOCPerformIdeasState {
      * A player gains an idea from the supply
      *
      * @param AOCPlayer $player The player gaining the idea
-     * @param string $genre The genre of the idea to gain
+     * @param int $genre key The genre of the idea to gain
      * @return void
      */
     private function gainIdeaFromSupply($player, $genre) {
         // Adjust the player's ideas
-        $this->game->playerManager->adjustPlayerIdeas(
-            $player->getId(),
-            1,
-            $genre
-        );
+        $this->game->playerManager->adjustPlayerIdeas($player, 1, $genre);
 
         // Notify all players of the gain
         $this->game->notifyAllPlayers(
@@ -143,7 +135,7 @@ class AOCPerformIdeasState {
             [
                 "player" => $player->getUiData(),
                 "player_name" => $player->getName(),
-                "genre" => $genre,
+                "genre" => GENRES[$genre],
             ]
         );
     }

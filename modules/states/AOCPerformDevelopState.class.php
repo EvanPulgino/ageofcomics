@@ -272,7 +272,7 @@ class AOCPerformDevelopState {
      */
     private function payForDeckDevelop($activePlayer, $genre) {
         $this->game->playerManager->adjustPlayerMoney(
-            $activePlayer->getId(),
+            $activePlayer,
             -4
         );
         $this->game->notifyAllPlayers(

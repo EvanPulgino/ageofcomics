@@ -55,7 +55,7 @@ class AOCPerformRoyaltiesState {
 
         // Give the player the royalties
         $this->game->playerManager->adjustPlayerMoney(
-            $activePlayer->getId(),
+            $activePlayer,
             $amount
         );
 

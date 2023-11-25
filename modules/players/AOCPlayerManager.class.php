@@ -23,7 +23,7 @@ class AOCPlayerManager extends APP_GameClass {
 
     /**
      * Setup players for a new game
-     * 
+     *
      * @param array $players An array of players
      * @return void
      */
@@ -77,43 +77,38 @@ class AOCPlayerManager extends APP_GameClass {
     /**
      * Adjust how many ideas a player has
      *
-     * @param int $playerId The player's ID
+     * @param AOCPlayer $player The player
      * @param int $ideas The number of ideas to adjust by
-     * @param string $genre The genre of ideas to adjust
+     * @param int $genre The genre key of ideas to adjust
      * @return void
      */
-    public function adjustPlayerIdeas($playerId, $ideas, $genre) {
-        $sql =
-            "UPDATE player SET player_" .
-            $genre .
-            "_ideas = player_" .
-            $genre .
-            "_ideas + $ideas WHERE player_id = $playerId";
-        self::DbQuery($sql);
+    public function adjustPlayerIdeas($player, $ideas, $genre) {
+        $player->setIdeas($genre, $player->getIdeas($genre) + $ideas);
+        $this->savePlayer($player);
     }
 
     /**
      * Adjust how much money a player has
-     * @param int $playerId The player's ID
+     * @param AOCPlayer $player The player
      * @param int $money The amount of money to adjust by
      * @return void
      */
 
-    public function adjustPlayerMoney($playerId, $money) {
-        $sql = "UPDATE player SET player_money = player_money + $money WHERE player_id = $playerId";
-        self::DbQuery($sql);
+    public function adjustPlayerMoney($player, $money) {
+        $player->setMoney($player->getMoney() + $money);
+        $this->savePlayer($player);
     }
 
     /**
      * Adjust how many points a player has
      *
-     * @param int $playerId The player's ID
+     * @param AOCPlayer $playerId The player
      * @param int $score The number of points to adjust by
      * @return void
      */
-    public function adjustPlayerScore($playerId, $score) {
-        $sql = "UPDATE player SET player_score = player_score + $score WHERE player_id = $playerId";
-        self::DbQuery($sql);
+    public function adjustPlayerScore($player, $score) {
+        $player->setScore($player->getScore() + $score);
+        $this->savePlayer($player);
     }
 
     /**
@@ -235,28 +230,6 @@ class AOCPlayerManager extends APP_GameClass {
     }
 
     /**
-     * A player gains money from the Royalties action
-     *
-     * @param AOCPlayer $player The player gaining the money
-     * @param int $actionSpace The ID of the Royalties action space
-     * @return void
-     */
-    public function gainRoyalties($player, $actionSpace) {
-        $amount = ROYALTIES_AMOUNTS[$actionSpace];
-        $this->adjustPlayerMoney($player->getId(), $amount);
-
-        $this->game->notifyAllPlayers(
-            "takeRoyalties",
-            clienttranslate('${player_name} takes royalties of $${amount}'),
-            [
-                "player" => $player->getUiData(),
-                "player_name" => $player->getName(),
-                "amount" => $amount,
-            ]
-        );
-    }
-
-    /**
      * Checks if a player is the last player in turn order
      *
      * @param AOCPlayer $player The player to check
@@ -265,6 +238,31 @@ class AOCPlayerManager extends APP_GameClass {
     public function isLastPlayerInTurnOrder($player) {
         $playerCount = $this->getPlayerCount();
         return $player->getTurnOrder() == $playerCount;
+    }
+
+    /**
+     * Save the player object to the db
+     *
+     * @param AOCPlayer $player The player object to save
+     */
+    public function savePlayer($player) {
+        $sql = "UPDATE player SET 
+        player_score = {$player->getScore()}, 
+        player_score_aux = {$player->getScoreAux()}, 
+        player_money = {$player->getMoney()}, 
+        player_crime_ideas = {$player->getCrimeIdeas()}, 
+        player_horror_ideas = {$player->getHorrorIdeas()}, 
+        player_romance_ideas = {$player->getRomanceIdeas()}, 
+        player_scifi_ideas = {$player->getScifiIdeas()}, 
+        player_superhero_ideas = {$player->getSuperheroIdeas()}, 
+        player_western_ideas = {$player->getWesternIdeas()}, 
+        player_agent_location = {$player->getAgentLocation()}, 
+        player_cube_one_location = {$player->getCubeOneLocation()}, 
+        player_cube_two_location = {$player->getCubeTwoLocation()}, 
+        player_cube_three_location = {$player->getCubeThreeLocation()} 
+        WHERE player_id = {$player->getId()}";
+
+        self::DbQuery($sql);
     }
 
     /**
@@ -305,7 +303,7 @@ class AOCPlayerManager extends APP_GameClass {
     /**
      * Syncs player turn order with randomly assigned natural order
      * This is only useful on game setup
-     * 
+     *
      * @return void
      */
     private function setTurnOrderToNaturalOrder() {
