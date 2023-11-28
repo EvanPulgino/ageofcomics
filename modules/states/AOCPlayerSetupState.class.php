@@ -89,18 +89,24 @@ class AOCPlayerSetupState {
             [
                 "player_name" => $player->getName(),
                 "player_id" => $player->getId(),
-                "comic_genre" => $drawnCard->getGenre(),
+                "comic_genre" => $this->game->formatNotificationString(
+                    $drawnCard->getGenre(),
+                    $drawnCard->getGenreId()
+                ),
                 "comic_card" => $drawnCard->getUiData(0),
             ]
         );
         $this->game->notifyPlayer(
             $player->getId(),
             "gainStartingComicPrivate",
-            clienttranslate('${player_name} gain ${comic_name}'),
+            clienttranslate('${player_name} gains ${comic_name}'),
             [
                 "player_name" => $player->getName(),
                 "player_id" => $player->getId(),
-                "comic_name" => $drawnCard->getName(),
+                "comic_name" => $this->game->formatNotificationString(
+                    $drawnCard->getName(),
+                    $drawnCard->getGenreId()
+                ),
                 "comic_card" => $drawnCard->getUiData($player->getId()),
             ]
         );
@@ -125,10 +131,14 @@ class AOCPlayerSetupState {
             // Notify all players of the idea gained
             $this->game->notifyAllPlayers(
                 "gainStartingIdea",
-                clienttranslate('${player_name} gains a ${genre} idea'),
+                clienttranslate('${player_name} gains a ${genreName} idea'),
                 [
                     "player_name" => $player->getName(),
                     "player_id" => $player->getId(),
+                    "genreName" => $this->game->formatNotificationString(
+                        GENRES[$ideaGenre],
+                        $ideaGenre
+                    ),
                     "genre" => GENRES[$ideaGenre],
                 ]
             );

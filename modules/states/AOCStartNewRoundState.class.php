@@ -72,9 +72,12 @@ class AOCStartNewRoundState {
             // Notify players of flipped sales orders
             $this->game->notifyAllPlayers(
                 "flipSalesOrders",
-                clienttranslate('Flipping ${genre} sales orders on map'),
+                clienttranslate('Flipping all ${genre} sales orders on map'),
                 [
-                    "genre" => $tile->getGenre(),
+                    "genre" => $this->game->formatNotificationString(
+                        $tile->getGenre(),
+                        $tile->getGenreId()
+                    ),
                     "flippedSalesOrders" => $flippedSalesOrdersUiData,
                 ]
             );

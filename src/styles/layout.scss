@@ -15,6 +15,10 @@ html {
   background-size: contain;
 }
 
+.aoc-notify-text {
+  font-weight: 700;
+}
+
 #player_boards {
   display: flex;
   flex-flow: row wrap;

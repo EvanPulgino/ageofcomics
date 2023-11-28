@@ -101,7 +101,10 @@ class AOCPerformDevelopState {
                 "player_id" => $activePlayer->getId(),
                 "player_name" => $activePlayer->getName(),
                 "comic" => $comic->getUiData(0),
-                "comic_name" => $comic->getName(),
+                "comic_name" => $this->game->formatNotificationString(
+                    $comic->getName(),
+                    $comic->getGenreId()
+                ),
             ]
         );
         // Notify active player of the card drawn. Show the face-up card
@@ -114,7 +117,10 @@ class AOCPerformDevelopState {
                 "player_id" => $activePlayer->getId(),
                 "player_name" => $activePlayer->getName(),
                 "comic" => $comic->getUiData($activePlayer->getId()),
-                "comic_name" => $comic->getName(),
+                "comic_name" => $this->game->formatNotificationString(
+                    $comic->getName(),
+                    $comic->getGenreId()
+                ),
             ]
         );
 
@@ -160,7 +166,10 @@ class AOCPerformDevelopState {
                 "player" => $activePlayer->getUiData(),
                 "player_id" => $activePlayer->getId(),
                 "player_name" => $activePlayer->getName(),
-                "genre" => $comic->getGenre(),
+                "genre" => $this->game->formatNotificationString(
+                    $comic->getGenre(),
+                    $comic->getGenreId()
+                ),
                 "comic" => $comic->getUiData(0),
             ]
         );
@@ -174,7 +183,10 @@ class AOCPerformDevelopState {
                 "player_id" => $activePlayer->getId(),
                 "player_name" => $activePlayer->getName(),
                 "comic" => $comic->getUiData($activePlayer->getId()),
-                "comic_name" => $comic->getName(),
+                "comic_name" => $this->game->formatNotificationString(
+                    $comic->getName(),
+                    $comic->getGenreId()
+                ),
             ]
         );
 
@@ -223,13 +235,16 @@ class AOCPerformDevelopState {
                 $this->game->notifyAllPlayers(
                     "discardCardFromDeck",
                     clienttranslate(
-                        '${player_name} discards a ${genre} comic from the deck'
+                        '${player_name} discards ${comicName} from the deck'
                     ),
                     [
                         "player" => $activePlayer->getUiData(),
                         "player_name" => $activePlayer->getName(),
                         "card" => $comicCard->getUiData(0),
-                        "genre" => $comicCard->getGenre(),
+                        "comicName" => $this->game->formatNotificationString(
+                            $comicCard->getName(),
+                            $comicCard->getGenreId()
+                        ),
                     ]
                 );
             }
@@ -271,10 +286,7 @@ class AOCPerformDevelopState {
      * @return void
      */
     private function payForDeckDevelop($activePlayer, $genre) {
-        $this->game->playerManager->adjustPlayerMoney(
-            $activePlayer,
-            -4
-        );
+        $this->game->playerManager->adjustPlayerMoney($activePlayer, -4);
         $this->game->notifyAllPlayers(
             "adjustMoney",
             clienttranslate(

@@ -80,13 +80,13 @@ define("GENRES", [
     GENRE_WESTERN => WESTERN,
 ]);
 
-define("GENRES_NAME_TO_KEY", [
-    CRIME => GENRE_CRIME,
-    HORROR => GENRE_HORROR,
-    ROMANCE => GENRE_ROMANCE,
-    SCIFI => GENRE_SCIFI,
-    SUPERHERO => GENRE_SUPERHERO,
-    WESTERN => GENRE_WESTERN,
+define("GENRE_COLORS", [
+    GENRE_CRIME => "#8f8b8b",
+    GENRE_HORROR => "#7f4586",
+    GENRE_ROMANCE => "#e24545",
+    GENRE_SCIFI => "#90be5b",
+    GENRE_SUPERHERO => "#3b7ab4",
+    GENRE_WESTERN => "#e17629",
 ]);
 
 /** Card Types */

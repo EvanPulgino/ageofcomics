@@ -74,29 +74,39 @@ class AOCPerformHireState {
         // Notify all players of the hire (with facedown card), and notify the active player privately (so they can see the card they hired)
         $this->game->notifyAllPlayers(
             "hireCreative",
-            clienttranslate(
-                '${player_name} hires a value ${cardValue} ${creative}'
-            ),
+            clienttranslate('${player_name} hires a ${creative}'),
             [
                 "player" => $activePlayer->getUiData(),
                 "player_id" => $activePlayer->getId(),
                 "player_name" => $activePlayer->getName(),
                 "card" => $card->getUiData(0),
-                "cardValue" => $card->getValue(),
-                "creative" => ucfirst($creativeType),
+                "creative" =>
+                    "value " .
+                    $card->getValue() .
+                    " " .
+                    $this->game->formatNotificationString(
+                        $creativeType,
+                        $card->getGenreId()
+                    ),
             ]
         );
         $this->game->notifyPlayer(
             $activePlayer->getId(),
             "hireCreativePrivate",
-            clienttranslate('You hire a value ${cardValue} ${creative}'),
+            clienttranslate('${player_name} hires a ${creative}'),
             [
                 "player" => $activePlayer->getUiData(),
                 "player_id" => $activePlayer->getId(),
                 "player_name" => $activePlayer->getName(),
                 "card" => $card->getUiData($activePlayer->getId()),
-                "cardValue" => $card->getValue(),
-                "creative" => ucfirst($creativeType),
+                "creative" =>
+                    "value " .
+                    $card->getValue() .
+                    " " .
+                    $this->game->formatNotificationString(
+                        $creativeType,
+                        $card->getGenreId()
+                    ),
             ]
         );
 
@@ -146,20 +156,31 @@ class AOCPerformHireState {
             $card->getGenreId()
         );
 
+        $creativeType =
+            $card->getTypeId() == CARD_TYPE_ARTIST ? "artist" : "writer";
+
         $this->game->notifyAllPlayers(
             "gainIdeaFromHiringCreative",
             clienttranslate(
-                '${player_name} gains a ${genre} idea from hiring ${card_type_singular}'
+                '${player_name} gains a ${genreString} idea from hiring ${card_type_singular}'
             ),
             [
                 "player" => $player->getUiData(),
                 "player_name" => $player->getName(),
                 "card" => $card->getUiData($player->getId()),
                 "genre" => $card->getGenre(),
+                "genreString" => $this->game->formatNotificationString(
+                    $card->getGenre(),
+                    $card->getGenreId()
+                ),
                 "card_type_singular" =>
                     $card->getTypeId() == CARD_TYPE_ARTIST
-                        ? "an artist"
-                        : "a writer",
+                        ? "an "
+                        : "a " .
+                            $this->game->formatNotificationString(
+                                $creativeType,
+                                $card->getGenreId()
+                            ),
             ]
         );
     }

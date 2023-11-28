@@ -105,12 +105,16 @@ class AOCPerformIdeasState {
         $this->game->notifyAllPlayers(
             "gainIdeaFromBoard",
             clienttranslate(
-                '${player_name} gains a ${genre} idea from the board'
+                '${player_name} gains a ${genreString} idea from the board'
             ),
             [
                 "player" => $player->getUiData(),
                 "player_name" => $player->getName(),
                 "genre" => GENRES[$genre],
+                "genreString" => $this->game->formatNotificationString(
+                    GENRES[$genre],
+                    $genre
+                ),
             ]
         );
     }
@@ -130,12 +134,16 @@ class AOCPerformIdeasState {
         $this->game->notifyAllPlayers(
             "gainIdeaFromSupply",
             clienttranslate(
-                '${player_name} gains a ${genre} idea from the supply'
+                '${player_name} gains a ${genreString} idea from the supply'
             ),
             [
                 "player" => $player->getUiData(),
                 "player_name" => $player->getName(),
                 "genre" => GENRES[$genre],
+                "genreString" => $this->game->formatNotificationString(
+                    GENRES[$genre],
+                    $genre
+                ),
             ]
         );
     }

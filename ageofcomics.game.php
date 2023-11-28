@@ -195,6 +195,18 @@ class AgeOfComics extends Table {
     }
 
     /**
+     * Formats a notification string with the color of the genre
+     *
+     * @param string $text The text to format
+     * @param int $genreId The genre id to get the color for
+     * @return string The formatted notification string
+     */
+    public function formatNotificationString($text, $genreId) {
+        $formattedText = ucwords($text);
+        $color = GENRE_COLORS[$genreId];
+        return "<span class='aoc-notify-text' style='color: $color'>$formattedText</span>";
+    }
+    /**
      * Gets the current contents of the ideas space
      *
      * @return array Array of contents of the Ideas space on the board
