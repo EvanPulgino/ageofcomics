@@ -379,9 +379,27 @@ var GameBody = /** @class */ (function (_super) {
      * @param {object} notif - notification data
      */
     GameBody.prototype.notif_message = function (notif) { };
+    /**
+     * Handle 'adjustMoney' notification
+     *
+     * Notif args:
+     * - player: player object
+     * - amount: amount to adjust by
+     *
+     * @param notif
+     */
     GameBody.prototype.notif_adjustMoney = function (notif) {
         this.playerController.adjustMoney(notif.args.player, notif.args.amount);
     };
+    /**
+     * Handle'completeSetup' notification
+     *
+     * Notif args:
+     * - artistCards: {deck: array, supply: array}
+     * - writerCards: {deck: array, supply: array}
+     *
+     * @param notif
+     */
     GameBody.prototype.notif_completeSetup = function (notif) {
         this.cardController.setupCards(notif.args.artistCards.deck);
         this.cardController.setupCards(notif.args.writerCards.deck);
@@ -390,62 +408,212 @@ var GameBody = /** @class */ (function (_super) {
         this.cardController.setupCards(notif.args.writerCards.supply);
         this.cardController.setupCards(notif.args.comicCards.supply);
     };
+    /**
+     * Handle 'developComic' notification
+     *
+     * Notif args:
+     * - comic: comic card
+     *
+     * @param notif
+     */
     GameBody.prototype.notif_developComic = function (notif) {
         this.cardController.slideCardToPlayerHand(notif.args.comic);
     };
+    /**
+     * Handle 'developComicPrivate' notification
+     *
+     * Notif args:
+     * - comic: comic card
+     *
+     * @param notif
+     */
     GameBody.prototype.notif_developComicPrivate = function (notif) {
         this.cardController.slideCardToPlayerHand(notif.args.comic);
     };
+    /**
+     * Handle 'discardCard' notification
+     *
+     * Notif args:
+     * - card: card to discard
+     * - player: player object
+     *
+     * @param notif
+     */
     GameBody.prototype.notif_discardCard = function (notif) {
         this.cardController.discardCard(notif.args.card, notif.args.player.id);
     };
+    /**
+     * Handle 'discardCardFromDeck' notification
+     *
+     * Notif args:
+     * - card: card to discard
+     *
+     * @param notif
+     */
     GameBody.prototype.notif_discardCardFromDeck = function (notif) {
         this.cardController.discardCardFromDeck(notif.args.card);
     };
+    /**
+     * Handle 'flipCalendarTiles' notification
+     *
+     * Notif args:
+     * - flippedTiles: array of flipped tiles
+     *
+     * @param notif
+     */
     GameBody.prototype.notif_flipCalendarTiles = function (notif) {
         this.calendarController.flipCalendarTiles(notif.args.flippedTiles);
     };
+    /**
+     * Handle 'flipSalesOrders' notification
+     *
+     * Notif args:
+     * - flippedSalesOrders: array of flipped sales orders
+     *
+     * @param notif
+     */
     GameBody.prototype.notif_flipSalesOrders = function (notif) {
         this.salesOrderController.flipSalesOrders(notif.args.flippedSalesOrders);
     };
+    /**
+     * Handle 'gainIdeaFromBoard' notification
+     *
+     * Notif args:
+     * - player: player object
+     * - genre: genre of idea
+     *
+     * @param notif
+     */
     GameBody.prototype.notif_gainIdeaFromBoard = function (notif) {
         this.playerController.gainIdeaFromBoard(notif.args.player.id, notif.args.genre);
     };
+    /**
+     * Handle 'gainIdeaFromHiringCreative' notification
+     *
+     * Notif args:
+     * - player: player object
+     * - genre: genre of idea
+     * - card: card object
+     *
+     * @param notif
+     */
     GameBody.prototype.notif_gainIdeaFromHiringCreative = function (notif) {
         this.playerController.gainIdeaFromHiringCreative(notif.args.player.id, notif.args.genre, notif.args.card.id);
     };
+    /**
+     * Handle 'gainIdeaFromSupply' notification
+     *
+     * Notif args:
+     * - player: player object
+     * - genre: genre of idea
+     *
+     * @param notif
+     */
     GameBody.prototype.notif_gainIdeaFromSupply = function (notif) {
         this.playerController.gainIdeaFromSupply(notif.args.player.id, notif.args.genre);
     };
+    /**
+     * Handle 'gainStartingComic' notification
+     *
+     * Notif args:
+     * - player: player object
+     * - comic_card: comic card
+     *
+     * @param notif
+     */
     GameBody.prototype.notif_gainStartingComic = function (notif) {
         this.cardController.gainStartingComic(notif.args.comic_card);
     };
+    /**
+     * Handle 'gainStartingComicPrivate' notification
+     *
+     * Notif args:
+     * - comic_card: comic card
+     *
+     * @param notif
+     */
     GameBody.prototype.notif_gainStartingComicPrivate = function (notif) {
         this.cardController.gainStartingComic(notif.args.comic_card);
     };
+    /**
+     * Handle 'gainStartingIdea' notification
+     *
+     * Notif args:
+     * - player: player object
+     * - genre: genre of idea
+     *
+     * @param notif
+     */
     GameBody.prototype.notif_gainStartingIdea = function (notif) {
         this.playerController.gainStartingIdea(notif.args.player_id, notif.args.genre);
     };
+    /**
+     * Handle 'hireCreative' notification
+     *
+     * Notif args:
+     * - card: card to hire
+     * - player: player object
+     *
+     * @param notif
+     */
     GameBody.prototype.notif_hireCreative = function (notif) {
         this.cardController.slideCardToPlayerHand(notif.args.card);
     };
+    /**
+     * Handle 'hireCreativePrivate' notification
+     *
+     * Notif args:
+     * - card: card to hire
+     *
+     * @param notif
+     */
     GameBody.prototype.notif_hireCreativePrivate = function (notif) {
         this.cardController.slideCardToPlayerHand(notif.args.card);
     };
+    /**
+     * Handle 'placeEditor' notification
+     *
+     * Notif args:
+     * - editor: editor object
+     * - space: space to place editor
+     *
+     * @param notif
+     */
     GameBody.prototype.notif_placeEditor = function (notif) {
         this.editorController.moveEditorToActionSpace(notif.args.editor, notif.args.space);
     };
+    /**
+     * Handle'reshuffleDiscardPile' notification
+     *
+     * Notif args:
+     * - deck: array of cards in deck
+     *
+     * @param notif
+     */
     GameBody.prototype.notif_reshuffleDiscardPile = function (notif) {
         this.cardController.setupCards(notif.args.deck);
     };
     /**
      * Handle 'setupMoney' notification
      *
+     * Notif args:
+     * - player: player object
+     * - money: amount of money to set
+     *
      * @param {object} notif - notification data
      */
     GameBody.prototype.notif_setupMoney = function (notif) {
         this.playerController.adjustMoney(notif.args.player, notif.args.money);
     };
+    /**
+     * Handle 'takeRoyalties' notification
+     *
+     * Notif args:
+     * - player: player object
+     * - amount: amount to adjust by
+     *
+     * @param notif
+     */
     GameBody.prototype.notif_takeRoyalties = function (notif) {
         this.playerController.adjustMoney(notif.args.player, notif.args.amount);
     };
@@ -1581,14 +1749,14 @@ var PerformDevelop = /** @class */ (function () {
         var topCardOfDeck = dojo.byId("aoc-comic-deck").lastChild;
         topCardOfDeck.classList.add("aoc-clickable");
         var topCardOfDeckId = topCardOfDeck.id.split("-")[2];
-        this.connections["comic" + topCardOfDeckId] = dojo.connect(dojo.byId(topCardOfDeck.id), "onclick", dojo.hitch(this, this.developComic, topCardOfDeckId));
+        this.connections["comic" + topCardOfDeckId] = dojo.connect(dojo.byId(topCardOfDeck.id), "onclick", dojo.hitch(this, this.developComic, topCardOfDeckId, true));
         var cardElements = dojo.byId("aoc-comics-available").children;
         for (var key in cardElements) {
             var card = cardElements[key];
             if (card.id) {
                 card.classList.add("aoc-clickable");
                 var cardId = card.id.split("-")[2];
-                this.connections["comic" + cardId] = dojo.connect(dojo.byId(card.id), "onclick", dojo.hitch(this, this.developComic, cardId));
+                this.connections["comic" + cardId] = dojo.connect(dojo.byId(card.id), "onclick", dojo.hitch(this, this.developComic, cardId, false));
             }
         }
     };
@@ -1613,9 +1781,11 @@ var PerformDevelop = /** @class */ (function () {
             }
         }
     };
-    PerformDevelop.prototype.developComic = function (comicId) {
+    PerformDevelop.prototype.developComic = function (comicId, topOfDeck) {
+        console.log("developComic", comicId, topOfDeck);
         this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_DEVELOP_COMIC, {
             comicId: comicId,
+            topOfDeck: topOfDeck,
         });
     };
     PerformDevelop.prototype.developComicFromDeck = function (genre) {

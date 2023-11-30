@@ -80,6 +80,17 @@ define("GENRES", [
     GENRE_WESTERN => WESTERN,
 ]);
 
+/** Genre Key From Name */
+define("GENRE_KEY_FROM_NAME", [
+    CRIME => GENRE_CRIME,
+    HORROR => GENRE_HORROR,
+    ROMANCE => GENRE_ROMANCE,
+    SCIFI => GENRE_SCIFI,
+    SUPERHERO => GENRE_SUPERHERO,
+    WESTERN => GENRE_WESTERN,
+]);
+
+/** Genre Colors */
 define("GENRE_COLORS", [
     GENRE_CRIME => "#8f8b8b",
     GENRE_HORROR => "#7f4586",

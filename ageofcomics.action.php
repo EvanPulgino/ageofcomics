@@ -65,8 +65,9 @@ class action_ageofcomics extends APP_GameAction {
         self::setAjaxMode();
 
         $comicId = self::getArg("comicId", AT_posint, true);
+        $topOfDeck = self::getArg("topOfDeck", AT_bool, true);
 
-        $this->game->states[PERFORM_DEVELOP]->developComic($comicId);
+        $this->game->states[PERFORM_DEVELOP]->developComic($comicId, $topOfDeck);
 
         self::ajaxResponse();
     }

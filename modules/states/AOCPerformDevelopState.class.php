@@ -79,9 +79,10 @@ class AOCPerformDevelopState {
      * A player develops a comic card
      *
      * @param int $comicId The id of the comic card to develop
+     * @param bool $topOfDeck Whether the player is developing the top card of the deck
      * @return void
      */
-    public function developComic($comicId) {
+    public function developComic($comicId, $topOfDeck) {
         // Get the active player
         $activePlayer = $this->game->playerManager->getActivePlayer();
 
@@ -92,19 +93,30 @@ class AOCPerformDevelopState {
             CARD_TYPE_COMIC
         );
 
+        $notificationItemString = $topOfDeck
+            ? $this->game->formatNotificationString(
+                $comic->getGenre(),
+                $comic->getGenreId()
+            )
+            : $this->game->formatNotificationString(
+                $comic->getName(),
+                $comic->getGenreId()
+            );
+        
+        $notificationString = $topOfDeck
+            ? clienttranslate('${player_name} develops a ${itemString} from the top card of the deck')
+            : clienttranslate('${player_name} develops ${itemString}');
+
         // Notify players of the card drawn. If not active player, only show the card back
         $this->game->notifyAllPlayers(
             "developComic",
-            clienttranslate('${player_name} develops ${comic_name}'),
+            $notificationString,
             [
                 "player" => $activePlayer->getUiData(),
                 "player_id" => $activePlayer->getId(),
                 "player_name" => $activePlayer->getName(),
                 "comic" => $comic->getUiData(0),
-                "comic_name" => $this->game->formatNotificationString(
-                    $comic->getName(),
-                    $comic->getGenreId()
-                ),
+                "itemString" => $notificationItemString,
             ]
         );
         // Notify active player of the card drawn. Show the face-up card
@@ -114,7 +126,6 @@ class AOCPerformDevelopState {
             clienttranslate('${player_name} develops ${comic_name}'),
             [
                 "player" => $activePlayer->getUiData(),
-                "player_id" => $activePlayer->getId(),
                 "player_name" => $activePlayer->getName(),
                 "comic" => $comic->getUiData($activePlayer->getId()),
                 "comic_name" => $this->game->formatNotificationString(
@@ -164,7 +175,6 @@ class AOCPerformDevelopState {
             clienttranslate('${player_name} develops a ${genre} comic'),
             [
                 "player" => $activePlayer->getUiData(),
-                "player_id" => $activePlayer->getId(),
                 "player_name" => $activePlayer->getName(),
                 "genre" => $this->game->formatNotificationString(
                     $comic->getGenre(),
@@ -282,21 +292,25 @@ class AOCPerformDevelopState {
     /**
      * Active player spends $4 to develop a comic card from the deck
      *
-     * @param AOCPlayer $activePlayer The active player
+     * @param AOCPlayer $player The active player
+     * @param string $genre The genre of the comic card to develop
      * @return void
      */
-    private function payForDeckDevelop($activePlayer, $genre) {
-        $this->game->playerManager->adjustPlayerMoney($activePlayer, -4);
+    private function payForDeckDevelop($player, $genre) {
+        $this->game->playerManager->adjustPlayerMoney($player, -4);
         $this->game->notifyAllPlayers(
             "adjustMoney",
             clienttranslate(
                 '${player_name} pays $4 to develop a ${genre} comic'
             ),
             [
-                "player" => $activePlayer->getUiData(),
-                "player_name" => $activePlayer->getName(),
                 "amount" => -4,
-                "genre" => $genre,
+                "genre" => $this->game->formatNotificationString(
+                    $genre,
+                    GENRE_KEY_FROM_NAME[$genre]
+                ),
+                "player" => $player->getUiData(),
+                "player_name" => $player->getName(),
             ]
         );
     }

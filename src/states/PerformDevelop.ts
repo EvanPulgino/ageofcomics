@@ -52,7 +52,7 @@ class PerformDevelop implements State {
     this.connections["comic" + topCardOfDeckId] = dojo.connect(
       dojo.byId(topCardOfDeck.id),
       "onclick",
-      dojo.hitch(this, this.developComic, topCardOfDeckId)
+      dojo.hitch(this, this.developComic, topCardOfDeckId, true)
     );
 
     var cardElements = dojo.byId("aoc-comics-available").children;
@@ -65,7 +65,7 @@ class PerformDevelop implements State {
         this.connections["comic" + cardId] = dojo.connect(
           dojo.byId(card.id),
           "onclick",
-          dojo.hitch(this, this.developComic, cardId)
+          dojo.hitch(this, this.developComic, cardId, false)
         );
       }
     }
@@ -100,9 +100,11 @@ class PerformDevelop implements State {
     }
   }
 
-  developComic(comicId: number): void {
+  developComic(comicId: number, topOfDeck: boolean): void {
+    console.log("developComic", comicId, topOfDeck);
     this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_DEVELOP_COMIC, {
       comicId: comicId,
+      topOfDeck: topOfDeck,
     });
   }
 

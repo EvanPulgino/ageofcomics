@@ -109,10 +109,28 @@ class GameBody extends GameBasics {
    */
   notif_message(notif: any): void {}
 
+  /**
+   * Handle 'adjustMoney' notification
+   *
+   * Notif args:
+   * - player: player object
+   * - amount: amount to adjust by
+   *
+   * @param notif
+   */
   notif_adjustMoney(notif: any): void {
     this.playerController.adjustMoney(notif.args.player, notif.args.amount);
   }
 
+  /**
+   * Handle'completeSetup' notification
+   *
+   * Notif args:
+   * - artistCards: {deck: array, supply: array}
+   * - writerCards: {deck: array, supply: array}
+   *
+   * @param notif
+   */
   notif_completeSetup(notif: any): void {
     this.cardController.setupCards(notif.args.artistCards.deck);
     this.cardController.setupCards(notif.args.writerCards.deck);
@@ -123,30 +141,88 @@ class GameBody extends GameBasics {
     this.cardController.setupCards(notif.args.comicCards.supply);
   }
 
+  /**
+   * Handle 'developComic' notification
+   *
+   * Notif args:
+   * - comic: comic card
+   *
+   * @param notif
+   */
   notif_developComic(notif: any): void {
     this.cardController.slideCardToPlayerHand(notif.args.comic);
   }
 
+  /**
+   * Handle 'developComicPrivate' notification
+   *
+   * Notif args:
+   * - comic: comic card
+   *
+   * @param notif
+   */
   notif_developComicPrivate(notif: any): void {
     this.cardController.slideCardToPlayerHand(notif.args.comic);
   }
 
+  /**
+   * Handle 'discardCard' notification
+   *
+   * Notif args:
+   * - card: card to discard
+   * - player: player object
+   *
+   * @param notif
+   */
   notif_discardCard(notif: any): void {
     this.cardController.discardCard(notif.args.card, notif.args.player.id);
   }
 
+  /**
+   * Handle 'discardCardFromDeck' notification
+   *
+   * Notif args:
+   * - card: card to discard
+   *
+   * @param notif
+   */
   notif_discardCardFromDeck(notif: any): void {
     this.cardController.discardCardFromDeck(notif.args.card);
   }
 
+  /**
+   * Handle 'flipCalendarTiles' notification
+   *
+   * Notif args:
+   * - flippedTiles: array of flipped tiles
+   *
+   * @param notif
+   */
   notif_flipCalendarTiles(notif: any): void {
     this.calendarController.flipCalendarTiles(notif.args.flippedTiles);
   }
 
+  /**
+   * Handle 'flipSalesOrders' notification
+   *
+   * Notif args:
+   * - flippedSalesOrders: array of flipped sales orders
+   *
+   * @param notif
+   */
   notif_flipSalesOrders(notif: any): void {
     this.salesOrderController.flipSalesOrders(notif.args.flippedSalesOrders);
   }
 
+  /**
+   * Handle 'gainIdeaFromBoard' notification
+   *
+   * Notif args:
+   * - player: player object
+   * - genre: genre of idea
+   *
+   * @param notif
+   */
   notif_gainIdeaFromBoard(notif: any): void {
     this.playerController.gainIdeaFromBoard(
       notif.args.player.id,
@@ -154,6 +230,16 @@ class GameBody extends GameBasics {
     );
   }
 
+  /**
+   * Handle 'gainIdeaFromHiringCreative' notification
+   *
+   * Notif args:
+   * - player: player object
+   * - genre: genre of idea
+   * - card: card object
+   *
+   * @param notif
+   */
   notif_gainIdeaFromHiringCreative(notif: any): void {
     this.playerController.gainIdeaFromHiringCreative(
       notif.args.player.id,
@@ -162,6 +248,15 @@ class GameBody extends GameBasics {
     );
   }
 
+  /**
+   * Handle 'gainIdeaFromSupply' notification
+   *
+   * Notif args:
+   * - player: player object
+   * - genre: genre of idea
+   *
+   * @param notif
+   */
   notif_gainIdeaFromSupply(notif: any): void {
     this.playerController.gainIdeaFromSupply(
       notif.args.player.id,
@@ -169,14 +264,40 @@ class GameBody extends GameBasics {
     );
   }
 
+  /**
+   * Handle 'gainStartingComic' notification
+   *
+   * Notif args:
+   * - player: player object
+   * - comic_card: comic card
+   *
+   * @param notif
+   */
   notif_gainStartingComic(notif: any): void {
     this.cardController.gainStartingComic(notif.args.comic_card);
   }
 
+  /**
+   * Handle 'gainStartingComicPrivate' notification
+   *
+   * Notif args:
+   * - comic_card: comic card
+   *
+   * @param notif
+   */
   notif_gainStartingComicPrivate(notif: any): void {
     this.cardController.gainStartingComic(notif.args.comic_card);
   }
 
+  /**
+   * Handle 'gainStartingIdea' notification
+   *
+   * Notif args:
+   * - player: player object
+   * - genre: genre of idea
+   *
+   * @param notif
+   */
   notif_gainStartingIdea(notif: any): void {
     this.playerController.gainStartingIdea(
       notif.args.player_id,
@@ -184,14 +305,40 @@ class GameBody extends GameBasics {
     );
   }
 
+  /**
+   * Handle 'hireCreative' notification
+   *
+   * Notif args:
+   * - card: card to hire
+   * - player: player object
+   *
+   * @param notif
+   */
   notif_hireCreative(notif: any): void {
     this.cardController.slideCardToPlayerHand(notif.args.card);
   }
 
+  /**
+   * Handle 'hireCreativePrivate' notification
+   *
+   * Notif args:
+   * - card: card to hire
+   *
+   * @param notif
+   */
   notif_hireCreativePrivate(notif: any): void {
     this.cardController.slideCardToPlayerHand(notif.args.card);
   }
 
+  /**
+   * Handle 'placeEditor' notification
+   *
+   * Notif args:
+   * - editor: editor object
+   * - space: space to place editor
+   *
+   * @param notif
+   */
   notif_placeEditor(notif: any): void {
     this.editorController.moveEditorToActionSpace(
       notif.args.editor,
@@ -199,6 +346,14 @@ class GameBody extends GameBasics {
     );
   }
 
+  /**
+   * Handle'reshuffleDiscardPile' notification
+   *
+   * Notif args:
+   * - deck: array of cards in deck
+   *
+   * @param notif
+   */
   notif_reshuffleDiscardPile(notif: any): void {
     this.cardController.setupCards(notif.args.deck);
   }
@@ -206,12 +361,25 @@ class GameBody extends GameBasics {
   /**
    * Handle 'setupMoney' notification
    *
+   * Notif args:
+   * - player: player object
+   * - money: amount of money to set
+   *
    * @param {object} notif - notification data
    */
   notif_setupMoney(notif: any): void {
     this.playerController.adjustMoney(notif.args.player, notif.args.money);
   }
 
+  /**
+   * Handle 'takeRoyalties' notification
+   *
+   * Notif args:
+   * - player: player object
+   * - amount: amount to adjust by
+   *
+   * @param notif
+   */
   notif_takeRoyalties(notif: any): void {
     this.playerController.adjustMoney(notif.args.player, notif.args.amount);
   }
