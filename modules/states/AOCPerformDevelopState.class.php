@@ -175,6 +175,7 @@ class AOCPerformDevelopState {
             clienttranslate('${player_name} develops a ${genre} comic'),
             [
                 "player" => $activePlayer->getUiData(),
+                "player_id" => $activePlayer->getId(),
                 "player_name" => $activePlayer->getName(),
                 "genre" => $this->game->formatNotificationString(
                     $comic->getGenre(),
