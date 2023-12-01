@@ -9,6 +9,11 @@
  *
  * PerformRoyalties.ts
  *
+ * Age of Comic perform royalties state
+ *
+ * State vars:
+ *  game: game object reference
+ *
  */
 class PerformRoyalties implements State {
   game: any;

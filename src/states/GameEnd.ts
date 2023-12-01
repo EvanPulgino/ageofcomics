@@ -10,9 +10,11 @@
  * GameEnd.ts
  *
  * AgeOfComics game end state
+ * 
+ * State vars:
+ * - game: game object reference
  *
  */
-
 class GameEnd implements State {
   game: any;
   constructor(game: any) {

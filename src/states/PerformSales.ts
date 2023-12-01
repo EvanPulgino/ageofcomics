@@ -9,15 +9,20 @@
  *
  * PerformSales.ts
  *
+ * Age of Comics perform sales state
+ *
+ * State vars:
+ *  game: game object reference
+ *
  */
 
 class PerformSales implements State {
-    game: any;
-    constructor(game: any) {
-        this.game = game;
-    }
+  game: any;
+  constructor(game: any) {
+    this.game = game;
+  }
 
-    onEnteringState(stateArgs: any): void {}
-    onLeavingState(): void {}
-    onUpdateActionButtons(stateArgs: any): void {}
+  onEnteringState(stateArgs: any): void {}
+  onLeavingState(): void {}
+  onUpdateActionButtons(stateArgs: any): void {}
 }

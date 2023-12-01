@@ -1495,19 +1495,42 @@ var TicketController = /** @class */ (function () {
  *
  * AgeOfComics check hand size state
  *
+ * State vars:
+ * - game: game object reference
+ * - numberToDiscard: number of cards to discard
+ * - shouldUnselect: true if cards should be unselected when the number of selected cards is less than the number of cards to discard
+ * - connections: map of card id to click listener
+ *
  */
 var CheckHandSize = /** @class */ (function () {
     function CheckHandSize(game) {
         this.game = game;
         this.numberToDiscard = 0;
-        this.unselect = false;
+        this.shouldUnselect = false;
         this.connections = {};
     }
+    /**
+     * Called when entering this state.
+     *
+     * If the current player is active, add click listeners to the cards in their hand.
+     * This is done after a timeout to allow drawn cards from previous state to enter the player hand.
+     *
+     * stateArgs:
+     *  - isCurrentPlayerActive: true if this player is the active player
+     *
+     * args:
+     * - numberToDiscard: number of cards to discard
+     *
+     * @param stateArgs contains args derived from the state machine
+     */
     CheckHandSize.prototype.onEnteringState = function (stateArgs) {
         var _this = this;
         if (stateArgs.isCurrentPlayerActive) {
+            // Set number of cards to discard variable
             this.numberToDiscard = stateArgs.args.numberToDiscard;
+            // Get all cards in hand
             var cardsInHand = dojo.byId("aoc-hand-" + stateArgs.active_player).children;
+            // After a timeout, add click listeners to cards in hand
             setTimeout(function () {
                 for (var i = 0; i < cardsInHand.length; i++) {
                     dojo.addClass(cardsInHand[i], "aoc-clickable");
@@ -1516,6 +1539,12 @@ var CheckHandSize = /** @class */ (function () {
             }, 1000);
         }
     };
+    /**
+     * Called when leaving this state.
+     *
+     * Make all cards unclickable and unselected.
+     * Remove click listeners from cards in hand.
+     */
     CheckHandSize.prototype.onLeavingState = function () {
         dojo.query(".aoc-clickable").removeClass("aoc-clickable");
         dojo.query(".aoc-selected").removeClass("aoc-selected");
@@ -1524,19 +1553,39 @@ var CheckHandSize = /** @class */ (function () {
         }
         this.connections = {};
     };
+    /**
+     * Called when the action buttons need to be updated.
+     *
+     * If the current player is active, add a confirmation button that starts disabled.
+     *
+     * stateArgs:
+     *  - isCurrentPlayerActive: true if this player is the active player
+     *
+     * @param stateArgs contains args derived from the state machine
+     */
     CheckHandSize.prototype.onUpdateActionButtons = function (stateArgs) {
         var _this = this;
         if (stateArgs.isCurrentPlayerActive) {
-            gameui.addActionButton("aoc-confirm-discard", _("Confirm"), function (event) {
-                _this.confirmDiscard(event);
+            // Add confirmation button
+            gameui.addActionButton("aoc-confirm-discard", _("Confirm"), function () {
+                _this.confirmDiscard();
             });
+            // Disable confirmation button + add custom styling
             dojo.addClass("aoc-confirm-discard", "aoc-button-disabled");
             dojo.addClass("aoc-confirm-discard", "aoc-button");
         }
     };
-    CheckHandSize.prototype.confirmDiscard = function (event) {
+    /**
+     * Called when the confirmation button is clicked.
+     *
+     * Send the selected cards to the server.
+     */
+    CheckHandSize.prototype.confirmDiscard = function () {
+        // Initialize string to store card ids in comma separated list
         var cardsToDiscard = "";
+        // Get all cards with the `selected` class
         var selectedCards = dojo.query(".aoc-selected");
+        // For each card, add its id to the string
         for (var i = 0; i < selectedCards.length; i++) {
             var card = selectedCards[i];
             if (i == 0) {
@@ -1546,44 +1595,87 @@ var CheckHandSize = /** @class */ (function () {
                 cardsToDiscard += "," + card.id.split("-")[2];
             }
         }
+        // Send the card ids to the server
         this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_CONFIRM_DISCARD, {
             cardsToDiscard: cardsToDiscard,
         });
     };
+    /**
+     * Called when a card is clicked.
+     *
+     * If the card is clickable, toggle its selected status.
+     *
+     * @param card the card that was clicked
+     */
     CheckHandSize.prototype.selectCard = function (card) {
+        // Toggle clicabile and selected status
         dojo.toggleClass(card, "aoc-clickable");
         dojo.toggleClass(card, "aoc-selected");
+        // Update confirmation button status
         this.updateConfirmationButtonStatus();
     };
+    /**
+     * Called when the number of selected cards is equal to the number of cards to discard.
+     *
+     * Make all unselected cards unclickable.
+     * Disconnect click listeners from unselected cards.
+     *
+     * This is done to prevent the player from selecting more cards than they are able to discard.
+     */
     CheckHandSize.prototype.toggleCardStatus = function () {
+        // Get all unselected cards
         var unselectedCards = dojo.query(".aoc-clickable");
+        // For each card, make it unclickable and disconnect its click listener
         for (var i = 0; i < unselectedCards.length; i++) {
             var unselectedCard = unselectedCards[i];
             dojo.toggleClass(unselectedCard, "aoc-clickable");
             dojo.disconnect(this.connections[unselectedCard.id]);
         }
-        this.unselect = true;
+        // Set shouldUnselect to true to indicate that cards should be unselected when the number
+        // of selected cards is less than the number of cards to discard
+        this.shouldUnselect = true;
     };
+    /**
+     * Called when the number of selected cards is less than the number of cards to discard.
+     *
+     * Make all unselected cards clickable.
+     * Add click listeners to unselected cards.
+     */
     CheckHandSize.prototype.untoggleCardStatus = function () {
+        // Get all unselected cards - aka all cards that are not selected and not clickable
         var cardsToUntoggle = dojo.query("div#aoc-hand-" +
             this.game.player_id +
             "> .aoc-card:not(.aoc-selected):not(.aoc-clickable)");
+        // For each card, make it clickable and add a click listener
         for (var i = 0; i < cardsToUntoggle.length; i++) {
             var card = cardsToUntoggle[i];
             dojo.toggleClass(card, "aoc-clickable");
             this.connections[card.id] = dojo.connect(card, "onclick", dojo.hitch(this, this.selectCard, card));
         }
-        this.unselect = false;
+        // Set shouldUnselect to false to indicate that cards should not be unselected when the number
+        // of selected cards is less than the number of cards to discard
+        this.shouldUnselect = false;
     };
+    /**
+     * Called when the number of selected cards changes.
+     *
+     * If the number of selected cards is equal to the number of cards to discard, make all unselected cards unclickable.
+     * If the number of selected cards is less than the number of cards to discard, make all unselected cards clickable.
+     */
     CheckHandSize.prototype.updateConfirmationButtonStatus = function () {
+        // Get all selected cards
         var selectedCards = dojo.query(".aoc-selected");
+        // If the number of selected cards is equal to the number of cards to discard,
+        // make all unselected cards unclickable, then enable the confirmation button
         if (selectedCards.length == this.numberToDiscard) {
             this.toggleCardStatus();
             dojo.removeClass("aoc-confirm-discard", "aoc-button-disabled");
         }
         else {
+            // If the number of selected cards is less than the number of cards to discard disable the confirmation button
             dojo.addClass("aoc-confirm-discard", "aoc-button-disabled");
-            if (this.unselect) {
+            // If shouldUnselect is true, make all unselected cards clickable
+            if (this.shouldUnselect) {
                 this.untoggleCardStatus();
             }
         }
@@ -1603,13 +1695,27 @@ var CheckHandSize = /** @class */ (function () {
  *
  * AgeOfComics complete setup state
  *
+ * State vars:
+ * - game: game object reference
+ *
  */
 var CompleteSetup = /** @class */ (function () {
     function CompleteSetup(game) {
         this.game = game;
     }
+    /**
+     * Called when entering this state.
+     * Upon entering this state, the game is ready to play.
+     *
+     * stateArgs:
+     *  - isCurrentPlayerActive: true if this player is the active player
+     *
+     * @param stateArgs contains args derived from the state machine
+     */
     CompleteSetup.prototype.onEnteringState = function (stateArgs) {
+        // Make the card market visible and adapt the viewport size
         dojo.toggleClass("aoc-card-market", "aoc-hidden", false);
+        // Adapt the viewport size
         this.game.adaptViewportSize();
     };
     CompleteSetup.prototype.onLeavingState = function () { };
@@ -1628,6 +1734,9 @@ var CompleteSetup = /** @class */ (function () {
  * GameEnd.ts
  *
  * AgeOfComics game end state
+ *
+ * State vars:
+ * - game: game object reference
  *
  */
 var GameEnd = /** @class */ (function () {
@@ -1652,6 +1761,9 @@ var GameEnd = /** @class */ (function () {
  *
  * AgeOfComics game setup state
  *
+ * State vars:
+ * - game: game object reference
+ *
  */
 var GameSetup = /** @class */ (function () {
     function GameSetup(game) {
@@ -1674,6 +1786,9 @@ var GameSetup = /** @class */ (function () {
  * NextPlayer.ts
  *
  * AgeOfComics next player state
+ *
+ * State vars:
+ * - game: game object reference
  *
  */
 var NextPlayer = /** @class */ (function () {
@@ -1698,6 +1813,9 @@ var NextPlayer = /** @class */ (function () {
  *
  * AgeOfComics next player setup state
  *
+ * State vars:
+ * - game: game object reference
+ *
  */
 var NextPlayerSetup = /** @class */ (function () {
     function NextPlayerSetup(game) {
@@ -1719,12 +1837,32 @@ var NextPlayerSetup = /** @class */ (function () {
  *
  * PerformDevelop.ts
  *
+ * AgeOfComics perform develop state
+ *
+ * State vars:
+ * - game: game object reference
+ * - connections: object containing dojo connections
+ *
  */
 var PerformDevelop = /** @class */ (function () {
     function PerformDevelop(game) {
         this.game = game;
         this.connections = {};
     }
+    /**
+     * Called when entering this state
+     *
+     * Creates possible develop actions
+     *
+     * stateArgs:
+     * - isCurrentPlayerActive: true if this player is the active player
+     *
+     * args:
+     * - availableGenres: the genres that the player can develop from the deck (aka those that have at least one card in the deck or discard)
+     * - canDevelopFromDeck: true if the player can develop from the deck
+     *
+     * @param stateArgs
+     */
     PerformDevelop.prototype.onEnteringState = function (stateArgs) {
         if (stateArgs.isCurrentPlayerActive) {
             this.createDevelopActions();
@@ -1733,24 +1871,39 @@ var PerformDevelop = /** @class */ (function () {
             }
         }
     };
+    /**
+     * Called when leaving this state
+     *
+     * Removes click listeners from cards
+     */
     PerformDevelop.prototype.onLeavingState = function () {
+        // Remove click listeners from cards
         dojo.query(".aoc-clickable").removeClass("aoc-clickable");
+        // Remove all click listeners
         for (var key in this.connections) {
             dojo.disconnect(this.connections[key]);
         }
+        // Clear connections object
         this.connections = {};
+        // Remove develop from deck buttons
         var buttonRowDiv = dojo.byId("aoc-develop-from-deck-buttons");
         if (buttonRowDiv) {
             buttonRowDiv.remove();
         }
     };
     PerformDevelop.prototype.onUpdateActionButtons = function (stateArgs) { };
+    /**
+     * Creates develop actions for the player
+     */
     PerformDevelop.prototype.createDevelopActions = function () {
+        // Make the top card of the comic deck clickable and add a click listener
         var topCardOfDeck = dojo.byId("aoc-comic-deck").lastChild;
         topCardOfDeck.classList.add("aoc-clickable");
         var topCardOfDeckId = topCardOfDeck.id.split("-")[2];
         this.connections["comic" + topCardOfDeckId] = dojo.connect(dojo.byId(topCardOfDeck.id), "onclick", dojo.hitch(this, this.developComic, topCardOfDeckId, true));
+        // Get all cards in comic market
         var cardElements = dojo.byId("aoc-comics-available").children;
+        // Make all cards in comic market clickable and add click listeners
         for (var key in cardElements) {
             var card = cardElements[key];
             if (card.id) {
@@ -1760,10 +1913,18 @@ var PerformDevelop = /** @class */ (function () {
             }
         }
     };
+    /**
+     * Creates develop from deck actions for the player
+     *
+     * @param availableGenres the genres that the player can develop from the deck (aka those that have at least one card in the deck or discard)
+     */
     PerformDevelop.prototype.createDevelopFromDeckActions = function (availableGenres) {
+        // Create div for develop from deck buttons
         var buttonRowDiv = "<div id='aoc-develop-from-deck-buttons' class='aoc-action-panel-row'><div id='aoc-seach-icon' class='aoc-search-icon'></div></div>";
         this.game.createHtml(buttonRowDiv, "page-title");
+        // Get all genres
         var genres = this.game.getGenres();
+        // For each genre, create a button
         for (var key in genres) {
             var genre = genres[key];
             var buttonDiv = "<div id='aoc-develop-from-deck-" +
@@ -1772,23 +1933,37 @@ var PerformDevelop = /** @class */ (function () {
                 genre +
                 "'></div>";
             this.game.createHtml(buttonDiv, "aoc-develop-from-deck-buttons");
+            // If the player can develop from the deck, make the button clickable and add a click listener
             if (availableGenres[genre] > 0) {
                 dojo.addClass("aoc-develop-from-deck-" + genre, "aoc-image-clickable");
                 this.connections["developFromDeck" + genre] = dojo.connect(dojo.byId("aoc-develop-from-deck-" + genre), "onclick", dojo.hitch(this, this.developComicFromDeck, genre));
             }
             else {
+                // If the player cannot develop from the deck, make the button disabled
                 dojo.addClass("aoc-develop-from-deck-" + genre, "aoc-image-disabled");
             }
         }
     };
+    /**
+     * Called when a player clicks on a comic card
+     *
+     * @param comicId the id of the comic card
+     * @param topOfDeck true if the card is the top card of the deck
+     */
     PerformDevelop.prototype.developComic = function (comicId, topOfDeck) {
-        console.log("developComic", comicId, topOfDeck);
+        // Call the develop comic action for the comic
         this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_DEVELOP_COMIC, {
             comicId: comicId,
             topOfDeck: topOfDeck,
         });
     };
+    /**
+     * Called when a player clicks on a develop from deck button
+     *
+     * @param genre the genre of the comic to develop
+     */
     PerformDevelop.prototype.developComicFromDeck = function (genre) {
+        // Call the develop from deck action for the genre
         this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_DEVELOP_FROM_GENRE, {
             genre: genre,
         });
@@ -1806,12 +1981,31 @@ var PerformDevelop = /** @class */ (function () {
  *
  * PerformHire.ts
  *
+ * AgeOfComics perform hire state
+ *
+ * State vars:
+ * - game: game object reference
+ * - connections: object containing dojo connections
+ *
  */
 var PerformHire = /** @class */ (function () {
     function PerformHire(game) {
         this.game = game;
         this.connections = {};
     }
+    /**
+     * Called when entering this state
+     * Creates possible hire actions
+     *
+     * stateArgs:
+     * - isCurrentPlayerActive: true if this player is the active player
+     *
+     * args:
+     * - canHireArtist: true if the player can hire an artist
+     * - canHireWriter: true if the player can hire a writer
+     *
+     * @param stateArgs
+     */
     PerformHire.prototype.onEnteringState = function (stateArgs) {
         if (stateArgs.isCurrentPlayerActive) {
             if (stateArgs.args.canHireArtist == 1) {
@@ -1822,6 +2016,10 @@ var PerformHire = /** @class */ (function () {
             }
         }
     };
+    /**
+     * Called when leaving this state
+     * Removes click listeners from cards
+     */
     PerformHire.prototype.onLeavingState = function () {
         dojo.query(".aoc-clickable").removeClass("aoc-clickable");
         for (var key in this.connections) {
@@ -1830,12 +2028,20 @@ var PerformHire = /** @class */ (function () {
         this.connections = {};
     };
     PerformHire.prototype.onUpdateActionButtons = function (stateArgs) { };
+    /**
+     * Creates possible hire actions
+     *
+     * @param creativeType - the type of creative to hire
+     */
     PerformHire.prototype.createHireActions = function (creativeType) {
+        // Make top card of creative deck clickable and add click listener
         var topCardOfDeck = dojo.byId("aoc-" + creativeType + "-deck").lastChild;
         topCardOfDeck.classList.add("aoc-clickable");
         var topCardOfDeckId = topCardOfDeck.id.split("-")[2];
         this.connections[creativeType + topCardOfDeckId] = dojo.connect(dojo.byId(topCardOfDeck.id), "onclick", dojo.hitch(this, this.hireCreative, topCardOfDeckId, creativeType));
+        // Get all cards of the specified creative market
         var cardElements = dojo.byId("aoc-" + creativeType + "s-available").children;
+        // Make all cards in creative market clickable and add click listeners
         for (var key in cardElements) {
             var card = cardElements[key];
             if (card.id) {
@@ -1845,7 +2051,14 @@ var PerformHire = /** @class */ (function () {
             }
         }
     };
+    /**
+     * Hires a creative
+     *
+     * @param cardId - the id of the card to hire
+     * @param creativeType - the type of creative to hire
+     */
     PerformHire.prototype.hireCreative = function (cardId, creativeType) {
+        // Call the hire creative action
         this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_HIRE_CREATIVE, {
             cardId: cardId,
             creativeType: creativeType,
@@ -1864,14 +2077,34 @@ var PerformHire = /** @class */ (function () {
  *
  * PerformIdeas.ts
  *
+ * AgeOfComics perform ideas state
+ *
+ * State vars:
+ * - game: game object reference
+ * - shouldUnselect: true if ideas should be unselected when the number of selected ideas is less than the number of ideas to gain
+ * - ideasFromBoard: number of ideas to gain from the board
+ * - connections: map of idea id to click listener
+ *
  */
 var PerformIdeas = /** @class */ (function () {
     function PerformIdeas(game) {
         this.game = game;
-        this.unselect = false;
+        this.shouldUnselect = false;
         this.ideasFromBoard = 0;
         this.connections = {};
     }
+    /**
+     * Called when entering this state.
+     * Creates possible idea actions.
+     *
+     * stateArgs:
+     * - isCurrentPlayerActive: true if this player is the active player
+     *
+     * args:
+     * - ideasFromBoard: number of ideas to gain from the board
+     *
+     * @param stateArgs
+     */
     PerformIdeas.prototype.onEnteringState = function (stateArgs) {
         if (stateArgs.isCurrentPlayerActive) {
             var ideasFromBoard = stateArgs.args.ideasFromBoard;
@@ -1880,6 +2113,11 @@ var PerformIdeas = /** @class */ (function () {
             this.createIdeaTokensOnBoardActions(ideasFromBoard);
         }
     };
+    /**
+     * Called when leaving this state.
+     * Removes click listeners from cards.
+     * Removes idea selection div.
+     */
     PerformIdeas.prototype.onLeavingState = function () {
         dojo.query(".aoc-clickable").removeClass("aoc-clickable");
         dojo.query(".aoc-selected").removeClass("aoc-selected");
@@ -1903,19 +2141,37 @@ var PerformIdeas = /** @class */ (function () {
             selectionDiv.remove();
         }
     };
+    /**
+     * Called when entering state to update buttons.
+     *
+     * stateArgs:
+     * - isCurrentPlayerActive: true if this player is the active player
+     *
+     * Add a confirmation button that starts disabled.
+     *
+     * @param stateArgs
+     */
     PerformIdeas.prototype.onUpdateActionButtons = function (stateArgs) {
         var _this = this;
         if (stateArgs.isCurrentPlayerActive) {
-            gameui.addActionButton("aoc-confirm-gain-ideas", _("Confirm"), function (event) {
-                _this.confirmGainIdeas(event);
+            gameui.addActionButton("aoc-confirm-gain-ideas", _("Confirm"), function () {
+                _this.confirmGainIdeas();
             });
             dojo.addClass("aoc-confirm-gain-ideas", "aoc-button-disabled");
             dojo.addClass("aoc-confirm-gain-ideas", "aoc-button");
         }
     };
-    PerformIdeas.prototype.confirmGainIdeas = function (event) {
+    /**
+     * Called when the player confirms their idea selection.
+     * Sends the selected ideas to the server.
+     *
+     */
+    PerformIdeas.prototype.confirmGainIdeas = function () {
+        // Get all selected ideas from supply
         var selectedIdeasFromSupply = dojo.query(".aoc-supply-idea-selection");
+        // Initialize string to store idea ids in comma separated list
         var selectedIdeasFromSupplyGenres = "";
+        // For each idea, add its id to the string
         for (var i = 0; i < selectedIdeasFromSupply.length; i++) {
             var idea = selectedIdeasFromSupply[i];
             if (i == 0) {
@@ -1926,8 +2182,11 @@ var PerformIdeas = /** @class */ (function () {
                     "," + this.game.getGenreId(idea.id.split("-")[3]);
             }
         }
+        // Get all selected ideas from board
         var selectedIdeasFromBoard = dojo.query(".aoc-selected");
+        // Initialize string to store idea ids in comma separated list
         var selectedIdeasFromBoardGenres = "";
+        // For each idea, add its id to the string
         for (var i = 0; i < selectedIdeasFromBoard.length; i++) {
             var idea = selectedIdeasFromBoard[i];
             if (i == 0) {
@@ -1938,24 +2197,39 @@ var PerformIdeas = /** @class */ (function () {
                     "," + this.game.getGenreId(idea.id.split("-")[3]);
             }
         }
+        // Send the idea ids to the server
         this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_CONFIRM_GAIN_IDEAS, {
             ideasFromBoard: selectedIdeasFromBoardGenres,
             ideasFromSupply: selectedIdeasFromSupplyGenres,
         });
     };
+    /**
+     * Creates a div to hold an idea selection.
+     *
+     * @param idNum the id number of the div
+     */
     PerformIdeas.prototype.createIdeaSelectionDiv = function (idNum) {
+        // Create div for idea selection
         var ideaSelectionDiv = '<div id="aoc-supply-idea-selection-container-' +
             idNum +
             '" class="aoc-selection-container"><i id="aoc-idea-cancel-' +
             idNum +
             '" class="fa fa-lg fa-times-circle aoc-start-idea-remove aoc-hidden"></i></div>';
+        // Add div to page
         this.game.createHtml(ideaSelectionDiv, "aoc-select-supply-ideas-containers");
+        // Add click listener to cancel button
         this.connections["aoc-idea-cancel-" + idNum] = dojo.connect(dojo.byId("aoc-idea-cancel-" + idNum), "onclick", dojo.hitch(this, "removeIdea", idNum));
     };
+    /**
+     * Creates possible idea actions from supply.
+     */
     PerformIdeas.prototype.createIdeaTokensFromSupplyActions = function () {
+        // Create div for idea token selection
         var ideaTokenSelectionDiv = "<div id='aoc-idea-token-selection' class='aoc-action-panel-row'></div>";
         this.game.createHtml(ideaTokenSelectionDiv, "page-title");
+        // Get all genres
         var genres = this.game.getGenres();
+        // For each genre, create a button
         for (var key in genres) {
             var genre = genres[key];
             var ideaTokenDiv = "<div id='aoc-select-supply-idea-token-" +
@@ -1966,14 +2240,23 @@ var PerformIdeas = /** @class */ (function () {
             this.game.createHtml(ideaTokenDiv, "aoc-idea-token-selection");
             this.connections["aoc-select-supply-idea-token-" + genre] = dojo.connect(dojo.byId("aoc-select-supply-idea-token-" + genre), "onclick", dojo.hitch(this, "selectIdeaFromSupply", genre));
         }
+        // Create divs for idea selection containers
         var selectionBoxesDiv = "<div id='aoc-select-supply-ideas-containers'></div>";
         this.game.createHtml(selectionBoxesDiv, "aoc-idea-token-selection");
         this.createIdeaSelectionDiv(1);
         this.createIdeaSelectionDiv(2);
     };
+    /**
+     * Creates possible idea actions from board.
+     *
+     * @param ideasFromBoard the number of ideas to gain from the board
+     */
     PerformIdeas.prototype.createIdeaTokensOnBoardActions = function (ideasFromBoard) {
+        // If there are ideas to gain from the board, make all idea spaces clickable and add click listeners
         if (ideasFromBoard > 0) {
+            // Get all idea spaces
             var ideaSpaces = dojo.byId("aoc-action-ideas-idea-spaces").children;
+            // For each idea space, make it clickable and add a click listener
             for (var key in ideaSpaces) {
                 var ideaSpace = ideaSpaces[key];
                 if (dojo.hasClass(ideaSpace, "aoc-action-ideas-idea-space") &&
@@ -1985,26 +2268,52 @@ var PerformIdeas = /** @class */ (function () {
             }
         }
     };
+    /**
+     * Gets the first empty idea selection div.
+     *
+     * @returns the first empty idea selection div or null if there are no empty idea selection divs
+     */
     PerformIdeas.prototype.getFirstEmptyIdeaSelectionDiv = function () {
+        // Get all idea selection divs
         var allDivs = dojo.query(".aoc-selection-container");
+        // For each idea selection div, if it has no children, return it
         for (var i = 0; i < allDivs.length; i++) {
             var div = allDivs[i];
             if (div.children.length == 1) {
                 return div;
             }
         }
+        // If there are no empty idea selection divs, return null
         return null;
     };
+    /**
+     * Removes an idea from the idea selection div.
+     *
+     * @param slotId the id of the idea selection div
+     */
     PerformIdeas.prototype.removeIdea = function (slotId) {
+        // Remove idea from selection div
         var ideaDiv = dojo.byId("aoc-selected-idea-box-" + slotId);
         ideaDiv.remove();
+        // Hide cancel button
         dojo.toggleClass("aoc-idea-cancel-" + slotId, "aoc-hidden", true);
+        // Set status of confirmation button
         this.setButtonConfirmationStatus();
     };
+    /**
+     * Called when a player clicks on an idea on the board.
+     *
+     * @param divId the id of the idea div
+     * @param ideasFromBoard the number of ideas to gain from the board
+     */
     PerformIdeas.prototype.selectIdeaFromBoard = function (divId, ideasFromBoard) {
+        // Toggle selected and clickable status
         dojo.byId(divId).classList.toggle("aoc-selected");
         dojo.byId(divId).classList.toggle("aoc-clickable");
+        // Get all selected ideas
         var selectedIdeas = dojo.query(".aoc-selected");
+        // If the number of selected ideas is equal to the number of ideas to gain from the board,
+        // make all unselected ideas unclickable and disconnect their click listeners
         if (selectedIdeas.length == ideasFromBoard) {
             var unselectedIdeas = dojo.query(".aoc-clickable");
             for (var i = 0; i < unselectedIdeas.length; i++) {
@@ -2012,25 +2321,41 @@ var PerformIdeas = /** @class */ (function () {
                 dojo.byId(unselectedIdea.id).classList.toggle("aoc-clickable");
                 dojo.disconnect(this.connections[unselectedIdea.id]);
             }
-            this.unselect = true;
+            // Set shouldUnselect to true to indicate that ideas should be unselected when the number
+            // of selected ideas is less than the number of ideas to gain from the board
+            this.shouldUnselect = true;
         }
-        if (selectedIdeas.length < ideasFromBoard && this.unselect) {
+        // If the number of selected ideas is less than the number of ideas to gain from the board
+        // and shouldUnselect is true, make all unselected ideas clickable and add click listeners
+        else if (selectedIdeas.length < ideasFromBoard && this.shouldUnselect) {
             var ideasToActivate = dojo.query(".aoc-action-ideas-idea-space > .aoc-idea-token:not(.aoc-selected):not(.aoc-clickable)");
             for (var i = 0; i < ideasToActivate.length; i++) {
                 var ideaToActivate = ideasToActivate[i];
                 dojo.byId(ideaToActivate.id).classList.toggle("aoc-clickable");
                 this.connections[ideaToActivate.id] = dojo.connect(dojo.byId(ideaToActivate.id), "onclick", dojo.hitch(this, "selectIdeaFromBoard", ideaToActivate.id, ideasFromBoard));
             }
-            this.unselect = false;
+            // Set shouldUnselect to false to indicate that ideas should not be unselected when the number
+            // of selected ideas is less than the number of ideas to gain from the board
+            this.shouldUnselect = false;
         }
+        // Set status of confirmation button
         this.setButtonConfirmationStatus();
     };
+    /**
+     * Called when a player clicks on an idea on the supply.
+     *
+     * @param genre the genre of the idea
+     */
     PerformIdeas.prototype.selectIdeaFromSupply = function (genre) {
+        // Get first empty idea selection div
         var firstEmptySelectionDiv = this.getFirstEmptyIdeaSelectionDiv();
+        // If there are no empty idea selection divs, return
         if (firstEmptySelectionDiv == null) {
             return;
         }
+        // Get id of idea selection div
         var slotId = firstEmptySelectionDiv.id.split("-")[5];
+        // Create div for selected idea
         var tokenDiv = '<div id="aoc-selected-idea-box-' +
             slotId +
             '"><div id="aoc-selected-idea-' +
@@ -2038,10 +2363,18 @@ var PerformIdeas = /** @class */ (function () {
             '" class="aoc-supply-idea-selection aoc-idea-token aoc-idea-token-' +
             genre +
             '"></div></div>';
+        // Add div to the idea selection div
         this.game.createHtml(tokenDiv, firstEmptySelectionDiv.id);
+        // Unhide cancel button
         dojo.toggleClass("aoc-idea-cancel-" + slotId, "aoc-hidden", false);
+        // Set status of confirmation button
         this.setButtonConfirmationStatus();
     };
+    /**
+     * Sets the status of the confirmation button.
+     * If all idea selection divs are full and all possible ideas from board are selected, enable the confirmation button.
+     * If either are not true, disable the confirmation button.
+     */
     PerformIdeas.prototype.setButtonConfirmationStatus = function () {
         var firstEmptySelectionDiv = this.getFirstEmptyIdeaSelectionDiv();
         var selectedIdeasFromBoard = dojo.query(".aoc-selected");
@@ -2068,6 +2401,11 @@ var PerformIdeas = /** @class */ (function () {
  *
  * PerformPrint.ts
  *
+ * Age of Comics perform print state
+ *
+ * State vars:
+ *  game: game object reference
+ *
  */
 var PerformPrint = /** @class */ (function () {
     function PerformPrint(game) {
@@ -2089,6 +2427,11 @@ var PerformPrint = /** @class */ (function () {
  *
  * PerformRoyalties.ts
  *
+ * Age of Comic perform royalties state
+ *
+ * State vars:
+ *  game: game object reference
+ *
  */
 var PerformRoyalties = /** @class */ (function () {
     function PerformRoyalties(game) {
@@ -2109,6 +2452,11 @@ var PerformRoyalties = /** @class */ (function () {
  * -----
  *
  * PerformSales.ts
+ *
+ * Age of Comics perform sales state
+ *
+ * State vars:
+ *  game: game object reference
  *
  */
 var PerformSales = /** @class */ (function () {
@@ -2133,44 +2481,101 @@ var PerformSales = /** @class */ (function () {
  *
  * AgeOfComics player setup state
  *
+ * State vars:
+ *  game: game object reference
+ *
  */
 var PlayerSetup = /** @class */ (function () {
     function PlayerSetup(game) {
         this.game = game;
     }
+    /**
+     * Called when entering this state
+     * Creates the starting items selection divs and events
+     *
+     * stateArgs:
+     *  - isCurrentPlayerActive: true if this player is the active player
+     *
+     * args:
+     * - startIdeas: number of starting ideas player can select
+     *
+     * @param stateArgs
+     */
     PlayerSetup.prototype.onEnteringState = function (stateArgs) {
+        // Hide the card market
         dojo.toggleClass("aoc-card-market", "aoc-hidden", true);
         if (stateArgs.isCurrentPlayerActive) {
+            // Show the starting items selection divs
             dojo.style("aoc-select-start-items", "display", "block");
             var startIdeas = stateArgs.args.startIdeas;
+            // Create a selection div for each starting idea the player can select
             for (var i = 1; i <= startIdeas; i++) {
                 this.createIdeaSelectionDiv(i);
             }
+            // Create the click events for the starting items
             this.createOnClickEvents(startIdeas);
         }
+        // Adapt the viewport size
         this.game.adaptViewportSize();
     };
+    /**
+     * Called when leaving this state
+     * Removes the starting items selection divs and events
+     *
+     */
     PlayerSetup.prototype.onLeavingState = function () {
+        // Hide the starting items selection divs
         dojo.style("aoc-select-start-items", "display", "none");
+        // Remove the click events for the starting items
         dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
         dojo.query(".aoc-card-unselected").removeClass("aoc-card-unselected");
+        // Empty the starting items selection divs
         dojo.empty("aoc-select-containers");
+        // Remove the click events for the starting items
+        var genres = this.game.getGenres();
+        for (var key in genres) {
+            var genre = genres[key];
+            var comicDivId = "aoc-select-starting-comic-" + genre;
+            dojo.disconnect(dojo.byId(comicDivId));
+            var ideaDivId = "aoc-select-starting-idea-" + genre;
+            dojo.disconnect(dojo.byId(ideaDivId));
+        }
+        // Adapt the viewport size
         this.game.adaptViewportSize();
     };
+    /**
+     * Called when the action buttons are updated (start of the state)
+     * Adds the confirm button
+     *
+     * stateArgs:
+     *  - isCurrentPlayerActive: true if this player is the active player
+     *
+     * @param stateArgs
+     */
     PlayerSetup.prototype.onUpdateActionButtons = function (stateArgs) {
         var _this = this;
         if (stateArgs.isCurrentPlayerActive) {
-            gameui.addActionButton("aoc-confirm-starting-items", _("Confirm"), function (event) {
-                _this.confirmStartingItems(event);
+            // Add the confirm button
+            gameui.addActionButton("aoc-confirm-starting-items", _("Confirm"), function () {
+                _this.confirmStartingItems();
             });
+            // Disable the confirm button and add custom style
             dojo.addClass("aoc-confirm-starting-items", "aoc-button-disabled");
             dojo.addClass("aoc-confirm-starting-items", "aoc-button");
         }
     };
-    PlayerSetup.prototype.confirmStartingItems = function (event) {
+    /**
+     * Called when the confirm button is clicked
+     * Sends the selected starting items to the server
+     */
+    PlayerSetup.prototype.confirmStartingItems = function () {
+        // Disable the confirm button
         dojo.addClass("aoc-confirm-starting-items", "aoc-button-disabled");
+        // Get the selected comic genre
         var selectedComic = dojo.query(".aoc-card-selected", "aoc-select-comic-genre")[0];
+        // Get the genre key
         var selectedComicGenre = this.game.getGenreId(selectedComic.id.split("-")[4]);
+        // Get the selected idea genres
         var selectedIdeas = dojo.query(".aoc-start-idea-selection");
         var selectedIdeaGenres = "";
         for (var i = 0; i < selectedIdeas.length; i++) {
@@ -2183,25 +2588,40 @@ var PlayerSetup = /** @class */ (function () {
                 selectedIdeaGenres += this.game.getGenreId(idea.id.split("-")[3]);
             }
         }
+        // Send the selected starting items to the server
         this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_SELECT_START_ITEMS, {
             comic: selectedComicGenre,
             ideas: selectedIdeaGenres,
         });
     };
+    /**
+     * Creates the click events for the starting items
+     *
+     * @param startIdeas - number of starting ideas player can select
+     */
     PlayerSetup.prototype.createOnClickEvents = function (startIdeas) {
+        // For each genre
         var genres = this.game.getGenres();
         for (var key in genres) {
             var genre = genres[key];
+            // Create a comic div and click event
             var comicDivId = "aoc-select-starting-comic-" + genre;
             dojo.connect(dojo.byId(comicDivId), "onclick", dojo.hitch(this, "selectComic", genre));
+            // Create an idea div and click event
             var ideaDivId = "aoc-select-starting-idea-" + genre;
             dojo.connect(dojo.byId(ideaDivId), "onclick", dojo.hitch(this, "selectIdea", genre));
         }
+        // Create cancel click events for each starting idea container
         for (var i = 1; i <= startIdeas; i++) {
             var ideaCancelId = "aoc-idea-cancel-" + i;
             dojo.connect(dojo.byId(ideaCancelId), "onclick", dojo.hitch(this, "removeIdea", i));
         }
     };
+    /**
+     * Creates a starting idea selection container
+     *
+     * @param idNum - the id number of the div
+     */
     PlayerSetup.prototype.createIdeaSelectionDiv = function (idNum) {
         var ideaSelectionDiv = '<div id="aoc-selection-container-' +
             idNum +
@@ -2210,6 +2630,11 @@ var PlayerSetup = /** @class */ (function () {
             '" class="fa fa-lg fa-times-circle aoc-start-idea-remove aoc-hidden"></i></div>';
         this.game.createHtml(ideaSelectionDiv, "aoc-select-containers");
     };
+    /**
+     * Gets the first empty starting idea selection div
+     *
+     * @returns the first empty starting idea selection div or null if none are empty
+     */
     PlayerSetup.prototype.getFirstEmptyIdeaSelectionDiv = function () {
         var allDivs = dojo.query(".aoc-selection-container");
         for (var i = 0; i < allDivs.length; i++) {
@@ -2220,17 +2645,31 @@ var PlayerSetup = /** @class */ (function () {
         }
         return null;
     };
+    /**
+     * Removes an idea from an idea selection container
+     *
+     * @param slotId - the id number of the container
+     */
     PlayerSetup.prototype.removeIdea = function (slotId) {
         var ideaDiv = dojo.byId("aoc-selected-idea-box-" + slotId);
         ideaDiv.remove();
         dojo.toggleClass("aoc-idea-cancel-" + slotId, "aoc-hidden", true);
+        // Set confirm button status
         this.setButtonConfirmationStatus();
     };
+    /**
+     * Selects a comic genre
+     *
+     * @param genre - the genre of the comic
+     */
     PlayerSetup.prototype.selectComic = function (genre) {
+        // Remove the selected and unselected classes from all comics
         dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
         dojo.query(".aoc-card-unselected").removeClass("aoc-card-unselected");
+        // Add the selected class to the selected comic
         var divId = "aoc-select-starting-comic-" + genre;
         dojo.addClass(divId, "aoc-card-selected");
+        // Add the unselected class to all other comics
         var allComics = dojo.byId("aoc-select-comic-genre").children;
         for (var i = 0; i < allComics.length; i++) {
             var comic = allComics[i];
@@ -2238,14 +2677,24 @@ var PlayerSetup = /** @class */ (function () {
                 dojo.toggleClass(comic.id, "aoc-card-unselected", true);
             }
         }
+        // Set confirm button status
         this.setButtonConfirmationStatus();
     };
+    /**
+     * Selects an idea genre
+     *
+     * @param genre - the genre of the idea
+     */
     PlayerSetup.prototype.selectIdea = function (genre) {
+        // Get the first empty starting idea selection div
         var firstEmptySelectionDiv = this.getFirstEmptyIdeaSelectionDiv();
+        // If there are no empty starting idea selection divs, return
         if (firstEmptySelectionDiv == null) {
             return;
         }
+        // Get the id number of the empty starting idea selection div
         var slotId = firstEmptySelectionDiv.id.split("-")[3];
+        // Create a matching idea token and add it to the empty starting idea selection div
         var tokenDiv = '<div id="aoc-selected-idea-box-' +
             slotId +
             '"><div id="aoc-selected-idea-' +
@@ -2254,16 +2703,26 @@ var PlayerSetup = /** @class */ (function () {
             genre +
             '"></div></div>';
         this.game.createHtml(tokenDiv, firstEmptySelectionDiv.id);
+        // Show the cancel button for the starting idea selection div
         dojo.toggleClass("aoc-idea-cancel-" + slotId, "aoc-hidden", false);
+        // Set confirm button status
         this.setButtonConfirmationStatus();
     };
+    /**
+     * Sets the confirmation button status
+     * Disables the button if there are no empty starting idea selection divs or no selected comic
+     */
     PlayerSetup.prototype.setButtonConfirmationStatus = function () {
+        // Get the first empty starting idea selection div
         var firstEmptySelectionDiv = this.getFirstEmptyIdeaSelectionDiv();
+        // Get the selected comic
         var selectedComic = dojo.query(".aoc-card-selected", "aoc-select-comic-genre");
+        // If there are no empty starting idea selection divs and there is a selected comic, enable the confirm button
         if (firstEmptySelectionDiv == null && selectedComic.length == 1) {
             dojo.toggleClass("aoc-confirm-starting-items", "aoc-button-disabled", false);
         }
         else {
+            // Otherwise, disable the confirm button
             dojo.toggleClass("aoc-confirm-starting-items", "aoc-button-disabled", true);
         }
     };
@@ -2282,6 +2741,10 @@ var PlayerSetup = /** @class */ (function () {
  *
  * AgeOfComics player turn state
  *
+ * State vars:
+ *  game: game object reference
+ *  connections: array of dojo connections
+ *
  */
 var PlayerTurn = /** @class */ (function () {
     function PlayerTurn(game) {
@@ -2289,10 +2752,28 @@ var PlayerTurn = /** @class */ (function () {
         this.connections = [];
     }
     PlayerTurn.prototype.onEnteringState = function (stateArgs) { };
+    /**
+     * On leaving the player turn state, remove all the action buttons and click events
+     */
     PlayerTurn.prototype.onLeavingState = function () {
         dojo.query(".aoc-clickable").removeClass("aoc-clickable");
         dojo.forEach(this.connections, dojo.disconnect);
     };
+    /**
+     * On update state, highlight the action spaces that are available to the player
+     *
+     * stateArgs:
+     *  - isCurrentPlayerActive: true if the current player is the active player
+     *
+     * args:
+     *  - hireActionSpace: the next available action space number for the hire action
+     *  - developActionSpace: the next available action space number for the develop action
+     *  - ideasActionSpace: the next available action space number for the ideas action
+     *  - printActionSpace: the next available action space number for the print action
+     *  - royaltiesActionSpace: the next available action space number for the royalties action
+     *  - salesActionSpace: the next available action space number for the sales action
+     *
+     */
     PlayerTurn.prototype.onUpdateActionButtons = function (stateArgs) {
         if (stateArgs.isCurrentPlayerActive) {
             this.highlightInteractiveActionElements("hire", "Hire", stateArgs.args.hireActionSpace);
@@ -2303,8 +2784,16 @@ var PlayerTurn = /** @class */ (function () {
             this.highlightInteractiveActionElements("sales", "Sales", stateArgs.args.salesActionSpace);
         }
     };
+    /**
+     * Highlight the action board element and add the click event
+     *
+     * @param actionType the type of action
+     * @param actionButtonText the text to display on the action button
+     * @param actionSpace the action space number
+     */
     PlayerTurn.prototype.highlightInteractiveActionElements = function (actionType, actionButtonText, actionSpace) {
         var _this = this;
+        // Get the action board element and action button div ids
         var actionButtonDivId = "aoc-take-" + actionType + "-action";
         var actionBoardElementId = "aoc-action-" + actionType;
         // Create the action button
@@ -2313,6 +2802,7 @@ var PlayerTurn = /** @class */ (function () {
             _this.selectAction(actionSpace);
         });
         dojo.addClass(actionButtonDivId, "aoc-button");
+        // If the action space is 0 the player can't perform this action, disable the action button
         if (actionSpace == 0) {
             dojo.addClass(actionButtonDivId, "aoc-button-disabled");
         }
@@ -2324,6 +2814,11 @@ var PlayerTurn = /** @class */ (function () {
             this.connections.push(dojo.connect(dojo.byId(actionBoardElementId), "onclick", dojo.hitch(this, this.selectAction, actionSpace)));
         }
     };
+    /**
+     * Select an action space, send the action to the server
+     *
+     * @param actionSpace the action space number
+     */
     PlayerTurn.prototype.selectAction = function (actionSpace) {
         this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_SELECT_ACTION_SPACE, {
             actionSpace: actionSpace,

@@ -10,9 +10,11 @@
  * NextPlayerSetup.ts
  *
  * AgeOfComics next player setup state
+ * 
+ * State vars:
+ * - game: game object reference
  *
  */
-
 class NextPlayerSetup implements State {
   game: any;
   constructor(game: any) {

@@ -9,14 +9,19 @@
  *
  * PerformPrint.ts
  *
+ * Age of Comics perform print state
+ *
+ * State vars:
+ *  game: game object reference
+ *
  */
 class PerformPrint implements State {
-    game: any;
-    constructor(game: any) {
-        this.game = game;
-    }
+  game: any;
+  constructor(game: any) {
+    this.game = game;
+  }
 
-    onEnteringState(stateArgs: any): void {}
-    onLeavingState(): void {}
-    onUpdateActionButtons(stateArgs: any): void {}
+  onEnteringState(stateArgs: any): void {}
+  onLeavingState(): void {}
+  onUpdateActionButtons(stateArgs: any): void {}
 }

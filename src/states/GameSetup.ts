@@ -11,8 +11,10 @@
  *
  * AgeOfComics game setup state
  *
+ * State vars:
+ * - game: game object reference
+ *
  */
-
 class GameSetup implements State {
   game: any;
   constructor(game: any) {

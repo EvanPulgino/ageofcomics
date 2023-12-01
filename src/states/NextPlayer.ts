@@ -10,9 +10,11 @@
  * NextPlayer.ts
  *
  * AgeOfComics next player state
+ * 
+ * State vars:
+ * - game: game object reference
  *
  */
-
 class NextPlayer implements State {
   game: any;
   constructor(game: any) {

@@ -9,8 +9,13 @@
  *
  * PerformHire.ts
  *
+ * AgeOfComics perform hire state
+ *
+ * State vars:
+ * - game: game object reference
+ * - connections: object containing dojo connections
+ *
  */
-
 class PerformHire implements State {
   game: any;
   connections: any;
@@ -19,6 +24,19 @@ class PerformHire implements State {
     this.connections = {};
   }
 
+  /**
+   * Called when entering this state
+   * Creates possible hire actions
+   *
+   * stateArgs:
+   * - isCurrentPlayerActive: true if this player is the active player
+   *
+   * args:
+   * - canHireArtist: true if the player can hire an artist
+   * - canHireWriter: true if the player can hire a writer
+   *
+   * @param stateArgs
+   */
   onEnteringState(stateArgs: any): void {
     if (stateArgs.isCurrentPlayerActive) {
       if (stateArgs.args.canHireArtist == 1) {
@@ -30,6 +48,10 @@ class PerformHire implements State {
     }
   }
 
+  /**
+   * Called when leaving this state
+   * Removes click listeners from cards
+   */
   onLeavingState(): void {
     dojo.query(".aoc-clickable").removeClass("aoc-clickable");
 
@@ -42,7 +64,13 @@ class PerformHire implements State {
 
   onUpdateActionButtons(stateArgs: any): void {}
 
+  /**
+   * Creates possible hire actions
+   *
+   * @param creativeType - the type of creative to hire
+   */
   createHireActions(creativeType: string): void {
+    // Make top card of creative deck clickable and add click listener
     var topCardOfDeck = dojo.byId("aoc-" + creativeType + "-deck").lastChild;
     topCardOfDeck.classList.add("aoc-clickable");
     var topCardOfDeckId = topCardOfDeck.id.split("-")[2];
@@ -52,10 +80,12 @@ class PerformHire implements State {
       dojo.hitch(this, this.hireCreative, topCardOfDeckId, creativeType)
     );
 
+    // Get all cards of the specified creative market
     var cardElements = dojo.byId(
       "aoc-" + creativeType + "s-available"
     ).children;
 
+    // Make all cards in creative market clickable and add click listeners
     for (var key in cardElements) {
       var card = cardElements[key];
       if (card.id) {
@@ -70,7 +100,14 @@ class PerformHire implements State {
     }
   }
 
+  /**
+   * Hires a creative
+   *
+   * @param cardId - the id of the card to hire
+   * @param creativeType - the type of creative to hire
+   */
   hireCreative(cardId: number, creativeType: string): void {
+    // Call the hire creative action
     this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_HIRE_CREATIVE, {
       cardId: cardId,
       creativeType: creativeType,
