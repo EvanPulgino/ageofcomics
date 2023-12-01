@@ -66,17 +66,6 @@ class PlayerSetup implements State {
     dojo.query(".aoc-card-unselected").removeClass("aoc-card-unselected");
     // Empty the starting items selection divs
     dojo.empty("aoc-select-containers");
-    // Remove the click events for the starting items
-    var genres = this.game.getGenres();
-    for (var key in genres) {
-      var genre = genres[key];
-
-      var comicDivId = "aoc-select-starting-comic-" + genre;
-      dojo.disconnect(dojo.byId(comicDivId));
-
-      var ideaDivId = "aoc-select-starting-idea-" + genre;
-      dojo.disconnect(dojo.byId(ideaDivId));
-    }
     // Adapt the viewport size
     this.game.adaptViewportSize();
   }
