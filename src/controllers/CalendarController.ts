@@ -9,7 +9,7 @@
  *
  * CalendarController.ts
  *
- * Handles are front end interactions with the calendar
+ * Handles all front end interactions with the calendar
  *
  */
 

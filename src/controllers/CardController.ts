@@ -9,6 +9,8 @@
  *
  * CardController.ts
  *
+ * Handles all front end interactions with the cards
+ *
  */
 
 class CardController {
@@ -18,24 +20,40 @@ class CardController {
     this.ui = ui;
   }
 
+  /**
+   * Setup all cards
+   *
+   * @param cards - the cards to setup
+   */
   setupCards(cards: any[]): void {
+    // Sort cards by locationArg
     cards.sort((a, b) => {
       return a.locationArg - b.locationArg;
     });
+    // Create each card
     for (var i in cards) {
       var card = cards[i];
       this.createNewCard(card);
     }
   }
 
+  /**
+   * Create a new card
+   *
+   * @param card - the card to create
+   * @param location - the location to create the card in
+   */
   createNewCard(card: any, location?: string): void {
+    // Create the card div
     const cardDiv = this.createCardDiv(card);
 
+    // If a location is provided, create the card in that location
     if (location) {
       this.ui.createHtml(cardDiv, location);
       return;
     }
 
+    // Otherwise, create the card in the appropriate location based on the card's location attribute
     switch (card.location) {
       case globalThis.LOCATION_DECK:
         this.ui.createHtml(cardDiv, "aoc-" + card.type + "-deck");
@@ -52,6 +70,12 @@ class CardController {
     }
   }
 
+  /**
+   * Create a new element
+   *
+   * @param card - the card to create
+   * @returns the card div
+   */
   createCardDiv(card: any): string {
     const id = "aoc-card-" + card.id;
     const css = this.getCardDivCss(card);
@@ -60,6 +84,12 @@ class CardController {
     return `<div id="${id}" class="${css}" order="${order}"></div>`;
   }
 
+  /**
+   * Get the css class for a card based on its type
+   *
+   * @param card - the card to get the css class for
+   * @returns the css class
+   */
   getCardDivCss(card: any): string {
     return (
       "aoc-card " +
@@ -71,6 +101,12 @@ class CardController {
     );
   }
 
+  /**
+   * Get the css class for a card based on its type
+   *
+   * @param cardType - the card type to get the css class for
+   * @returns the css class
+   */
   getCardTypeCss(cardType: string): string {
     switch (cardType) {
       case "artist":
@@ -84,44 +120,94 @@ class CardController {
     }
   }
 
+  /**
+   * Moves card from a player's hand to the appropriate discard pile.
+   *
+   * @param card - the card to discard
+   * @param playerId - the player who is discarding the card
+   */
   discardCard(card: any, playerId: any): void {
+    // Get the card div
     var cardDiv = dojo.byId("aoc-card-" + card.id);
+
+    // Move card out of overlay to allow animation
     dojo.place(cardDiv, "aoc-player-area-right-" + playerId);
+
+    // If the card is face down, flip it face up
     if (cardDiv.classList.contains(card.facedownClass)) {
       cardDiv.classList.remove(card.facedownClass);
       cardDiv.classList.add(card.baseClass);
     }
+
+    // Get the discard pile for the card's type
     var discardDiv = dojo.byId("aoc-" + card.type + "s-discard");
-    gameui.slideToObjectAndDestroy(cardDiv, discardDiv, 500);
+
+    // Create the animation
     var animation = gameui.slideToObject(cardDiv, discardDiv, 500);
     dojo.connect(animation, "onEnd", () => {
+      // After animation ends, remove styling added by animation and place in new parent div
       dojo.removeAttr(cardDiv, "style");
       dojo.place(cardDiv, discardDiv);
     });
+
+    // Play the animation
     animation.play();
   }
 
+  /**
+   * Moves card from the top of a deck to the appropriate discard pile.
+   *
+   * @param card - the card to discard
+   */
   discardCardFromDeck(card: any): void {
+    // Get the card div
     var cardDiv = dojo.byId("aoc-card-" + card.id);
+
+    // Flip the card face-up
     cardDiv.classList.remove(card.facedownClass);
     cardDiv.classList.add(card.baseClass);
+
+    // Get the discard pile for the card's type
     var discardDiv = dojo.byId("aoc-" + card.type + "s-discard");
+
+    // Create the animation
     var animation = gameui.slideToObject(cardDiv, discardDiv, 500);
     dojo.connect(animation, "onEnd", () => {
+      // After animation ends, remove styling added by animation and place in new parent div
       dojo.removeAttr(cardDiv, "style");
       dojo.place(cardDiv, discardDiv);
     });
+
+    // Play the animation
     animation.play();
   }
 
+  /**
+   * A player gains their starting comic card
+   *
+   * @param card - the card to gain
+   */
   gainStartingComic(card: any): void {
+    // Get the location of the card selection area
     var location = "aoc-select-starting-comic-" + card.genre;
+
+    // Create the card
     this.createNewCard(card, location);
+
+    // Slide the card to the player's hand
     this.slideCardToPlayerHand(card);
   }
 
+  /**
+   * Moves a card element to a player's hand
+   *
+   * @param card - the card to move
+   */
   slideCardToPlayerHand(card: any): void {
+    // Get the card div
     var cardDiv = dojo.byId("aoc-card-" + card.id);
+
+    // Set the card face up or face down depeding on the card's css class
     var facedownCss = card.facedownClass;
     var baseCss = card.baseClass;
     if (
@@ -139,10 +225,16 @@ class CardController {
       cardDiv.classList.add(facedownCss);
     }
 
+    // Add an order attribute to the card div
     dojo.setAttr(cardDiv, "order", card.locationArg);
 
+    // Get the hand div
     var handDiv = dojo.byId("aoc-hand-" + card.playerId);
+
+    // Get the card divs in the hand
     var cardsInHand = dojo.query(".aoc-card", handDiv);
+
+    // Get the card div to the right of the new card's location
     var cardToRightOfNewCard = null;
     cardsInHand.forEach((cardInHand: any) => {
       if (
@@ -153,8 +245,10 @@ class CardController {
       }
     });
 
+    // Create the animation
     var animation = gameui.slideToObject(cardDiv, handDiv, 500);
     dojo.connect(animation, "onEnd", () => {
+      // After animation ends, remove styling added by animation and place in new parent div
       dojo.removeAttr(cardDiv, "style");
       if (cardToRightOfNewCard == null) {
         dojo.place(cardDiv, handDiv);
@@ -163,6 +257,7 @@ class CardController {
       }
     });
 
+    // Play the animation
     animation.play();
   }
 }
