@@ -522,7 +522,6 @@ var GameBody = /** @class */ (function (_super) {
      * @param notif
      */
     GameBody.prototype.notif_gainStartingComic = function (notif) {
-        console.log("notif_gainStartingComic", notif);
         this.cardController.gainStartingComic(notif.args.comic_card);
     };
     /**
