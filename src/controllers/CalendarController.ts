@@ -9,6 +9,8 @@
  *
  * CalendarController.ts
  *
+ * Handles are front end interactions with the calendar
+ *
  */
 
 class CalendarController {
@@ -18,12 +20,22 @@ class CalendarController {
     this.ui = ui;
   }
 
+  /**
+   * Set up the calendar by creating the tiles
+   *
+   * @param calendarTiles - the tiles to create
+   */
   setupCalendar(calendarTiles: any): void {
     for (var key in calendarTiles) {
       this.createCalendarTile(calendarTiles[key]);
     }
   }
 
+  /**
+   * Create a calendar tile
+   *
+   * @param calendarTile - the tile to create
+   */
   createCalendarTile(calendarTile: any): void {
     var calendarTileDiv =
       '<div id="aoc-calender-tile-' +
@@ -37,12 +49,22 @@ class CalendarController {
     );
   }
 
+  /**
+   * Flip a calendar tile face-up
+   *
+   * @param calendarTile - the tile to flip
+   */
   flipCalendarTile(calendarTile: any): void {
     var calendarTileDiv = dojo.byId("aoc-calender-tile-" + calendarTile.id);
     dojo.removeClass(calendarTileDiv, "aoc-calendar-tile-facedown");
     dojo.addClass(calendarTileDiv, calendarTile.cssClass);
   }
 
+  /**
+   * Flip multiple calendar tiles face-up
+   *
+   * @param calendarTiles - the tiles to flip
+   */
   flipCalendarTiles(calendarTiles: any): void {
     for (var key in calendarTiles) {
       this.flipCalendarTile(calendarTiles[key]);

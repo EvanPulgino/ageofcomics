@@ -686,16 +686,28 @@ define([
  *
  * CalendarController.ts
  *
+ * Handles are front end interactions with the calendar
+ *
  */
 var CalendarController = /** @class */ (function () {
     function CalendarController(ui) {
         this.ui = ui;
     }
+    /**
+     * Set up the calendar by creating the tiles
+     *
+     * @param calendarTiles - the tiles to create
+     */
     CalendarController.prototype.setupCalendar = function (calendarTiles) {
         for (var key in calendarTiles) {
             this.createCalendarTile(calendarTiles[key]);
         }
     };
+    /**
+     * Create a calendar tile
+     *
+     * @param calendarTile - the tile to create
+     */
     CalendarController.prototype.createCalendarTile = function (calendarTile) {
         var calendarTileDiv = '<div id="aoc-calender-tile-' +
             calendarTile.id +
@@ -704,11 +716,21 @@ var CalendarController = /** @class */ (function () {
             '"></div>';
         this.ui.createHtml(calendarTileDiv, "aoc-calendar-slot-" + calendarTile.position);
     };
+    /**
+     * Flip a calendar tile face-up
+     *
+     * @param calendarTile - the tile to flip
+     */
     CalendarController.prototype.flipCalendarTile = function (calendarTile) {
         var calendarTileDiv = dojo.byId("aoc-calender-tile-" + calendarTile.id);
         dojo.removeClass(calendarTileDiv, "aoc-calendar-tile-facedown");
         dojo.addClass(calendarTileDiv, calendarTile.cssClass);
     };
+    /**
+     * Flip multiple calendar tiles face-up
+     *
+     * @param calendarTiles - the tiles to flip
+     */
     CalendarController.prototype.flipCalendarTiles = function (calendarTiles) {
         for (var key in calendarTiles) {
             this.flipCalendarTile(calendarTiles[key]);
