@@ -9,6 +9,8 @@
  *
  * EditorController.ts
  *
+ * Handles all front end interactions with the editors
+ *
  */
 
 class EditorController {
@@ -18,19 +20,32 @@ class EditorController {
     this.ui = ui;
   }
 
+  /**
+   * Setup all editors
+   *
+   * @param editors - the editors to setup
+   */
   setupEditors(editors: any): void {
     for (var key in editors) {
       this.createEditor(editors[key]);
     }
   }
 
+  /**
+   * Create a new editor
+   *
+   * @param editor - the editor to create
+   */
   createEditor(editor: any): void {
+    // Create the editor div
     var editorDiv =
       '<div id="aoc-editor-' +
       editor.id +
       '" class="aoc-editor ' +
       editor.cssClass +
       '"></div>';
+
+    // Place the editor in the appropriate location
     if (editor.locationId == globalThis.LOCATION_EXTRA_EDITOR) {
       var color = this.ui.getPlayerColorAsString(editor.color);
       this.ui.createHtml(editorDiv, "aoc-extra-editor-space-" + color);
@@ -45,13 +60,27 @@ class EditorController {
     }
   }
 
+  /**
+   * Move an editor to an action space
+   *
+   * @param editor - the editor to move
+   * @param actionSpace - the action space to move the editor to
+   */
   moveEditorToActionSpace(editor: any, actionSpace: any): void {
+    // Get the editor div
     const editorDiv = dojo.byId("aoc-editor-" + editor.id);
+    // Get the action space div
     const actionSpaceDiv = dojo.query("[space$=" + actionSpace + "]")[0];
+
+    // Create the animation to move the editor to the action space
     var animation = gameui.slideToObject(editorDiv, actionSpaceDiv);
+
     dojo.connect(animation, "onEnd", () => {
+      // After animation, attach editor to new parent div
       gameui.attachToNewParent(editorDiv, actionSpaceDiv);
     });
+
+    // Play the animation
     animation.play();
   }
 }
