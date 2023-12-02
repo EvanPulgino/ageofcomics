@@ -9,28 +9,40 @@
  *
  * MasteryController.ts
  *
+ * Handles mastery token logic on front-end
+ *
  */
 
 class MasteryController {
-    ui: any;
+  ui: any;
 
-    constructor(ui: any) {
-        this.ui = ui;
-    }
+  constructor(ui: any) {
+    this.ui = ui;
+  }
 
-    setupMasteryTokens(masteryTokens: any) : void {
-        for (var key in masteryTokens) {
-            this.createMasteryToken(masteryTokens[key]);
-        }
+  /**
+   * Set up mastery tokens
+   * @param {object} masteryTokens - current mastery token data used to initialize UI
+   */
+  setupMasteryTokens(masteryTokens: any): void {
+    for (var key in masteryTokens) {
+      this.createMasteryToken(masteryTokens[key]);
     }
+  }
 
-    createMasteryToken(masteryToken: any) : void {
-        var masteryTokenDiv = '<div id="aoc-mastery-token-'+masteryToken.id+'" class="aoc-mastery-token aoc-mastery-token-'+masteryToken.genre+'"></div>';
-        if(masteryToken.playerId == 0) {
-            this.ui.createHtml(
-              masteryTokenDiv,
-              "aoc-game-status-mastery-container"
-            );
-        }
+  /**
+   * Creates a mastery token
+   * @param {object} masteryToken - mastery token data
+   */
+  createMasteryToken(masteryToken: any): void {
+    var masteryTokenDiv =
+      '<div id="aoc-mastery-token-' +
+      masteryToken.id +
+      '" class="aoc-mastery-token aoc-mastery-token-' +
+      masteryToken.genre +
+      '"></div>';
+    if (masteryToken.playerId == 0) {
+      this.ui.createHtml(masteryTokenDiv, "aoc-game-status-mastery-container");
     }
+  }
 }

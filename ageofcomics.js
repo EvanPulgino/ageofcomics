@@ -1291,18 +1291,32 @@ var IdeaController = /** @class */ (function () {
  *
  * MasteryController.ts
  *
+ * Handles mastery token logic on front-end
+ *
  */
 var MasteryController = /** @class */ (function () {
     function MasteryController(ui) {
         this.ui = ui;
     }
+    /**
+     * Set up mastery tokens
+     * @param {object} masteryTokens - current mastery token data used to initialize UI
+     */
     MasteryController.prototype.setupMasteryTokens = function (masteryTokens) {
         for (var key in masteryTokens) {
             this.createMasteryToken(masteryTokens[key]);
         }
     };
+    /**
+     * Creates a mastery token
+     * @param {object} masteryToken - mastery token data
+     */
     MasteryController.prototype.createMasteryToken = function (masteryToken) {
-        var masteryTokenDiv = '<div id="aoc-mastery-token-' + masteryToken.id + '" class="aoc-mastery-token aoc-mastery-token-' + masteryToken.genre + '"></div>';
+        var masteryTokenDiv = '<div id="aoc-mastery-token-' +
+            masteryToken.id +
+            '" class="aoc-mastery-token aoc-mastery-token-' +
+            masteryToken.genre +
+            '"></div>';
         if (masteryToken.playerId == 0) {
             this.ui.createHtml(masteryTokenDiv, "aoc-game-status-mastery-container");
         }
