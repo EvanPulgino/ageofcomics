@@ -322,6 +322,7 @@ var GameBody = /** @class */ (function (_super) {
         _this.calendarController = new CalendarController(_this);
         _this.cardController = new CardController(_this);
         _this.editorController = new EditorController(_this);
+        _this.ideaController = new IdeaController(_this);
         _this.masteryController = new MasteryController(_this);
         _this.miniComicController = new MiniComicController(_this);
         _this.ripoffController = new RipoffController(_this);
@@ -342,6 +343,7 @@ var GameBody = /** @class */ (function (_super) {
         this.calendarController.setupCalendar(gamedata.calendarTiles);
         this.cardController.setupCards(gamedata.cards);
         this.editorController.setupEditors(gamedata.editors);
+        this.ideaController.setupIdeas(gamedata.ideasSpaceContents);
         this.masteryController.setupMasteryTokens(gamedata.mastery);
         this.miniComicController.setupMiniComics(gamedata.miniComics);
         this.ripoffController.setupRipoffCards(gamedata.ripoffCards);
@@ -1049,17 +1051,25 @@ var EditorController = /** @class */ (function () {
  *
  * GameController.ts
  *
+ * Handles general game logic on front-end
+ *
  */
 var GameController = /** @class */ (function () {
     function GameController(ui) {
         this.ui = ui;
     }
+    /**
+     * Set up game
+     * @param {object} gamedata - current game data used to initialize UI
+     */
     GameController.prototype.setup = function (gamedata) {
         this.createNeededGameElements(gamedata);
-        this.createIdeaTokensOnBoard(gamedata.ideasSpaceContents);
     };
     /**
-     * Create game status panel
+     * Create:
+     *  - game status panel
+     *  - show chart container
+     *  - chart
      * @param {object} gamedata - current game data used to initialize UI
      */
     GameController.prototype.createNeededGameElements = function (gamedata) {
@@ -1068,14 +1078,24 @@ var GameController = /** @class */ (function () {
         this.createChartHtml(gamedata.playerInfo);
         this.createOnClickEvents();
     };
+    /**
+     * Creates the game status panel above the player board panels
+     */
     GameController.prototype.createGameStatusPanelHtml = function () {
         var gameStatusPanelHtml = '<div id="aoc-game-status-panel" class="player-board"><div id="aoc-game-status" class="player_board_content"><div id="aoc-game-status-mastery-container" class="aoc-game-status-row"></div><div id="aoc-button-row" class="aoc-game-status-row"><a id="aoc-show-chart-button" class="aoc-status-button" href="#"><i class="aoc-icon-size fa6 fa6-solid fa6-chart-simple"></i></a><a id="aoc-carousel-button" class="aoc-status-button" href="#"><i class="aoc-icon-size fa6 fa6-solid fa6-arrows-left-right-to-line"></i></a><a id="aoc-list-button" class="aoc-status-button" href="#"><i class="aoc-icon-size fa6 fa6-solid fa6-list"></i></a></div></div></div>';
         this.ui.createHtml(gameStatusPanelHtml, "player_boards");
     };
+    /**
+     * Creates the container for the chart
+     */
     GameController.prototype.createShowChartContainerHtml = function () {
         var showChartContainerHtml = '<div id="aoc-show-chart-container"><div id="aoc-show-chart-underlay"></div><div id="aoc-show-chart-wrapper"></div></div>';
         this.ui.createHtml(showChartContainerHtml, "overall-content");
     };
+    /**
+     * Creates the comics chart - only show tracks for players in the game
+     * @param {object} players - player info
+     */
     GameController.prototype.createChartHtml = function (players) {
         var chartWidth = 87 + players.length * 71;
         var chartHtml = '<div id="aoc-show-chart" style="width: ' +
@@ -1094,6 +1114,16 @@ var GameController = /** @class */ (function () {
             '<div id="aoc-chart-end" class="aoc-board-image aoc-chart-end"></div></div></div>';
         this.ui.createHtml(chartHtml, "aoc-show-chart-wrapper");
     };
+    /**
+     * Creates the on click events for the game
+     *
+     * - show chart
+     * - hide chart
+     * - carousel view
+     * - list view
+     * - next player
+     * - previous player
+     */
     GameController.prototype.createOnClickEvents = function () {
         dojo.connect($("aoc-show-chart-button"), "onclick", this, "showChart");
         dojo.connect($("aoc-show-chart-close"), "onclick", this, "hideChart");
@@ -1102,29 +1132,21 @@ var GameController = /** @class */ (function () {
         dojo.query(".fa6-circle-right").connect("onclick", this, "nextPlayer");
         dojo.query(".fa6-circle-left").connect("onclick", this, "previousPlayer");
     };
-    GameController.prototype.createIdeaTokensOnBoard = function (ideasSpaceContents) {
-        for (var key in ideasSpaceContents) {
-            var genreSpace = ideasSpaceContents[key];
-            this.createIdeaTokenOnBoard(key, genreSpace);
-        }
-    };
-    GameController.prototype.createIdeaTokenOnBoard = function (genreId, exists) {
-        if (exists == 1) {
-            var genre = this.ui.getGenreName(genreId);
-            var ideaTokenDiv = '<div id="aoc-idea-token-' +
-                genre +
-                '" class="aoc-idea-token aoc-idea-token-' +
-                genre +
-                '"></div>';
-            this.ui.createHtml(ideaTokenDiv, "aoc-action-ideas-" + genre);
-        }
-    };
+    /**
+     * Show chart
+     */
     GameController.prototype.showChart = function () {
         dojo.style("aoc-show-chart-container", "display", "block");
     };
+    /**
+     * Hide chart
+     */
     GameController.prototype.hideChart = function () {
         dojo.style("aoc-show-chart-container", "display", "none");
     };
+    /**
+     * Switch to carousel view
+     */
     GameController.prototype.carouselView = function () {
         var playersSection = dojo.query("#aoc-players-section")[0];
         for (var i = 1; i < playersSection.children.length; i++) {
@@ -1141,6 +1163,9 @@ var GameController = /** @class */ (function () {
         });
         this.ui.adaptViewportSize();
     };
+    /**
+     * Switch to list view
+     */
     GameController.prototype.listView = function () {
         var playersSection = dojo.query("#aoc-players-section")[0];
         for (var i = 0; i < playersSection.children.length; i++) {
@@ -1157,6 +1182,9 @@ var GameController = /** @class */ (function () {
         });
         this.ui.adaptViewportSize();
     };
+    /**
+     * While in carousel view, switch to next player
+     */
     GameController.prototype.nextPlayer = function () {
         var visiblePlayerSection = dojo.query(".aoc-player-background-panel:not(.aoc-hidden)")[0];
         var visiblePlayerId = visiblePlayerSection.id;
@@ -1175,6 +1203,9 @@ var GameController = /** @class */ (function () {
         dojo.toggleClass(visiblePlayerSection, "aoc-hidden");
         dojo.toggleClass(nextPlayerSection, "aoc-hidden");
     };
+    /**
+     * While in carousel view, switch to previous player
+     */
     GameController.prototype.previousPlayer = function () {
         var visiblePlayerSection = dojo.query(".aoc-player-background-panel:not(.aoc-hidden)")[0];
         var visiblePlayerId = visiblePlayerSection.id;
@@ -1194,6 +1225,60 @@ var GameController = /** @class */ (function () {
         dojo.toggleClass(previousPlayerSection, "aoc-hidden");
     };
     return GameController;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * IdeaController.ts
+ *
+ * Handles idea token logic on front-end
+ *
+ */
+var IdeaController = /** @class */ (function () {
+    function IdeaController(ui) {
+        this.ui = ui;
+    }
+    /**
+     * Set up idea tokens
+     * @param {object} ideaSpaceContents - current idea token data used to initialize UI
+     */
+    IdeaController.prototype.setupIdeas = function (ideaSpaceContents) {
+        this.createIdeaTokensOnBoard(ideaSpaceContents);
+    };
+    /**
+     * Creates the idea tokens on the board
+     * @param {object} ideasSpaceContents - ideas space contents
+     */
+    IdeaController.prototype.createIdeaTokensOnBoard = function (ideasSpaceContents) {
+        for (var key in ideasSpaceContents) {
+            var genreSpace = ideasSpaceContents[key];
+            this.createIdeaTokenOnBoard(key, genreSpace);
+        }
+    };
+    /**
+     * Creates an idea token on the board
+     *
+     * @param genreId - the genre id of the idea token
+     * @param exists - whether or not the idea token exists on the board
+     */
+    IdeaController.prototype.createIdeaTokenOnBoard = function (genreId, exists) {
+        if (exists == 1) {
+            var genre = this.ui.getGenreName(genreId);
+            var ideaTokenDiv = '<div id="aoc-idea-token-' +
+                genre +
+                '" class="aoc-idea-token aoc-idea-token-' +
+                genre +
+                '"></div>';
+            this.ui.createHtml(ideaTokenDiv, "aoc-action-ideas-" + genre);
+        }
+    };
+    return IdeaController;
 }());
 /**
  *------

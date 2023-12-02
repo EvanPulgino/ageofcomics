@@ -21,6 +21,7 @@ class GameBody extends GameBasics {
   calendarController: CalendarController;
   cardController: CardController;
   editorController: EditorController;
+  ideaController: IdeaController;
   masteryController: MasteryController;
   miniComicController: MiniComicController;
   ripoffController: RipoffController;
@@ -33,6 +34,7 @@ class GameBody extends GameBasics {
     this.calendarController = new CalendarController(this);
     this.cardController = new CardController(this);
     this.editorController = new EditorController(this);
+    this.ideaController = new IdeaController(this);
     this.masteryController = new MasteryController(this);
     this.miniComicController = new MiniComicController(this);
     this.ripoffController = new RipoffController(this);
@@ -59,6 +61,7 @@ class GameBody extends GameBasics {
     this.calendarController.setupCalendar(gamedata.calendarTiles);
     this.cardController.setupCards(gamedata.cards);
     this.editorController.setupEditors(gamedata.editors);
+    this.ideaController.setupIdeas(gamedata.ideasSpaceContents);
     this.masteryController.setupMasteryTokens(gamedata.mastery);
     this.miniComicController.setupMiniComics(gamedata.miniComics);
     this.ripoffController.setupRipoffCards(gamedata.ripoffCards);

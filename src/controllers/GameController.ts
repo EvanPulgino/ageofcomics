@@ -9,6 +9,8 @@
  *
  * GameController.ts
  *
+ * Handles general game logic on front-end
+ *
  */
 
 class GameController {
@@ -18,13 +20,19 @@ class GameController {
     this.ui = ui;
   }
 
+  /**
+   * Set up game
+   * @param {object} gamedata - current game data used to initialize UI
+   */
   setup(gamedata: any) {
     this.createNeededGameElements(gamedata);
-    this.createIdeaTokensOnBoard(gamedata.ideasSpaceContents);
   }
 
   /**
-   * Create game status panel
+   * Create:
+   *  - game status panel
+   *  - show chart container
+   *  - chart
    * @param {object} gamedata - current game data used to initialize UI
    */
   createNeededGameElements(gamedata: any): void {
@@ -34,18 +42,28 @@ class GameController {
     this.createOnClickEvents();
   }
 
+  /**
+   * Creates the game status panel above the player board panels
+   */
   createGameStatusPanelHtml(): void {
     var gameStatusPanelHtml =
       '<div id="aoc-game-status-panel" class="player-board"><div id="aoc-game-status" class="player_board_content"><div id="aoc-game-status-mastery-container" class="aoc-game-status-row"></div><div id="aoc-button-row" class="aoc-game-status-row"><a id="aoc-show-chart-button" class="aoc-status-button" href="#"><i class="aoc-icon-size fa6 fa6-solid fa6-chart-simple"></i></a><a id="aoc-carousel-button" class="aoc-status-button" href="#"><i class="aoc-icon-size fa6 fa6-solid fa6-arrows-left-right-to-line"></i></a><a id="aoc-list-button" class="aoc-status-button" href="#"><i class="aoc-icon-size fa6 fa6-solid fa6-list"></i></a></div></div></div>';
     this.ui.createHtml(gameStatusPanelHtml, "player_boards");
   }
 
+  /**
+   * Creates the container for the chart
+   */
   createShowChartContainerHtml(): void {
     var showChartContainerHtml =
       '<div id="aoc-show-chart-container"><div id="aoc-show-chart-underlay"></div><div id="aoc-show-chart-wrapper"></div></div>';
     this.ui.createHtml(showChartContainerHtml, "overall-content");
   }
 
+  /**
+   * Creates the comics chart - only show tracks for players in the game
+   * @param {object} players - player info
+   */
   createChartHtml(players: any): void {
     var chartWidth = 87 + players.length * 71;
     var chartHtml =
@@ -66,6 +84,16 @@ class GameController {
     this.ui.createHtml(chartHtml, "aoc-show-chart-wrapper");
   }
 
+  /**
+   * Creates the on click events for the game
+   *
+   * - show chart
+   * - hide chart
+   * - carousel view
+   * - list view
+   * - next player
+   * - previous player
+   */
   createOnClickEvents(): void {
     dojo.connect($("aoc-show-chart-button"), "onclick", this, "showChart");
     dojo.connect($("aoc-show-chart-close"), "onclick", this, "hideChart");
@@ -75,34 +103,23 @@ class GameController {
     dojo.query(".fa6-circle-left").connect("onclick", this, "previousPlayer");
   }
 
-  createIdeaTokensOnBoard(ideasSpaceContents: any) {
-    for (var key in ideasSpaceContents) {
-      var genreSpace = ideasSpaceContents[key];
-      this.createIdeaTokenOnBoard(key, genreSpace);
-    }
-  }
-
-  createIdeaTokenOnBoard(genreId: any, exists: number) {
-    if (exists == 1) {
-      var genre = this.ui.getGenreName(genreId);
-      var ideaTokenDiv =
-        '<div id="aoc-idea-token-' +
-        genre +
-        '" class="aoc-idea-token aoc-idea-token-' +
-        genre +
-        '"></div>';
-      this.ui.createHtml(ideaTokenDiv, "aoc-action-ideas-" + genre);
-    }
-  }
-
+  /**
+   * Show chart
+   */
   showChart(): void {
     dojo.style("aoc-show-chart-container", "display", "block");
   }
 
+  /**
+   * Hide chart
+   */
   hideChart(): void {
     dojo.style("aoc-show-chart-container", "display", "none");
   }
 
+  /**
+   * Switch to carousel view
+   */
   carouselView(): void {
     var playersSection = dojo.query("#aoc-players-section")[0];
     for (var i = 1; i < playersSection.children.length; i++) {
@@ -120,6 +137,9 @@ class GameController {
     this.ui.adaptViewportSize();
   }
 
+  /**
+   * Switch to list view
+   */
   listView(): void {
     var playersSection = dojo.query("#aoc-players-section")[0];
     for (var i = 0; i < playersSection.children.length; i++) {
@@ -137,6 +157,9 @@ class GameController {
     this.ui.adaptViewportSize();
   }
 
+  /**
+   * While in carousel view, switch to next player
+   */
   nextPlayer(): void {
     var visiblePlayerSection = dojo.query(
       ".aoc-player-background-panel:not(.aoc-hidden)"
@@ -157,6 +180,9 @@ class GameController {
     dojo.toggleClass(nextPlayerSection, "aoc-hidden");
   }
 
+  /**
+   * While in carousel view, switch to previous player
+   */
   previousPlayer(): void {
     var visiblePlayerSection = dojo.query(
       ".aoc-player-background-panel:not(.aoc-hidden)"
