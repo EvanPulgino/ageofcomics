@@ -9,6 +9,8 @@
  *
  * MiniComicController.ts
  *
+ * Handles mini comic logic on front-end
+ *
  */
 
 class MiniComicController {
@@ -18,12 +20,20 @@ class MiniComicController {
     this.ui = ui;
   }
 
+  /**
+   * Set up mini comics
+   * @param {object} miniComics - current mini comic data used to initialize UI
+   */
   setupMiniComics(miniComics: any): void {
     for (var key in miniComics) {
       this.createMiniComic(miniComics[key]);
     }
   }
 
+  /**
+   * Creates a mini comic
+   * @param {object} miniComic - mini comic data
+   */
   createMiniComic(miniComic: any): void {
     var miniComicDiv =
       '<div id="aoc-mini-comic-' +

@@ -1334,16 +1334,26 @@ var MasteryController = /** @class */ (function () {
  *
  * MiniComicController.ts
  *
+ * Handles mini comic logic on front-end
+ *
  */
 var MiniComicController = /** @class */ (function () {
     function MiniComicController(ui) {
         this.ui = ui;
     }
+    /**
+     * Set up mini comics
+     * @param {object} miniComics - current mini comic data used to initialize UI
+     */
     MiniComicController.prototype.setupMiniComics = function (miniComics) {
         for (var key in miniComics) {
             this.createMiniComic(miniComics[key]);
         }
     };
+    /**
+     * Creates a mini comic
+     * @param {object} miniComic - mini comic data
+     */
     MiniComicController.prototype.createMiniComic = function (miniComic) {
         var miniComicDiv = '<div id="aoc-mini-comic-' +
             miniComic.id +
