@@ -9,24 +9,34 @@
  *
  * TicketController.ts
  *
+ * Handles ticket logic on front-end
+ *
  */
 
 class TicketController {
-    ui: any;
+  ui: any;
 
-    constructor(ui: any) {
-        this.ui = ui;
-    }
+  constructor(ui: any) {
+    this.ui = ui;
+  }
 
-    setupTickets(ticketCount: any) : void {
-        for (var i = 1; i <= ticketCount; i++) {
-            this.createTicket(i);
-        }
+  /**
+   * Set up tickets
+   * @param {object} tickets - current ticket data used to initialize UI
+   */
+  setupTickets(ticketCount: any): void {
+    for (var i = 1; i <= ticketCount; i++) {
+      this.createTicket(i);
     }
+  }
 
-    createTicket(ticketNum: any) : void {
-        var ticketDiv =
-          '<div id="aoc-ticket-'+ticketNum+'" class="aoc-ticket"></div>';
-        this.ui.createHtml(ticketDiv, "aoc-tickets-space");
-    }
+  /**
+   * Creates a ticket
+   * @param {object} ticketNum - ticket number
+   */
+  createTicket(ticketNum: any): void {
+    var ticketDiv =
+      '<div id="aoc-ticket-' + ticketNum + '" class="aoc-ticket"></div>';
+    this.ui.createHtml(ticketDiv, "aoc-tickets-space");
+  }
 }

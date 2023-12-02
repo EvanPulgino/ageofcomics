@@ -1627,16 +1627,26 @@ var PlayerController = /** @class */ (function () {
  *
  * RipoffController.ts
  *
+ * Handles ripoff card logic on front-end
+ *
  */
 var RipoffController = /** @class */ (function () {
     function RipoffController(ui) {
         this.ui = ui;
     }
+    /**
+     * Set up ripoff cards
+     * @param {object} ripoffCards - current ripoff card data used to initialize UI
+     */
     RipoffController.prototype.setupRipoffCards = function (ripoffCards) {
         for (var key in ripoffCards) {
             this.createRipoffCard(ripoffCards[key]);
         }
     };
+    /**
+     * Creates a ripoff card
+     * @param {object} ripoffCard - ripoff card data
+     */
     RipoffController.prototype.createRipoffCard = function (ripoffCard) {
         var ripoffCardDiv = '<div id="aoc-ripoff-card-' +
             ripoffCard.id +
@@ -1660,16 +1670,28 @@ var RipoffController = /** @class */ (function () {
  *
  * SalesOrderController.ts
  *
+ * Handles sales order logic on front-end
+ *
  */
 var SalesOrderController = /** @class */ (function () {
     function SalesOrderController(ui) {
         this.ui = ui;
     }
+    /**
+     * Set up sales orders
+     *
+     * @param salesOrders - current sales order data used to initialize UI
+     */
     SalesOrderController.prototype.setupSalesOrders = function (salesOrders) {
         for (var key in salesOrders) {
             this.createSalesOrder(salesOrders[key]);
         }
     };
+    /**
+     * Creates a sales order
+     *
+     * @param salesOrder - sales order data
+     */
     SalesOrderController.prototype.createSalesOrder = function (salesOrder) {
         var salesOrderDiv = '<div id="aoc-salesorder-' +
             salesOrder.id +
@@ -1680,11 +1702,21 @@ var SalesOrderController = /** @class */ (function () {
             this.ui.createHtml(salesOrderDiv, "aoc-map-order-space-" + salesOrder.locationArg);
         }
     };
+    /**
+     * Flips a sales order
+     *
+     * @param salesOrder - sales order data
+     */
     SalesOrderController.prototype.flipSalesOrder = function (salesOrder) {
         var salesOrderDiv = dojo.byId("aoc-salesorder-" + salesOrder.id);
         dojo.removeClass(salesOrderDiv, "aoc-salesorder-" + salesOrder.genre + "-facedown");
         dojo.addClass(salesOrderDiv, salesOrder.cssClass);
     };
+    /**
+     * Flips sales orders
+     *
+     * @param salesOrders - sales order data
+     */
     SalesOrderController.prototype.flipSalesOrders = function (salesOrders) {
         for (var key in salesOrders) {
             this.flipSalesOrder(salesOrders[key]);
@@ -1703,16 +1735,26 @@ var SalesOrderController = /** @class */ (function () {
  *
  * TicketController.ts
  *
+ * Handles ticket logic on front-end
+ *
  */
 var TicketController = /** @class */ (function () {
     function TicketController(ui) {
         this.ui = ui;
     }
+    /**
+     * Set up tickets
+     * @param {object} tickets - current ticket data used to initialize UI
+     */
     TicketController.prototype.setupTickets = function (ticketCount) {
         for (var i = 1; i <= ticketCount; i++) {
             this.createTicket(i);
         }
     };
+    /**
+     * Creates a ticket
+     * @param {object} ticketNum - ticket number
+     */
     TicketController.prototype.createTicket = function (ticketNum) {
         var ticketDiv = '<div id="aoc-ticket-' + ticketNum + '" class="aoc-ticket"></div>';
         this.ui.createHtml(ticketDiv, "aoc-tickets-space");

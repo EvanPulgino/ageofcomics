@@ -9,6 +9,8 @@
  *
  * SalesOrderController.ts
  *
+ * Handles sales order logic on front-end
+ *
  */
 
 class SalesOrderController {
@@ -18,12 +20,22 @@ class SalesOrderController {
     this.ui = ui;
   }
 
+  /**
+   * Set up sales orders
+   *
+   * @param salesOrders - current sales order data used to initialize UI
+   */
   setupSalesOrders(salesOrders: any): void {
     for (var key in salesOrders) {
       this.createSalesOrder(salesOrders[key]);
     }
   }
 
+  /**
+   * Creates a sales order
+   *
+   * @param salesOrder - sales order data
+   */
   createSalesOrder(salesOrder: any): void {
     var salesOrderDiv =
       '<div id="aoc-salesorder-' +
@@ -40,6 +52,11 @@ class SalesOrderController {
     }
   }
 
+  /**
+   * Flips a sales order
+   *
+   * @param salesOrder - sales order data
+   */
   flipSalesOrder(salesOrder: any): void {
     var salesOrderDiv = dojo.byId("aoc-salesorder-" + salesOrder.id);
     dojo.removeClass(
@@ -49,6 +66,11 @@ class SalesOrderController {
     dojo.addClass(salesOrderDiv, salesOrder.cssClass);
   }
 
+  /**
+   * Flips sales orders
+   *
+   * @param salesOrders - sales order data
+   */
   flipSalesOrders(salesOrders: any): void {
     for (var key in salesOrders) {
       this.flipSalesOrder(salesOrders[key]);

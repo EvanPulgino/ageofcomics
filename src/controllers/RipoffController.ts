@@ -9,6 +9,8 @@
  *
  * RipoffController.ts
  *
+ * Handles ripoff card logic on front-end
+ *
  */
 
 class RipoffController {
@@ -18,12 +20,20 @@ class RipoffController {
     this.ui = ui;
   }
 
+  /**
+   * Set up ripoff cards
+   * @param {object} ripoffCards - current ripoff card data used to initialize UI
+   */
   setupRipoffCards(ripoffCards: any): void {
     for (var key in ripoffCards) {
       this.createRipoffCard(ripoffCards[key]);
     }
   }
 
+  /**
+   * Creates a ripoff card
+   * @param {object} ripoffCard - ripoff card data
+   */
   createRipoffCard(ripoffCard: any): void {
     var ripoffCardDiv =
       '<div id="aoc-ripoff-card-' +
