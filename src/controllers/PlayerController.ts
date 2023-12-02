@@ -9,6 +9,8 @@
  *
  * PlayerController.ts
  *
+ * Handles player logic on front-end
+ *
  */
 
 class PlayerController {
@@ -19,6 +21,10 @@ class PlayerController {
     this.ui = ui;
   }
 
+  /**
+   * Set up players
+   * @param {object} playerData - current player data used to initialize UI
+   */
   setupPlayers(playerData: any): void {
     this.playerCounter = {};
     for (var key in playerData) {
@@ -30,49 +36,52 @@ class PlayerController {
     }
   }
 
+  /**
+   * Adjust a player's idea counters by a given amount
+   *
+   * @param player - player to adjust idea counter for
+   * @param genre - genre of idea to adjust
+   * @param amount - amount to adjust idea counter by
+   */
+  adjustIdeas(player: any, genre: string, amount: number): void {
+    this.updatePlayerCounter(player.id, genre, amount);
+  }
+
+  /**
+   * Adjust a player's money counter by a given amount
+   *
+   * @param player - player to adjust money counter for
+   * @param amount - amount to adjust money counter by
+   */
   adjustMoney(player: any, amount: number): void {
     this.updatePlayerCounter(player.id, "money", amount);
   }
 
-  createIdeaOnCard(genre: string, cardId: any): any {
-    var randomId = Math.floor(Math.random() * 1000000);
-    var ideaTokenDiv =
-      '<div id="' +
-      randomId +
-      '" class="aoc-idea-token aoc-idea-token-' +
-      genre +
-      '" style="position:relative;z-index:1000;"></div>';
-    return this.ui.createHtml(ideaTokenDiv, "aoc-card-" + cardId);
+  /**
+   * Adjust a player's income counter by a given amount
+   *
+   * @param player - player to adjust income counter for
+   * @param amount - amount to adjust income counter by
+   */
+  adjustIncome(player: any, amount: number): void {
+    this.updatePlayerCounter(player.id, "income", amount);
   }
 
-  createStartingIdeaToken(genre: string): any {
-    var randomId = Math.floor(Math.random() * 1000000);
-    var ideaTokenDiv =
-      '<div id="' +
-      randomId +
-      '" class="aoc-idea-token aoc-idea-token-' +
-      genre +
-      '" style="position:relative;z-index:1000;"></div>';
-    return this.ui.createHtml(
-      ideaTokenDiv,
-      "aoc-select-starting-idea-" + genre
-    );
+  /**
+   * Adjust a player's point counter by a given amount
+   *
+   * @param player - player to adjust point counter for
+   * @param amount - amount to adjust point counter by
+   */
+  adjustPoints(player: any, amount: number): void {
+    this.updatePlayerCounter(player.id, "point", amount);
   }
 
-  createSupplyIdeaToken(genre: string): any {
-    var randomId = Math.floor(Math.random() * 1000000);
-    var ideaTokenDiv =
-      '<div id="' +
-      randomId +
-      '" class="aoc-idea-token aoc-idea-token-' +
-      genre +
-      '" style="position:relative;z-index:1000;"></div>';
-    return this.ui.createHtml(
-      ideaTokenDiv,
-      "aoc-select-supply-idea-token-" + genre
-    );
-  }
-
+  /**
+   * Create a player order token element
+   *
+   * @param player - player to create token for
+   */
   createPlayerOrderToken(player: any): void {
     var playerOrderTokenDiv =
       '<div id="aoc-player-order-token' +
@@ -86,6 +95,11 @@ class PlayerController {
     );
   }
 
+  /**
+   * Create a player sales agent element
+   *
+   * @param player - player to create sales agent for
+   */
   createPlayerAgent(player: any): void {
     var playerAgentDiv =
       '<div id="aoc-agent' +
@@ -99,12 +113,22 @@ class PlayerController {
     );
   }
 
+  /**
+   * Create a player cube element
+   *
+   * @param player - player to create cube for
+   */
   createPlayerCubes(player: any): void {
     this.createPlayerCubeOne(player);
     this.createPlayerCubeTwo(player);
     this.createPlayerCubeThree(player);
   }
 
+  /**
+   * Create a player cube one element
+   *
+   * @param player - player to create cube one for
+   */
   createPlayerCubeOne(player: any): void {
     var cubeDiv =
       '<div id="aoc-player-cube-one-' +
@@ -117,6 +141,11 @@ class PlayerController {
     }
   }
 
+  /**
+   * Create a player cube two element
+   *
+   * @param player - player to create cube two for
+   */
   createPlayerCubeTwo(player: any): void {
     var cubeDiv =
       '<div id="aoc-player-cube-two-' +
@@ -129,6 +158,11 @@ class PlayerController {
     }
   }
 
+  /**
+   * Create a player cube three element
+   *
+   * @param player - player to create cube three for
+   */
   createPlayerCubeThree(player: any): void {
     var cubeDiv =
       '<div id="aoc-player-cube-three-' +
@@ -141,6 +175,11 @@ class PlayerController {
     }
   }
 
+  /**
+   * Create a player panel element
+   *
+   * @param player - player to create panel for
+   */
   createPlayerPanel(player: any): void {
     var playerPanelDiv =
       '<div id="aoc-player-panel-' +
@@ -174,6 +213,13 @@ class PlayerController {
     this.ui.createHtml(playerPanelDiv, "player_board_" + player.id);
   }
 
+  /**
+   * Create a player panel idea supply element
+   *
+   * @param player - player to create idea supply for
+   * @param genre - genre of idea supply to create
+   * @returns - HTML element
+   */
   createPlayerPanelIdeaSupplyDiv(player: any, genre: string): any {
     var ideaSupplyDiv =
       '<div id="aoc-player-panel-' +
@@ -194,6 +240,13 @@ class PlayerController {
     return ideaSupplyDiv;
   }
 
+  /**
+   * Create a player panel other supply element (money, points, income)
+   *
+   * @param player - player to create other supply for
+   * @param supply - other supply to create
+   * @returns - HTML element
+   */
   createPlayerPanelOtherSupplyDiv(player: any, supply: string): any {
     var otherSupplyDiv;
     switch (supply) {
@@ -231,6 +284,11 @@ class PlayerController {
     return otherSupplyDiv;
   }
 
+  /**
+   * Create all player counters
+   *
+   * @param player - player to create counters for
+   */
   createPlayerCounters(player: any): void {
     this.playerCounter[player.id] = {};
     this.createPlayerCounter(player, "crime", player.crimeIdeas);
@@ -245,6 +303,13 @@ class PlayerController {
     this.createPlayerCounter(player, "income", 0);
   }
 
+  /**
+   * Create and initialize a player counter
+   *
+   * @param player - player to create counter for
+   * @param counter - counter to create
+   * @param initialValue - initial value of counter
+   */
   createPlayerCounter(
     player: any,
     counter: string,
@@ -266,34 +331,13 @@ class PlayerController {
     this.playerCounter[player.id][counterPanel].setValue(initialValue);
   }
 
-  gainIdeaFromBoard(playerId: any, genre: string): void {
-    var ideaTokenDiv = dojo.byId("aoc-idea-token-" + genre);
-    var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
-    gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
-    this.updatePlayerCounter(playerId, genre, 1);
-  }
-
-  gainIdeaFromHiringCreative(playerId: any, genre: string, cardId: any) {
-    var ideaTokenDiv = this.createIdeaOnCard(genre, cardId);
-    var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
-    gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
-    this.updatePlayerCounter(playerId, genre, 1);
-  }
-
-  gainIdeaFromSupply(playerId: any, genre: string): void {
-    var ideaTokenDiv = this.createSupplyIdeaToken(genre);
-    var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
-    gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
-    this.updatePlayerCounter(playerId, genre, 1);
-  }
-
-  gainStartingIdea(playerId: any, genre: string): void {
-    var ideaTokenDiv = this.createStartingIdeaToken(genre);
-    var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
-    gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
-    this.updatePlayerCounter(playerId, genre, 1);
-  }
-
+  /**
+   * Update the value of a player counter
+   *
+   * @param playerId - player to update counter for
+   * @param counter - counter to update
+   * @param value - value to adjust counter by
+   */
   updatePlayerCounter(playerId: any, counter: string, value: number): void {
     var counterKey = counter;
     var counterPanel = "panel-" + counter;

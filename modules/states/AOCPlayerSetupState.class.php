@@ -134,7 +134,7 @@ class AOCPlayerSetupState {
                 clienttranslate('${player_name} gains a ${genreName} idea'),
                 [
                     "player_name" => $player->getName(),
-                    "player_id" => $player->getId(),
+                    "player" => $player->getUiData(),
                     "genreName" => $this->game->formatNotificationString(
                         GENRES[$ideaGenre],
                         $ideaGenre

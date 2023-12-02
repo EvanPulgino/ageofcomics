@@ -57,4 +57,108 @@ class IdeaController {
       this.ui.createHtml(ideaTokenDiv, "aoc-action-ideas-" + genre);
     }
   }
+
+  /**
+   * Creates an idea token on a card
+   *
+   * @param genre - the genre of the idea token
+   * @param cardId - the card id of the card the idea token is on
+   */
+  createIdeaTokenOnCard(genre: string, cardId: any): any {
+    var randomId = Math.floor(Math.random() * 1000000);
+    var ideaTokenDiv =
+      '<div id="' +
+      randomId +
+      '" class="aoc-idea-token aoc-idea-token-' +
+      genre +
+      '" style="position:relative;z-index:1000;"></div>';
+    return this.ui.createHtml(ideaTokenDiv, "aoc-card-" + cardId);
+  }
+
+  /**
+   * Creates an idea token on the supply
+   *
+   * @param genre - the genre of the idea token
+   */
+  createIdeaTokenOnSupply(genre: string): any {
+    var randomId = Math.floor(Math.random() * 1000000);
+    var ideaTokenDiv =
+      '<div id="' +
+      randomId +
+      '" class="aoc-idea-token aoc-idea-token-' +
+      genre +
+      '" style="position:relative;z-index:1000;"></div>';
+    return this.ui.createHtml(
+      ideaTokenDiv,
+      "aoc-select-supply-idea-token-" + genre
+    );
+  }
+
+  /**
+   * Creates an idea token on the select start ideas container
+   *
+   * @param genre - the genre of the idea token
+   */
+  createStartingIdeaToken(genre: string): any {
+    var randomId = Math.floor(Math.random() * 1000000);
+    var ideaTokenDiv =
+      '<div id="' +
+      randomId +
+      '" class="aoc-idea-token aoc-idea-token-' +
+      genre +
+      '" style="position:relative;z-index:1000;"></div>';
+    return this.ui.createHtml(
+      ideaTokenDiv,
+      "aoc-select-starting-idea-" + genre
+    );
+  }
+
+  /**
+   * Moves an idea token from the board to a player's panel
+   *
+   * @param playerId - the player id of the player who gained the idea token
+   * @param genre - the genre of the idea token
+   */
+  gainIdeaFromBoard(playerId: any, genre: string): void {
+    var ideaTokenDiv = dojo.byId("aoc-idea-token-" + genre);
+    var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
+    gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
+  }
+
+  /**
+   * Create an idea token on a card and move it to a player's panel
+   *
+   * @param playerId - the player id of the player who gained the idea token
+   * @param genre - the genre of the idea token
+   * @param cardId - the card id of the card the idea token is on
+   */
+  gainIdeaFromHiringCreative(playerId: any, genre: string, cardId: any) {
+    var ideaTokenDiv = this.createIdeaTokenOnCard(genre, cardId);
+    var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
+    gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
+  }
+
+  /**
+   * Create an idea token on the supply and move it to a player's panel
+   *
+   * @param playerId - the player id of the player who gained the idea token
+   * @param genre - the genre of the idea token
+   */
+  gainIdeaFromSupply(playerId: any, genre: string): void {
+    var ideaTokenDiv = this.createIdeaTokenOnSupply(genre);
+    var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
+    gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
+  }
+
+  /**
+   * Create an idea token on the select start ideas container and move it to a player's panel
+   *
+   * @param playerId - the player id of the player who gained the idea token
+   * @param genre - the genre of the idea token
+   */
+  gainStartingIdea(playerId: any, genre: string): void {
+    var ideaTokenDiv = this.createStartingIdeaToken(genre);
+    var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
+    gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
+  }
 }

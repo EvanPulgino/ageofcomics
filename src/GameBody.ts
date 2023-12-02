@@ -227,10 +227,11 @@ class GameBody extends GameBasics {
    * @param notif
    */
   notif_gainIdeaFromBoard(notif: any): void {
-    this.playerController.gainIdeaFromBoard(
+    this.ideaController.gainIdeaFromBoard(
       notif.args.player.id,
       notif.args.genre
     );
+    this.playerController.adjustIdeas(notif.args.player, notif.args.genre, 1);
   }
 
   /**
@@ -244,11 +245,12 @@ class GameBody extends GameBasics {
    * @param notif
    */
   notif_gainIdeaFromHiringCreative(notif: any): void {
-    this.playerController.gainIdeaFromHiringCreative(
+    this.ideaController.gainIdeaFromHiringCreative(
       notif.args.player.id,
       notif.args.genre,
       notif.args.card.id
     );
+    this.playerController.adjustIdeas(notif.args.player, notif.args.genre, 1);
   }
 
   /**
@@ -261,10 +263,11 @@ class GameBody extends GameBasics {
    * @param notif
    */
   notif_gainIdeaFromSupply(notif: any): void {
-    this.playerController.gainIdeaFromSupply(
+    this.ideaController.gainIdeaFromSupply(
       notif.args.player.id,
       notif.args.genre
     );
+    this.playerController.adjustIdeas(notif.args.player, notif.args.genre, 1);
   }
 
   /**
@@ -302,10 +305,11 @@ class GameBody extends GameBasics {
    * @param notif
    */
   notif_gainStartingIdea(notif: any): void {
-    this.playerController.gainStartingIdea(
-      notif.args.player_id,
+    this.ideaController.gainStartingIdea(
+      notif.args.player.id,
       notif.args.genre
     );
+    this.playerController.adjustIdeas(notif.args.player, notif.args.genre, 1);
   }
 
   /**

@@ -487,7 +487,8 @@ var GameBody = /** @class */ (function (_super) {
      * @param notif
      */
     GameBody.prototype.notif_gainIdeaFromBoard = function (notif) {
-        this.playerController.gainIdeaFromBoard(notif.args.player.id, notif.args.genre);
+        this.ideaController.gainIdeaFromBoard(notif.args.player.id, notif.args.genre);
+        this.playerController.adjustIdeas(notif.args.player, notif.args.genre, 1);
     };
     /**
      * Handle 'gainIdeaFromHiringCreative' notification
@@ -500,7 +501,8 @@ var GameBody = /** @class */ (function (_super) {
      * @param notif
      */
     GameBody.prototype.notif_gainIdeaFromHiringCreative = function (notif) {
-        this.playerController.gainIdeaFromHiringCreative(notif.args.player.id, notif.args.genre, notif.args.card.id);
+        this.ideaController.gainIdeaFromHiringCreative(notif.args.player.id, notif.args.genre, notif.args.card.id);
+        this.playerController.adjustIdeas(notif.args.player, notif.args.genre, 1);
     };
     /**
      * Handle 'gainIdeaFromSupply' notification
@@ -512,7 +514,8 @@ var GameBody = /** @class */ (function (_super) {
      * @param notif
      */
     GameBody.prototype.notif_gainIdeaFromSupply = function (notif) {
-        this.playerController.gainIdeaFromSupply(notif.args.player.id, notif.args.genre);
+        this.ideaController.gainIdeaFromSupply(notif.args.player.id, notif.args.genre);
+        this.playerController.adjustIdeas(notif.args.player, notif.args.genre, 1);
     };
     /**
      * Handle 'gainStartingComic' notification
@@ -547,7 +550,8 @@ var GameBody = /** @class */ (function (_super) {
      * @param notif
      */
     GameBody.prototype.notif_gainStartingIdea = function (notif) {
-        this.playerController.gainStartingIdea(notif.args.player_id, notif.args.genre);
+        this.ideaController.gainStartingIdea(notif.args.player.id, notif.args.genre);
+        this.playerController.adjustIdeas(notif.args.player, notif.args.genre, 1);
     };
     /**
      * Handle 'hireCreative' notification
@@ -1278,6 +1282,94 @@ var IdeaController = /** @class */ (function () {
             this.ui.createHtml(ideaTokenDiv, "aoc-action-ideas-" + genre);
         }
     };
+    /**
+     * Creates an idea token on a card
+     *
+     * @param genre - the genre of the idea token
+     * @param cardId - the card id of the card the idea token is on
+     */
+    IdeaController.prototype.createIdeaTokenOnCard = function (genre, cardId) {
+        var randomId = Math.floor(Math.random() * 1000000);
+        var ideaTokenDiv = '<div id="' +
+            randomId +
+            '" class="aoc-idea-token aoc-idea-token-' +
+            genre +
+            '" style="position:relative;z-index:1000;"></div>';
+        return this.ui.createHtml(ideaTokenDiv, "aoc-card-" + cardId);
+    };
+    /**
+     * Creates an idea token on the supply
+     *
+     * @param genre - the genre of the idea token
+     */
+    IdeaController.prototype.createIdeaTokenOnSupply = function (genre) {
+        var randomId = Math.floor(Math.random() * 1000000);
+        var ideaTokenDiv = '<div id="' +
+            randomId +
+            '" class="aoc-idea-token aoc-idea-token-' +
+            genre +
+            '" style="position:relative;z-index:1000;"></div>';
+        return this.ui.createHtml(ideaTokenDiv, "aoc-select-supply-idea-token-" + genre);
+    };
+    /**
+     * Creates an idea token on the select start ideas container
+     *
+     * @param genre - the genre of the idea token
+     */
+    IdeaController.prototype.createStartingIdeaToken = function (genre) {
+        var randomId = Math.floor(Math.random() * 1000000);
+        var ideaTokenDiv = '<div id="' +
+            randomId +
+            '" class="aoc-idea-token aoc-idea-token-' +
+            genre +
+            '" style="position:relative;z-index:1000;"></div>';
+        return this.ui.createHtml(ideaTokenDiv, "aoc-select-starting-idea-" + genre);
+    };
+    /**
+     * Moves an idea token from the board to a player's panel
+     *
+     * @param playerId - the player id of the player who gained the idea token
+     * @param genre - the genre of the idea token
+     */
+    IdeaController.prototype.gainIdeaFromBoard = function (playerId, genre) {
+        var ideaTokenDiv = dojo.byId("aoc-idea-token-" + genre);
+        var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
+        gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
+    };
+    /**
+     * Create an idea token on a card and move it to a player's panel
+     *
+     * @param playerId - the player id of the player who gained the idea token
+     * @param genre - the genre of the idea token
+     * @param cardId - the card id of the card the idea token is on
+     */
+    IdeaController.prototype.gainIdeaFromHiringCreative = function (playerId, genre, cardId) {
+        var ideaTokenDiv = this.createIdeaTokenOnCard(genre, cardId);
+        var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
+        gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
+    };
+    /**
+     * Create an idea token on the supply and move it to a player's panel
+     *
+     * @param playerId - the player id of the player who gained the idea token
+     * @param genre - the genre of the idea token
+     */
+    IdeaController.prototype.gainIdeaFromSupply = function (playerId, genre) {
+        var ideaTokenDiv = this.createIdeaTokenOnSupply(genre);
+        var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
+        gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
+    };
+    /**
+     * Create an idea token on the select start ideas container and move it to a player's panel
+     *
+     * @param playerId - the player id of the player who gained the idea token
+     * @param genre - the genre of the idea token
+     */
+    IdeaController.prototype.gainStartingIdea = function (playerId, genre) {
+        var ideaTokenDiv = this.createStartingIdeaToken(genre);
+        var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
+        gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
+    };
     return IdeaController;
 }());
 /**
@@ -1380,11 +1472,17 @@ var MiniComicController = /** @class */ (function () {
  *
  * PlayerController.ts
  *
+ * Handles player logic on front-end
+ *
  */
 var PlayerController = /** @class */ (function () {
     function PlayerController(ui) {
         this.ui = ui;
     }
+    /**
+     * Set up players
+     * @param {object} playerData - current player data used to initialize UI
+     */
     PlayerController.prototype.setupPlayers = function (playerData) {
         this.playerCounter = {};
         for (var key in playerData) {
@@ -1395,36 +1493,48 @@ var PlayerController = /** @class */ (function () {
             this.createPlayerCounters(playerData[key]);
         }
     };
+    /**
+     * Adjust a player's idea counters by a given amount
+     *
+     * @param player - player to adjust idea counter for
+     * @param genre - genre of idea to adjust
+     * @param amount - amount to adjust idea counter by
+     */
+    PlayerController.prototype.adjustIdeas = function (player, genre, amount) {
+        this.updatePlayerCounter(player.id, genre, amount);
+    };
+    /**
+     * Adjust a player's money counter by a given amount
+     *
+     * @param player - player to adjust money counter for
+     * @param amount - amount to adjust money counter by
+     */
     PlayerController.prototype.adjustMoney = function (player, amount) {
         this.updatePlayerCounter(player.id, "money", amount);
     };
-    PlayerController.prototype.createIdeaOnCard = function (genre, cardId) {
-        var randomId = Math.floor(Math.random() * 1000000);
-        var ideaTokenDiv = '<div id="' +
-            randomId +
-            '" class="aoc-idea-token aoc-idea-token-' +
-            genre +
-            '" style="position:relative;z-index:1000;"></div>';
-        return this.ui.createHtml(ideaTokenDiv, "aoc-card-" + cardId);
+    /**
+     * Adjust a player's income counter by a given amount
+     *
+     * @param player - player to adjust income counter for
+     * @param amount - amount to adjust income counter by
+     */
+    PlayerController.prototype.adjustIncome = function (player, amount) {
+        this.updatePlayerCounter(player.id, "income", amount);
     };
-    PlayerController.prototype.createStartingIdeaToken = function (genre) {
-        var randomId = Math.floor(Math.random() * 1000000);
-        var ideaTokenDiv = '<div id="' +
-            randomId +
-            '" class="aoc-idea-token aoc-idea-token-' +
-            genre +
-            '" style="position:relative;z-index:1000;"></div>';
-        return this.ui.createHtml(ideaTokenDiv, "aoc-select-starting-idea-" + genre);
+    /**
+     * Adjust a player's point counter by a given amount
+     *
+     * @param player - player to adjust point counter for
+     * @param amount - amount to adjust point counter by
+     */
+    PlayerController.prototype.adjustPoints = function (player, amount) {
+        this.updatePlayerCounter(player.id, "point", amount);
     };
-    PlayerController.prototype.createSupplyIdeaToken = function (genre) {
-        var randomId = Math.floor(Math.random() * 1000000);
-        var ideaTokenDiv = '<div id="' +
-            randomId +
-            '" class="aoc-idea-token aoc-idea-token-' +
-            genre +
-            '" style="position:relative;z-index:1000;"></div>';
-        return this.ui.createHtml(ideaTokenDiv, "aoc-select-supply-idea-token-" + genre);
-    };
+    /**
+     * Create a player order token element
+     *
+     * @param player - player to create token for
+     */
     PlayerController.prototype.createPlayerOrderToken = function (player) {
         var playerOrderTokenDiv = '<div id="aoc-player-order-token' +
             player.id +
@@ -1433,6 +1543,11 @@ var PlayerController = /** @class */ (function () {
             '"></div>';
         this.ui.createHtml(playerOrderTokenDiv, "aoc-player-order-space-" + player.turnOrder);
     };
+    /**
+     * Create a player sales agent element
+     *
+     * @param player - player to create sales agent for
+     */
     PlayerController.prototype.createPlayerAgent = function (player) {
         var playerAgentDiv = '<div id="aoc-agent' +
             player.id +
@@ -1441,11 +1556,21 @@ var PlayerController = /** @class */ (function () {
             '"></div>';
         this.ui.createHtml(playerAgentDiv, "aoc-map-agent-space-" + player.agentLocation);
     };
+    /**
+     * Create a player cube element
+     *
+     * @param player - player to create cube for
+     */
     PlayerController.prototype.createPlayerCubes = function (player) {
         this.createPlayerCubeOne(player);
         this.createPlayerCubeTwo(player);
         this.createPlayerCubeThree(player);
     };
+    /**
+     * Create a player cube one element
+     *
+     * @param player - player to create cube one for
+     */
     PlayerController.prototype.createPlayerCubeOne = function (player) {
         var cubeDiv = '<div id="aoc-player-cube-one-' +
             player.id +
@@ -1456,6 +1581,11 @@ var PlayerController = /** @class */ (function () {
             this.ui.createHtml(cubeDiv, "aoc-cube-one-space-" + player.id);
         }
     };
+    /**
+     * Create a player cube two element
+     *
+     * @param player - player to create cube two for
+     */
     PlayerController.prototype.createPlayerCubeTwo = function (player) {
         var cubeDiv = '<div id="aoc-player-cube-two-' +
             player.id +
@@ -1466,6 +1596,11 @@ var PlayerController = /** @class */ (function () {
             this.ui.createHtml(cubeDiv, "aoc-cube-two-space-" + player.id);
         }
     };
+    /**
+     * Create a player cube three element
+     *
+     * @param player - player to create cube three for
+     */
     PlayerController.prototype.createPlayerCubeThree = function (player) {
         var cubeDiv = '<div id="aoc-player-cube-three-' +
             player.id +
@@ -1476,6 +1611,11 @@ var PlayerController = /** @class */ (function () {
             this.ui.createHtml(cubeDiv, "aoc-cube-three-space-" + player.id);
         }
     };
+    /**
+     * Create a player panel element
+     *
+     * @param player - player to create panel for
+     */
     PlayerController.prototype.createPlayerPanel = function (player) {
         var playerPanelDiv = '<div id="aoc-player-panel-' +
             player.id +
@@ -1507,6 +1647,13 @@ var PlayerController = /** @class */ (function () {
             "</div>";
         this.ui.createHtml(playerPanelDiv, "player_board_" + player.id);
     };
+    /**
+     * Create a player panel idea supply element
+     *
+     * @param player - player to create idea supply for
+     * @param genre - genre of idea supply to create
+     * @returns - HTML element
+     */
     PlayerController.prototype.createPlayerPanelIdeaSupplyDiv = function (player, genre) {
         var ideaSupplyDiv = '<div id="aoc-player-panel-' +
             genre +
@@ -1525,6 +1672,13 @@ var PlayerController = /** @class */ (function () {
             '"></span></div>';
         return ideaSupplyDiv;
     };
+    /**
+     * Create a player panel other supply element (money, points, income)
+     *
+     * @param player - player to create other supply for
+     * @param supply - other supply to create
+     * @returns - HTML element
+     */
     PlayerController.prototype.createPlayerPanelOtherSupplyDiv = function (player, supply) {
         var otherSupplyDiv;
         switch (supply) {
@@ -1561,6 +1715,11 @@ var PlayerController = /** @class */ (function () {
         }
         return otherSupplyDiv;
     };
+    /**
+     * Create all player counters
+     *
+     * @param player - player to create counters for
+     */
     PlayerController.prototype.createPlayerCounters = function (player) {
         this.playerCounter[player.id] = {};
         this.createPlayerCounter(player, "crime", player.crimeIdeas);
@@ -1574,6 +1733,13 @@ var PlayerController = /** @class */ (function () {
         // TODO:calculate income
         this.createPlayerCounter(player, "income", 0);
     };
+    /**
+     * Create and initialize a player counter
+     *
+     * @param player - player to create counter for
+     * @param counter - counter to create
+     * @param initialValue - initial value of counter
+     */
     PlayerController.prototype.createPlayerCounter = function (player, counter, initialValue) {
         var counterKey = counter;
         var counterPanel = "panel-" + counter;
@@ -1584,30 +1750,13 @@ var PlayerController = /** @class */ (function () {
         this.playerCounter[player.id][counterPanel].create("aoc-player-" + counterPanel + "-count-" + player.id);
         this.playerCounter[player.id][counterPanel].setValue(initialValue);
     };
-    PlayerController.prototype.gainIdeaFromBoard = function (playerId, genre) {
-        var ideaTokenDiv = dojo.byId("aoc-idea-token-" + genre);
-        var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
-        gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
-        this.updatePlayerCounter(playerId, genre, 1);
-    };
-    PlayerController.prototype.gainIdeaFromHiringCreative = function (playerId, genre, cardId) {
-        var ideaTokenDiv = this.createIdeaOnCard(genre, cardId);
-        var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
-        gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
-        this.updatePlayerCounter(playerId, genre, 1);
-    };
-    PlayerController.prototype.gainIdeaFromSupply = function (playerId, genre) {
-        var ideaTokenDiv = this.createSupplyIdeaToken(genre);
-        var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
-        gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
-        this.updatePlayerCounter(playerId, genre, 1);
-    };
-    PlayerController.prototype.gainStartingIdea = function (playerId, genre) {
-        var ideaTokenDiv = this.createStartingIdeaToken(genre);
-        var playerPanelIcon = dojo.byId("aoc-player-" + genre + "-" + playerId);
-        gameui.slideToObjectAndDestroy(ideaTokenDiv, playerPanelIcon, 1000);
-        this.updatePlayerCounter(playerId, genre, 1);
-    };
+    /**
+     * Update the value of a player counter
+     *
+     * @param playerId - player to update counter for
+     * @param counter - counter to update
+     * @param value - value to adjust counter by
+     */
     PlayerController.prototype.updatePlayerCounter = function (playerId, counter, value) {
         var counterKey = counter;
         var counterPanel = "panel-" + counter;
