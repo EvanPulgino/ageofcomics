@@ -86,7 +86,8 @@ class AOCWriterCard extends AOCCard {
             $this->creativeKey;
         $this->facedownClass =
             "aoc-" . $this->getType() . "-facedown-" . $this->value;
-        $this->handSortOrder = $this->getGenreId() * 100 + $this->getTypeId() * 10 +$this->value;
+        $this->handSortOrder =
+            $this->getTypeId() * 100 + $this->getGenreId() + $this->value;
     }
 
     /**

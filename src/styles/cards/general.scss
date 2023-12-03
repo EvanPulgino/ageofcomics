@@ -53,7 +53,6 @@
   height: 242px;
   position: absolute;
   width: 172px;
-  transform: scale(0.75);
 }
 
 #aoc-artists-available .aoc-card:hover {
@@ -371,4 +370,12 @@
 .aoc-card-unselected {
   opacity: 0.5;
   transform: scale(0.9);
+}
+
+.aoc-card-market-row .aoc-card {
+  transform: scale(0.75);
+}
+
+.aoc-hand .aoc-card {
+  transform: scale(0.75);
 }

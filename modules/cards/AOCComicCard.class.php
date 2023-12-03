@@ -93,7 +93,7 @@ class AOCComicCard extends AOCCard {
         $this->facedownClass =
             "aoc-" . $this->getType() . "-" . $this->getGenre() . "-facedown";
         $this->handSortOrder =
-            $this->getGenreId() * 100 + $this->getTypeId() * 10;
+            $this->getTypeId() * 100 + $this->getGenreId() + $this->bonus;
     }
 
     /**
