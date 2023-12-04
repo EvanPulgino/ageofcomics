@@ -39,8 +39,13 @@ class view_ageofcomics_ageofcomics extends game_view {
                 "player_id" => $player->getId(),
                 "player_name" => $player->getName(),
                 "color" => $player->getColorAsText(),
+                "hidden" => $this->isCurrentPlayer($player) ? "" : "aoc-hidden",
             ]);
         }
+    }
+
+    private function isCurrentPlayer($player) {
+        return $player->getId() == $this->game->getViewingPlayerId();
     }
 
     function build_page($viewArgs) {
@@ -50,9 +55,12 @@ class view_ageofcomics_ageofcomics extends game_view {
         $players = $this->game->playerManager->getPlayersInViewOrder();
         $players_nbr = count($players);
 
-        $this->tpl["SELECT_START_ITEMS"] = self::_("Select Starting Comic and Idea Tokens");
+        $this->tpl["SELECT_START_ITEMS"] = self::_(
+            "Select Starting Comic and Idea Tokens"
+        );
 
         $this->createPlayersSection($template, $players, "playerarea");
+        $this->createPlayersSection($template, $players, "playerhands");
 
         /*********** Do not change anything below this line  ************/
     }

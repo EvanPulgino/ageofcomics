@@ -335,6 +335,11 @@
                                 <i id="aoc-player-income-{player_id}"
                                     class="aoc-icon-size fa6 fa6-solid fa6-money-bill-trend-up"></i>
                             </div>
+                            <div id="aoc-player-hand-supply-{player_id}" class="aoc-player-supply">
+                                <span id="aoc-player-hand-count-{player_id}"
+                                    class="aoc-player-supply-count aoc-squada"></span>
+                                <i id="aoc-player-hand-{player_id}" class="aoc-icon-size aoc-hand-icon"></i>
+                            </div>
                         </div>
                         <div id="aoc-player-mat-{player_id}" class="aoc-player-mat aoc-player-mat-{color}">
                             <div id="aoc-cube-one-space-{player_id}" class="aoc-cube-space aoc-cube-space-one">
@@ -348,13 +353,21 @@
                     <div id="aoc-player-area-right-{player_id}" class="aoc-player-area-right">
                         <div id="aoc-player-mastery-{player_id}" class="aoc-player-mastery-container"></div>
                         <div id="aoc-player-tokens-{player_id}" class="aoc-player-token-container"></div>
-                        <div id="aoc-hand-{player_id}" class="aoc-hand"></div>
                     </div>
                 </div>
             </div>
             <!-- END playerarea -->
         </div>
     </div>
+</div>
+
+<div id="aoc-player-hands">
+    <!-- BEGIN playerhands -->
+    <div id="aoc-floating-hand-wrapper-{player_id}" class="aoc-floating-hand-wrapper aoc-box-shadow-{color} {hidden}">
+        <div id="aoc-hand-{player_id}" class="aoc-floating-hand">
+        </div>
+    </div>
+    <!-- END playerhands -->
 </div>
 
 <div id="aoc-overall"></div>

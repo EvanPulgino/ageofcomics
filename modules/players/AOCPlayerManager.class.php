@@ -168,7 +168,10 @@ class AOCPlayerManager extends APP_GameClass {
 
         $players = [];
         foreach ($rows as $row) {
-            $players[] = new AOCPlayer($row);
+            $players[] = new AOCPlayer(
+                $row,
+                $this->game->cardManager->countCardsInPlayerHand($row["id"])
+            );
         }
         return $players;
     }

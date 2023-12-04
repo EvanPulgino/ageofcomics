@@ -420,6 +420,7 @@ var GameBody = /** @class */ (function (_super) {
      */
     GameBody.prototype.notif_developComic = function (notif) {
         this.cardController.slideCardToPlayerHand(notif.args.comic);
+        this.playerController.adjustHand(notif.args.player, 1);
     };
     /**
      * Handle 'developComicPrivate' notification
@@ -431,6 +432,7 @@ var GameBody = /** @class */ (function (_super) {
      */
     GameBody.prototype.notif_developComicPrivate = function (notif) {
         this.cardController.slideCardToPlayerHand(notif.args.comic);
+        this.playerController.adjustHand(notif.args.player, 1);
     };
     /**
      * Handle 'discardCard' notification
@@ -443,6 +445,7 @@ var GameBody = /** @class */ (function (_super) {
      */
     GameBody.prototype.notif_discardCard = function (notif) {
         this.cardController.discardCard(notif.args.card, notif.args.player.id);
+        this.playerController.adjustHand(notif.args.player, -1);
     };
     /**
      * Handle 'discardCardFromDeck' notification
@@ -528,6 +531,7 @@ var GameBody = /** @class */ (function (_super) {
      */
     GameBody.prototype.notif_gainStartingComic = function (notif) {
         this.cardController.gainStartingComic(notif.args.comic_card);
+        this.playerController.adjustHand(notif.args.player, 1);
     };
     /**
      * Handle 'gainStartingComicPrivate' notification
@@ -539,6 +543,7 @@ var GameBody = /** @class */ (function (_super) {
      */
     GameBody.prototype.notif_gainStartingComicPrivate = function (notif) {
         this.cardController.gainStartingComic(notif.args.comic_card);
+        this.playerController.adjustHand(notif.args.player, 1);
     };
     /**
      * Handle 'gainStartingIdea' notification
@@ -564,6 +569,7 @@ var GameBody = /** @class */ (function (_super) {
      */
     GameBody.prototype.notif_hireCreative = function (notif) {
         this.cardController.slideCardToPlayerHand(notif.args.card);
+        this.playerController.adjustHand(notif.args.player, 1);
     };
     /**
      * Handle 'hireCreativePrivate' notification
@@ -575,6 +581,7 @@ var GameBody = /** @class */ (function (_super) {
      */
     GameBody.prototype.notif_hireCreativePrivate = function (notif) {
         this.cardController.slideCardToPlayerHand(notif.args.card);
+        this.playerController.adjustHand(notif.args.player, 1);
     };
     /**
      * Handle 'placeEditor' notification
@@ -1491,7 +1498,17 @@ var PlayerController = /** @class */ (function () {
             this.createPlayerCubes(playerData[key]);
             this.createPlayerPanel(playerData[key]);
             this.createPlayerCounters(playerData[key]);
+            this.createHandIconHoverEvents(playerData[key]);
         }
+    };
+    /**
+     * Adjust a player's hand counter by a given amount
+     *
+     * @param player - player to adjust hand counter for
+     * @param amount - amount to adjust hand counter by
+     */
+    PlayerController.prototype.adjustHand = function (player, amount) {
+        this.updatePlayerCounter(player.id, "hand", amount);
     };
     /**
      * Adjust a player's idea counters by a given amount
@@ -1529,6 +1546,34 @@ var PlayerController = /** @class */ (function () {
      */
     PlayerController.prototype.adjustPoints = function (player, amount) {
         this.updatePlayerCounter(player.id, "point", amount);
+    };
+    /**
+     * Show floating player hand when hovering over hand icon
+     *
+     * @param player
+     */
+    PlayerController.prototype.createHandIconHoverEvents = function (player) {
+        var _this = this;
+        dojo.connect($("aoc-player-hand-supply-" + player.id), "onmouseenter", this.ui, function () {
+            if (_this.ui.player_id != player.id) {
+                dojo.toggleClass("aoc-floating-hand-wrapper-" + player.id, "aoc-hidden");
+            }
+        });
+        dojo.connect($("aoc-player-panel-hand-" + player.id + "-supply"), "onmouseenter", this.ui, function () {
+            if (_this.ui.player_id != player.id) {
+                dojo.toggleClass("aoc-floating-hand-wrapper-" + player.id, "aoc-hidden");
+            }
+        });
+        dojo.connect($("aoc-player-hand-supply-" + player.id), "onmouseleave", this.ui, function () {
+            if (_this.ui.player_id != player.id) {
+                dojo.toggleClass("aoc-floating-hand-wrapper-" + player.id, "aoc-hidden");
+            }
+        });
+        dojo.connect($("aoc-player-panel-hand-" + player.id + "-supply"), "onmouseleave", this.ui, function () {
+            if (_this.ui.player_id != player.id) {
+                dojo.toggleClass("aoc-floating-hand-wrapper-" + player.id, "aoc-hidden");
+            }
+        });
     };
     /**
      * Create a player order token element
@@ -1637,11 +1682,16 @@ var PlayerController = /** @class */ (function () {
             this.createPlayerPanelIdeaSupplyDiv(player, "superhero") +
             this.createPlayerPanelIdeaSupplyDiv(player, "western") +
             "</div>" +
-            '<div id="aoc-player-panel-other-' +
+            '<div id="aoc-player-panel-other-1' +
             player.id +
             '" class="aoc-player-panel-row">' +
             this.createPlayerPanelOtherSupplyDiv(player, "money") +
             this.createPlayerPanelOtherSupplyDiv(player, "point") +
+            "</div>" +
+            '<div id="aoc-player-panel-other-2' +
+            player.id +
+            '" class="aoc-player-panel-row">' +
+            this.createPlayerPanelOtherSupplyDiv(player, "hand") +
             this.createPlayerPanelOtherSupplyDiv(player, "income") +
             "</div>" +
             "</div>";
@@ -1682,6 +1732,16 @@ var PlayerController = /** @class */ (function () {
     PlayerController.prototype.createPlayerPanelOtherSupplyDiv = function (player, supply) {
         var otherSupplyDiv;
         switch (supply) {
+            case "hand":
+                otherSupplyDiv =
+                    '<div id="aoc-player-panel-hand-' +
+                        player.id +
+                        '-supply" class="aoc-player-panel-supply aoc-player-panel-other-supply"><span id="aoc-player-panel-hand-count-' +
+                        player.id +
+                        '" class="aoc-player-panel-supply-count aoc-squada"></span><i id="aoc-player-panel-hand-' +
+                        player.id +
+                        '" class="aoc-hand-icon"></i></div>';
+                break;
             case "money":
                 otherSupplyDiv =
                     '<div id="aoc-player-panel-money-' +
@@ -1732,6 +1792,7 @@ var PlayerController = /** @class */ (function () {
         this.createPlayerCounter(player, "point", player.score);
         // TODO:calculate income
         this.createPlayerCounter(player, "income", 0);
+        this.createPlayerCounter(player, "hand", player.handSize);
     };
     /**
      * Create and initialize a player counter

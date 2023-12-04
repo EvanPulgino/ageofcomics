@@ -382,3 +382,50 @@ html {
   cursor: not-allowed !important;
   pointer-events: none !important;
 }
+
+#aoc-player-hands {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+  justify-content: center;
+  padding-top: 15px;
+  position: fixed;
+  bottom: -30px;
+  left: -45px;
+  z-index: 1000;
+}
+
+.aoc-floating-hand-wrapper {
+  background-color: rgba(40, 39, 36, 0.78);
+  border-right: 1px solid #7c5d45;
+  border-top: 1px solid #7c5d45;
+  border-top-right-radius: 8px;
+  box-shadow: 0 0 20px 20px #ff0;
+  z-index: 1000;
+  transform: scale(0.75);
+}
+
+.aoc-box-shadow-brown {
+  box-shadow: 0 0 20px 20px $brown;
+}
+
+.aoc-box-shadow-salmon {
+  box-shadow: 0 0 20px 20px $salmon;
+}
+
+.aoc-box-shadow-teal {
+  box-shadow: 0 0 20px 20px $teal;
+}
+
+.aoc-box-shadow-yellow {
+  box-shadow: 0 0 20px 20px $yellow;
+}
+
+.aoc-floating-hand {
+  height: 100%;
+  align-items: flex-start;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+}

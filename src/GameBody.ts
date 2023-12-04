@@ -154,6 +154,7 @@ class GameBody extends GameBasics {
    */
   notif_developComic(notif: any): void {
     this.cardController.slideCardToPlayerHand(notif.args.comic);
+    this.playerController.adjustHand(notif.args.player, 1);
   }
 
   /**
@@ -166,6 +167,7 @@ class GameBody extends GameBasics {
    */
   notif_developComicPrivate(notif: any): void {
     this.cardController.slideCardToPlayerHand(notif.args.comic);
+    this.playerController.adjustHand(notif.args.player, 1);
   }
 
   /**
@@ -179,6 +181,7 @@ class GameBody extends GameBasics {
    */
   notif_discardCard(notif: any): void {
     this.cardController.discardCard(notif.args.card, notif.args.player.id);
+    this.playerController.adjustHand(notif.args.player, -1);
   }
 
   /**
@@ -281,6 +284,7 @@ class GameBody extends GameBasics {
    */
   notif_gainStartingComic(notif: any): void {
     this.cardController.gainStartingComic(notif.args.comic_card);
+    this.playerController.adjustHand(notif.args.player, 1);
   }
 
   /**
@@ -293,6 +297,7 @@ class GameBody extends GameBasics {
    */
   notif_gainStartingComicPrivate(notif: any): void {
     this.cardController.gainStartingComic(notif.args.comic_card);
+    this.playerController.adjustHand(notif.args.player, 1);
   }
 
   /**
@@ -323,6 +328,7 @@ class GameBody extends GameBasics {
    */
   notif_hireCreative(notif: any): void {
     this.cardController.slideCardToPlayerHand(notif.args.card);
+    this.playerController.adjustHand(notif.args.player, 1);
   }
 
   /**
@@ -335,6 +341,7 @@ class GameBody extends GameBasics {
    */
   notif_hireCreativePrivate(notif: any): void {
     this.cardController.slideCardToPlayerHand(notif.args.card);
+    this.playerController.adjustHand(notif.args.player, 1);
   }
 
   /**

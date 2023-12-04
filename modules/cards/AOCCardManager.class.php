@@ -38,6 +38,22 @@ class AOCCardManager extends APP_GameClass {
     }
 
     /**
+     * Count the number of cards a player has in their hand
+     *
+     * @param int $playerId The ID of the player
+     * @return int The number of cards in the player's hand
+     */
+    public function countCardsInPlayerHand($playerId) {
+        $sql =
+            "SELECT COUNT(*) FROM card WHERE card_owner = " .
+            $playerId .
+            " AND card_location = " .
+            LOCATION_HAND;
+        $count = self::getUniqueValueFromDB($sql);
+        return $count;
+    }
+
+    /**
      * Send a specific card to its discard pile
      *
      * @param int $cardId The ID of the card being discarded

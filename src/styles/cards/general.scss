@@ -44,6 +44,12 @@
   transform: scale(1.25);
 }
 
+.aoc-hand-icon {
+  background-image: url(./img/aoc_hand_icon.png);
+  height: 44px;
+  width: 44px;
+}
+
 .aoc-creative-card {
   background-image: url(./img/aoc_creatives.jpg);
   background-repeat: no-repeat;
@@ -378,4 +384,8 @@
 
 .aoc-hand .aoc-card {
   transform: scale(0.75);
+}
+
+.aoc-floating-hand .aoc-card {
+  position: unset !important;
 }

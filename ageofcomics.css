@@ -392,6 +392,53 @@ html {
   pointer-events: none !important;
 }
 
+#aoc-player-hands {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+  justify-content: center;
+  padding-top: 15px;
+  position: fixed;
+  bottom: -30px;
+  left: -45px;
+  z-index: 1000;
+}
+
+.aoc-floating-hand-wrapper {
+  background-color: rgba(40, 39, 36, 0.78);
+  border-right: 1px solid #7c5d45;
+  border-top: 1px solid #7c5d45;
+  border-top-right-radius: 8px;
+  box-shadow: 0 0 20px 20px #ff0;
+  z-index: 1000;
+  transform: scale(0.75);
+}
+
+.aoc-box-shadow-brown {
+  box-shadow: 0 0 20px 20px #8e514e;
+}
+
+.aoc-box-shadow-salmon {
+  box-shadow: 0 0 20px 20px #e5977a;
+}
+
+.aoc-box-shadow-teal {
+  box-shadow: 0 0 20px 20px #5ba59f;
+}
+
+.aoc-box-shadow-yellow {
+  box-shadow: 0 0 20px 20px #f5c86e;
+}
+
+.aoc-floating-hand {
+  height: 100%;
+  align-items: flex-start;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+}
+
 /**
 *
 * Styles for agent discs
@@ -589,7 +636,6 @@ html {
 }
 
 .aoc-board-section {
-  border-radius: 15px;
   filter: drop-shadow(4px 4px 4px black);
   -webkit-filter: drop-shadow(4px 4px 5px #000);
 }
@@ -3126,6 +3172,12 @@ html {
   transform: scale(1.25);
 }
 
+.aoc-hand-icon {
+  background-image: url(./img/aoc_hand_icon.png);
+  height: 44px;
+  width: 44px;
+}
+
 .aoc-creative-card {
   background-image: url(./img/aoc_creatives.jpg);
   background-repeat: no-repeat;
@@ -3460,6 +3512,10 @@ html {
 
 .aoc-hand .aoc-card {
   transform: scale(0.75);
+}
+
+.aoc-floating-hand .aoc-card {
+  position: unset !important;
 }
 
 /**

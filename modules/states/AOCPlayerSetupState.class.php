@@ -89,6 +89,7 @@ class AOCPlayerSetupState {
             [
                 "player_name" => $player->getName(),
                 "player_id" => $player->getId(),
+                "player" => $player->getUiData(),
                 "comic_genre" => $this->game->formatNotificationString(
                     $drawnCard->getGenre(),
                     $drawnCard->getGenreId()
@@ -103,6 +104,7 @@ class AOCPlayerSetupState {
             [
                 "player_name" => $player->getName(),
                 "player_id" => $player->getId(),
+                "player" => $player->getUiData(),
                 "comic_name" => $this->game->formatNotificationString(
                     $drawnCard->getName(),
                     $drawnCard->getGenreId()

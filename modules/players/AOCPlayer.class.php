@@ -160,7 +160,12 @@ class AOCPlayer {
      */
     private bool $multiActive;
 
-    public function __construct($row) {
+    /**
+     * @var int $handSize The number of cards in the player's hand
+     */
+    private int $handSize;
+
+    public function __construct($row, $handSize) {
         $this->id = (int) $row["id"];
         $this->naturalOrder = (int) $row["naturalOrder"];
         $this->turnOrder = (int) $row["turnOrder"];
@@ -181,6 +186,7 @@ class AOCPlayer {
         $this->cubeTwoLocation = $row["cubeTwoLocation"];
         $this->cubeThreeLocation = $row["cubeThreeLocation"];
         $this->multiActive = $row["multiActive"] == 1;
+        $this->handSize = $handSize;
     }
 
     /**
@@ -595,6 +601,15 @@ class AOCPlayer {
     }
 
     /**
+     * Get the number of cards in the player's hand
+     * 
+     * @return int
+     */
+    public function getHandSize() {
+        return $this->handSize;
+    }
+
+    /**
      * Get the data formatted for the UI
      *
      * @return array
@@ -621,6 +636,7 @@ class AOCPlayer {
             "cubeTwoLocation" => $this->cubeTwoLocation,
             "cubeThreeLocation" => $this->cubeThreeLocation,
             "multiActive" => $this->multiActive,
+            "handSize" => $this->handSize,
         ];
     }
 }
