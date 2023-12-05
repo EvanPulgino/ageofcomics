@@ -107,6 +107,7 @@ var GameBasics = /** @class */ (function (_super) {
      * @returns {void}
      */
     GameBasics.prototype.onEnteringState = function (stateName, args) {
+        this.adaptViewportSize();
         this.debug("onEnteringState: " + stateName, args, this.debugStateInfo());
         this.curstate = stateName;
         args["isCurrentPlayerActive"] = gameui.isCurrentPlayerActive();

@@ -103,6 +103,7 @@ class GameBasics extends GameGui {
    * @returns {void}
    */
   onEnteringState(stateName: string, args: { args: any }): void {
+    this.adaptViewportSize();
     this.debug("onEnteringState: " + stateName, args, this.debugStateInfo());
     this.curstate = stateName;
     args["isCurrentPlayerActive"] = gameui.isCurrentPlayerActive();
