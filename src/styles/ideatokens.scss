@@ -26,7 +26,7 @@
   width: 44px;
 }
 
-#aoc-select-idea-buttons .aoc-idea-token:hover {
+#aoc-select-start-idea-buttons .aoc-idea-token:hover {
   cursor: pointer;
   transform: scale(1.1);
 }
@@ -133,4 +133,24 @@
 .aoc-player-panel-supply .aoc-idea-token {
   text-align: center;
   transform: scale(0.75);
+}
+
+.aoc-start-idea-remove {
+  border-radius: 10px;
+  color: black;
+  cursor: pointer;
+  position: absolute;
+  right: -12px;
+  top: -14px;
+  transition: top 0.3s ease;
+  transition: right 0.3s ease;
+  transition: font-size 0.3s ease;
+  z-index: 100;
+}
+
+.aoc-selection-container:hover .aoc-start-idea-remove {
+  color: red;
+  font-size: 350%;
+  right: -2px;
+  top: 2px;
 }

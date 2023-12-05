@@ -171,10 +171,7 @@ class PerformIdeas implements State {
       '" class="fa fa-lg fa-times-circle aoc-start-idea-remove aoc-hidden"></i></div>';
 
     // Add div to page
-    this.game.createHtml(
-      ideaSelectionDiv,
-      "aoc-select-supply-ideas-containers"
-    );
+    this.game.createHtml(ideaSelectionDiv, "aoc-select-supply-idea-containers");
 
     // Add click listener to cancel button
     this.connections["aoc-idea-cancel-" + idNum] = dojo.connect(
@@ -216,7 +213,7 @@ class PerformIdeas implements State {
 
     // Create divs for idea selection containers
     var selectionBoxesDiv =
-      "<div id='aoc-select-supply-ideas-containers'></div>";
+      "<div id='aoc-select-supply-idea-containers' class='aoc-select-containers'></div>";
     this.game.createHtml(selectionBoxesDiv, "aoc-idea-token-selection");
     this.createIdeaSelectionDiv(1);
     this.createIdeaSelectionDiv(2);

@@ -1,0 +1,76 @@
+/**
+ *
+ * General styles
+ *
+ */
+
+#page-title {
+  background-image: url(./img/aoc_paper.jpg);
+  background-size: cover;
+}
+
+#player_boards {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.aoc-box-shadow-brown {
+  box-shadow: 0 0 20px 20px $brown;
+}
+
+.aoc-box-shadow-salmon {
+  box-shadow: 0 0 20px 20px $salmon;
+}
+
+.aoc-box-shadow-teal {
+  box-shadow: 0 0 20px 20px $teal;
+}
+
+.aoc-box-shadow-yellow {
+  box-shadow: 0 0 20px 20px $yellow;
+}
+
+.aoc-button:hover {
+  transform: scale(1.05);
+  background: green !important;
+}
+
+.aoc-button-disabled {
+  background-color: #ccc !important;
+  color: #fff !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
+
+.aoc-clickable {
+  outline: 4px solid red;
+  cursor: pointer;
+}
+
+.aoc-hidden {
+  display: none !important;
+}
+
+.aoc-notify-text {
+  font-weight: 700;
+}
+
+.aoc-selected {
+  outline: 4px solid green;
+  cursor: pointer;
+}
+
+.aoc-squada {
+  font-family: "Squada One", cursive;
+}
+
+.player-board {
+  background-image: url(./img/aoc_paper.jpg);
+  background-size: cover;
+  order: 2;
+}
+
+.player-name {
+  text-shadow: 1px 1px 1px black;
+  font-weight: bolder;
+}

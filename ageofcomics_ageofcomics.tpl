@@ -21,8 +21,8 @@
             <div id="aoc-select-start-items-header">
                 <div id="aoc-select-start-items-header-text" class="aoc-squada">{SELECT_START_ITEMS}</div>
             </div>
-            <div id="aoc-select-buttons">
-                <div id="aoc-select-comic-genre">
+            <div id="aoc-select-start-comic-buttons">
+                <div id="aoc-select-start-comic-genre">
                     <div id="aoc-select-starting-comic-crime" class="aoc-comic-card aoc-comic-crime-facedown"></div>
                     <div id="aoc-select-starting-comic-horror" class="aoc-comic-card aoc-comic-horror-facedown">
                     </div>
@@ -34,8 +34,8 @@
                     <div id="aoc-select-starting-comic-western" class="aoc-comic-card aoc-comic-western-facedown">
                     </div>
                 </div>
-                <div id="aoc-select-ideas">
-                    <div id="aoc-select-idea-buttons">
+                <div id="aoc-select-start-ideas">
+                    <div id="aoc-select-start-idea-buttons">
                         <div id="aoc-select-starting-idea-crime" class="aoc-idea-token aoc-idea-token-crime">
                         </div>
                         <div id="aoc-select-starting-idea-horror" class="aoc-idea-token aoc-idea-token-horror">
@@ -48,7 +48,7 @@
                         <div id="aoc-select-starting-idea-western" class="aoc-idea-token aoc-idea-token-western">
                         </div>
                     </div>
-                    <div id="aoc-select-containers"></div>
+                    <div id="aoc-select-start-idea-containers" class="aoc-select-containers"></div>
                 </div>
             </div>
         </div>

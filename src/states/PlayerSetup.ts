@@ -65,7 +65,7 @@ class PlayerSetup implements State {
     dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
     dojo.query(".aoc-card-unselected").removeClass("aoc-card-unselected");
     // Empty the starting items selection divs
-    dojo.empty("aoc-select-containers");
+    dojo.empty("aoc-select-start-idea-containers");
     // Adapt the viewport size
     this.game.adaptViewportSize();
   }
@@ -102,7 +102,7 @@ class PlayerSetup implements State {
     // Get the selected comic genre
     var selectedComic = dojo.query(
       ".aoc-card-selected",
-      "aoc-select-comic-genre"
+      "aoc-select-start-comic-genre"
     )[0];
 
     // Get the genre key
@@ -182,7 +182,7 @@ class PlayerSetup implements State {
       idNum +
       '" class="fa fa-lg fa-times-circle aoc-start-idea-remove aoc-hidden"></i></div>';
 
-    this.game.createHtml(ideaSelectionDiv, "aoc-select-containers");
+    this.game.createHtml(ideaSelectionDiv, "aoc-select-start-idea-containers");
   }
 
   /**
@@ -231,7 +231,7 @@ class PlayerSetup implements State {
     dojo.addClass(divId, "aoc-card-selected");
 
     // Add the unselected class to all other comics
-    var allComics = dojo.byId("aoc-select-comic-genre").children;
+    var allComics = dojo.byId("aoc-select-start-comic-genre").children;
     for (var i = 0; i < allComics.length; i++) {
       var comic = allComics[i];
       if (comic.id != divId) {
@@ -290,7 +290,7 @@ class PlayerSetup implements State {
     // Get the selected comic
     var selectedComic = dojo.query(
       ".aoc-card-selected",
-      "aoc-select-comic-genre"
+      "aoc-select-start-comic-genre"
     );
 
     // If there are no empty starting idea selection divs and there is a selected comic, enable the confirm button

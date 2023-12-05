@@ -38,13 +38,13 @@ $four: 100%;
   width: 39.33px;
 }
 
-#aoc-select-comic-genre .aoc-comic-card {
+#aoc-select-start-comic-genre .aoc-comic-card {
   position: relative !important;
 }
 
-#aoc-select-comic-genre .aoc-comic-card:hover {
+#aoc-select-start-comic-genre .aoc-comic-card:hover {
   cursor: pointer;
-  transform: scale(1);
+  transform: scale(1.05);
 }
 
 #aoc-comics-available .aoc-comic-card {

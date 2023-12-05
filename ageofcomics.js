@@ -2705,7 +2705,7 @@ var PerformIdeas = /** @class */ (function () {
             idNum +
             '" class="fa fa-lg fa-times-circle aoc-start-idea-remove aoc-hidden"></i></div>';
         // Add div to page
-        this.game.createHtml(ideaSelectionDiv, "aoc-select-supply-ideas-containers");
+        this.game.createHtml(ideaSelectionDiv, "aoc-select-supply-idea-containers");
         // Add click listener to cancel button
         this.connections["aoc-idea-cancel-" + idNum] = dojo.connect(dojo.byId("aoc-idea-cancel-" + idNum), "onclick", dojo.hitch(this, "removeIdea", idNum));
     };
@@ -2730,7 +2730,7 @@ var PerformIdeas = /** @class */ (function () {
             this.connections["aoc-select-supply-idea-token-" + genre] = dojo.connect(dojo.byId("aoc-select-supply-idea-token-" + genre), "onclick", dojo.hitch(this, "selectIdeaFromSupply", genre));
         }
         // Create divs for idea selection containers
-        var selectionBoxesDiv = "<div id='aoc-select-supply-ideas-containers'></div>";
+        var selectionBoxesDiv = "<div id='aoc-select-supply-idea-containers' class='aoc-select-containers'></div>";
         this.game.createHtml(selectionBoxesDiv, "aoc-idea-token-selection");
         this.createIdeaSelectionDiv(1);
         this.createIdeaSelectionDiv(2);
@@ -3019,7 +3019,7 @@ var PlayerSetup = /** @class */ (function () {
         dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
         dojo.query(".aoc-card-unselected").removeClass("aoc-card-unselected");
         // Empty the starting items selection divs
-        dojo.empty("aoc-select-containers");
+        dojo.empty("aoc-select-start-idea-containers");
         // Adapt the viewport size
         this.game.adaptViewportSize();
     };
@@ -3052,7 +3052,7 @@ var PlayerSetup = /** @class */ (function () {
         // Disable the confirm button
         dojo.addClass("aoc-confirm-starting-items", "aoc-button-disabled");
         // Get the selected comic genre
-        var selectedComic = dojo.query(".aoc-card-selected", "aoc-select-comic-genre")[0];
+        var selectedComic = dojo.query(".aoc-card-selected", "aoc-select-start-comic-genre")[0];
         // Get the genre key
         var selectedComicGenre = this.game.getGenreId(selectedComic.id.split("-")[4]);
         // Get the selected idea genres
@@ -3108,7 +3108,7 @@ var PlayerSetup = /** @class */ (function () {
             '" class="aoc-selection-container"><i id="aoc-idea-cancel-' +
             idNum +
             '" class="fa fa-lg fa-times-circle aoc-start-idea-remove aoc-hidden"></i></div>';
-        this.game.createHtml(ideaSelectionDiv, "aoc-select-containers");
+        this.game.createHtml(ideaSelectionDiv, "aoc-select-start-idea-containers");
     };
     /**
      * Gets the first empty starting idea selection div
@@ -3150,7 +3150,7 @@ var PlayerSetup = /** @class */ (function () {
         var divId = "aoc-select-starting-comic-" + genre;
         dojo.addClass(divId, "aoc-card-selected");
         // Add the unselected class to all other comics
-        var allComics = dojo.byId("aoc-select-comic-genre").children;
+        var allComics = dojo.byId("aoc-select-start-comic-genre").children;
         for (var i = 0; i < allComics.length; i++) {
             var comic = allComics[i];
             if (comic.id != divId) {
@@ -3196,7 +3196,7 @@ var PlayerSetup = /** @class */ (function () {
         // Get the first empty starting idea selection div
         var firstEmptySelectionDiv = this.getFirstEmptyIdeaSelectionDiv();
         // Get the selected comic
-        var selectedComic = dojo.query(".aoc-card-selected", "aoc-select-comic-genre");
+        var selectedComic = dojo.query(".aoc-card-selected", "aoc-select-start-comic-genre");
         // If there are no empty starting idea selection divs and there is a selected comic, enable the confirm button
         if (firstEmptySelectionDiv == null && selectedComic.length == 1) {
             dojo.toggleClass("aoc-confirm-starting-items", "aoc-button-disabled", false);

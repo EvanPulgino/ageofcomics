@@ -15,17 +15,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Squada+One&display=swap");
 /**
  *
- * Styles for overall table layout
+ * CSS variables
  *
  */
-html {
-  background-image: url(./img/aoc_table.jpg);
-  font-size: calc(15px + 0.390625vw);
-  background-size: contain;
-}
-
-.aoc-notify-text {
-  font-weight: 700;
+/**
+ *
+ * General styles
+ *
+ */
+#page-title {
+  background-image: url(./img/aoc_paper.jpg);
+  background-size: cover;
 }
 
 #player_boards {
@@ -33,32 +33,25 @@ html {
   flex-flow: row wrap;
 }
 
-.player-board {
-  background-image: url(./img/aoc_paper.jpg);
-  background-size: cover;
-  order: 2;
+.aoc-box-shadow-brown {
+  box-shadow: 0 0 20px 20px #8e514e;
 }
 
-.player-name {
-  text-shadow: 1px 1px 1px black;
-  font-weight: bolder;
+.aoc-box-shadow-salmon {
+  box-shadow: 0 0 20px 20px #e5977a;
 }
 
-#page-title {
-  background-image: url(./img/aoc_paper.jpg);
-  background-size: cover;
+.aoc-box-shadow-teal {
+  box-shadow: 0 0 20px 20px #5ba59f;
 }
 
-#aoc-game-status-panel {
-  order: 1 !important;
+.aoc-box-shadow-yellow {
+  box-shadow: 0 0 20px 20px #f5c86e;
 }
 
-.aoc-squada {
-  font-family: "Squada One", cursive;
-}
-
-.aoc-hidden {
-  display: none !important;
+.aoc-button:hover {
+  transform: scale(1.05);
+  background: green !important;
 }
 
 .aoc-button-disabled {
@@ -73,41 +66,78 @@ html {
   cursor: pointer;
 }
 
+.aoc-hidden {
+  display: none !important;
+}
+
+.aoc-notify-text {
+  font-weight: 700;
+}
+
 .aoc-selected {
   outline: 4px solid green;
   cursor: pointer;
 }
 
-.aoc-button:hover {
-  transform: scale(1.05);
-  background: green !important;
+.aoc-squada {
+  font-family: "Squada One", cursive;
 }
 
-.aoc-start-idea-remove {
-  border-radius: 10px;
-  color: black;
-  cursor: pointer;
-  position: absolute;
-  right: -12px;
-  top: -14px;
-  transition: top 0.3s ease;
-  transition: right 0.3s ease;
-  transition: font-size 0.3s ease;
-  z-index: 100;
+.player-board {
+  background-image: url(./img/aoc_paper.jpg);
+  background-size: cover;
+  order: 2;
 }
 
-.aoc-selection-container:hover .aoc-start-idea-remove {
-  color: red;
-  font-size: 350%;
-  right: -2px;
-  top: 2px;
+.player-name {
+  text-shadow: 1px 1px 1px black;
+  font-weight: bolder;
 }
 
-#aoc-overall {
+/**
+ *
+ * Styles for overall page layout
+ *
+ */
+html {
+  background-image: url(./img/aoc_table.jpg);
+  font-size: calc(15px + 0.390625vw);
+  background-size: contain;
+}
+
+#aoc-card-market {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+}
+
+#aoc-common-area {
   align-items: center;
   display: flex;
-  flex-direction: column;
+  flex-flow: row wrap;
+  gap: 10px;
   justify-content: center;
+  padding-top: 15px;
+}
+
+#aoc-game-status {
+  padding-bottom: 8px;
+}
+
+#aoc-game-status-mastery-container {
+  align-items: center;
+  display: flex;
+  flex-flow: row wrap;
+  margin: 0 3px;
+  padding-top: 0;
+  position: relative;
+  text-align: center;
+}
+
+#aoc-game-status-panel {
+  border-image: none;
+  order: 1 !important;
+  position: relative;
 }
 
 #aoc-gboard {
@@ -128,6 +158,70 @@ html {
   width: 100%;
 }
 
+#aoc-overall {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#aoc-player-hands {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+  justify-content: center;
+  padding-top: 15px;
+  position: fixed;
+  bottom: -30px;
+  left: -45px;
+  z-index: 1000;
+}
+
+#aoc-players-section {
+  align-items: center;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 25px;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  padding-bottom: 25px;
+}
+
+#aoc-select-start-comic-buttons {
+  align-items: center;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+#aoc-select-start-comic-genre {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 15px;
+  justify-content: center;
+  transform: scale(0.75);
+}
+
+#aoc-select-start-ideas {
+  align-items: center;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+#aoc-select-start-idea-buttons {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+  justify-content: center;
+}
+
 #aoc-select-start-items {
   background-color: rgba(233, 225, 204, 0.9);
   border: 5px solid;
@@ -144,155 +238,30 @@ html {
   width: 100%;
 }
 
-#aoc-select-buttons {
-  align-items: center;
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-  gap: 15px;
-}
-
-#aoc-select-comic-genre {
-  align-items: center;
-  display: flex;
-  flex-flow: row nowrap;
-  gap: 15px;
-  justify-content: center;
-  transform: scale(0.75);
-}
-
-#aoc-select-ideas {
-  align-items: center;
-  display: flex;
-  flex-flow: column nowrap;
-  gap: 15px;
-  justify-content: center;
-}
-
-#aoc-select-idea-buttons {
-  align-items: center;
-  display: flex;
-  flex-flow: row nowrap;
-  gap: 10px;
-  justify-content: center;
-}
-
-.aoc-action-panel-row {
-  align-items: center;
-  display: flex;
-  flex-flow: row nowrap;
-  gap: 15px;
-  justify-content: center;
-  padding-bottom: 10px;
-  padding-top: 15px;
-}
-
-#aoc-select-supply-ideas-containers {
-  align-items: center;
-  display: flex;
-  flex-flow: row nowrap;
-  gap: 10px;
-  justify-content: center;
-  padding-left: 10px;
-}
-
-#aoc-select-containers {
-  align-items: center;
-  display: flex;
-  flex-flow: row nowrap;
-  gap: 10px;
-  justify-content: center;
-}
-
-.aoc-selection-container {
-  border: 3px dotted black;
-  height: 45px;
-  width: 45px;
+#aoc-show-chart {
+  transform: scale(1);
+  transform-origin: center top 0px;
+  background: none;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px #000;
   position: relative;
 }
 
-#aoc-common-area {
+#aoc-show-chart-close {
+  right: -23px;
+  top: -23px;
   align-items: center;
   display: flex;
-  flex-flow: row wrap;
-  gap: 10px;
   justify-content: center;
-  padding-top: 15px;
+  position: absolute;
+  z-index: 2;
+  color: #000;
+  background-color: transparent;
 }
 
-#aoc-players-section {
-  align-items: center;
-  display: flex;
-  flex-flow: column nowrap;
-  gap: 25px;
-  justify-content: center;
-  position: relative;
-  width: 100%;
-  padding-bottom: 25px;
-}
-
-#aoc-card-market {
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-}
-
-.aoc-card-row-container {
-  filter: drop-shadow(4px 4px 4px black);
-  -webkit-filter: drop-shadow(4px 4px 5px #000);
-}
-
-.aoc-card-market-row {
-  align-items: center;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-start;
-}
-
-#aoc-token-bank {
-  display: flex;
-  flex-flow: column nowrap;
-  gap: 10px;
-  height: 100%;
-  justify-content: space-evenly;
-}
-
-#aoc-small-tokens {
-  display: flex;
-  flex-flow: row nowrap;
-  gap: 10px;
-}
-
-.aoc-icon-size {
-  font-size: 44px;
-  line-height: 40px;
-  text-align: center;
-}
-
-#aoc-game-status-panel {
-  border-image: none;
-  position: relative;
-}
-
-#aoc-game-status {
-  padding-bottom: 8px;
-}
-
-.aoc-game-status-row {
-  align-items: center;
-  display: flex;
-  justify-content: space-around;
-  padding: 5px;
-}
-
-#aoc-game-status-mastery-container {
-  align-items: center;
-  display: flex;
-  flex-flow: row wrap;
-  margin: 0 3px;
-  padding-top: 0;
-  position: relative;
-  text-align: center;
+#aoc-show-chart-close:hover {
+  transform: scale(1.5);
+  color: red !important;
 }
 
 #aoc-show-chart-container {
@@ -331,39 +300,28 @@ html {
   transform-origin: left top 0px;
 }
 
-#aoc-show-chart {
-  transform: scale(1);
-  transform-origin: center top 0px;
-  background: none;
-  border-radius: 8px;
-  box-shadow: 0 3px 8px #000;
-  position: relative;
+#aoc-small-tokens {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
 }
 
-#aoc-show-chart-close {
-  right: -23px;
-  top: -23px;
+#aoc-token-bank {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 10px;
+  height: 100%;
+  justify-content: space-evenly;
+}
+
+.aoc-action-panel-row {
   align-items: center;
   display: flex;
+  flex-flow: row nowrap;
+  gap: 15px;
   justify-content: center;
-  position: absolute;
-  z-index: 2;
-  color: #000;
-  background-color: transparent;
-}
-
-#aoc-show-chart-close:hover {
-  transform: scale(1.5);
-  color: red !important;
-}
-
-.aoc-status-button {
-  color: #000 !important;
-}
-
-.aoc-status-button:hover {
-  transform: scale(1.5);
-  color: red !important;
+  padding-bottom: 10px;
+  padding-top: 15px;
 }
 
 .aoc-arrow:hover {
@@ -371,10 +329,46 @@ html {
   cursor: pointer;
 }
 
-.aoc-search-icon {
-  background-image: url(./img/aoc_search_icon.png);
-  height: 44px;
-  width: 56px;
+.aoc-card-market-row {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+}
+
+.aoc-card-row-container {
+  filter: drop-shadow(4px 4px 4px black);
+  -webkit-filter: drop-shadow(4px 4px 5px #000);
+}
+
+.aoc-floating-hand {
+  height: 100%;
+  align-items: flex-start;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+}
+
+.aoc-floating-hand-wrapper {
+  background-color: rgba(40, 39, 36, 0.78);
+  border-right: 1px solid #7c5d45;
+  border-top: 1px solid #7c5d45;
+  border-top-right-radius: 8px;
+  z-index: 1000;
+  transform: scale(0.75);
+}
+
+.aoc-game-status-row {
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+  padding: 5px;
+}
+
+.aoc-icon-size {
+  font-size: 44px;
+  line-height: 40px;
+  text-align: center;
 }
 
 .aoc-image-clickable {
@@ -393,51 +387,34 @@ html {
   pointer-events: none !important;
 }
 
-#aoc-player-hands {
+.aoc-select-containers {
   align-items: center;
   display: flex;
   flex-flow: row nowrap;
   gap: 10px;
   justify-content: center;
-  padding-top: 15px;
-  position: fixed;
-  bottom: -30px;
-  left: -45px;
-  z-index: 1000;
 }
 
-.aoc-floating-hand-wrapper {
-  background-color: rgba(40, 39, 36, 0.78);
-  border-right: 1px solid #7c5d45;
-  border-top: 1px solid #7c5d45;
-  border-top-right-radius: 8px;
-  box-shadow: 0 0 20px 20px #ff0;
-  z-index: 1000;
-  transform: scale(0.75);
+.aoc-selection-container {
+  border: 3px dotted black;
+  height: 45px;
+  width: 45px;
+  position: relative;
 }
 
-.aoc-box-shadow-brown {
-  box-shadow: 0 0 20px 20px #8e514e;
+.aoc-status-button {
+  color: #000 !important;
 }
 
-.aoc-box-shadow-salmon {
-  box-shadow: 0 0 20px 20px #e5977a;
+.aoc-status-button:hover {
+  transform: scale(1.5);
+  color: red !important;
 }
 
-.aoc-box-shadow-teal {
-  box-shadow: 0 0 20px 20px #5ba59f;
-}
-
-.aoc-box-shadow-yellow {
-  box-shadow: 0 0 20px 20px #f5c86e;
-}
-
-.aoc-floating-hand {
-  height: 100%;
-  align-items: flex-start;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-start;
+.aoc-search-icon {
+  background-image: url(./img/aoc_search_icon.png);
+  height: 44px;
+  width: 56px;
 }
 
 /**
@@ -1053,7 +1030,7 @@ html {
   width: 44px;
 }
 
-#aoc-select-idea-buttons .aoc-idea-token:hover {
+#aoc-select-start-idea-buttons .aoc-idea-token:hover {
   cursor: pointer;
   transform: scale(1.1);
 }
@@ -1161,6 +1138,26 @@ html {
 .aoc-player-panel-supply .aoc-idea-token {
   text-align: center;
   transform: scale(0.75);
+}
+
+.aoc-start-idea-remove {
+  border-radius: 10px;
+  color: black;
+  cursor: pointer;
+  position: absolute;
+  right: -12px;
+  top: -14px;
+  transition: top 0.3s ease;
+  transition: right 0.3s ease;
+  transition: font-size 0.3s ease;
+  z-index: 100;
+}
+
+.aoc-selection-container:hover .aoc-start-idea-remove {
+  color: red;
+  font-size: 350%;
+  right: -2px;
+  top: 2px;
 }
 
 /**
@@ -2731,13 +2728,13 @@ html {
   width: 39.33px;
 }
 
-#aoc-select-comic-genre .aoc-comic-card {
+#aoc-select-start-comic-genre .aoc-comic-card {
   position: relative !important;
 }
 
-#aoc-select-comic-genre .aoc-comic-card:hover {
+#aoc-select-start-comic-genre .aoc-comic-card:hover {
   cursor: pointer;
-  transform: scale(1);
+  transform: scale(1.05);
 }
 
 #aoc-comics-available .aoc-comic-card {
