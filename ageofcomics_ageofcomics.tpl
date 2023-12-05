@@ -17,6 +17,41 @@
 
 <div id="aoc-gboard">
     <div id="aoc-layout">
+        <div id="aoc-select-start-items" class="whiteblock" style="display: none;">
+            <div id="aoc-select-start-items-header">
+                <div id="aoc-select-start-items-header-text" class="aoc-squada">{SELECT_START_ITEMS}</div>
+            </div>
+            <div id="aoc-select-buttons">
+                <div id="aoc-select-comic-genre">
+                    <div id="aoc-select-starting-comic-crime" class="aoc-comic-card aoc-comic-crime-facedown"></div>
+                    <div id="aoc-select-starting-comic-horror" class="aoc-comic-card aoc-comic-horror-facedown">
+                    </div>
+                    <div id="aoc-select-starting-comic-romance" class="aoc-comic-card aoc-comic-romance-facedown">
+                    </div>
+                    <div id="aoc-select-starting-comic-scifi" class="aoc-comic-card aoc-comic-scifi-facedown"></div>
+                    <div id="aoc-select-starting-comic-superhero" class="aoc-comic-card aoc-comic-superhero-facedown">
+                    </div>
+                    <div id="aoc-select-starting-comic-western" class="aoc-comic-card aoc-comic-western-facedown">
+                    </div>
+                </div>
+                <div id="aoc-select-ideas">
+                    <div id="aoc-select-idea-buttons">
+                        <div id="aoc-select-starting-idea-crime" class="aoc-idea-token aoc-idea-token-crime">
+                        </div>
+                        <div id="aoc-select-starting-idea-horror" class="aoc-idea-token aoc-idea-token-horror">
+                        </div>
+                        <div id="aoc-select-starting-idea-romance" class="aoc-idea-token aoc-idea-token-romance">
+                        </div>
+                        <div id="aoc-select-starting-idea-scifi" class="aoc-idea-token aoc-idea-token-scifi"></div>
+                        <div id="aoc-select-starting-idea-superhero" class="aoc-idea-token aoc-idea-token-superhero">
+                        </div>
+                        <div id="aoc-select-starting-idea-western" class="aoc-idea-token aoc-idea-token-western">
+                        </div>
+                    </div>
+                    <div id="aoc-select-containers"></div>
+                </div>
+            </div>
+        </div>
         <div id="aoc-common-area">
             <div id="aoc-board" class="aoc-board-image aoc-board-section aoc-board">
                 <div id="aoc-player-order">
@@ -233,41 +268,6 @@
                             <div id="aoc-comics-trash" class="aoc-trash-icon"></div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div id="aoc-select-start-items" class="whiteblock" style="display: none;">
-            <div id="aoc-select-start-items-header">
-                <div id="aoc-select-start-items-header-text" class="aoc-squada">{SELECT_START_ITEMS}</div>
-            </div>
-            <div id="aoc-select-buttons">
-                <div id="aoc-select-comic-genre">
-                    <div id="aoc-select-starting-comic-crime" class="aoc-comic-card aoc-comic-crime-facedown"></div>
-                    <div id="aoc-select-starting-comic-horror" class="aoc-comic-card aoc-comic-horror-facedown">
-                    </div>
-                    <div id="aoc-select-starting-comic-romance" class="aoc-comic-card aoc-comic-romance-facedown">
-                    </div>
-                    <div id="aoc-select-starting-comic-scifi" class="aoc-comic-card aoc-comic-scifi-facedown"></div>
-                    <div id="aoc-select-starting-comic-superhero" class="aoc-comic-card aoc-comic-superhero-facedown">
-                    </div>
-                    <div id="aoc-select-starting-comic-western" class="aoc-comic-card aoc-comic-western-facedown">
-                    </div>
-                </div>
-                <div id="aoc-select-ideas">
-                    <div id="aoc-select-idea-buttons">
-                        <div id="aoc-select-starting-idea-crime" class="aoc-idea-token aoc-idea-token-crime">
-                        </div>
-                        <div id="aoc-select-starting-idea-horror" class="aoc-idea-token aoc-idea-token-horror">
-                        </div>
-                        <div id="aoc-select-starting-idea-romance" class="aoc-idea-token aoc-idea-token-romance">
-                        </div>
-                        <div id="aoc-select-starting-idea-scifi" class="aoc-idea-token aoc-idea-token-scifi"></div>
-                        <div id="aoc-select-starting-idea-superhero" class="aoc-idea-token aoc-idea-token-superhero">
-                        </div>
-                        <div id="aoc-select-starting-idea-western" class="aoc-idea-token aoc-idea-token-western">
-                        </div>
-                    </div>
-                    <div id="aoc-select-containers"></div>
                 </div>
             </div>
         </div>
