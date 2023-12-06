@@ -61,6 +61,18 @@
   width: 172px;
 }
 
+#aoc-print-artists-menu .aoc-card {
+  position: unset !important;
+}
+
+#aoc-print-comics-menu .aoc-card {
+  position: unset !important;
+}
+
+#aoc-print-writers-menu .aoc-card {
+  position: unset !important;
+}
+
 #aoc-artists-available .aoc-card:hover {
   transform: scale(1);
   z-index: 100;
@@ -371,6 +383,7 @@
 
 .aoc-card-selected {
   border: 5px solid black;
+  cursor: unset !important;
 }
 
 .aoc-card-unselected {
@@ -388,4 +401,8 @@
 
 .aoc-floating-hand .aoc-card {
   position: unset !important;
+}
+
+.aoc-print-menu .aoc-card {
+  cursor: pointer;
 }

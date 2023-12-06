@@ -61,7 +61,7 @@ class PlayerSetup implements State {
   onLeavingState(): void {
     // Hide the starting items selection divs
     dojo.style("aoc-select-start-items", "display", "none");
-    // Remove the click events for the starting items
+    // Remove the css classes from the comics
     dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
     dojo.query(".aoc-card-unselected").removeClass("aoc-card-unselected");
     // Empty the starting items selection divs

@@ -14,6 +14,36 @@
   flex-flow: row wrap;
 }
 
+.aoc-artist-slot-one {
+  top: 111px;
+  left: 30px;
+}
+
+.aoc-artist-slot-two {
+  top: 111px;
+  left: 230px;
+}
+
+.aoc-artist-slot-three {
+  top: 111px;
+  left: 430px;
+}
+
+.aoc-artist-slot-four {
+  top: 111px;
+  left: 630px;
+}
+
+.aoc-artist-slot-five {
+  top: 111px;
+  left: 830px;
+}
+
+.aoc-artist-slot-six {
+  top: 111px;
+  left: 1030px;
+}
+
 .aoc-box-shadow-brown {
   box-shadow: 0 0 20px 20px $brown;
 }
@@ -42,9 +72,45 @@
   pointer-events: none !important;
 }
 
+.aoc-card-slot {
+  height: 242px;
+  width: 172px;
+  position: absolute;
+}
+
 .aoc-clickable {
   outline: 4px solid red;
   cursor: pointer;
+}
+
+.aoc-comic-slot-one {
+  top: 163px;
+  left: 30px;
+}
+
+.aoc-comic-slot-two {
+  top: 163px;
+  left: 230px;
+}
+
+.aoc-comic-slot-three {
+  top: 163px;
+  left: 430px;
+}
+
+.aoc-comic-slot-four {
+  top: 163px;
+  left: 630px;
+}
+
+.aoc-comic-slot-five {
+  top: 163px;
+  left: 830px;
+}
+
+.aoc-comic-slot-six {
+  top: 163px;
+  left: 1030px;
 }
 
 .aoc-hidden {
@@ -62,6 +128,36 @@
 
 .aoc-squada {
   font-family: "Squada One", cursive;
+}
+
+.aoc-writer-slot-one {
+  top: 63px;
+  left: 30px;
+}
+
+.aoc-writer-slot-two {
+  top: 63px;
+  left: 230px;
+}
+
+.aoc-writer-slot-three {
+  top: 63px;
+  left: 430px;
+}
+
+.aoc-writer-slot-four {
+  top: 63px;
+  left: 630px;
+}
+
+.aoc-writer-slot-five {
+  top: 63px;
+  left: 830px;
+}
+
+.aoc-writer-slot-six {
+  top: 63px;
+  left: 1030px;
 }
 
 .player-board {

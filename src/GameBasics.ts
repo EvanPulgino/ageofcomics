@@ -103,8 +103,8 @@ class GameBasics extends GameGui {
    * @returns {void}
    */
   onEnteringState(stateName: string, args: { args: any }): void {
-    this.adaptViewportSize();
     this.debug("onEnteringState: " + stateName, args, this.debugStateInfo());
+    this.adaptViewportSize();
     this.curstate = stateName;
     args["isCurrentPlayerActive"] = gameui.isCurrentPlayerActive();
     this.gameState[stateName].onEnteringState(args);
@@ -125,6 +125,7 @@ class GameBasics extends GameGui {
     this.debug("onLeavingState: " + stateName, this.debugStateInfo());
     this.currentPlayerWasActive = false;
     this.gameState[stateName].onLeavingState();
+    this.adaptViewportSize();
   }
 
   /**

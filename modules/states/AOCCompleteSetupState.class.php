@@ -91,7 +91,6 @@ class AOCCompleteSetupState {
             $cardType,
             null,
             LOCATION_VOID,
-            null
         );
 
         shuffle($cards);
@@ -116,6 +115,7 @@ class AOCCompleteSetupState {
             $cardType,
             null,
             LOCATION_DECK,
+            null,
             CARD_LOCATION_ARG_DESC
         );
 

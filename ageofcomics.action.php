@@ -67,7 +67,10 @@ class action_ageofcomics extends APP_GameAction {
         $comicId = self::getArg("comicId", AT_posint, true);
         $topOfDeck = self::getArg("topOfDeck", AT_bool, true);
 
-        $this->game->states[PERFORM_DEVELOP]->developComic($comicId, $topOfDeck);
+        $this->game->states[PERFORM_DEVELOP]->developComic(
+            $comicId,
+            $topOfDeck
+        );
 
         self::ajaxResponse();
     }
@@ -89,6 +92,22 @@ class action_ageofcomics extends APP_GameAction {
         $creativeType = self::getArg("creativeType", AT_alphanum, true);
 
         $this->game->states[PERFORM_HIRE]->hireCreative($cardId, $creativeType);
+
+        self::ajaxResponse();
+    }
+
+    public function printComic() {
+        self::setAjaxMode();
+
+        $comicId = self::getArg("comicId", AT_posint, true);
+        $artistId = self::getArg("artistId", AT_posint, true);
+        $writerId = self::getArg("writerId", AT_posint, true);
+
+        $this->game->states[PERFORM_PRINT]->printComic(
+            $comicId,
+            $artistId,
+            $writerId
+        );
 
         self::ajaxResponse();
     }

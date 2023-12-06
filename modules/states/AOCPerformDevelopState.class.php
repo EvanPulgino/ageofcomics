@@ -102,23 +102,21 @@ class AOCPerformDevelopState {
                 $comic->getName(),
                 $comic->getGenreId()
             );
-        
+
         $notificationString = $topOfDeck
-            ? clienttranslate('${player_name} develops a ${itemString} from the top card of the deck')
+            ? clienttranslate(
+                '${player_name} develops a ${itemString} from the top card of the deck'
+            )
             : clienttranslate('${player_name} develops ${itemString}');
 
         // Notify players of the card drawn. If not active player, only show the card back
-        $this->game->notifyAllPlayers(
-            "developComic",
-            $notificationString,
-            [
-                "player" => $activePlayer->getUiData(),
-                "player_id" => $activePlayer->getId(),
-                "player_name" => $activePlayer->getName(),
-                "comic" => $comic->getUiData(0),
-                "itemString" => $notificationItemString,
-            ]
-        );
+        $this->game->notifyAllPlayers("developComic", $notificationString, [
+            "player" => $activePlayer->getUiData(),
+            "player_id" => $activePlayer->getId(),
+            "player_name" => $activePlayer->getName(),
+            "comic" => $comic->getUiData(0),
+            "itemString" => $notificationItemString,
+        ]);
         // Notify active player of the card drawn. Show the face-up card
         $this->game->notifyPlayer(
             $activePlayer->getId(),
@@ -227,6 +225,7 @@ class AOCPerformDevelopState {
             CARD_TYPE_COMIC,
             null,
             LOCATION_DECK,
+            null,
             CARD_LOCATION_ARG_DESC
         );
 
@@ -267,6 +266,7 @@ class AOCPerformDevelopState {
                     CARD_TYPE_COMIC,
                     null,
                     LOCATION_DECK,
+                    null,
                     CARD_LOCATION_ARG_DESC
                 );
                 $this->game->notifyAllPlayers(

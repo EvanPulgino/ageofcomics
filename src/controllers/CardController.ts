@@ -67,6 +67,12 @@ class CardController {
       case globalThis.LOCATION_SUPPLY:
         this.ui.createHtml(cardDiv, "aoc-" + card.type + "s-available");
         break;
+      case globalThis.LOCATION_PLAYER_MAT:
+        this.ui.createHtml(
+          cardDiv,
+          "aoc-" + card.type + "-slot-" + card.locationArg + "-" + card.playerId
+        );
+        break;
     }
   }
 
@@ -198,6 +204,19 @@ class CardController {
     this.slideCardToPlayerHand(card);
   }
 
+  getCardTypeForMatSlot(card: any) {
+    switch (card.typeId) {
+      case globalThis.CARD_TYPE_ARTIST:
+        return "artist";
+      case globalThis.CARD_TYPE_WRITER:
+        return "writer";
+      case globalThis.CARD_TYPE_COMIC:
+        return "comic";
+      case globalThis.CARD_TYPE_RIPOFF:
+        return "comic";
+    }
+  }
+
   /**
    * Moves a card element to a player's hand
    *
@@ -255,6 +274,34 @@ class CardController {
       } else {
         dojo.place(cardDiv, cardToRightOfNewCard, "before");
       }
+    });
+
+    // Play the animation
+    animation.play();
+  }
+
+  slideCardToPlayerMat(player: any, card: any, slot: number): void {
+    // Get the card div
+    const cardDiv = dojo.byId("aoc-card-" + card.id);
+    const cardType = this.getCardTypeForMatSlot(card);
+
+    // Set the card faceup
+    if (cardDiv.classList.contains(card.facedownClass)) {
+      cardDiv.classList.remove(card.facedownClass);
+      cardDiv.classList.add(card.baseClass);
+    }
+
+    // Get the player mat slot div
+    const slotDiv = dojo.byId(
+      "aoc-" + cardType + "-slot-" + slot + "-" + player.id
+    );
+
+    // Create the animation
+    var animation = gameui.slideToObject(cardDiv, slotDiv, 1000);
+    dojo.connect(animation, "onEnd", () => {
+      // After animation ends, remove styling added by animation and place in new parent div
+      dojo.removeAttr(cardDiv, "style");
+      dojo.place(cardDiv, slotDiv);
     });
 
     // Play the animation

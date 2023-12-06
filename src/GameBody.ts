@@ -79,6 +79,8 @@ class GameBody extends GameBasics {
         dojo.subscribe(m.substring(6), this, m);
       }
     }
+    this.notifqueue.setSynchronous("assignComic", 500);
+    this.notifqueue.setSynchronous("assignCreative", 500);
     this.notifqueue.setSynchronous("discardCard", 500);
     this.notifqueue.setSynchronous("discardCardFromDeck", 500);
     this.notifqueue.setSynchronous("gainIdeaFromBoard", 500);
@@ -112,6 +114,14 @@ class GameBody extends GameBasics {
    */
   notif_message(notif: any): void {}
 
+  notif_adjustIdeas(notif: any): void {
+    this.playerController.adjustIdeas(
+      notif.args.player,
+      notif.args.genre,
+      notif.args.numOfIdeas
+    );
+  }
+
   /**
    * Handle 'adjustMoney' notification
    *
@@ -123,6 +133,31 @@ class GameBody extends GameBasics {
    */
   notif_adjustMoney(notif: any): void {
     this.playerController.adjustMoney(notif.args.player, notif.args.amount);
+  }
+
+  notif_assignComic(notif: any): void {
+    this.cardController.slideCardToPlayerMat(
+      notif.args.player,
+      notif.args.card,
+      notif.args.slot
+    );
+
+    if (notif.args.spentIdeas > 0) {
+      this.playerController.adjustIdeas(
+        notif.args.player,
+        notif.args.card.genre,
+        -notif.args.spentIdeas
+      );
+    }
+  }
+
+  notif_assignCreative(notif: any): void {
+    this.cardController.slideCardToPlayerMat(
+      notif.args.player,
+      notif.args.card,
+      notif.args.slot
+    );
+    this.playerController.adjustMoney(notif.args.player, -notif.args.cost);
   }
 
   /**

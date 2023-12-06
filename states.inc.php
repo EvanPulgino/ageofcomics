@@ -178,12 +178,8 @@ $machinestates = [
 
     ST_PERFORM_PRINT => [
         "name" => PERFORM_PRINT,
-        "description" => clienttranslate(
-            '${actplayer} must perform a print action'
-        ),
-        "descriptionmyturn" => clienttranslate(
-            '${you} must perform a print action'
-        ),
+        "description" => clienttranslate('${actplayer} must print a comic'),
+        "descriptionmyturn" => clienttranslate('${you} must print a comic'),
         "type" => STATE_TYPE_ACTIVE_PLAYER,
         "args" => STATE_ARGS_PERFORM_PRINT,
         "possibleactions" => [

@@ -174,11 +174,13 @@ class AOCCardManager extends APP_GameClass {
      * - cardType: The type ID of card (CARD_TYPE_ARTIST, CARD_TYPE_COMIC, CARD_TYPE_RIPOFF, CARD_TYPE_WRITER)
      * - cardGenre: The genre key of the card (CRIME, HORROR, ROMANCE, SCIFI, SUPERHERO, WESTERN)
      * - cardLocation: The location of the card (ie. LOCATION_DECK, LOCATION_DISCARD, LOCATION_HAND)
+     * - cardOwner: The ID of the player who owns the card
      * - orderBy: How to order the cards (ie. "card_location_arg DESC")
      *
      * @param int $cardType The type of card
      * @param int $cardGenre The genre of the card
      * @param int $cardLocation The location of the card
+     * @param int $cardOwner The ID of the player who owns the card
      * @param string $orderBy The column to order by
      * @return AOCArtistCard[]|AOCComicCard[]|AOCRipoffCard[]|AOCWriterCard[] An array of cards
      */
@@ -186,18 +188,27 @@ class AOCCardManager extends APP_GameClass {
         $cardType = null,
         $cardGenre = null,
         $cardLocation = null,
+        $cardOwner = null,
         $orderBy = null
     ) {
+        $operator = "WHERE";
+
         $sql =
-            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card";
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card ";
         if ($cardType) {
-            $sql .= " WHERE card_type = " . $cardType;
+            $sql .= " " . $operator . " card_type = " . $cardType;
+            $operator = "AND";
         }
         if ($cardGenre) {
-            $sql .= " AND card_genre = " . $cardGenre;
+            $sql .= " " . $operator . " card_genre = " . $cardGenre;
+            $operator = "AND";
         }
         if ($cardLocation) {
-            $sql .= " AND card_location = " . $cardLocation;
+            $sql .= " " . $operator . " card_location = " . $cardLocation;
+            $operator = "AND";
+        }
+        if ($cardOwner) {
+            $sql .= " " . $operator . " card_owner = " . $cardOwner;
         }
         if ($orderBy) {
             $sql .= " ORDER BY " . $orderBy;

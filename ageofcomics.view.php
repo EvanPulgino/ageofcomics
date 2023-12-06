@@ -58,6 +58,11 @@ class view_ageofcomics_ageofcomics extends game_view {
         $this->tpl["SELECT_START_ITEMS"] = self::_(
             "Select Starting Comic and Idea Tokens"
         );
+        $this->tpl["SELECT_COMIC_TO_PRINT"] = self::_(
+            "Select a Comic to Print"
+        );
+        $this->tpl["SELECT_WRITER"] = self::_("Select a Writer");
+        $this->tpl["SELECT_ARTIST"] = self::_("Select an Artist");
 
         $this->createPlayersSection($template, $players, "playerarea");
         $this->createPlayersSection($template, $players, "playerhands");

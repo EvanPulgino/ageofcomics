@@ -17,6 +17,20 @@
 
 <div id="aoc-gboard">
     <div id="aoc-layout">
+        <div id="aoc-print-menu" class="aoc-hidden whiteblock">
+            <div id="aoc-print-comics-header">
+                <div id="aoc-print-comics-header-text" class="aoc-header-text aoc-squada">{SELECT_COMIC_TO_PRINT}</div>
+            </div>
+            <div id="aoc-print-comics-menu" class="aoc-print-menu"></div>
+            <div id="aoc-print-writers-header">
+                <div id="aoc-print-writers-header-text" class="aoc-header-text aoc-squada">{SELECT_WRITER}</div>
+            </div>
+            <div id="aoc-print-writers-menu" class="aoc-print-menu"></div>
+            <div id="aoc-print-artists-header">
+                <div id="aoc-print-artists-header-text" class="aoc-header-text aoc-squada">{SELECT_ARTIST}</div>
+            </div>
+            <div id="aoc-print-artists-menu" class="aoc-print-menu"></div>
+        </div>
         <div id="aoc-select-start-items" class="whiteblock" style="display: none;">
             <div id="aoc-select-start-items-header">
                 <div id="aoc-select-start-items-header-text" class="aoc-squada">{SELECT_START_ITEMS}</div>
@@ -342,6 +356,42 @@
                             </div>
                         </div>
                         <div id="aoc-player-mat-{player_id}" class="aoc-player-mat aoc-player-mat-{color}">
+                            <div id="aoc-writer-slot-1-{player_id}" class="aoc-card-slot aoc-writer-slot-one">
+                            </div>
+                            <div id="aoc-writer-slot-2-{player_id}" class="aoc-card-slot aoc-writer-slot-two">
+                            </div>
+                            <div id="aoc-writer-slot-3-{player_id}" class="aoc-card-slot aoc-writer-slot-three">
+                            </div>
+                            <div id="aoc-writer-slot-4-{player_id}" class="aoc-card-slot aoc-writer-slot-four">
+                            </div>
+                            <div id="aoc-writer-slot-5-{player_id}" class="aoc-card-slot aoc-writer-slot-five">
+                            </div>
+                            <div id="aoc-writer-slot-6-{player_id}" class="aoc-card-slot aoc-writer-slot-six">
+                            </div>
+                            <div id="aoc-artist-slot-1-{player_id}" class="aoc-card-slot aoc-artist-slot-one">
+                            </div>
+                            <div id="aoc-artist-slot-2-{player_id}" class="aoc-card-slot aoc-artist-slot-two">
+                            </div>
+                            <div id="aoc-artist-slot-3-{player_id}" class="aoc-card-slot aoc-artist-slot-three">
+                            </div>
+                            <div id="aoc-artist-slot-4-{player_id}" class="aoc-card-slot aoc-artist-slot-four">
+                            </div>
+                            <div id="aoc-artist-slot-5-{player_id}" class="aoc-card-slot aoc-artist-slot-five">
+                            </div>
+                            <div id="aoc-artist-slot-6-{player_id}" class="aoc-card-slot aoc-artist-slot-six">
+                            </div>
+                            <div id="aoc-comic-slot-1-{player_id}" class="aoc-card-slot aoc-comic-slot-one">
+                            </div>
+                            <div id="aoc-comic-slot-2-{player_id}" class="aoc-card-slot aoc-comic-slot-two">
+                            </div>
+                            <div id="aoc-comic-slot-3-{player_id}" class="aoc-card-slot aoc-comic-slot-three">
+                            </div>
+                            <div id="aoc-comic-slot-4-{player_id}" class="aoc-card-slot aoc-comic-slot-four">
+                            </div>
+                            <div id="aoc-comic-slot-5-{player_id}" class="aoc-card-slot aoc-comic-slot-five">
+                            </div>
+                            <div id="aoc-comic-slot-6-{player_id}" class="aoc-card-slot aoc-comic-slot-six">
+                            </div>
                             <div id="aoc-cube-one-space-{player_id}" class="aoc-cube-space aoc-cube-space-one">
                             </div>
                             <div id="aoc-cube-two-space-{player_id}" class="aoc-cube-space aoc-cube-space-two">

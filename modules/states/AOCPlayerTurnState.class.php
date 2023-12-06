@@ -35,6 +35,8 @@ class AOCPlayerTurnState {
      * - salesActionSpace => The id of the next available sales action space
      */
     public function getArgs() {
+        $activePlayer = $this->game->playerManager->getActivePlayer();
+
         return [
             "hireActionSpace" => $this->game->editorManager->getNextActionSpaceForEditor(
                 LOCATION_ACTION_HIRE
@@ -45,9 +47,11 @@ class AOCPlayerTurnState {
             "ideasActionSpace" => $this->game->editorManager->getNextActionSpaceForEditor(
                 LOCATION_ACTION_IDEAS
             ),
-            "printActionSpace" => $this->game->editorManager->getNextActionSpaceForEditor(
-                LOCATION_ACTION_PRINT
-            ),
+            "printActionSpace" => $this->playerCanPrint($activePlayer)
+                ? $this->game->editorManager->getNextActionSpaceForEditor(
+                    LOCATION_ACTION_PRINT
+                )
+                : 0,
             "royaltiesActionSpace" => $this->game->editorManager->getNextActionSpaceForEditor(
                 LOCATION_ACTION_ROYALTIES
             ),
@@ -118,5 +122,85 @@ class AOCPlayerTurnState {
                 $this->game->gamestate->nextState("performSales");
                 break;
         }
+    }
+
+    /**
+     * Get the creative card with the lowest cost in a player's hand, if any
+     *
+     * @param AOCPlayer $player The player to get the lowest cost creative card for
+     * @param int $creativeType The type of creative card to get the lowest cost for
+     * @return AOCArtistCard|AOCWriterCard|null The creative card with the lowest cost in the player's hand or null if the player doesn't have any creative cards
+     */
+    private function getPlayerLowestCostCreative($player, $creativeType) {
+        $creativeCards = $this->game->cardManager->getCards(
+            $creativeType,
+            null,
+            LOCATION_HAND,
+            $player->getId(),
+            "card_type_arg ASC"
+        );
+
+        if (count($creativeCards) > 0) {
+            return $creativeCards[0];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Checks if the player can take the print action
+     *
+     * @param AOCPlayer $player The player to check if they can take the print action
+     * @return bool True if the player can take the print action, false otherwise
+     */
+    private function playerCanPrint($player) {
+        // Get lowest cost artist
+        $lowestCostArtist = $this->getPlayerLowestCostCreative(
+            $player,
+            CARD_TYPE_ARTIST
+        );
+        // If the player doesn't have an artist, they can't print
+        if ($lowestCostArtist == null) {
+            return false;
+        }
+
+        // Get lowest cost writer
+        $lowestCostWriter = $this->getPlayerLowestCostCreative(
+            $player,
+            CARD_TYPE_WRITER
+        );
+        // If the player doesn't have a writer, they can't print
+        if ($lowestCostWriter == null) {
+            return false;
+        }
+
+        // Get the lowest possible cost to print a comic
+        $lowestPossibleComicCost =
+            $lowestCostArtist->getValue() + $lowestCostWriter->getValue();
+        // If the player doesn't have enough money to print a comic, they can't print
+        if ($lowestPossibleComicCost > $player->getMoney()) {
+            return false;
+        }
+
+        // Get the comics in the player's hand
+        $comicsInHand = $this->game->cardManager->getCards(
+            CARD_TYPE_COMIC,
+            null,
+            LOCATION_HAND,
+            $player->getId()
+        );
+        // If the player has at least one comic in their hand, they can print
+        if (count($comicsInHand) > 0) {
+            foreach ($comicsInHand as $comic) {
+                // If the player has 2 matching ideas they can print
+                if ($player->getIdeas($comic->getGenreId()) >= 2) {
+                    return true;
+                }
+            }
+        }
+
+        // TODO: Check for available ripoffs
+
+        return false;
     }
 }

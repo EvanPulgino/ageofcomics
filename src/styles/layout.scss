@@ -94,6 +94,16 @@ html {
   padding-bottom: 25px;
 }
 
+#aoc-print-menu {
+  background-color: rgba(233, 225, 204, 0.9);
+  border: 5px solid;
+  border-radius: 25px;
+  position: fixed;
+  z-index: 1000;
+  top: 15%;
+  display: block;
+}
+
 #aoc-select-start-comic-buttons {
   align-items: center;
   display: flex;
@@ -254,7 +264,6 @@ html {
   justify-content: flex-start;
 }
 
-
 .aoc-floating-hand-wrapper {
   background-color: rgba(40, 39, 36, 0.78);
   border-right: 1px solid #7c5d45;
@@ -269,6 +278,13 @@ html {
   display: flex;
   justify-content: space-around;
   padding: 5px;
+}
+
+.aoc-header-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
 }
 
 .aoc-icon-size {
@@ -291,6 +307,15 @@ html {
   opacity: 25% !important;
   cursor: not-allowed !important;
   pointer-events: none !important;
+}
+
+.aoc-print-menu {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 15px;
+  justify-content: center;
+  transform: scale(0.75);
 }
 
 .aoc-select-containers {

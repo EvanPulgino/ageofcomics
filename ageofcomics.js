@@ -107,8 +107,8 @@ var GameBasics = /** @class */ (function (_super) {
      * @returns {void}
      */
     GameBasics.prototype.onEnteringState = function (stateName, args) {
-        this.adaptViewportSize();
         this.debug("onEnteringState: " + stateName, args, this.debugStateInfo());
+        this.adaptViewportSize();
         this.curstate = stateName;
         args["isCurrentPlayerActive"] = gameui.isCurrentPlayerActive();
         this.gameState[stateName].onEnteringState(args);
@@ -127,6 +127,7 @@ var GameBasics = /** @class */ (function (_super) {
         this.debug("onLeavingState: " + stateName, this.debugStateInfo());
         this.currentPlayerWasActive = false;
         this.gameState[stateName].onLeavingState();
+        this.adaptViewportSize();
     };
     /**
      * Builds action buttons on state change
@@ -361,6 +362,8 @@ var GameBody = /** @class */ (function (_super) {
                 dojo.subscribe(m.substring(6), this, m);
             }
         }
+        this.notifqueue.setSynchronous("assignComic", 500);
+        this.notifqueue.setSynchronous("assignCreative", 500);
         this.notifqueue.setSynchronous("discardCard", 500);
         this.notifqueue.setSynchronous("discardCardFromDeck", 500);
         this.notifqueue.setSynchronous("gainIdeaFromBoard", 500);
@@ -382,6 +385,9 @@ var GameBody = /** @class */ (function (_super) {
      * @param {object} notif - notification data
      */
     GameBody.prototype.notif_message = function (notif) { };
+    GameBody.prototype.notif_adjustIdeas = function (notif) {
+        this.playerController.adjustIdeas(notif.args.player, notif.args.genre, notif.args.numOfIdeas);
+    };
     /**
      * Handle 'adjustMoney' notification
      *
@@ -393,6 +399,16 @@ var GameBody = /** @class */ (function (_super) {
      */
     GameBody.prototype.notif_adjustMoney = function (notif) {
         this.playerController.adjustMoney(notif.args.player, notif.args.amount);
+    };
+    GameBody.prototype.notif_assignComic = function (notif) {
+        this.cardController.slideCardToPlayerMat(notif.args.player, notif.args.card, notif.args.slot);
+        if (notif.args.spentIdeas > 0) {
+            this.playerController.adjustIdeas(notif.args.player, notif.args.card.genre, -notif.args.spentIdeas);
+        }
+    };
+    GameBody.prototype.notif_assignCreative = function (notif) {
+        this.cardController.slideCardToPlayerMat(notif.args.player, notif.args.card, notif.args.slot);
+        this.playerController.adjustMoney(notif.args.player, -notif.args.cost);
     };
     /**
      * Handle'completeSetup' notification
@@ -814,6 +830,9 @@ var CardController = /** @class */ (function () {
             case globalThis.LOCATION_SUPPLY:
                 this.ui.createHtml(cardDiv, "aoc-" + card.type + "s-available");
                 break;
+            case globalThis.LOCATION_PLAYER_MAT:
+                this.ui.createHtml(cardDiv, "aoc-" + card.type + "-slot-" + card.locationArg + "-" + card.playerId);
+                break;
         }
     };
     /**
@@ -924,6 +943,18 @@ var CardController = /** @class */ (function () {
         // Slide the card to the player's hand
         this.slideCardToPlayerHand(card);
     };
+    CardController.prototype.getCardTypeForMatSlot = function (card) {
+        switch (card.typeId) {
+            case globalThis.CARD_TYPE_ARTIST:
+                return "artist";
+            case globalThis.CARD_TYPE_WRITER:
+                return "writer";
+            case globalThis.CARD_TYPE_COMIC:
+                return "comic";
+            case globalThis.CARD_TYPE_RIPOFF:
+                return "comic";
+        }
+    };
     /**
      * Moves a card element to a player's hand
      *
@@ -970,6 +1001,27 @@ var CardController = /** @class */ (function () {
             else {
                 dojo.place(cardDiv, cardToRightOfNewCard, "before");
             }
+        });
+        // Play the animation
+        animation.play();
+    };
+    CardController.prototype.slideCardToPlayerMat = function (player, card, slot) {
+        // Get the card div
+        var cardDiv = dojo.byId("aoc-card-" + card.id);
+        var cardType = this.getCardTypeForMatSlot(card);
+        // Set the card faceup
+        if (cardDiv.classList.contains(card.facedownClass)) {
+            cardDiv.classList.remove(card.facedownClass);
+            cardDiv.classList.add(card.baseClass);
+        }
+        // Get the player mat slot div
+        var slotDiv = dojo.byId("aoc-" + cardType + "-slot-" + slot + "-" + player.id);
+        // Create the animation
+        var animation = gameui.slideToObject(cardDiv, slotDiv, 1000);
+        dojo.connect(animation, "onEnd", function () {
+            // After animation ends, remove styling added by animation and place in new parent div
+            dojo.removeAttr(cardDiv, "style");
+            dojo.place(cardDiv, slotDiv);
         });
         // Play the animation
         animation.play();
@@ -2900,10 +2952,187 @@ var PerformIdeas = /** @class */ (function () {
 var PerformPrint = /** @class */ (function () {
     function PerformPrint(game) {
         this.game = game;
+        this.connections = {};
     }
-    PerformPrint.prototype.onEnteringState = function (stateArgs) { };
-    PerformPrint.prototype.onLeavingState = function () { };
-    PerformPrint.prototype.onUpdateActionButtons = function (stateArgs) { };
+    /**
+     * Called when entering this state
+     * Creates the print menu and events
+     *
+     * stateArgs:
+     *  - isCurrentPlayerActive: true if this player is the active player
+     *
+     * args:
+     * - printableComics: comics the player can print
+     * - artists: artists the player can use
+     * - writers: writers the player can use
+     *
+     * @param stateArgs
+     */
+    PerformPrint.prototype.onEnteringState = function (stateArgs) {
+        if (stateArgs.isCurrentPlayerActive) {
+            dojo.toggleClass("aoc-print-menu", "aoc-hidden");
+            this.createCards(stateArgs.args.printableComics, "comic");
+            this.createCards(stateArgs.args.artists, "artist");
+            this.createCards(stateArgs.args.writers, "writer");
+        }
+    };
+    /**
+     * Called when leaving this state
+     * Removes the print menu and events
+     *
+     */
+    PerformPrint.prototype.onLeavingState = function () {
+        // Hide the print menu
+        dojo.toggleClass("aoc-print-menu", "aoc-hidden", true);
+        // Remove the css classes from the comics
+        dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
+        dojo.query(".aoc-card-unselected").removeClass("aoc-card-unselected");
+        // Remove the listeners
+        for (var connection in this.connections) {
+            dojo.disconnect(this.connections[connection]);
+        }
+        // Clear the menu
+        dojo.empty("aoc-print-comics-menu");
+        dojo.empty("aoc-print-artists-menu");
+        dojo.empty("aoc-print-writers-menu");
+    };
+    /**
+     * Called when game enters the state. Creates confirmation button for the state
+     *
+     * stateArgs:
+     *  - isCurrentPlayerActive: true if this player is the active player
+     *
+     * args:
+     * - printableComics: comics the player can print
+     * - artists: artists the player can use
+     * - writers: writers the player can use
+     *
+     * @param stateArgs
+     */
+    PerformPrint.prototype.onUpdateActionButtons = function (stateArgs) {
+        var _this = this;
+        if (stateArgs.isCurrentPlayerActive) {
+            gameui.addActionButton("aoc-confirm-print", _("Confirm"), function () {
+                _this.confirmPrint();
+            });
+            dojo.addClass("aoc-confirm-print", "aoc-button-disabled");
+            dojo.addClass("aoc-confirm-print", "aoc-button");
+        }
+    };
+    /**
+     * Called when the confirm button is clicked
+     * Sends the selected cards to the server
+     */
+    PerformPrint.prototype.confirmPrint = function () {
+        // Get the selected cards
+        var selectedComic = dojo.query("#aoc-print-comics-menu > .aoc-card-selected")[0];
+        var selectedArtist = dojo.query("#aoc-print-artists-menu > .aoc-card-selected")[0];
+        var selectedWriter = dojo.query("#aoc-print-writers-menu > .aoc-card-selected")[0];
+        // Get the ids of the selected cards
+        var selectedComicId = selectedComic.id.split("-")[4];
+        var selectedArtistId = selectedArtist.id.split("-")[4];
+        var selectedWriterId = selectedWriter.id.split("-")[4];
+        // Send the selected cards to the server
+        this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_PRINT_COMIC, {
+            comicId: selectedComicId,
+            artistId: selectedArtistId,
+            writerId: selectedWriterId,
+        });
+        this.onLeavingState();
+    };
+    /**
+     * Create cards for the print menu
+     *
+     * @param cards Array of cards to create
+     * @param cardType Type of card to create
+     */
+    PerformPrint.prototype.createCards = function (cards, cardType) {
+        var _this = this;
+        // Get the card type class
+        var cardTypeClass = cardType == "comic" ? "aoc-comic-card" : "aoc-creative-card";
+        var _loop_1 = function (card) {
+            var cardDiv = "<div id='aoc-print-menu-" +
+                cardType +
+                "-" +
+                card.id +
+                "' class='aoc-card " +
+                cardTypeClass +
+                " " +
+                card.baseClass +
+                "'></div>";
+            // Add the div to the menu
+            this_1.game.createHtml(cardDiv, "aoc-print-" + cardType + "s-menu");
+            // Add the card's listener
+            this_1.connections[card.id] = dojo.connect(dojo.byId("aoc-print-menu-" + cardType + "-" + card.id), "onclick", this_1, function () {
+                _this.handleCardSelection(card.id, cardType);
+            });
+        };
+        var this_1 = this;
+        // Create a div for each card
+        for (var _i = 0, cards_1 = cards; _i < cards_1.length; _i++) {
+            var card = cards_1[_i];
+            _loop_1(card);
+        }
+    };
+    /**
+     * Handle card selection
+     *
+     * @param cardId Id of the card that was selected
+     * @param cardType Type of card that was selected
+     */
+    PerformPrint.prototype.handleCardSelection = function (cardId, cardType) {
+        var _this = this;
+        // Remove the selected and unselected classes from all cards of type
+        dojo
+            .query("#aoc-print-" + cardType + "s-menu > .aoc-card-selected")
+            .removeClass("aoc-card-selected");
+        dojo
+            .query("#aoc-print-" + cardType + "s-menu > .aoc-card-unselected")
+            .removeClass("aoc-card-unselected");
+        var selectedCardDiv = dojo.byId("aoc-print-menu-" + cardType + "-" + cardId);
+        // Add the selected class to the selected card
+        dojo.toggleClass(selectedCardDiv, "aoc-card-selected");
+        // Disconnect + delete the card's listener
+        dojo.disconnect(this.connections[cardId]);
+        delete this.connections[cardId];
+        // Get all cards of type
+        var allCards = dojo.byId("aoc-print-" + cardType + "s-menu").children;
+        var _loop_2 = function (i) {
+            var card = allCards[i];
+            // Check if the card is not the selected card
+            if (card.id != selectedCardDiv.id) {
+                var cardDivId_1 = card.id.split("-")[4];
+                // Add the unselected class to the comic
+                dojo.toggleClass(card.id, "aoc-card-unselected", true);
+                //If the comic doesn't have a listener, add one
+                if (!this_2.connections[cardDivId_1]) {
+                    this_2.connections[cardDivId_1] = dojo.connect(dojo.byId(card.id), "onclick", this_2, function () {
+                        _this.handleCardSelection(cardDivId_1, cardType);
+                    });
+                }
+            }
+        };
+        var this_2 = this;
+        for (var i = 0; i < allCards.length; i++) {
+            _loop_2(i);
+        }
+        // Set confirm button status
+        this.setButtonConfirmationStatus();
+    };
+    /**
+     * Sets the status of the confirm button
+     *
+     * If 3 cards are selected, the confirm button is enabled
+     */
+    PerformPrint.prototype.setButtonConfirmationStatus = function () {
+        var selectedCards = dojo.query(".aoc-card-selected");
+        if (selectedCards.length == 3) {
+            dojo.removeClass("aoc-confirm-print", "aoc-button-disabled");
+        }
+        else {
+            dojo.addClass("aoc-confirm-print", "aoc-button-disabled");
+        }
+    };
     return PerformPrint;
 }());
 /**
@@ -3016,7 +3245,7 @@ var PlayerSetup = /** @class */ (function () {
     PlayerSetup.prototype.onLeavingState = function () {
         // Hide the starting items selection divs
         dojo.style("aoc-select-start-items", "display", "none");
-        // Remove the click events for the starting items
+        // Remove the css classes from the comics
         dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
         dojo.query(".aoc-card-unselected").removeClass("aoc-card-unselected");
         // Empty the starting items selection divs
