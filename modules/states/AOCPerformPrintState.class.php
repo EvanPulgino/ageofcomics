@@ -88,11 +88,11 @@ class AOCPerformPrintState {
         // Move the comic to the player board and spend the ideas
         $this->assignComic($activePlayer, $comicCard, $numberComicsPrinted + 1);
 
-        // Get card bonus
-
         // Set initial fans
 
         // Add mini comic to chart
+
+        // Get card bonus
 
         // Check for mastery token gain
 

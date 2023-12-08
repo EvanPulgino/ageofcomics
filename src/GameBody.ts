@@ -15,7 +15,6 @@
 
 // @ts-ignore
 class GameBody extends GameBasics {
-  states: any;
   gameController: GameController;
   playerController: PlayerController;
   calendarController: CalendarController;
