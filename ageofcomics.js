@@ -385,6 +385,9 @@ var GameBody = /** @class */ (function (_super) {
      * @param {object} notif - notification data
      */
     GameBody.prototype.notif_message = function (notif) { };
+    GameBody.prototype.notif_addMiniComicToChart = function (notif) {
+        this.miniComicController.moveMiniComicToChart(notif.args.miniComic);
+    };
     GameBody.prototype.notif_adjustIdeas = function (notif) {
         this.playerController.adjustIdeas(notif.args.player, notif.args.genre, notif.args.numOfIdeas);
     };
@@ -1177,6 +1180,24 @@ var GameController = /** @class */ (function () {
         chartHtml +=
             '<div id="aoc-chart-end" class="aoc-board-image aoc-chart-end"></div></div></div>';
         this.ui.createHtml(chartHtml, "aoc-show-chart-wrapper");
+        for (var key in players) {
+            var player = players[key];
+            this.createChartSpacesHtml(player);
+        }
+    };
+    GameController.prototype.createChartSpacesHtml = function (player) {
+        var space = 0;
+        while (space < 11) {
+            var chartFanSpaceHtml = '<div id="aoc-chart-space-' +
+                player.id +
+                "-" +
+                space +
+                '" class="aoc-chart-space aoc-chart-space-' +
+                space +
+                '"></div>';
+            this.ui.createHtml(chartFanSpaceHtml, "aoc-chart-" + player.id);
+            space++;
+        }
     };
     /**
      * Creates the on click events for the game
@@ -1516,8 +1537,19 @@ var MiniComicController = /** @class */ (function () {
             this.ui.createHtml(miniComicDiv, "aoc-mini-" + miniComic.type + "s-" + miniComic.genre);
         }
         if (miniComic.location == globalThis.LOCATION_CHART) {
-            // TODO: Add to chart location
+            var space = miniComic.fans > 10 ? miniComic.fans - 10 : miniComic.fans;
+            this.ui.createHtml(miniComicDiv, "aoc-chart-space-" + miniComic.playerId + "-" + space);
         }
+    };
+    MiniComicController.prototype.moveMiniComicToChart = function (miniComic) {
+        var miniComicDiv = dojo.byId("aoc-mini-comic-" + miniComic.id);
+        var chartSpaceDiv = dojo.byId("aoc-chart-space-" + miniComic.playerId + "-" + miniComic.fans);
+        var animation = gameui.slideToObject(miniComicDiv, chartSpaceDiv, 500);
+        dojo.connect(animation, "onEnd", function () {
+            dojo.removeAttr(miniComicDiv, "style");
+            dojo.place(miniComicDiv, chartSpaceDiv);
+        });
+        animation.play();
     };
     return MiniComicController;
 }());

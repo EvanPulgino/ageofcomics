@@ -48,7 +48,26 @@ class MiniComicController {
       );
     }
     if (miniComic.location == globalThis.LOCATION_CHART) {
-      // TODO: Add to chart location
+      const space = miniComic.fans > 10 ? miniComic.fans - 10 : miniComic.fans;
+
+      this.ui.createHtml(
+        miniComicDiv,
+        "aoc-chart-space-" + miniComic.playerId + "-" + space
+      );
     }
+  }
+
+  moveMiniComicToChart(miniComic: any): void {
+    const miniComicDiv = dojo.byId("aoc-mini-comic-" + miniComic.id);
+    const chartSpaceDiv = dojo.byId(
+      "aoc-chart-space-" + miniComic.playerId + "-" + miniComic.fans
+    );
+
+    const animation = gameui.slideToObject(miniComicDiv, chartSpaceDiv, 500);
+    dojo.connect(animation, "onEnd", () => {
+      dojo.removeAttr(miniComicDiv, "style");
+      dojo.place(miniComicDiv, chartSpaceDiv);
+    });
+    animation.play();
   }
 }

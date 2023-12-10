@@ -82,6 +82,26 @@ class GameController {
     chartHtml +=
       '<div id="aoc-chart-end" class="aoc-board-image aoc-chart-end"></div></div></div>';
     this.ui.createHtml(chartHtml, "aoc-show-chart-wrapper");
+    for (var key in players) {
+      var player = players[key];
+      this.createChartSpacesHtml(player);
+    }
+  }
+
+  createChartSpacesHtml(player: any): void {
+    var space = 0;
+    while (space < 11) {
+      var chartFanSpaceHtml =
+        '<div id="aoc-chart-space-' +
+        player.id +
+        "-" +
+        space +
+        '" class="aoc-chart-space aoc-chart-space-' +
+        space +
+        '"></div>';
+      this.ui.createHtml(chartFanSpaceHtml, "aoc-chart-" + player.id);
+      space++;
+    }
   }
 
   /**

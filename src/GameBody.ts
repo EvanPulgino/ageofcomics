@@ -113,6 +113,10 @@ class GameBody extends GameBasics {
    */
   notif_message(notif: any): void {}
 
+  notif_addMiniComicToChart(notif: any): void {
+    this.miniComicController.moveMiniComicToChart(notif.args.miniComic);
+  }
+
   notif_adjustIdeas(notif: any): void {
     this.playerController.adjustIdeas(
       notif.args.player,

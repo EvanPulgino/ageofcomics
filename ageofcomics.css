@@ -779,6 +779,57 @@ html {
   width: 21px;
 }
 
+.aoc-chart-space {
+  height: 88px;
+  position: absolute;
+  width: 68px;
+  margin-left: 2.5px;
+}
+
+.aoc-chart-space-0 {
+  bottom: 20px;
+}
+
+.aoc-chart-space-1 {
+  bottom: 113px;
+}
+
+.aoc-chart-space-2 {
+  bottom: 206px;
+}
+
+.aoc-chart-space-3 {
+  bottom: 298px;
+}
+
+.aoc-chart-space-4 {
+  bottom: 391px;
+}
+
+.aoc-chart-space-5 {
+  bottom: 484px;
+}
+
+.aoc-chart-space-6 {
+  bottom: 578px;
+}
+
+.aoc-chart-space-7 {
+  bottom: 670px;
+}
+
+.aoc-chart-space-8 {
+  bottom: 763px;
+}
+
+.aoc-chart-space-9 {
+  bottom: 856px;
+}
+
+.aoc-chart-space-10 {
+  bottom: 949px;
+}
+
 #aoc-action-hire {
   height: 153px;
   left: 21px;
