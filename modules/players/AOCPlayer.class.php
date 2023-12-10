@@ -75,7 +75,7 @@ class AOCPlayer {
     private $score;
 
     /**
-     * @var int $scoreAux The player's auxiliary score, this is used to break ties at the end of the fame
+     * @var int $scoreAux The player's auxiliary score, this is used to break ties at the end of the game
      */
     private $scoreAux;
 
