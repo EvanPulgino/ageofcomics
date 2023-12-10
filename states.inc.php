@@ -186,6 +186,21 @@ $machinestates = [
             PLAYER_ACTION_PRINT_COMIC,
             PLAYER_ACTION_PRINT_RIPOFF,
         ],
+        "transitions" => ["awardPrintBonus" => ST_PERFORM_PRINT_BONUS],
+    ],
+
+    ST_PERFORM_PRINT_BONUS => [
+        "name" => PERFORM_PRINT_BONUS,
+        "description" => clienttranslate(
+            '${actplayer} must select a bonus 2 ideas for printing ${comicName}'
+        ),
+        "descriptionmyturn" => clienttranslate(
+            '${you} must select a bonus 2 ideas for printing ${comicName}'
+        ),
+        "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "args" => STATE_ARGS_PERFORM_PRINT_BONUS,
+        "action" => GAME_ACTION_PERFORM_PRINT_BONUS,
+        "possibleactions" => [PLAYER_ACTION_CONFIRM_GAIN_IDEAS],
         "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
     ],
 

@@ -24,6 +24,7 @@ class GameState {
   performHire: State;
   performIdeas: State;
   performPrint: State;
+  performPrintBonus: State;
   performRoyalties: State;
   performSales: State;
   playerSetup: State;
@@ -40,6 +41,7 @@ class GameState {
     this.performHire = new PerformHire(game);
     this.performIdeas = new PerformIdeas(game);
     this.performPrint = new PerformPrint(game);
+    this.performPrintBonus = new PerformPrintBonus(game);
     this.performRoyalties = new PerformRoyalties(game);
     this.performSales = new PerformSales(game);
     this.playerSetup = new PlayerSetup(game);

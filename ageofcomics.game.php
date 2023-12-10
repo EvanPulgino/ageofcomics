@@ -44,6 +44,7 @@ class AgeOfComics extends Table {
             SELECTED_ACTION_SPACE => 23,
             CAN_HIRE_ARTIST => 24,
             CAN_HIRE_WRITER => 25,
+            PRINTED_COMIC => 26,
         ]);
 
         // Initialize player manager
@@ -66,6 +67,9 @@ class AgeOfComics extends Table {
         $this->states[PERFORM_HIRE] = new AOCPerformHireState($this);
         $this->states[PERFORM_IDEAS] = new AOCPerformIdeasState($this);
         $this->states[PERFORM_PRINT] = new AOCPerformPrintState($this);
+        $this->states[PERFORM_PRINT_BONUS] = new AOCPerformPrintBonusState(
+            $this
+        );
         $this->states[PERFORM_ROYALTIES] = new AOCPerformRoyaltiesState($this);
         $this->states[PERFORM_SALES] = new AOCPerformSalesState($this);
         $this->states[PLAYER_SETUP] = new AOCPlayerSetupState($this);
@@ -114,6 +118,7 @@ class AgeOfComics extends Table {
         }
         self::setGameStateInitialValue(CAN_HIRE_ARTIST, 0);
         self::setGameStateInitialValue(CAN_HIRE_WRITER, 0);
+        self::setGameStateInitialValue(PRINTED_COMIC, 0);
 
         // Init game statistics
         // (note: statistics used in this file must be defined in your stats.inc.php file)
@@ -256,6 +261,9 @@ class AgeOfComics extends Table {
     }
     function argsPerformPrint() {
         return $this->states[PERFORM_PRINT]->getArgs();
+    }
+    function argsPerformPrintBonus() {
+        return $this->states[PERFORM_PRINT_BONUS]->getArgs();
     }
     function argsPerformRoyalties() {
         return $this->states[PERFORM_ROYALTIES]->getArgs();

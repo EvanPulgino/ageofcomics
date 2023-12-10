@@ -386,6 +386,11 @@ class GameBody extends GameBasics {
     this.playerController.adjustHand(notif.args.player, 1);
   }
 
+  notif_moveMiniComic(notif: any): void {
+    this.miniComicController.moveMiniComic(notif.args.miniComic);
+    this.playerController.adjustIncome(notif.args.player, notif.args.incomeChange);
+  }
+
   /**
    * Handle 'placeEditor' notification
    *

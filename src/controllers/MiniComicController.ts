@@ -57,6 +57,18 @@ class MiniComicController {
     }
   }
 
+  moveMiniComic(miniComic: any): void {
+    const miniComicDiv = dojo.byId("aoc-mini-comic-" + miniComic.id);
+    const chartSpaceDiv = dojo.byId(
+      "aoc-chart-space-" + miniComic.playerId + "-" + miniComic.fans
+    );
+    const animation = gameui.slideToObject(miniComicDiv, chartSpaceDiv, 500);
+    dojo.connect(animation, "onEnd", () => {
+      dojo.removeAttr(miniComicDiv, "style");
+      dojo.place(miniComicDiv, chartSpaceDiv);
+    });
+    animation.play();
+  }
   moveMiniComicToChart(miniComic: any): void {
     const miniComicDiv = dojo.byId("aoc-mini-comic-" + miniComic.id);
     const chartSpaceDiv = dojo.byId(

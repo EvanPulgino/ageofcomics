@@ -606,6 +606,10 @@ var GameBody = /** @class */ (function (_super) {
         this.cardController.slideCardToPlayerHand(notif.args.card);
         this.playerController.adjustHand(notif.args.player, 1);
     };
+    GameBody.prototype.notif_moveMiniComic = function (notif) {
+        this.miniComicController.moveMiniComic(notif.args.miniComic);
+        this.playerController.adjustIncome(notif.args.player, notif.args.incomeChange);
+    };
     /**
      * Handle 'placeEditor' notification
      *
@@ -681,6 +685,7 @@ var GameState = /** @class */ (function () {
         this.performHire = new PerformHire(game);
         this.performIdeas = new PerformIdeas(game);
         this.performPrint = new PerformPrint(game);
+        this.performPrintBonus = new PerformPrintBonus(game);
         this.performRoyalties = new PerformRoyalties(game);
         this.performSales = new PerformSales(game);
         this.playerSetup = new PlayerSetup(game);
@@ -1543,6 +1548,16 @@ var MiniComicController = /** @class */ (function () {
             var space = miniComic.fans > 10 ? miniComic.fans - 10 : miniComic.fans;
             this.ui.createHtml(miniComicDiv, "aoc-chart-space-" + miniComic.playerId + "-" + space);
         }
+    };
+    MiniComicController.prototype.moveMiniComic = function (miniComic) {
+        var miniComicDiv = dojo.byId("aoc-mini-comic-" + miniComic.id);
+        var chartSpaceDiv = dojo.byId("aoc-chart-space-" + miniComic.playerId + "-" + miniComic.fans);
+        var animation = gameui.slideToObject(miniComicDiv, chartSpaceDiv, 500);
+        dojo.connect(animation, "onEnd", function () {
+            dojo.removeAttr(miniComicDiv, "style");
+            dojo.place(miniComicDiv, chartSpaceDiv);
+        });
+        animation.play();
     };
     MiniComicController.prototype.moveMiniComicToChart = function (miniComic) {
         var miniComicDiv = dojo.byId("aoc-mini-comic-" + miniComic.id);
@@ -2981,6 +2996,7 @@ var PerformIdeas = /** @class */ (function () {
  *
  * State vars:
  *  game: game object reference
+ *  connections: click listener map
  *
  */
 var PerformPrint = /** @class */ (function () {
@@ -3168,6 +3184,36 @@ var PerformPrint = /** @class */ (function () {
         }
     };
     return PerformPrint;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * PerformPrintBonus.ts
+ *
+ * Age of Comics perform print bonus state
+ *
+ * State vars:
+ *  game: game object reference
+ *  connections: click listener map
+ *
+ */
+var PerformPrintBonus = /** @class */ (function () {
+    function PerformPrintBonus(game) {
+        this.game = game;
+        this.connections = {};
+    }
+    PerformPrintBonus.prototype.onEnteringState = function (stateArgs) {
+        console.log("Entering PerformPrintBonus");
+    };
+    PerformPrintBonus.prototype.onLeavingState = function () { };
+    PerformPrintBonus.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return PerformPrintBonus;
 }());
 /**
  *------

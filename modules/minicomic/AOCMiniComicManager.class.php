@@ -31,6 +31,22 @@ class AOCMiniComicManager extends APP_GameClass {
     }
 
     /**
+     * Adjust the fans of a mini comic
+     *
+     * @param AOCComicCard|AOCRipoffCard $comic The comic to adjust
+     * @param int $amount The amount to adjust by
+     * @return int The new income level of the comic
+     */
+    public function adjustMiniComicFans($comic, $amount) {
+        $miniComic = $this->getCorrespondingMiniComic($comic);
+        $currentIncomeLevel = CHART_INCOME_LEVELS[$miniComic->getFans()];
+        $miniComic->setFans($miniComic->getFans() + $amount);
+        $newIncomeLevel = CHART_INCOME_LEVELS[$miniComic->getFans()];
+        $this->saveMiniComic($miniComic);
+        return $newIncomeLevel - $currentIncomeLevel;
+    }
+
+    /**
      * Get tht mini-comic matching a comic
      *
      * @param AOCComicCard|AOCRipoffCard $comic The comic to match

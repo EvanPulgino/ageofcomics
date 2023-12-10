@@ -13,13 +13,11 @@
  *
  * State vars:
  *  game: game object reference
+ *  connections: click listener map
  *
  */
 class PerformPrint implements State {
   game: any;
-  shouldUnselectArtists: boolean;
-  shouldUnselectComics: boolean;
-  shouldUnselectWriters: boolean;
   connections: any;
   constructor(game: any) {
     this.game = game;

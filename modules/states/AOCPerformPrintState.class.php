@@ -99,6 +99,8 @@ class AOCPerformPrintState {
         // Add mini comic to chart
         $this->addMiniComicToChart($activePlayer, $comicCard, $initialFans);
 
+        $this->game->setGameStateValue(PRINTED_COMIC, $comicCard->getId());
+
         // Get card bonus
 
         // Check for mastery token gain
@@ -109,7 +111,7 @@ class AOCPerformPrintState {
 
         // Check for double print
 
-        $this->game->gamestate->nextState("nextPlayerTurn");
+        $this->game->gamestate->nextState("awardPrintBonus");
     }
 
     /**
