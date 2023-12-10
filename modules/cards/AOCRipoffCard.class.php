@@ -28,7 +28,7 @@
  * Once a Comic has been printed by a player any other player is eligible to print the Ripoff version of the card.
  * By using the Print action a player can print a Ripoff of an existing comic by taking the matching card and assignig a Writer card from their hand to it.
  * The cost of the Ripoff is money equal to the combined value of the artist and the writer.
- * 
+ *
  * Ripoff cards provide players with fans but no bonus.
  *
  * @EvanPulgino
@@ -46,6 +46,11 @@ class AOCRipoffCard extends AOCCard {
     private $name;
 
     /**
+     * @var int $fans The number of fans the ripoff card provides
+     */
+    private $fans;
+
+    /**
      * @var string $baseClass The base CSS class for the ripoff card. This is the front of the card.
      */
     private $baseClass;
@@ -59,6 +64,7 @@ class AOCRipoffCard extends AOCCard {
         parent::__construct($row);
         $this->ripoffKey = (int) $row["typeArg"];
         $this->name = RIPOFF_CARDS[$this->getGenreId()][$this->ripoffKey];
+        $this->fans = 0;
         $this->baseClass =
             "aoc-" .
             $this->getType() .
@@ -99,6 +105,14 @@ class AOCRipoffCard extends AOCCard {
     }
 
     /**
+     *
+     * @return int The number of fans the ripoff card provides
+     */
+    public function getFans() {
+        return $this->fans;
+    }
+
+    /**
      * Get the data for the UI
      *
      * @param int $currentPlayerId The ID of the current player (the player viewing the card)
@@ -116,6 +130,7 @@ class AOCRipoffCard extends AOCCard {
             "playerId" => $this->getPlayerId(),
             "ripoffKey" => $this->getRipoffKey(),
             "name" => $this->getName(),
+            "fans" => $this->getFans(),
             "baseClass" => $this->baseClass,
             "facedownClass" => $this->facedownClass,
             "cssClass" => $this->deriveCssClass($currentPlayerId),

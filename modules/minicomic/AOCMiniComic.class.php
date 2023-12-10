@@ -24,7 +24,7 @@
  * - The CSS class for the mini comic
  *
  * A Mini Comic tile represents a comic book (original or rip-off) that a player can create to gain fans. There is one tile for each comic book card in the game.
- * 
+ *
  * Mini Comic tiles are represented by the "mini_comic" table in the database.
  *
  * When a player uses the Print action to create a comic, the corresponing Mini Comic tile is placed in that player's column of the chart, which tracks how many fans the comic has and how much income the comic produces at the end of every round.
@@ -44,7 +44,7 @@ class AOCMiniComic {
 
     /**
      * @var int $typeId The type of the mini comic:
-     * - 3 = Original
+     * - 1 = Original
      * - 4 = Ripoff
      */
     private $typeId;
@@ -72,15 +72,14 @@ class AOCMiniComic {
 
     /**
      * @var int $location The location of the mini comic:
-     * - 3 = In the general supply
-     * - 6 = On the chart
+     * - 5 = In the general supply
+     * - 7 = On the chart
      */
     private $location;
 
     /**
      * @var int $locationArg The location argument of the mini comic:
-     * - If location is 3, locationArg is the order of the mini comic in it's genre stack
-     * - If location is 6, this is NULL
+     * The order of the mini comic in it's genre stack
      */
     private $locationArg;
 
@@ -133,7 +132,7 @@ class AOCMiniComic {
 
     /**
      * Get the type ID of the mini comic:
-     * - 3 = Original
+     * - 1 = Original
      * - 4 = Ripoff
      *
      * @return int The type ID of the mini comic
@@ -180,8 +179,8 @@ class AOCMiniComic {
 
     /**
      * Get the location of the mini comic:
-     * - 3 = In the general supply
-     * - 6 = On the chart
+     * - 5 = In the general supply
+     * - 7 = On the chart
      *
      * @return int The location of the mini comic
      */
@@ -191,8 +190,8 @@ class AOCMiniComic {
 
     /**
      * Set the location of the mini comic:
-     * - 3 = In the general supply
-     * - 6 = On the chart
+     * - 5 = In the general supply
+     * - 7 = On the chart
      *
      * @param int $location The location of the mini comic
      * @return void
@@ -203,8 +202,7 @@ class AOCMiniComic {
 
     /**
      * Get the location argument of the mini comic:
-     * - If location is 3, locationArg is the order of the mini comic in it's genre stack
-     * - If location is 6, this is NULL
+     * The order of the mini comic in it's genre stack
      *
      * @return int The location argument of the mini comic
      */
@@ -214,8 +212,7 @@ class AOCMiniComic {
 
     /**
      * Set the location argument of the mini comic:
-     * - If location is 3, locationArg is the order of the mini comic in it's genre stack
-     * - If location is 6, this is NULL
+     * The order of the mini comic in it's genre stack
      *
      * @param int $locationArg The location argument of the mini comic
      * @return void

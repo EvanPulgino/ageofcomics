@@ -89,8 +89,15 @@ class AOCPerformPrintState {
         $this->assignComic($activePlayer, $comicCard, $numberComicsPrinted + 1);
 
         // Set initial fans
+        $initialFans = $this->calculateInitialFans(
+            $activePlayer,
+            $comicCard,
+            $artistCard,
+            $writerCard
+        );
 
         // Add mini comic to chart
+        $this->addMiniComicToChart($activePlayer, $comicCard, $initialFans);
 
         // Get card bonus
 
@@ -98,9 +105,49 @@ class AOCPerformPrintState {
 
         // Check for upgrade cube unlock
 
+        // Check for sales order fulfillment
+
         // Check for double print
 
         $this->game->gamestate->nextState("nextPlayerTurn");
+    }
+
+    /**
+     * Add a mini comic to the chart
+     *
+     * @param AOCPlayer $player The player to add the mini comic for
+     * @param AOCComicCard|AOCRipoffCard $comic The comic to add
+     */
+    private function addMiniComicToChart($player, $comic, $initialFans) {
+        $miniComic = $this->game->miniComicManager->getCorrespondingMiniComic(
+            $comic
+        );
+
+        $miniComic->setLocation(LOCATION_CHART);
+        $miniComic->setLocationArg(
+            $comic->getGenreId() + $comic->getLocationArg()
+        );
+        $miniComic->setPlayerId($player->getId());
+        $miniComic->setFans($initialFans);
+
+        $this->game->miniComicManager->saveMiniComic($miniComic);
+
+        $this->game->notifyAllPlayers(
+            "addMiniComicToChart",
+            clienttranslate(
+                '${player_name} adds ${comicName} to the chart with an initial value of ${initialFans} fans'
+            ),
+            [
+                "player" => $player->getUiData(),
+                "player_name" => $player->getName(),
+                "comicName" => $this->game->formatNotificationString(
+                    $comic->getName(),
+                    $comic->getGenreId()
+                ),
+                "miniComic" => $miniComic->getUiData(),
+                "initialFans" => $initialFans,
+            ]
+        );
     }
 
     /**
@@ -182,6 +229,43 @@ class AOCPerformPrintState {
                 "slot" => $cardSlot,
             ]
         );
+    }
+
+    /**
+     * Calculate the initial fans for a comic
+     *  - +1 if comic is an original
+     *  - +1 if artist has matches the comic's genre
+     *  - +1 if writer has matches the comic's genre
+     *  - +1 if player has mastery token in comic's genre
+     *
+     * @param AOCPlayer $player The player to calculate for
+     * @param AOCComicCard|AOCRipoffCard $comic The comic to calculate for
+     * @param AOCArtistCard $artist The artist used to print the comic
+     * @param AOCWriterCard $writer The writer used to print the comic
+     * @return int The number of initial fans for the comic
+     */
+    private function calculateInitialFans($player, $comic, $artist, $writer) {
+        $baseFans = $comic->getFans();
+        $genreId = $comic->getGenreId();
+
+        if ($artist->getGenreId() == $genreId) {
+            $baseFans += $artist->getFans();
+        }
+
+        if ($writer->getGenreId() == $genreId) {
+            $baseFans += $writer->getFans();
+        }
+
+        if (
+            $this->game->masteryManager->playerHasMasteryToken(
+                $player->getId(),
+                $genreId
+            )
+        ) {
+            $baseFans += 1;
+        }
+
+        return $baseFans;
     }
 
     /**

@@ -78,4 +78,17 @@ class AOCMasteryManager extends APP_GameClass {
         }
         return $uiData;
     }
+
+    /**
+     * Check if a player has a mastery token
+     * 
+     * @param int $playerId The player to check
+     * @param int $genre The genre to check
+     * @return bool True if the player has the mastery token in the genre
+     */
+    public function playerHasMasteryToken($playerId, $genre) {
+        $sql = "SELECT mastery_token_id id, mastery_token_genre genre, mastery_token_owner playerId, mastery_token_comic_count comicCount FROM mastery_token WHERE mastery_token_owner = $playerId AND mastery_token_genre = $genre";
+        $rows = $this->game->getCollectionFromDb($sql);
+        return count($rows) > 0;
+    }
 }

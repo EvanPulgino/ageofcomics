@@ -31,6 +31,21 @@ class AOCMiniComicManager extends APP_GameClass {
     }
 
     /**
+     * Get tht mini-comic matching a comic
+     *
+     * @param AOCComicCard|AOCRipoffCard $comic The comic to match
+     */
+    public function getCorrespondingMiniComic($comic) {
+        $type = $comic->getTypeId();
+        $typeArg = $comic->getBonus();
+        $genre = $comic->getGenreId();
+        $sql = "SELECT mini_comic_id id, mini_comic_type type, mini_comic_type_arg typeArg, mini_comic_genre genre, mini_comic_location location, mini_comic_location_arg locationArg, mini_comic_owner playerId, mini_comic_fans fans FROM mini_comic WHERE mini_comic_type = {$type} AND mini_comic_type_arg = {$typeArg} AND mini_comic_genre = {$genre}";
+
+        $row = self::getObjectFromDb($sql);
+        return new AOCMiniComic($row);
+    }
+
+    /**
      * Get all mini comics from database
      *
      * @return AOCMiniComic[] All mini comics
@@ -64,6 +79,18 @@ class AOCMiniComicManager extends APP_GameClass {
     }
 
     /**
+     * Save a mini comic to the database
+     *
+     * @param AOCMiniComic $miniComic The mini comic to save
+     * @return void
+     */
+    public function saveMiniComic($miniComic) {
+        $sql = "UPDATE mini_comic SET mini_comic_location = {$miniComic->getLocation()}, mini_comic_location_arg = {$miniComic->getLocationArg()}, mini_comic_owner = {$miniComic->getPlayerId()}, mini_comic_fans = {$miniComic->getFans()} WHERE mini_comic_id = {$miniComic->getId()}";
+
+        self::DbQuery($sql);
+    }
+
+    /**
      * Create mini comics for a new game, by type
      *
      * @param int $comicType The type of mini comic to create
@@ -85,27 +112,5 @@ class AOCMiniComicManager extends APP_GameClass {
         }
         $sql .= implode(", ", $values);
         self::DbQuery($sql);
-    }
-
-    /**
-     * Save a mini comic to the database
-     *
-     * @param AOCMiniComic $miniComic The mini comic to save
-     * @return void
-     */
-    private function saveMiniComic($miniComic) {
-        $sql = "UPDATE mini_comic SET mini_comic_location = {$miniComic->getLocation()}, mini_comic_location_arg = {$miniComic->getLocationArg()}, mini_comic_owner = {$miniComic->getPlayerId()}, mini_comic_fans = {$miniComic->getFans()} WHERE mini_comic_id = {$miniComic->getId()}";
-    }
-
-    /**
-     * Save all mini comics to the database
-     *
-     * @param AOCMiniComic[] $miniComics The mini comics to save
-     * @return void
-     */
-    private function saveMiniComics($miniComics) {
-        foreach ($miniComics as $miniComic) {
-            $this->saveMiniComic($miniComic);
-        }
     }
 }
