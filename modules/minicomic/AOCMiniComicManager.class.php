@@ -94,6 +94,13 @@ class AOCMiniComicManager extends APP_GameClass {
         return $uiData;
     }
 
+    public function getMiniComicIncomeLevel($miniComic) {
+        if ($miniComic->getFans() > 10) {
+            return CHART_INCOME_LEVELS[$miniComic->getFans() - 10] + 6;
+        }
+        return CHART_INCOME_LEVELS[$miniComic->getFans()];
+    }
+
     /**
      * Save a mini comic to the database
      *

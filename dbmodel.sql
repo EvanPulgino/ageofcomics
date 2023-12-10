@@ -86,6 +86,8 @@ ADD `player_superhero_ideas` INT(10) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `player`
 ADD `player_western_ideas` INT(10) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `player`
+ADD `player_tickets` INT(10) UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE `player`
 ADD `player_agent_location` INT(10) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `player`
 ADD `player_cube_one_location` INT(10) UNSIGNED NOT NULL DEFAULT '5';

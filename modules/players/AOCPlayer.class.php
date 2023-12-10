@@ -26,6 +26,7 @@
  * - The number of Scifi Ideas the player has
  * - The number of Superhero Ideas the player has
  * - The number of Western Ideas the player has
+ * - The number of transport tickets the player has
  * - The location of the player's Sales Agent on the map
  * - The location of the player's first Special Action cube
  * - The location of the player's second Special Action cube
@@ -121,6 +122,11 @@ class AOCPlayer {
     private $westernIdeas;
 
     /**
+     * @var int $tickets The number of transport tickets the player has
+     */
+    private $tickets;
+
+    /**
      * @var int $agentLocation The location of the player's sales agent on the map
      */
     private $agentLocation;
@@ -188,6 +194,7 @@ class AOCPlayer {
         $this->scifiIdeas = $row["scifiIdeas"];
         $this->superheroIdeas = $row["superheroIdeas"];
         $this->westernIdeas = $row["westernIdeas"];
+        $this->tickets = $row["tickets"];
         $this->agentLocation = $row["agentLocation"];
         $this->cubeOneLocation = $row["cubeOneLocation"];
         $this->cubeTwoLocation = $row["cubeTwoLocation"];
@@ -445,6 +452,25 @@ class AOCPlayer {
     }
 
     /**
+     * Get the number of transport tickets the player has
+     *
+     * @return int
+     */
+    public function getTickets() {
+        return $this->tickets;
+    }
+
+    /**
+     * Set the number of transport tickets the player has
+     *
+     * @param int $tickets The number of transport tickets the player has
+     * @return void
+     */
+    public function setTickets($tickets) {
+        $this->tickets = $tickets;
+    }
+
+    /**
      * Get the number of ideas the player has of the given genre
      *
      * @param int $genreKey The genre key of the ideas to get
@@ -658,6 +684,7 @@ class AOCPlayer {
             "scifiIdeas" => $this->scifiIdeas,
             "superheroIdeas" => $this->superheroIdeas,
             "westernIdeas" => $this->westernIdeas,
+            "tickets" => $this->tickets,
             "agentLocation" => $this->agentLocation,
             "cubeOneLocation" => $this->cubeOneLocation,
             "cubeTwoLocation" => $this->cubeTwoLocation,

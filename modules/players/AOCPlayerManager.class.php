@@ -124,6 +124,17 @@ class AOCPlayerManager extends APP_GameClass {
     }
 
     /**
+     * Adjust how many transport tickets a player has
+     *
+     * @param AOCPlayer $player The player
+     * @param int $tickets The number of tickets to adjust by
+     */
+    public function adjustPlayerTickets($player, $tickets) {
+        $player->setTickets($player->getTickets() + $tickets);
+        $this->savePlayer($player);
+    }
+
+    /**
      * Gets the active player as an AOCPlayer object
      *
      * @return AOCPlayer The active player
@@ -172,7 +183,7 @@ class AOCPlayerManager extends APP_GameClass {
      */
     public function getPlayers($playerIds = null) {
         $sql =
-            "SELECT player_id id, player_no naturalOrder, player_turn_order turnOrder, player_name name, player_color color, player_score score, player_score_aux scoreAux, player_money money, player_income income, player_crime_ideas crimeIdeas, player_horror_ideas horrorIdeas, player_romance_ideas romanceIdeas, player_scifi_ideas scifiIdeas, player_superhero_ideas superheroIdeas, player_western_ideas westernIdeas, player_agent_location agentLocation, player_cube_one_location cubeOneLocation, player_cube_two_location cubeTwoLocation, player_cube_three_location cubeThreeLocation, player_is_multiactive multiActive FROM player";
+            "SELECT player_id id, player_no naturalOrder, player_turn_order turnOrder, player_name name, player_color color, player_score score, player_score_aux scoreAux, player_money money, player_income income, player_crime_ideas crimeIdeas, player_horror_ideas horrorIdeas, player_romance_ideas romanceIdeas, player_scifi_ideas scifiIdeas, player_superhero_ideas superheroIdeas, player_western_ideas westernIdeas, player_tickets tickets, player_agent_location agentLocation, player_cube_one_location cubeOneLocation, player_cube_two_location cubeTwoLocation, player_cube_three_location cubeThreeLocation, player_is_multiactive multiActive FROM player";
         if ($playerIds) {
             $sql .= " WHERE player_id IN (" . implode(",", $playerIds) . ")";
         }
@@ -272,6 +283,7 @@ class AOCPlayerManager extends APP_GameClass {
         player_scifi_ideas = {$player->getScifiIdeas()},
         player_superhero_ideas = {$player->getSuperheroIdeas()},
         player_western_ideas = {$player->getWesternIdeas()},
+        player_tickets = {$player->getTickets()},
         player_agent_location = {$player->getAgentLocation()},
         player_cube_one_location = {$player->getCubeOneLocation()},
         player_cube_two_location = {$player->getCubeTwoLocation()},
