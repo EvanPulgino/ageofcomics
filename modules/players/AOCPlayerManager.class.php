@@ -100,6 +100,18 @@ class AOCPlayerManager extends APP_GameClass {
     }
 
     /**
+     * Adjust how much income a player has
+     *
+     * @param AOCPlayer $player The player
+     * @param int $income The amount of income to adjust by
+     * @return void
+     */
+    public function adjustPlayerIncome($player, $income) {
+        $player->setIncome($player->getIncome() + $income);
+        $this->savePlayer($player);
+    }
+
+    /**
      * Adjust how many points a player has
      *
      * @param AOCPlayer $playerId The player
@@ -160,7 +172,7 @@ class AOCPlayerManager extends APP_GameClass {
      */
     public function getPlayers($playerIds = null) {
         $sql =
-            "SELECT player_id id, player_no naturalOrder, player_turn_order turnOrder, player_name name, player_color color, player_score score, player_score_aux scoreAux, player_money money, player_crime_ideas crimeIdeas, player_horror_ideas horrorIdeas, player_romance_ideas romanceIdeas, player_scifi_ideas scifiIdeas, player_superhero_ideas superheroIdeas, player_western_ideas westernIdeas, player_agent_location agentLocation, player_cube_one_location cubeOneLocation, player_cube_two_location cubeTwoLocation, player_cube_three_location cubeThreeLocation, player_is_multiactive multiActive FROM player";
+            "SELECT player_id id, player_no naturalOrder, player_turn_order turnOrder, player_name name, player_color color, player_score score, player_score_aux scoreAux, player_money money, player_income income, player_crime_ideas crimeIdeas, player_horror_ideas horrorIdeas, player_romance_ideas romanceIdeas, player_scifi_ideas scifiIdeas, player_superhero_ideas superheroIdeas, player_western_ideas westernIdeas, player_agent_location agentLocation, player_cube_one_location cubeOneLocation, player_cube_two_location cubeTwoLocation, player_cube_three_location cubeThreeLocation, player_is_multiactive multiActive FROM player";
         if ($playerIds) {
             $sql .= " WHERE player_id IN (" . implode(",", $playerIds) . ")";
         }
@@ -250,19 +262,20 @@ class AOCPlayerManager extends APP_GameClass {
      */
     public function savePlayer($player) {
         $sql = "UPDATE player SET 
-        player_score = {$player->getScore()}, 
-        player_score_aux = {$player->getScoreAux()}, 
-        player_money = {$player->getMoney()}, 
-        player_crime_ideas = {$player->getCrimeIdeas()}, 
-        player_horror_ideas = {$player->getHorrorIdeas()}, 
-        player_romance_ideas = {$player->getRomanceIdeas()}, 
-        player_scifi_ideas = {$player->getScifiIdeas()}, 
-        player_superhero_ideas = {$player->getSuperheroIdeas()}, 
-        player_western_ideas = {$player->getWesternIdeas()}, 
-        player_agent_location = {$player->getAgentLocation()}, 
-        player_cube_one_location = {$player->getCubeOneLocation()}, 
-        player_cube_two_location = {$player->getCubeTwoLocation()}, 
-        player_cube_three_location = {$player->getCubeThreeLocation()} 
+        player_score = {$player->getScore()},
+        player_score_aux = {$player->getScoreAux()},
+        player_money = {$player->getMoney()},
+        player_income = {$player->getIncome()},
+        player_crime_ideas = {$player->getCrimeIdeas()},
+        player_horror_ideas = {$player->getHorrorIdeas()},
+        player_romance_ideas = {$player->getRomanceIdeas()},
+        player_scifi_ideas = {$player->getScifiIdeas()},
+        player_superhero_ideas = {$player->getSuperheroIdeas()},
+        player_western_ideas = {$player->getWesternIdeas()},
+        player_agent_location = {$player->getAgentLocation()},
+        player_cube_one_location = {$player->getCubeOneLocation()},
+        player_cube_two_location = {$player->getCubeTwoLocation()},
+        player_cube_three_location = {$player->getCubeThreeLocation()}
         WHERE player_id = {$player->getId()}";
 
         self::DbQuery($sql);

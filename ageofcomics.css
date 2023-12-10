@@ -1410,27 +1410,33 @@ html {
   top: 640.5px;
 }
 
-#aoc-mini-comics-crime, #aoc-mini-ripoffs-crime {
+#aoc-mini-comics-crime,
+#aoc-mini-ripoffs-crime {
   left: 659px;
 }
 
-#aoc-mini-comics-horror, #aoc-mini-ripoffs-horror {
+#aoc-mini-comics-horror,
+#aoc-mini-ripoffs-horror {
   left: 429px;
 }
 
-#aoc-mini-comics-romance, #aoc-mini-ripoffs-romance {
+#aoc-mini-comics-romance,
+#aoc-mini-ripoffs-romance {
   left: 352px;
 }
 
-#aoc-mini-comics-scifi, #aoc-mini-ripoffs-scifi {
+#aoc-mini-comics-scifi,
+#aoc-mini-ripoffs-scifi {
   left: 583px;
 }
 
-#aoc-mini-comics-superhero, #aoc-mini-ripoffs-superhero {
+#aoc-mini-comics-superhero,
+#aoc-mini-ripoffs-superhero {
   left: 505px;
 }
 
-#aoc-mini-comics-western, #aoc-mini-ripoffs-western {
+#aoc-mini-comics-western,
+#aoc-mini-ripoffs-western {
   left: 275px;
 }
 
@@ -1443,6 +1449,10 @@ html {
   height: 82.75px;
   position: absolute;
   width: 64px;
+}
+
+.aoc-mini-comic-container .aoc-mini-comic {
+  height: 80px !important;
 }
 
 .aoc-mini-comic-container .aoc-mini-comic:nth-child(1) {

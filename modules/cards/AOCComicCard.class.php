@@ -81,7 +81,7 @@ class AOCComicCard extends AOCCard {
     public function __construct($row) {
         parent::__construct($row);
         $this->bonus = (int) $row["typeArg"];
-        $this->fans = $this->bonus == PLUS_ONE_FAN ? 2 : 1;
+        $this->fans = 1;
         $this->name = COMIC_CARDS[$this->getGenreId()][$this->bonus];
         $this->baseClass =
             "aoc-" .

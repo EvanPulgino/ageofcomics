@@ -387,6 +387,7 @@ var GameBody = /** @class */ (function (_super) {
     GameBody.prototype.notif_message = function (notif) { };
     GameBody.prototype.notif_addMiniComicToChart = function (notif) {
         this.miniComicController.moveMiniComicToChart(notif.args.miniComic);
+        this.playerController.adjustIncome(notif.args.player, notif.args.income);
     };
     GameBody.prototype.notif_adjustIdeas = function (notif) {
         this.playerController.adjustIdeas(notif.args.player, notif.args.genre, notif.args.numOfIdeas);
@@ -408,10 +409,12 @@ var GameBody = /** @class */ (function (_super) {
         if (notif.args.spentIdeas > 0) {
             this.playerController.adjustIdeas(notif.args.player, notif.args.card.genre, -notif.args.spentIdeas);
         }
+        this.playerController.adjustHand(notif.args.player, -1);
     };
     GameBody.prototype.notif_assignCreative = function (notif) {
         this.cardController.slideCardToPlayerMat(notif.args.player, notif.args.card, notif.args.slot);
         this.playerController.adjustMoney(notif.args.player, -notif.args.cost);
+        this.playerController.adjustHand(notif.args.player, -1);
     };
     /**
      * Handle'completeSetup' notification
@@ -1875,8 +1878,7 @@ var PlayerController = /** @class */ (function () {
         this.createPlayerCounter(player, "western", player.westernIdeas);
         this.createPlayerCounter(player, "money", player.money);
         this.createPlayerCounter(player, "point", player.score);
-        // TODO:calculate income
-        this.createPlayerCounter(player, "income", 0);
+        this.createPlayerCounter(player, "income", player.income);
         this.createPlayerCounter(player, "hand", player.handSize);
     };
     /**

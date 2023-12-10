@@ -115,6 +115,7 @@ class GameBody extends GameBasics {
 
   notif_addMiniComicToChart(notif: any): void {
     this.miniComicController.moveMiniComicToChart(notif.args.miniComic);
+    this.playerController.adjustIncome(notif.args.player, notif.args.income);
   }
 
   notif_adjustIdeas(notif: any): void {
@@ -152,6 +153,8 @@ class GameBody extends GameBasics {
         -notif.args.spentIdeas
       );
     }
+
+    this.playerController.adjustHand(notif.args.player, -1);
   }
 
   notif_assignCreative(notif: any): void {
@@ -161,6 +164,7 @@ class GameBody extends GameBasics {
       notif.args.slot
     );
     this.playerController.adjustMoney(notif.args.player, -notif.args.cost);
+    this.playerController.adjustHand(notif.args.player, -1);
   }
 
   /**

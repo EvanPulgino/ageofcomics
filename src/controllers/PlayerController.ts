@@ -385,8 +385,7 @@ class PlayerController {
     this.createPlayerCounter(player, "western", player.westernIdeas);
     this.createPlayerCounter(player, "money", player.money);
     this.createPlayerCounter(player, "point", player.score);
-    // TODO:calculate income
-    this.createPlayerCounter(player, "income", 0);
+    this.createPlayerCounter(player, "income", player.income);
     this.createPlayerCounter(player, "hand", player.handSize);
   }
 

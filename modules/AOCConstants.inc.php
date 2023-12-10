@@ -120,6 +120,21 @@ define("CARD_TYPES", [
     CARD_TYPE_WRITER => WRITER,
 ]);
 
+/** Chart Income Levels */
+define("CHART_INCOME_LEVELS", [
+    0 => 0,
+    1 => 1,
+    2 => 2,
+    3 => 2,
+    4 => 3,
+    5 => 3,
+    6 => 3,
+    7 => 4,
+    8 => 4,
+    9 => 4,
+    10 => 6,
+]);
+
 /** Comic Bonuses */
 define("PLUS_ONE_FAN", 1);
 define("TWO_IDEAS", 2);

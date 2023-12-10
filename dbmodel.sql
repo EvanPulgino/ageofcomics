@@ -72,6 +72,8 @@ ADD `player_turn_order` INT(10) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `player`
 ADD `player_money` INT(10) UNSIGNED NOT NULL DEFAULT '5';
 ALTER TABLE `player`
+ADD `player_income` INT(10) UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE `player`
 ADD `player_crime_ideas` INT(10) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `player`
 ADD `player_horror_ideas` INT(10) UNSIGNED NOT NULL DEFAULT '0';

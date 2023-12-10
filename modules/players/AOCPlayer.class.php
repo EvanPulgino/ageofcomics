@@ -19,6 +19,7 @@
  * - The player's score
  * - The player's auxiliary (tiebreaker) score
  * - The player's Money
+ * - The player's income level
  * - The number of Crime Ideas the player has
  * - The number of Horror Ideas the player has
  * - The number of Romance Ideas the player has
@@ -83,6 +84,11 @@ class AOCPlayer {
      * @var int $money The player's money
      */
     private $money;
+
+    /**
+     * @var int $income The player's income level
+     */
+    private $income;
 
     /**
      * @var int $crimeIdeas The number of crime ideas the player has
@@ -175,6 +181,7 @@ class AOCPlayer {
         $this->score = $row["score"];
         $this->scoreAux = $row["scoreAux"];
         $this->money = $row["money"];
+        $this->income = $row["income"];
         $this->crimeIdeas = $row["crimeIdeas"];
         $this->horrorIdeas = $row["horrorIdeas"];
         $this->romanceIdeas = $row["romanceIdeas"];
@@ -302,6 +309,25 @@ class AOCPlayer {
      */
     public function setMoney($money) {
         $this->money = $money;
+    }
+
+    /**
+     * Get the player's income level
+     *
+     * @return int
+     */
+    public function getIncome() {
+        return $this->income;
+    }
+
+    /**
+     * Set the player's income level
+     *
+     * @param int $income The player's income level
+     * @return void
+     */
+    public function setIncome($income) {
+        $this->income = $income;
     }
 
     /**
@@ -602,7 +628,7 @@ class AOCPlayer {
 
     /**
      * Get the number of cards in the player's hand
-     * 
+     *
      * @return int
      */
     public function getHandSize() {
@@ -625,6 +651,7 @@ class AOCPlayer {
             "score" => $this->score,
             "scoreAux" => $this->scoreAux,
             "money" => $this->money,
+            "income" => $this->income,
             "crimeIdeas" => $this->crimeIdeas,
             "horrorIdeas" => $this->horrorIdeas,
             "romanceIdeas" => $this->romanceIdeas,

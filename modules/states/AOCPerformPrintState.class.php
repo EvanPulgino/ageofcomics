@@ -132,6 +132,11 @@ class AOCPerformPrintState {
 
         $this->game->miniComicManager->saveMiniComic($miniComic);
 
+        $this->game->playerManager->adjustPlayerIncome(
+            $player,
+            CHART_INCOME_LEVELS[$initialFans]
+        );
+
         $this->game->notifyAllPlayers(
             "addMiniComicToChart",
             clienttranslate(
@@ -146,6 +151,7 @@ class AOCPerformPrintState {
                 ),
                 "miniComic" => $miniComic->getUiData(),
                 "initialFans" => $initialFans,
+                "income" => CHART_INCOME_LEVELS[$initialFans],
             ]
         );
     }
