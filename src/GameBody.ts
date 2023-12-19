@@ -360,6 +360,19 @@ class GameBody extends GameBasics {
   }
 
   /**
+   * Handle 'gainTicket' notification
+   *
+   * Notif args:
+   * - player: player object
+   *
+   * @param notif
+   */
+  notif_gainTicket(notif: any): void {
+    this.ticketController.gainTicket(notif.args.player);
+    this.playerController.adjustTickets(notif.args.player, 1);
+  }
+
+  /**
    * Handle 'hireCreative' notification
    *
    * Notif args:
@@ -386,9 +399,22 @@ class GameBody extends GameBasics {
     this.playerController.adjustHand(notif.args.player, 1);
   }
 
+  /**
+   * Handle 'moveMiniComic' notification
+   *
+   * Notif args:
+   * - miniComic: mini comic object
+   * - player: player object
+   * - incomeChange: amount to adjust income by
+   *
+   * @param notif
+   */
   notif_moveMiniComic(notif: any): void {
     this.miniComicController.moveMiniComic(notif.args.miniComic);
-    this.playerController.adjustIncome(notif.args.player, notif.args.incomeChange);
+    this.playerController.adjustIncome(
+      notif.args.player,
+      notif.args.incomeChange
+    );
   }
 
   /**

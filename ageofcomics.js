@@ -582,6 +582,18 @@ var GameBody = /** @class */ (function (_super) {
         this.playerController.adjustIdeas(notif.args.player, notif.args.genre, 1);
     };
     /**
+     * Handle 'gainTicket' notification
+     *
+     * Notif args:
+     * - player: player object
+     *
+     * @param notif
+     */
+    GameBody.prototype.notif_gainTicket = function (notif) {
+        this.ticketController.gainTicket(notif.args.player);
+        this.playerController.adjustTickets(notif.args.player, 1);
+    };
+    /**
      * Handle 'hireCreative' notification
      *
      * Notif args:
@@ -606,6 +618,16 @@ var GameBody = /** @class */ (function (_super) {
         this.cardController.slideCardToPlayerHand(notif.args.card);
         this.playerController.adjustHand(notif.args.player, 1);
     };
+    /**
+     * Handle 'moveMiniComic' notification
+     *
+     * Notif args:
+     * - miniComic: mini comic object
+     * - player: player object
+     * - incomeChange: amount to adjust income by
+     *
+     * @param notif
+     */
     GameBody.prototype.notif_moveMiniComic = function (notif) {
         this.miniComicController.moveMiniComic(notif.args.miniComic);
         this.playerController.adjustIncome(notif.args.player, notif.args.incomeChange);
@@ -1651,6 +1673,15 @@ var PlayerController = /** @class */ (function () {
         this.updatePlayerCounter(player.id, "point", amount);
     };
     /**
+     * Adjust a player's ticket counter by a given amount
+     *
+     * @param player - player to adjust ticket counter for
+     * @param amount - amount to adjust ticket counter by
+     */
+    PlayerController.prototype.adjustTickets = function (player, amount) {
+        this.updatePlayerCounter(player.id, "ticket", amount);
+    };
+    /**
      * Show floating player hand when hovering over hand icon
      *
      * @param player
@@ -1790,12 +1821,13 @@ var PlayerController = /** @class */ (function () {
             '" class="aoc-player-panel-row">' +
             this.createPlayerPanelOtherSupplyDiv(player, "money") +
             this.createPlayerPanelOtherSupplyDiv(player, "point") +
+            this.createPlayerPanelOtherSupplyDiv(player, "income") +
             "</div>" +
             '<div id="aoc-player-panel-other-2' +
             player.id +
             '" class="aoc-player-panel-row">' +
             this.createPlayerPanelOtherSupplyDiv(player, "hand") +
-            this.createPlayerPanelOtherSupplyDiv(player, "income") +
+            this.createPlayerPanelOtherSupplyDiv(player, "tickets") +
             "</div>" +
             "</div>";
         this.ui.createHtml(playerPanelDiv, "player_board_" + player.id);
@@ -1875,6 +1907,16 @@ var PlayerController = /** @class */ (function () {
                         player.id +
                         '" class="aoc-player-panel-icon-size fa6 fa6-solid fa6-money-bill-trend-up"></i></div>';
                 break;
+            case "tickets":
+                otherSupplyDiv =
+                    '<div id="aoc-player-panel-ticket-' +
+                        player.id +
+                        '-supply" class="aoc-player-panel-supply aoc-player-panel-other-supply"><span id="aoc-player-panel-ticket-count-' +
+                        player.id +
+                        '" class="aoc-player-panel-ticket-count aoc-squada"></span><i id="aoc-player-panel-ticket-' +
+                        player.id +
+                        '" class="aoc-ticket-icon"></i></div>';
+                break;
         }
         return otherSupplyDiv;
     };
@@ -1895,6 +1937,7 @@ var PlayerController = /** @class */ (function () {
         this.createPlayerCounter(player, "point", player.score);
         this.createPlayerCounter(player, "income", player.income);
         this.createPlayerCounter(player, "hand", player.handSize);
+        this.createPlayerCounter(player, "ticket", player.tickets);
     };
     /**
      * Create and initialize a player counter
@@ -2070,6 +2113,14 @@ var TicketController = /** @class */ (function () {
     TicketController.prototype.createTicket = function (ticketNum) {
         var ticketDiv = '<div id="aoc-ticket-' + ticketNum + '" class="aoc-ticket"></div>';
         this.ui.createHtml(ticketDiv, "aoc-tickets-space");
+    };
+    TicketController.prototype.gainTicket = function (player) {
+        var tickets = dojo.query(".aoc-ticket");
+        if (tickets.length === 0) {
+            return;
+        }
+        var ticket = tickets[0];
+        this.ui.slideToObjectAndDestroy(ticket, "aoc-player-ticket-" + player.id, 1000);
     };
     return TicketController;
 }());

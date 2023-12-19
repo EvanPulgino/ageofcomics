@@ -354,6 +354,11 @@
                                     class="aoc-player-supply-count aoc-squada"></span>
                                 <i id="aoc-player-hand-{player_id}" class="aoc-icon-size aoc-hand-icon"></i>
                             </div>
+                            <div id="aoc-player-ticket-supply-{player_id}" class="aoc-player-supply">
+                                <span id="aoc-player-ticket-count-{player_id}"
+                                    class="aoc-player-supply-count aoc-squada"></span>
+                                <i id="aoc-player-ticket-{player_id}" class="aoc-icon-size aoc-ticket-icon"></i>
+                            </div>
                         </div>
                         <div id="aoc-player-mat-{player_id}" class="aoc-player-mat aoc-player-mat-{color}">
                             <div id="aoc-writer-slot-1-{player_id}" class="aoc-card-slot aoc-writer-slot-one">

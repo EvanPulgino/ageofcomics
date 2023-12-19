@@ -14,7 +14,7 @@
   background-image: url(./img/aoc_paper.jpg);
   background-size: contain;
   height: 100%;
-  width: 100%;
+  width: 99%;
   position: absolute;
   z-index: 1;
   filter: drop-shadow(2px 2px 2px black);
@@ -23,8 +23,7 @@
   display: flex;
   flex-flow: row nowrap;
   align-items: flex-start;
-  justify-content: space-evenly;
-  gap: 10px;
+  justify-content: flex-start;
 }
 
 .aoc-editor-container {
@@ -75,9 +74,6 @@
   display: flex;
   flex-flow: row nowrap;
   height: 485px;
-  justify-content: flex-end;
-  position: relative;
-  width: 1300px;
 }
 
 .aoc-player-area-right {
@@ -156,6 +152,8 @@
   height: 420px;
   width: 1230px;
   z-index: 2;
+  position: relative;
+  left: 71px;
 }
 
 .aoc-player-mat-brown {
@@ -282,6 +280,12 @@
   font-size: 33px;
   font-weight: 400;
   padding-right: 6px;
+  line-height: 30px;
+}
+
+.aoc-player-panel-ticket-count {
+  font-size: 33px;
+  font-weight: 400;
   line-height: 30px;
 }
 

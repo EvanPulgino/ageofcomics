@@ -99,6 +99,7 @@ class AOCPerformPrintState {
         // Add mini comic to chart
         $this->addMiniComicToChart($activePlayer, $comicCard, $initialFans);
 
+        // Save printed comic id for later states
         $this->game->setGameStateValue(PRINTED_COMIC, $comicCard->getId());
 
         // Get card bonus

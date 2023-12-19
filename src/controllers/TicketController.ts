@@ -39,4 +39,17 @@ class TicketController {
       '<div id="aoc-ticket-' + ticketNum + '" class="aoc-ticket"></div>';
     this.ui.createHtml(ticketDiv, "aoc-tickets-space");
   }
+
+  gainTicket(player: any): void {
+    const tickets = dojo.query(".aoc-ticket");
+    if (tickets.length === 0) {
+      return;
+    }
+    const ticket = tickets[0];
+    this.ui.slideToObjectAndDestroy(
+      ticket,
+      "aoc-player-ticket-" + player.id,
+      1000
+    );
+  }
 }

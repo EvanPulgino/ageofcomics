@@ -1874,7 +1874,7 @@ html {
   background-image: url(./img/aoc_paper.jpg);
   background-size: contain;
   height: 100%;
-  width: 100%;
+  width: 99%;
   position: absolute;
   z-index: 1;
   filter: drop-shadow(2px 2px 2px black);
@@ -1883,8 +1883,7 @@ html {
   display: flex;
   flex-flow: row nowrap;
   align-items: flex-start;
-  justify-content: space-evenly;
-  gap: 10px;
+  justify-content: flex-start;
 }
 
 .aoc-editor-container {
@@ -1935,9 +1934,6 @@ html {
   display: flex;
   flex-flow: row nowrap;
   height: 485px;
-  justify-content: flex-end;
-  position: relative;
-  width: 1300px;
 }
 
 .aoc-player-area-right {
@@ -2017,6 +2013,8 @@ html {
   height: 420px;
   width: 1230px;
   z-index: 2;
+  position: relative;
+  left: 71px;
 }
 
 .aoc-player-mat-brown {
@@ -2143,6 +2141,12 @@ html {
   font-size: 33px;
   font-weight: 400;
   padding-right: 6px;
+  line-height: 30px;
+}
+
+.aoc-player-panel-ticket-count {
+  font-size: 33px;
+  font-weight: 400;
   line-height: 30px;
 }
 
@@ -2738,6 +2742,21 @@ html {
   height: 64px;
   width: 124px;
   position: absolute;
+}
+
+.aoc-ticket-icon {
+  background-image: url("./img/aoc_ticket_icon.png");
+  background-repeat: no-repeat;
+  height: 44px;
+  width: 83px;
+  border-radius: 5px;
+  filter: drop-shadow(1px 1px 1px black);
+  -webkit-filter: drop-shadow(1px 1px 2px #000);
+}
+
+.aoc-player-panel-supply .aoc-ticket-icon {
+  text-align: center;
+  transform: scale(0.75);
 }
 
 #aoc-tickets-space {

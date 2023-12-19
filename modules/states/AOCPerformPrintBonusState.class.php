@@ -104,5 +104,26 @@ class AOCPerformPrintBonusState {
     }
 
     private function superTransport($player, $comic) {
+        $this->game->playerManager->adjustPlayerTickets(
+            $player,
+            1
+        );
+        $ticketSupply = $this->game->getGameStateValue(TICKET_SUPPLY);
+        $this->game->setGameStateValue(TICKET_SUPPLY, $ticketSupply - 1);
+
+        $this->game->notifyAllPlayers(
+            "gainTicket",
+            clienttranslate(
+                '${player_name} earns 1 ticket from printing ${comicName}'
+            ),
+            [
+                "player" => $player->getUiData(),
+                "player_name" => $player->getName(),
+                "comicName" => $this->game->formatNotificationString(
+                    $comic->getName(),
+                    $comic->getGenreId()
+                ),
+            ]
+        );
     }
 }

@@ -89,6 +89,16 @@ class PlayerController {
   }
 
   /**
+   * Adjust a player's ticket counter by a given amount
+   *
+   * @param player - player to adjust ticket counter for
+   * @param amount - amount to adjust ticket counter by
+   */
+  adjustTickets(player: any, amount: number): void {
+    this.updatePlayerCounter(player.id, "ticket", amount);
+  }
+
+  /**
    * Show floating player hand when hovering over hand icon
    *
    * @param player
@@ -278,12 +288,13 @@ class PlayerController {
       '" class="aoc-player-panel-row">' +
       this.createPlayerPanelOtherSupplyDiv(player, "money") +
       this.createPlayerPanelOtherSupplyDiv(player, "point") +
+      this.createPlayerPanelOtherSupplyDiv(player, "income") +
       "</div>" +
       '<div id="aoc-player-panel-other-2' +
       player.id +
       '" class="aoc-player-panel-row">' +
       this.createPlayerPanelOtherSupplyDiv(player, "hand") +
-      this.createPlayerPanelOtherSupplyDiv(player, "income") +
+      this.createPlayerPanelOtherSupplyDiv(player, "tickets") +
       "</div>" +
       "</div>";
     this.ui.createHtml(playerPanelDiv, "player_board_" + player.id);
@@ -366,6 +377,16 @@ class PlayerController {
           player.id +
           '" class="aoc-player-panel-icon-size fa6 fa6-solid fa6-money-bill-trend-up"></i></div>';
         break;
+      case "tickets":
+        otherSupplyDiv =
+          '<div id="aoc-player-panel-ticket-' +
+          player.id +
+          '-supply" class="aoc-player-panel-supply aoc-player-panel-other-supply"><span id="aoc-player-panel-ticket-count-' +
+          player.id +
+          '" class="aoc-player-panel-ticket-count aoc-squada"></span><i id="aoc-player-panel-ticket-' +
+          player.id +
+          '" class="aoc-ticket-icon"></i></div>';
+        break;
     }
     return otherSupplyDiv;
   }
@@ -387,6 +408,7 @@ class PlayerController {
     this.createPlayerCounter(player, "point", player.score);
     this.createPlayerCounter(player, "income", player.income);
     this.createPlayerCounter(player, "hand", player.handSize);
+    this.createPlayerCounter(player, "ticket", player.tickets);
   }
 
   /**
