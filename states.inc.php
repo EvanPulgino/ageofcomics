@@ -192,15 +192,15 @@ $machinestates = [
     ST_PERFORM_PRINT_BONUS => [
         "name" => PERFORM_PRINT_BONUS,
         "description" => clienttranslate(
-            '${actplayer} must select a bonus 2 ideas for printing ${comicName}'
+            '${actplayer} must select 2 bonus ideas for printing ${comicName}'
         ),
         "descriptionmyturn" => clienttranslate(
-            '${you} must select a bonus 2 ideas for printing ${comicName}'
+            '${you} must select 2 bonus ideas for printing ${comicName}'
         ),
         "type" => STATE_TYPE_ACTIVE_PLAYER,
         "args" => STATE_ARGS_PERFORM_PRINT_BONUS,
         "action" => GAME_ACTION_PERFORM_PRINT_BONUS,
-        "possibleactions" => [PLAYER_ACTION_CONFIRM_GAIN_IDEAS],
+        "possibleactions" => [PLAYER_ACTION_CONFIRM_GAIN_BONUS_IDEAS],
         "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
     ],
 

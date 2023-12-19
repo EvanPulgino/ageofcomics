@@ -61,6 +61,18 @@ class action_ageofcomics extends APP_GameAction {
         self::ajaxResponse();
     }
 
+    public function confirmGainBonusIdeas() {
+        self::setAjaxMode();
+
+        $ideas = self::getArg("ideas", AT_numberlist, true);
+
+        $this->game->states[PERFORM_PRINT_BONUS]->confirmGainBonusIdeas(
+            explode(",", $ideas)
+        );
+
+        self::ajaxResponse();
+    }
+
     public function developComic() {
         self::setAjaxMode();
 

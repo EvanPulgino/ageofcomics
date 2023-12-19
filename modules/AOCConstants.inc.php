@@ -31,6 +31,7 @@ define("PLAYER_ACTION_DEVELOP_COMIC", "developComic");
 define("PLAYER_ACTION_DEVELOP_FROM_GENRE", "developFromGenre");
 define("PLAYER_ACTION_FLIP_SALES_ORDER", "flipSalesOrder");
 define("PLAYER_ACTION_CONFIRM_GAIN_IDEAS", "confirmGainIdeas");
+define("PLAYER_ACTION_CONFIRM_GAIN_BONUS_IDEAS", "confirmGainBonusIdeas");
 define("PLAYER_ACTION_HIRE_CREATIVE", "hireCreative");
 define("PLAYER_ACTION_MOVE_SALES_AGENT", "moveSalesAgent");
 define(

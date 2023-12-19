@@ -58,6 +58,53 @@ class AOCPerformPrintBonusState {
         $this->game->gamestate->nextState("nextPlayerTurn");
     }
 
+    /**
+     * The player gains all of the ideas they selected
+     *
+     * @param int[] $ideas The ideas the player selected (using the genre's key)
+     * @return void
+     */
+    public function confirmGainBonusIdeas($ideas) {
+        $activePlayer = $this->game->playerManager->getActivePlayer();
+
+        // For each idea the player took from the supply, gain that idea
+        foreach ($ideas as $ideaGenre) {
+            $this->gainIdeaFromSupply($activePlayer, $ideaGenre);
+        }
+
+        // Set the state to the next player's turn
+        $this->game->gamestate->nextState("nextPlayerTurn");
+    }
+
+    /**
+     * A player gains an idea from the supply
+     *
+     * @param AOCPlayer $player The player gaining the idea
+     * @param int $genre key The genre of the idea to gain
+     * @return void
+     */
+    private function gainIdeaFromSupply($player, $genre) {
+        // Adjust the player's ideas
+        $this->game->playerManager->adjustPlayerIdeas($player, 1, $genre);
+
+        // Notify all players of the gain
+        $this->game->notifyAllPlayers(
+            "gainIdeaFromSupply",
+            clienttranslate(
+                '${player_name} gains a ${genreString} idea from the supply as a bonus for printing a comic'
+            ),
+            [
+                "player" => $player->getUiData(),
+                "player_name" => $player->getName(),
+                "genre" => GENRES[$genre],
+                "genreString" => $this->game->formatNotificationString(
+                    GENRES[$genre],
+                    $genre
+                ),
+            ]
+        );
+    }
+
     private function plusFourMoney($player, $comic) {
         $this->game->playerManager->adjustPlayerMoney($player, 4);
         $this->game->notifyAllPlayers(
