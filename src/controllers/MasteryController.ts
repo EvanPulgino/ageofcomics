@@ -43,6 +43,31 @@ class MasteryController {
       '"></div>';
     if (masteryToken.playerId == 0) {
       this.ui.createHtml(masteryTokenDiv, "aoc-game-status-mastery-container");
+    } else {
+      this.ui.createHtml(
+        masteryTokenDiv,
+        "aoc-mastery-container-" + masteryToken.playerId
+      );
     }
+  }
+
+  moveMasteryToken(masteryToken: any): void {
+    const masteryTokenElement = dojo.byId(
+      "aoc-mastery-token-" + masteryToken.id
+    );
+    const targetElement = dojo.byId(
+      "aoc-mastery-container-" + masteryToken.playerId
+    );
+
+    const animation = this.ui.slideToObject(
+      masteryTokenElement,
+      targetElement,
+      500
+    );
+    dojo.connect(animation, "onEnd", () => {
+      dojo.removeAttr(masteryTokenElement, "style");
+      dojo.place(masteryTokenElement, targetElement);
+    });
+    animation.play();
   }
 }

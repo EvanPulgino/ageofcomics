@@ -359,6 +359,10 @@
                                     class="aoc-player-supply-count aoc-squada"></span>
                                 <i id="aoc-player-ticket-{player_id}" class="aoc-icon-size aoc-ticket-icon"></i>
                             </div>
+                            <div id="aoc-token-container-{player_id}" class="aoc-token-container">
+                                <div id="aoc-mastery-container-{player_id}" class="aoc-mastery-container"></div>
+                                <div id="aoc-sales-order-container-{player_id}" class="aoc-sales-order-container"></div>
+                            </div>
                         </div>
                         <div id="aoc-player-mat-{player_id}" class="aoc-player-mat aoc-player-mat-{color}">
                             <div id="aoc-writer-slot-1-{player_id}" class="aoc-card-slot aoc-writer-slot-one">
@@ -405,10 +409,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="aoc-player-area-right-{player_id}" class="aoc-player-area-right">
-                        <div id="aoc-player-mastery-{player_id}" class="aoc-player-mastery-container"></div>
-                        <div id="aoc-player-tokens-{player_id}" class="aoc-player-token-container"></div>
-                    </div>
+                    <div id="aoc-player-area-right-{player_id}" class="aoc-player-area-right"></div>
                 </div>
             </div>
             <!-- END playerarea -->

@@ -362,6 +362,7 @@ var GameBody = /** @class */ (function (_super) {
                 dojo.subscribe(m.substring(6), this, m);
             }
         }
+        this.notifqueue.setSynchronous("adjustMiniComic", 500);
         this.notifqueue.setSynchronous("assignComic", 500);
         this.notifqueue.setSynchronous("assignCreative", 500);
         this.notifqueue.setSynchronous("discardCard", 500);
@@ -369,6 +370,7 @@ var GameBody = /** @class */ (function (_super) {
         this.notifqueue.setSynchronous("gainIdeaFromBoard", 500);
         this.notifqueue.setSynchronous("gainIdeaFromSupply", 500);
         this.notifqueue.setSynchronous("gainStartingIdea", 500);
+        this.notifqueue.setSynchronous("masteryTokenClaimed", 500);
         this.notifqueue.setIgnoreNotificationCheck("developComic", function (notif) {
             return notif.args.player_id == gameui.player_id;
         });
@@ -391,6 +393,10 @@ var GameBody = /** @class */ (function (_super) {
     };
     GameBody.prototype.notif_adjustIdeas = function (notif) {
         this.playerController.adjustIdeas(notif.args.player, notif.args.genre, notif.args.numOfIdeas);
+    };
+    GameBody.prototype.notif_adjustMiniComic = function (notif) {
+        this.miniComicController.moveMiniComic(notif.args.miniComic);
+        this.playerController.adjustIncome(notif.args.player, notif.args.incomeChange);
     };
     /**
      * Handle 'adjustMoney' notification
@@ -632,6 +638,9 @@ var GameBody = /** @class */ (function (_super) {
         this.miniComicController.moveMiniComic(notif.args.miniComic);
         this.playerController.adjustIncome(notif.args.player, notif.args.incomeChange);
     };
+    GameBody.prototype.notif_masteryTokenClaimed = function (notif) {
+        this.masteryController.moveMasteryToken(notif.args.masteryToken);
+    };
     /**
      * Handle 'placeEditor' notification
      *
@@ -708,6 +717,7 @@ var GameState = /** @class */ (function () {
         this.performIdeas = new PerformIdeas(game);
         this.performPrint = new PerformPrint(game);
         this.performPrintBonus = new PerformPrintBonus(game);
+        this.performPrintMastery = new PerformPrintMastery(game);
         this.performRoyalties = new PerformRoyalties(game);
         this.performSales = new PerformSales(game);
         this.playerSetup = new PlayerSetup(game);
@@ -1523,6 +1533,19 @@ var MasteryController = /** @class */ (function () {
         if (masteryToken.playerId == 0) {
             this.ui.createHtml(masteryTokenDiv, "aoc-game-status-mastery-container");
         }
+        else {
+            this.ui.createHtml(masteryTokenDiv, "aoc-mastery-container-" + masteryToken.playerId);
+        }
+    };
+    MasteryController.prototype.moveMasteryToken = function (masteryToken) {
+        var masteryTokenElement = dojo.byId("aoc-mastery-token-" + masteryToken.id);
+        var targetElement = dojo.byId("aoc-mastery-container-" + masteryToken.playerId);
+        var animation = this.ui.slideToObject(masteryTokenElement, targetElement, 500);
+        dojo.connect(animation, "onEnd", function () {
+            dojo.removeAttr(masteryTokenElement, "style");
+            dojo.place(masteryTokenElement, targetElement);
+        });
+        animation.play();
     };
     return MasteryController;
 }());
@@ -1572,6 +1595,7 @@ var MiniComicController = /** @class */ (function () {
         }
     };
     MiniComicController.prototype.moveMiniComic = function (miniComic) {
+        console.log("moveMiniComic");
         var miniComicDiv = dojo.byId("aoc-mini-comic-" + miniComic.id);
         var chartSpaceDiv = dojo.byId("aoc-chart-space-" + miniComic.playerId + "-" + miniComic.fans);
         var animation = gameui.slideToObject(miniComicDiv, chartSpaceDiv, 500);
@@ -3436,6 +3460,32 @@ var PerformPrintBonus = /** @class */ (function () {
         }
     };
     return PerformPrintBonus;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * PerformPrintMastery.ts
+ *
+ * AgeOfComics perform print mastery state
+ *
+ * State vars:
+ * - game: game object reference
+ *
+ */
+var PerformPrintMastery = /** @class */ (function () {
+    function PerformPrintMastery(game) {
+        this.game = game;
+    }
+    PerformPrintMastery.prototype.onEnteringState = function (stateArgs) { };
+    PerformPrintMastery.prototype.onLeavingState = function () { };
+    PerformPrintMastery.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return PerformPrintMastery;
 }());
 /**
  *------

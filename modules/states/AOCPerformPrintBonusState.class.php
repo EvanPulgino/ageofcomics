@@ -55,7 +55,7 @@ class AOCPerformPrintBonusState {
                 return;
         }
 
-        $this->game->gamestate->nextState("nextPlayerTurn");
+        $this->game->gamestate->nextState("checkMastery");
     }
 
     /**
@@ -73,7 +73,7 @@ class AOCPerformPrintBonusState {
         }
 
         // Set the state to the next player's turn
-        $this->game->gamestate->nextState("nextPlayerTurn");
+        $this->game->gamestate->nextState("checkMastery");
     }
 
     /**

@@ -201,6 +201,15 @@ $machinestates = [
         "args" => STATE_ARGS_PERFORM_PRINT_BONUS,
         "action" => GAME_ACTION_PERFORM_PRINT_BONUS,
         "possibleactions" => [PLAYER_ACTION_CONFIRM_GAIN_BONUS_IDEAS],
+        "transitions" => ["checkMastery" => ST_PERFORM_PRINT_MASTERY],
+    ],
+
+    ST_PERFORM_PRINT_MASTERY => [
+        "name" => PERFORM_PRINT_MASTERY,
+        "description" => "",
+        "type" => STATE_TYPE_GAME,
+        "args" => STATE_ARGS_PERFORM_PRINT_MASTERY,
+        "action" => GAME_ACTION_PERFORM_PRINT_MASTERY,
         "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
     ],
 

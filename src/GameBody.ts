@@ -78,6 +78,7 @@ class GameBody extends GameBasics {
         dojo.subscribe(m.substring(6), this, m);
       }
     }
+    this.notifqueue.setSynchronous("adjustMiniComic", 500);
     this.notifqueue.setSynchronous("assignComic", 500);
     this.notifqueue.setSynchronous("assignCreative", 500);
     this.notifqueue.setSynchronous("discardCard", 500);
@@ -85,6 +86,7 @@ class GameBody extends GameBasics {
     this.notifqueue.setSynchronous("gainIdeaFromBoard", 500);
     this.notifqueue.setSynchronous("gainIdeaFromSupply", 500);
     this.notifqueue.setSynchronous("gainStartingIdea", 500);
+    this.notifqueue.setSynchronous("masteryTokenClaimed", 500);
 
     this.notifqueue.setIgnoreNotificationCheck(
       "developComic",
@@ -123,6 +125,14 @@ class GameBody extends GameBasics {
       notif.args.player,
       notif.args.genre,
       notif.args.numOfIdeas
+    );
+  }
+
+  notif_adjustMiniComic(notif: any): void {
+    this.miniComicController.moveMiniComic(notif.args.miniComic);
+    this.playerController.adjustIncome(
+      notif.args.player,
+      notif.args.incomeChange
     );
   }
 
@@ -415,6 +425,10 @@ class GameBody extends GameBasics {
       notif.args.player,
       notif.args.incomeChange
     );
+  }
+
+  notif_masteryTokenClaimed(notif: any): void {
+    this.masteryController.moveMasteryToken(notif.args.masteryToken);
   }
 
   /**

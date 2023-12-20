@@ -58,6 +58,7 @@ class MiniComicController {
   }
 
   moveMiniComic(miniComic: any): void {
+    console.log("moveMiniComic");
     const miniComicDiv = dojo.byId("aoc-mini-comic-" + miniComic.id);
     const chartSpaceDiv = dojo.byId(
       "aoc-chart-space-" + miniComic.playerId + "-" + miniComic.fans
