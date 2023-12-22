@@ -102,8 +102,6 @@ class AOCPerformPrintState {
         // Save printed comic id for later states
         $this->game->setGameStateValue(PRINTED_COMIC, $comicCard->getId());
 
-        // Check for mastery token gain
-
         // Check for upgrade cube unlock
 
         // Check for sales order fulfillment

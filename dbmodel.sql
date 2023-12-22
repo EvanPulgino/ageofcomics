@@ -90,8 +90,8 @@ ADD `player_tickets` INT(10) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `player`
 ADD `player_agent_location` INT(10) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `player`
-ADD `player_cube_one_location` INT(10) UNSIGNED NOT NULL DEFAULT '5';
+ADD `player_cube_one_location` INT(10) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `player`
-ADD `player_cube_two_location` INT(10) UNSIGNED NOT NULL DEFAULT '5';
+ADD `player_cube_two_location` INT(10) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `player`
-ADD `player_cube_three_location` INT(10) UNSIGNED NOT NULL DEFAULT '5';
+ADD `player_cube_three_location` INT(10) UNSIGNED NOT NULL DEFAULT '0';

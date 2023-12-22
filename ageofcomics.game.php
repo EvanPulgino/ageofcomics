@@ -70,7 +70,13 @@ class AgeOfComics extends Table {
         $this->states[PERFORM_PRINT_BONUS] = new AOCPerformPrintBonusState(
             $this
         );
+        $this->states[
+            PERFORM_PRINT_FULFILL_ORDERS
+        ] = new AOCPerformPrintFulfillOrdersState($this);
         $this->states[PERFORM_PRINT_MASTERY] = new AOCPerformPrintMasteryState(
+            $this
+        );
+        $this->states[PERFORM_PRINT_UPGRADE] = new AOCPerformPrintUpgradeState(
             $this
         );
         $this->states[PERFORM_ROYALTIES] = new AOCPerformRoyaltiesState($this);
@@ -268,8 +274,14 @@ class AgeOfComics extends Table {
     function argsPerformPrintBonus() {
         return $this->states[PERFORM_PRINT_BONUS]->getArgs();
     }
+    function argsPerformPrintFulfillOrders() {
+        return $this->states[PERFORM_PRINT_FULFILL_ORDERS]->getArgs();
+    }
     function argsPerformPrintMastery() {
         return $this->states[PERFORM_PRINT_MASTERY]->getArgs();
+    }
+    function argsPerformPrintUpgrade() {
+        return $this->states[PERFORM_PRINT_UPGRADE]->getArgs();
     }
     function argsPerformRoyalties() {
         return $this->states[PERFORM_ROYALTIES]->getArgs();

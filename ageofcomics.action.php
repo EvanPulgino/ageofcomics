@@ -108,6 +108,20 @@ class action_ageofcomics extends APP_GameAction {
         self::ajaxResponse();
     }
 
+    public function placeUpgradeCube() {
+        self::setAjaxMode();
+
+        $actionKey = self::getArg("actionKey", AT_posint, true);
+        $cubeMoved = self::getArg("cubeMoved", AT_posint, true);
+
+        $this->game->states[PERFORM_PRINT_UPGRADE]->placeUpgradeCube(
+            $actionKey,
+            $cubeMoved
+        );
+
+        self::ajaxResponse();
+    }
+
     public function printComic() {
         self::setAjaxMode();
 

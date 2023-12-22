@@ -25,7 +25,9 @@ class GameState {
   performIdeas: State;
   performPrint: State;
   performPrintBonus: State;
+  performPrintFulfillOrders: State;
   performPrintMastery: State;
+  performPrintUpgrade: State;
   performRoyalties: State;
   performSales: State;
   playerSetup: State;
@@ -43,7 +45,9 @@ class GameState {
     this.performIdeas = new PerformIdeas(game);
     this.performPrint = new PerformPrint(game);
     this.performPrintBonus = new PerformPrintBonus(game);
+    this.performPrintFulfillOrders = new PerformPrintFulfillOrders(game);
     this.performPrintMastery = new PerformPrintMastery(game);
+    this.performPrintUpgrade = new PerformPrintUpgrade(game);
     this.performRoyalties = new PerformRoyalties(game);
     this.performSales = new PerformSales(game);
     this.playerSetup = new PlayerSetup(game);

@@ -87,6 +87,7 @@ class GameBody extends GameBasics {
     this.notifqueue.setSynchronous("gainIdeaFromSupply", 500);
     this.notifqueue.setSynchronous("gainStartingIdea", 500);
     this.notifqueue.setSynchronous("masteryTokenClaimed", 500);
+    this.notifqueue.setSynchronous("placeUpgradeCube", 500);
 
     this.notifqueue.setIgnoreNotificationCheck(
       "developComic",
@@ -444,6 +445,14 @@ class GameBody extends GameBasics {
     this.editorController.moveEditorToActionSpace(
       notif.args.editor,
       notif.args.space
+    );
+  }
+
+  notif_placeUpgradeCube(notif: any): void {
+    this.playerController.moveUpgradeCube(
+      notif.args.player,
+      notif.args.cubeMoved,
+      notif.args.actionKey
     );
   }
 

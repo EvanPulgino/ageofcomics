@@ -210,7 +210,36 @@ $machinestates = [
         "type" => STATE_TYPE_GAME,
         "args" => STATE_ARGS_PERFORM_PRINT_MASTERY,
         "action" => GAME_ACTION_PERFORM_PRINT_MASTERY,
-        "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
+        "transitions" => ["checkUpgrade" => ST_PERFORM_PRINT_UPGRADE],
+    ],
+
+    ST_PERFORM_PRINT_UPGRADE => [
+        "name" => PERFORM_PRINT_UPGRADE,
+        "description" => clienttranslate(
+            '${actplayer} must select an action space to upgrade'
+        ),
+        "descriptionmyturn" => clienttranslate(
+            '${you} must select an action space to upgrade'
+        ),
+        "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "args" => STATE_ARGS_PERFORM_PRINT_UPGRADE,
+        "action" => GAME_ACTION_PERFORM_PRINT_UPGRADE,
+        "possibleactions" => [PLAYER_ACTION_PLACE_UPGRADE_CUBE],
+        "transitions" => [
+            "checkFulfillOrders" => ST_PERFORM_PRINT_FULFILL_ORDERS,
+        ],
+    ],
+
+    ST_PERFORM_PRINT_FULFILL_ORDERS => [
+        "name" => PERFORM_PRINT_FULFILL_ORDERS,
+        "description" => "",
+        "type" => STATE_TYPE_GAME,
+        "args" => STATE_ARGS_PERFORM_PRINT_FULFILL_ORDERS,
+        "action" => GAME_ACTION_PERFORM_PRINT_FULFILL_ORDERS,
+        "transitions" => [
+            "doublePrint" => ST_PERFORM_PRINT,
+            "nextPlayerTurn" => ST_NEXT_PLAYER,
+        ],
     ],
 
     ST_PERFORM_ROYALTIES => [

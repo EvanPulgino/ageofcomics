@@ -21,6 +21,11 @@ define("GAME_ACTION_GAME_END", "stGameEnd");
 define("GAME_ACTION_GAME_SETUP", "stGameSetup");
 define("GAME_ACTION_PERFORM_PRINT_BONUS", "stPerformPrintBonus");
 define("GAME_ACTION_PERFORM_PRINT_MASTERY", "stPerformPrintMastery");
+define("GAME_ACTION_PERFORM_PRINT_UPGRADE", "stPerformPrintUpgrade");
+define(
+    "GAME_ACTION_PERFORM_PRINT_FULFILL_ORDERS",
+    "stPerformPrintFulfillOrders"
+);
 define("GAME_ACTION_PLAYER_SETUP", "stPlayerSetup");
 define("GAME_ACTION_NEXT_PLAYER", "stNextPlayer");
 define("GAME_ACTION_NEXT_PLAYER_SETUP", "stNextPlayerSetup");
@@ -39,6 +44,7 @@ define(
     "PLAYER_ACTION_MOVE_SALES_AGENT_WITH_TICKET",
     "moveSalesAgentWithTicket"
 );
+define("PLAYER_ACTION_PLACE_UPGRADE_CUBE", "placeUpgradeCube");
 define("PLAYER_ACTION_PRINT_COMIC", "printComic");
 define("PLAYER_ACTION_PRINT_RIPOFF", "printRipoff");
 define("PLAYER_ACTION_SELECT_ACTION_SPACE", "selectActionSpace");
@@ -940,6 +946,11 @@ define("STATE_ARGS_PERFORM_IDEAS", "argsPerformIdeas");
 define("STATE_ARGS_PERFORM_PRINT", "argsPerformPrint");
 define("STATE_ARGS_PERFORM_PRINT_BONUS", "argsPerformPrintBonus");
 define("STATE_ARGS_PERFORM_PRINT_MASTERY", "argsPerformPrintMastery");
+define("STATE_ARGS_PERFORM_PRINT_UPGRADE", "argsPerformPrintUpgrade");
+define(
+    "STATE_ARGS_PERFORM_PRINT_FULFILL_ORDERS",
+    "argsPerformPrintFulfillOrders"
+);
 define("STATE_ARGS_PERFORM_ROYALTIES", "argsPerformRoyalties");
 define("STATE_ARGS_PERFORM_SALES", "argsPerformSales");
 define("STATE_ARGS_PLAYER_SETUP", "argsPlayerSetup");
@@ -959,6 +970,8 @@ define("ST_PERFORM_IDEAS", 23);
 define("ST_PERFORM_PRINT", 24);
 define("ST_PERFORM_PRINT_BONUS", 241);
 define("ST_PERFORM_PRINT_MASTERY", 242);
+define("ST_PERFORM_PRINT_UPGRADE", 243);
+define("ST_PERFORM_PRINT_FULFILL_ORDERS", 244);
 define("ST_PERFORM_ROYALTIES", 25);
 define("ST_PERFORM_SALES", 26);
 define("ST_CHECK_HAND_SIZE", 28);
@@ -978,6 +991,8 @@ define("PERFORM_IDEAS", "performIdeas");
 define("PERFORM_PRINT", "performPrint");
 define("PERFORM_PRINT_BONUS", "performPrintBonus");
 define("PERFORM_PRINT_MASTERY", "performPrintMastery");
+define("PERFORM_PRINT_UPGRADE", "performPrintUpgrade");
+define("PERFORM_PRINT_FULFILL_ORDERS", "performPrintFulfillOrders");
 define("PERFORM_ROYALTIES", "performRoyalties");
 define("PERFORM_SALES", "performSales");
 define("PLAYER_SETUP", "playerSetup");

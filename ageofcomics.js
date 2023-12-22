@@ -371,6 +371,7 @@ var GameBody = /** @class */ (function (_super) {
         this.notifqueue.setSynchronous("gainIdeaFromSupply", 500);
         this.notifqueue.setSynchronous("gainStartingIdea", 500);
         this.notifqueue.setSynchronous("masteryTokenClaimed", 500);
+        this.notifqueue.setSynchronous("placeUpgradeCube", 500);
         this.notifqueue.setIgnoreNotificationCheck("developComic", function (notif) {
             return notif.args.player_id == gameui.player_id;
         });
@@ -653,6 +654,9 @@ var GameBody = /** @class */ (function (_super) {
     GameBody.prototype.notif_placeEditor = function (notif) {
         this.editorController.moveEditorToActionSpace(notif.args.editor, notif.args.space);
     };
+    GameBody.prototype.notif_placeUpgradeCube = function (notif) {
+        this.playerController.moveUpgradeCube(notif.args.player, notif.args.cubeMoved, notif.args.actionKey);
+    };
     /**
      * Handle'reshuffleDiscardPile' notification
      *
@@ -717,7 +721,9 @@ var GameState = /** @class */ (function () {
         this.performIdeas = new PerformIdeas(game);
         this.performPrint = new PerformPrint(game);
         this.performPrintBonus = new PerformPrintBonus(game);
+        this.performPrintFulfillOrders = new PerformPrintFulfillOrders(game);
         this.performPrintMastery = new PerformPrintMastery(game);
+        this.performPrintUpgrade = new PerformPrintUpgrade(game);
         this.performRoyalties = new PerformRoyalties(game);
         this.performSales = new PerformSales(game);
         this.playerSetup = new PlayerSetup(game);
@@ -1634,6 +1640,13 @@ var MiniComicController = /** @class */ (function () {
 var PlayerController = /** @class */ (function () {
     function PlayerController(ui) {
         this.ui = ui;
+        this.actions = [];
+        this.actions[1] = "hire";
+        this.actions[2] = "develop";
+        this.actions[3] = "ideas";
+        this.actions[4] = "print";
+        this.actions[5] = "royalties";
+        this.actions[6] = "sales";
     }
     /**
      * Set up players
@@ -1780,8 +1793,14 @@ var PlayerController = /** @class */ (function () {
             '" class="aoc-player-cube aoc-player-cube-' +
             player.colorAsText +
             '"></div>';
-        if (player.cubeOneLocation == 5) {
+        if (player.cubeOneLocation == 0) {
             this.ui.createHtml(cubeDiv, "aoc-cube-one-space-" + player.id);
+        }
+        else {
+            this.ui.createHtml(cubeDiv, "aoc-action-upgrade-" +
+                this.actions[player.cubeOneLocation] +
+                "-" +
+                player.colorAsText);
         }
     };
     /**
@@ -1795,7 +1814,7 @@ var PlayerController = /** @class */ (function () {
             '" class="aoc-player-cube aoc-player-cube-' +
             player.colorAsText +
             '"></div>';
-        if (player.cubeOneLocation == 5) {
+        if (player.cubeTwoLocation == 0) {
             this.ui.createHtml(cubeDiv, "aoc-cube-two-space-" + player.id);
         }
     };
@@ -1810,7 +1829,7 @@ var PlayerController = /** @class */ (function () {
             '" class="aoc-player-cube aoc-player-cube-' +
             player.colorAsText +
             '"></div>';
-        if (player.cubeOneLocation == 5) {
+        if (player.cubeThreeLocation == 0) {
             this.ui.createHtml(cubeDiv, "aoc-cube-three-space-" + player.id);
         }
     };
@@ -1979,6 +1998,27 @@ var PlayerController = /** @class */ (function () {
         this.playerCounter[player.id][counterPanel] = new ebg.counter();
         this.playerCounter[player.id][counterPanel].create("aoc-player-" + counterPanel + "-count-" + player.id);
         this.playerCounter[player.id][counterPanel].setValue(initialValue);
+    };
+    PlayerController.prototype.moveUpgradeCube = function (player, cube, action) {
+        var numberText = "";
+        if (cube == 1) {
+            numberText = "one";
+        }
+        if (cube == 2) {
+            numberText = "two";
+        }
+        if (cube == 3) {
+            numberText = "three";
+        }
+        var actionText = this.actions[action];
+        var cubeDiv = "aoc-player-cube-" + numberText + "-" + player.id;
+        var targetDiv = "aoc-action-upgrade-" + actionText + "-" + player.colorAsText;
+        var animation = this.ui.slideToObject(cubeDiv, targetDiv);
+        dojo.connect(animation, "onEnd", function () {
+            dojo.removeAttr(cubeDiv, "style");
+            dojo.place(cubeDiv, targetDiv);
+        });
+        animation.play();
     };
     /**
      * Update the value of a player counter
@@ -3472,6 +3512,32 @@ var PerformPrintBonus = /** @class */ (function () {
  *
  * PerformPrintMastery.ts
  *
+ * AgeOfComics perform print fulfill orders state
+ *
+ * State vars:
+ * - game: game object reference
+ *
+ */
+var PerformPrintFulfillOrders = /** @class */ (function () {
+    function PerformPrintFulfillOrders(game) {
+        this.game = game;
+    }
+    PerformPrintFulfillOrders.prototype.onEnteringState = function (stateArgs) { };
+    PerformPrintFulfillOrders.prototype.onLeavingState = function () { };
+    PerformPrintFulfillOrders.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return PerformPrintFulfillOrders;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * PerformPrintMastery.ts
+ *
  * AgeOfComics perform print mastery state
  *
  * State vars:
@@ -3486,6 +3552,93 @@ var PerformPrintMastery = /** @class */ (function () {
     PerformPrintMastery.prototype.onLeavingState = function () { };
     PerformPrintMastery.prototype.onUpdateActionButtons = function (stateArgs) { };
     return PerformPrintMastery;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * PerformPrintMastery.ts
+ *
+ * AgeOfComics perform print upgrade state
+ *
+ * State vars:
+ * - game: game object reference
+ *
+ */
+var PerformPrintUpgrade = /** @class */ (function () {
+    function PerformPrintUpgrade(game) {
+        this.game = game;
+        this.connections = {};
+        this.placedCubes = 0;
+        this.cubeToMove = 0;
+    }
+    PerformPrintUpgrade.prototype.onEnteringState = function (stateArgs) {
+        if (stateArgs.isCurrentPlayerActive) {
+            var player = stateArgs.args.player;
+            if (player.cubeOneLocation > 0) {
+                this.placedCubes++;
+            }
+            if (player.cubeTwoLocation > 0) {
+                this.placedCubes++;
+            }
+            if (player.cubeThreeLocation > 0) {
+                this.placedCubes++;
+            }
+            if (this.placedCubes < 3) {
+                this.cubeToMove = this.placedCubes + 1;
+                this.highlightUpgradableActions(stateArgs.args.upgradableActions);
+            }
+        }
+    };
+    PerformPrintUpgrade.prototype.onLeavingState = function () {
+        dojo.query(".aoc-clickable").removeClass("aoc-clickable");
+        for (var _i = 0, _a = Object.values(this.connections); _i < _a.length; _i++) {
+            var connection = _a[_i];
+            dojo.disconnect(connection);
+        }
+    };
+    PerformPrintUpgrade.prototype.onUpdateActionButtons = function (stateArgs) { };
+    PerformPrintUpgrade.prototype.highlightUpgradableActions = function (upgradableActions) {
+        for (var _i = 0, upgradableActions_1 = upgradableActions; _i < upgradableActions_1.length; _i++) {
+            var action = upgradableActions_1[_i];
+            switch (action) {
+                case 1:
+                    this.highlightUpgradableAction(action, "aoc-action-hire-upgrade-spaces");
+                    break;
+                case 2:
+                    this.highlightUpgradableAction(action, "aoc-action-develop-upgrade-spaces");
+                    break;
+                case 3:
+                    this.highlightUpgradableAction(action, "aoc-action-ideas-upgrade-spaces");
+                    break;
+                case 4:
+                    this.highlightUpgradableAction(action, "aoc-action-print-upgrade-spaces");
+                    break;
+                case 5:
+                    this.highlightUpgradableAction(action, "aoc-action-royalites-upgrade-spaces");
+                    break;
+                case 6:
+                    this.highlightUpgradableAction(action, "aoc-action-sales-upgrade-spaces");
+                    break;
+            }
+        }
+    };
+    PerformPrintUpgrade.prototype.highlightUpgradableAction = function (actionKey, divId) {
+        dojo.toggleClass(divId, "aoc-clickable");
+        this.connections[actionKey] = dojo.connect(dojo.byId(divId), "onclick", dojo.hitch(this, "upgradeAction", actionKey));
+    };
+    PerformPrintUpgrade.prototype.upgradeAction = function (actionKey) {
+        this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_PLACE_UPGRADE_CUBE, {
+            actionKey: actionKey,
+            cubeMoved: this.cubeToMove,
+        });
+    };
+    return PerformPrintUpgrade;
 }());
 /**
  *------

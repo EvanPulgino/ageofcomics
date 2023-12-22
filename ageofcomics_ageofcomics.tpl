@@ -90,6 +90,12 @@
                         <div id="aoc-action-space-hire-4" class="aoc-action-space" space="10004"></div>
                         <div id="aoc-action-space-hire-5" class="aoc-action-space" space="10005"></div>
                     </div>
+                    <div id="aoc-action-hire-upgrade-spaces">
+                        <div id="aoc-action-upgrade-hire-yellow" class="aoc-upgrade-space"></div>
+                        <div id="aoc-action-upgrade-hire-salmon" class="aoc-upgrade-space"></div>
+                        <div id="aoc-action-upgrade-hire-teal" class="aoc-upgrade-space"></div>
+                        <div id="aoc-action-upgrade-hire-brown" class="aoc-upgrade-space"></div>
+                    </div>
                 </div>
                 <div id="aoc-action-develop">
                     <div id="aoc-action-develop-spaces">
@@ -98,6 +104,12 @@
                         <div id="aoc-action-space-develop-3" class="aoc-action-space" space="20003"></div>
                         <div id="aoc-action-space-develop-4" class="aoc-action-space" space="20004"></div>
                         <div id="aoc-action-space-develop-5" class="aoc-action-space" space="20005"></div>
+                    </div>
+                    <div id="aoc-action-develop-upgrade-spaces">
+                        <div id="aoc-action-upgrade-develop-yellow" class="aoc-upgrade-space"></div>
+                        <div id="aoc-action-upgrade-develop-salmon" class="aoc-upgrade-space"></div>
+                        <div id="aoc-action-upgrade-develop-teal" class="aoc-upgrade-space"></div>
+                        <div id="aoc-action-upgrade-develop-brown" class="aoc-upgrade-space"></div>
                     </div>
                 </div>
                 <div id="aoc-action-ideas">
@@ -116,6 +128,12 @@
                         <div id="aoc-action-ideas-western" class="aoc-action-ideas-idea-space"></div>
                         <div id="aoc-action-ideas-horror" class="aoc-action-ideas-idea-space"></div>
                     </div>
+                    <div id="aoc-action-ideas-upgrade-spaces">
+                        <div id="aoc-action-upgrade-ideas-yellow" class="aoc-upgrade-space"></div>
+                        <div id="aoc-action-upgrade-ideas-salmon" class="aoc-upgrade-space"></div>
+                        <div id="aoc-action-upgrade-ideas-teal" class="aoc-upgrade-space"></div>
+                        <div id="aoc-action-upgrade-ideas-brown" class="aoc-upgrade-space"></div>
+                    </div>
                 </div>
                 <div id="aoc-action-print">
                     <div id="aoc-action-print-spaces">
@@ -124,6 +142,12 @@
                         <div id="aoc-action-space-print-3" class="aoc-action-space" space="40003"></div>
                         <div id="aoc-action-space-print-4" class="aoc-action-space" space="40004"></div>
                         <div id="aoc-action-space-print-5" class="aoc-action-space" space="40005"></div>
+                    </div>
+                    <div id="aoc-action-print-upgrade-spaces">
+                        <div id="aoc-action-upgrade-print-yellow" class="aoc-upgrade-space"></div>
+                        <div id="aoc-action-upgrade-print-salmon" class="aoc-upgrade-space"></div>
+                        <div id="aoc-action-upgrade-print-teal" class="aoc-upgrade-space"></div>
+                        <div id="aoc-action-upgrade-print-brown" class="aoc-upgrade-space"></div>
                     </div>
                 </div>
                 <div id="aoc-action-royalties">
@@ -134,6 +158,12 @@
                         <div id="aoc-action-space-royalties-4" class="aoc-action-space" space="50004"></div>
                         <div id="aoc-action-space-royalties-5" class="aoc-action-space" space="50005"></div>
                     </div>
+                    <div id="aoc-action-royalties-upgrade-spaces">
+                        <div id="aoc-action-upgrade-royalties-yellow" class="aoc-upgrade-space"></div>
+                        <div id="aoc-action-upgrade-royalties-salmon" class="aoc-upgrade-space"></div>
+                        <div id="aoc-action-upgrade-royalties-teal" class="aoc-upgrade-space"></div>
+                        <div id="aoc-action-upgrade-royalties-brown" class="aoc-upgrade-space"></div>
+                    </div>
                 </div>
                 <div id="aoc-action-sales">
                     <div id="aoc-action-sales-spaces">
@@ -142,6 +172,12 @@
                         <div id="aoc-action-space-sales-3" class="aoc-action-space" space="60003"></div>
                         <div id="aoc-action-space-sales-4" class="aoc-action-space" space="60004"></div>
                         <div id="aoc-action-space-sales-5" class="aoc-action-space" space="60005"></div>
+                    </div>
+                    <div id="aoc-action-sales-upgrade-spaces">
+                        <div id="aoc-action-upgrade-sales-yellow" class="aoc-upgrade-space"></div>
+                        <div id="aoc-action-upgrade-sales-salmon" class="aoc-upgrade-space"></div>
+                        <div id="aoc-action-upgrade-sales-teal" class="aoc-upgrade-space"></div>
+                        <div id="aoc-action-upgrade-sales-brown" class="aoc-upgrade-space"></div>
                     </div>
                 </div>
                 <div id="aoc-mini-comics-section">

@@ -103,32 +103,32 @@
 }
 
 .aoc-comic-slot-one {
-  top: 163px;
+  top: 162px;
   left: 30px;
 }
 
 .aoc-comic-slot-two {
-  top: 163px;
+  top: 162px;
   left: 230px;
 }
 
 .aoc-comic-slot-three {
-  top: 163px;
+  top: 162px;
   left: 430px;
 }
 
 .aoc-comic-slot-four {
-  top: 163px;
+  top: 162px;
   left: 630px;
 }
 
 .aoc-comic-slot-five {
-  top: 163px;
+  top: 162px;
   left: 830px;
 }
 
 .aoc-comic-slot-six {
-  top: 163px;
+  top: 162px;
   left: 1030px;
 }
 
@@ -547,6 +547,7 @@ html {
   justify-content: flex-start;
   position: relative;
   padding: 25px;
+  margin-left: 25px;
 }
 
 .aoc-mastery-container {
@@ -1048,6 +1049,165 @@ html {
 #aoc-action-space-sales-5 {
   left: 388px;
   top: 898px;
+}
+
+#aoc-action-hire-upgrade-spaces {
+  left: 3px;
+  top: 156px;
+  position: absolute;
+  width: 217px;
+  height: 94px;
+}
+
+#aoc-action-develop-upgrade-spaces {
+  left: 3px;
+  top: 156px;
+  position: absolute;
+  width: 217px;
+  height: 94px;
+}
+
+#aoc-action-ideas-upgrade-spaces {
+  left: 3px;
+  top: 156px;
+  position: absolute;
+  width: 237px;
+  height: 94px;
+}
+
+#aoc-action-print-upgrade-spaces {
+  left: 3px;
+  top: 156px;
+  position: absolute;
+  width: 217px;
+  height: 94px;
+}
+
+#aoc-action-royalties-upgrade-spaces {
+  left: 3px;
+  top: 156px;
+  position: absolute;
+  width: 337px;
+  height: 109px;
+}
+
+#aoc-action-sales-upgrade-spaces {
+  left: 3px;
+  top: 156px;
+  position: absolute;
+  width: 356px;
+  height: 109px;
+}
+
+.aoc-upgrade-space {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 50px;
+}
+
+#aoc-action-upgrade-hire-yellow {
+  left: 78px;
+}
+
+#aoc-action-upgrade-hire-salmon {
+  left: 111px;
+}
+
+#aoc-action-upgrade-hire-teal {
+  left: 143px;
+}
+
+#aoc-action-upgrade-hire-brown {
+  left: 176px;
+}
+
+#aoc-action-upgrade-develop-yellow {
+  left: 88px;
+}
+
+#aoc-action-upgrade-develop-salmon {
+  left: 121px;
+}
+
+#aoc-action-upgrade-develop-teal {
+  left: 153px;
+}
+
+#aoc-action-upgrade-develop-brown {
+  left: 186px;
+}
+
+#aoc-action-upgrade-ideas-yellow {
+  left: 105px;
+}
+
+#aoc-action-upgrade-ideas-salmon {
+  left: 138px;
+}
+
+#aoc-action-upgrade-ideas-teal {
+  left: 170px;
+}
+
+#aoc-action-upgrade-ideas-brown {
+  left: 203px;
+}
+
+#aoc-action-upgrade-print-yellow {
+  left: 87px;
+}
+
+#aoc-action-upgrade-print-salmon {
+  left: 120px;
+}
+
+#aoc-action-upgrade-print-teal {
+  left: 152px;
+}
+
+#aoc-action-upgrade-print-brown {
+  left: 185px;
+}
+
+#aoc-action-upgrade-royalties-yellow {
+  left: 183px;
+  top: 59px !important;
+}
+
+#aoc-action-upgrade-royalties-salmon {
+  left: 215px;
+  top: 59px !important;
+}
+
+#aoc-action-upgrade-royalties-teal {
+  left: 248px;
+  top: 59px !important;
+}
+
+#aoc-action-upgrade-royalties-brown {
+  left: 280px;
+  top: 59px !important;
+}
+
+#aoc-action-upgrade-sales-yellow {
+  left: 205px;
+  top: 58px !important;
+}
+
+#aoc-action-upgrade-sales-salmon {
+  left: 237px;
+  top: 58px !important;
+}
+
+#aoc-action-upgrade-sales-teal {
+  left: 270px;
+  top: 58px !important;
+}
+
+#aoc-action-upgrade-sales-brown {
+  left: 303px;
+  top: 58px !important;
 }
 
 /**

@@ -16,9 +16,17 @@
 class PlayerController {
   ui: any;
   playerCounter: any;
+  actions: any;
 
   constructor(ui: any) {
     this.ui = ui;
+    this.actions = [];
+    this.actions[1] = "hire";
+    this.actions[2] = "develop";
+    this.actions[3] = "ideas";
+    this.actions[4] = "print";
+    this.actions[5] = "royalties";
+    this.actions[6] = "sales";
   }
 
   /**
@@ -217,8 +225,16 @@ class PlayerController {
       '" class="aoc-player-cube aoc-player-cube-' +
       player.colorAsText +
       '"></div>';
-    if (player.cubeOneLocation == 5) {
+    if (player.cubeOneLocation == 0) {
       this.ui.createHtml(cubeDiv, "aoc-cube-one-space-" + player.id);
+    } else {
+      this.ui.createHtml(
+        cubeDiv,
+        "aoc-action-upgrade-" +
+          this.actions[player.cubeOneLocation] +
+          "-" +
+          player.colorAsText
+      );
     }
   }
 
@@ -234,7 +250,7 @@ class PlayerController {
       '" class="aoc-player-cube aoc-player-cube-' +
       player.colorAsText +
       '"></div>';
-    if (player.cubeOneLocation == 5) {
+    if (player.cubeTwoLocation == 0) {
       this.ui.createHtml(cubeDiv, "aoc-cube-two-space-" + player.id);
     }
   }
@@ -251,7 +267,7 @@ class PlayerController {
       '" class="aoc-player-cube aoc-player-cube-' +
       player.colorAsText +
       '"></div>';
-    if (player.cubeOneLocation == 5) {
+    if (player.cubeThreeLocation == 0) {
       this.ui.createHtml(cubeDiv, "aoc-cube-three-space-" + player.id);
     }
   }
@@ -437,6 +453,30 @@ class PlayerController {
       "aoc-player-" + counterPanel + "-count-" + player.id
     );
     this.playerCounter[player.id][counterPanel].setValue(initialValue);
+  }
+
+  moveUpgradeCube(player: any, cube: number, action: number): void {
+    var numberText = "";
+    if (cube == 1) {
+      numberText = "one";
+    }
+    if (cube == 2) {
+      numberText = "two";
+    }
+    if (cube == 3) {
+      numberText = "three";
+    }
+    const actionText = this.actions[action];
+    const cubeDiv = "aoc-player-cube-" + numberText + "-" + player.id;
+    const targetDiv =
+      "aoc-action-upgrade-" + actionText + "-" + player.colorAsText;
+
+    const animation = this.ui.slideToObject(cubeDiv, targetDiv);
+    dojo.connect(animation, "onEnd", () => {
+      dojo.removeAttr(cubeDiv, "style");
+      dojo.place(cubeDiv, targetDiv);
+    });
+    animation.play();
   }
 
   /**
