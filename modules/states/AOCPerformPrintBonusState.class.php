@@ -30,7 +30,7 @@ class AOCPerformPrintBonusState {
                 $comic->getName(),
                 $comic->getGenreId()
             ),
-            "comicBonus" => $comic->getBonus(),
+            "comicBonus" => $comic->getTypeId() == CARD_TYPE_COMIC ? $comic->getBonus() : null,
         ];
     }
 
@@ -39,20 +39,23 @@ class AOCPerformPrintBonusState {
 
         $printedComicId = $this->game->getGameStateValue(PRINTED_COMIC);
         $comic = $this->game->cardManager->getCard($printedComicId);
-        $bonus = $comic->getBonus();
 
-        switch ($bonus) {
-            case PLUS_FOUR_MONEY:
-                $this->plusFourMoney($activePlayer, $comic);
-                break;
-            case PLUS_ONE_FAN:
-                $this->plusOneFan($activePlayer, $comic);
-                break;
-            case SUPER_TRANSPORT:
-                $this->superTransport($activePlayer, $comic);
-                break;
-            case TWO_IDEAS:
-                return;
+        if ($comic->getTypeId() == CARD_TYPE_COMIC) {
+            $bonus = $comic->getBonus();
+
+            switch ($bonus) {
+                case PLUS_FOUR_MONEY:
+                    $this->plusFourMoney($activePlayer, $comic);
+                    break;
+                case PLUS_ONE_FAN:
+                    $this->plusOneFan($activePlayer, $comic);
+                    break;
+                case SUPER_TRANSPORT:
+                    $this->superTransport($activePlayer, $comic);
+                    break;
+                case TWO_IDEAS:
+                    return;
+            }
         }
 
         $this->game->gamestate->nextState("checkMastery");
@@ -151,10 +154,7 @@ class AOCPerformPrintBonusState {
     }
 
     private function superTransport($player, $comic) {
-        $this->game->playerManager->adjustPlayerTickets(
-            $player,
-            1
-        );
+        $this->game->playerManager->adjustPlayerTickets($player, 1);
         $ticketSupply = $this->game->getGameStateValue(TICKET_SUPPLY);
         $this->game->setGameStateValue(TICKET_SUPPLY, $ticketSupply - 1);
 

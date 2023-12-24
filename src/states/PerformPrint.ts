@@ -132,12 +132,25 @@ class PerformPrint implements State {
    * @param cardType Type of card to create
    */
   createCards(cards: any, cardType: string): void {
-    // Get the card type class
-    const cardTypeClass =
-      cardType == "comic" ? "aoc-comic-card" : "aoc-creative-card";
-
     // Create a div for each card
     for (const card of cards) {
+      let cardTypeClass: string;
+
+      switch (card.type) {
+        case "comic":
+          cardTypeClass = "aoc-comic-card";
+          break;
+        case "ripoff":
+          cardTypeClass = "aoc-ripoff-card";
+          break;
+        case "artist":
+          cardTypeClass = "aoc-creative-card";
+          break;
+        case "writer":
+          cardTypeClass = "aoc-creative-card";
+          break;
+      }
+      
       const cardDiv =
         "<div id='aoc-print-menu-" +
         cardType +

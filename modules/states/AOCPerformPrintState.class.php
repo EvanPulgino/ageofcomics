@@ -102,12 +102,6 @@ class AOCPerformPrintState {
         // Save printed comic id for later states
         $this->game->setGameStateValue(PRINTED_COMIC, $comicCard->getId());
 
-        // Check for upgrade cube unlock
-
-        // Check for sales order fulfillment
-
-        // Check for double print
-
         $this->game->gamestate->nextState("awardPrintBonus");
     }
 
@@ -316,7 +310,13 @@ class AOCPerformPrintState {
             }
         }
 
-        // TODO: Check Ripoffs
+        $printableRipoffs = $this->game->cardManager->getPrintableRipoffsByPlayer(
+            $player->getId()
+        );
+
+        foreach ($printableRipoffs as $ripoff) {
+            $printableComics[] = $ripoff->getUiData(0);
+        }
 
         return $printableComics;
     }

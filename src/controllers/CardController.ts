@@ -281,8 +281,14 @@ class CardController {
   }
 
   slideCardToPlayerMat(player: any, card: any, slot: number): void {
+    // If card is ripoff, create div
+    if (card.typeId === globalThis.CARD_TYPE_RIPOFF) {
+      this.createNewCard(card, "aoc-overall");
+    }
+
     // Get the card div
     const cardDiv = dojo.byId("aoc-card-" + card.id);
+
     const cardType = this.getCardTypeForMatSlot(card);
 
     // Set the card faceup

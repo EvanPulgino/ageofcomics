@@ -287,6 +287,42 @@ class AOCCardManager extends APP_GameClass {
         return self::getUniqueValueFromDB($sql);
     }
 
+    public function getPrintableRipoffsByPlayer($playerId) {
+        $sql =
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE NOT card_owner = " .
+            $playerId .
+            " AND card_location = " .
+            LOCATION_PLAYER_MAT .
+            " AND card_type = " .
+            CARD_TYPE_COMIC;
+
+        $rows = self::getObjectListFromDB($sql);
+
+        $printedOriginals = [];
+        foreach ($rows as $row) {
+            $printedOriginals[] = new AOCComicCard($row);
+        }
+        
+        $printableRipoffs = [];
+
+        foreach ($printedOriginals as $original) {
+            $sql =
+                "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_type = " .
+                CARD_TYPE_RIPOFF .
+                " AND card_type_arg = " .
+                $original->getBonus() .
+                " AND card_genre = " .
+                $original->getGenreId() .
+                " AND card_location = -1";
+            $row = self::getObjectFromDB($sql);
+            if ($row) {
+                $printableRipoffs[] = new AOCRipoffCard($row);
+            }
+        }
+
+        return $printableRipoffs;
+    }
+
     /**
      * Save a card to the database
      *

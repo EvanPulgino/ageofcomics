@@ -199,7 +199,13 @@ class AOCPlayerTurnState {
             }
         }
 
-        // TODO: Check for available ripoffs
+        $avaliableRipoffs = $this->game->cardManager->getPrintableRipoffsByPlayer(
+            $player->getId()
+        );
+
+        if (count($avaliableRipoffs) > 0) {
+            return true;
+        }
 
         return false;
     }

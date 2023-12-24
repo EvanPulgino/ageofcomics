@@ -1055,6 +1055,10 @@ var CardController = /** @class */ (function () {
         animation.play();
     };
     CardController.prototype.slideCardToPlayerMat = function (player, card, slot) {
+        // If card is ripoff, create div
+        if (card.typeId === globalThis.CARD_TYPE_RIPOFF) {
+            this.createNewCard(card, "aoc-overall");
+        }
         // Get the card div
         var cardDiv = dojo.byId("aoc-card-" + card.id);
         var cardType = this.getCardTypeForMatSlot(card);
@@ -3213,9 +3217,22 @@ var PerformPrint = /** @class */ (function () {
      */
     PerformPrint.prototype.createCards = function (cards, cardType) {
         var _this = this;
-        // Get the card type class
-        var cardTypeClass = cardType == "comic" ? "aoc-comic-card" : "aoc-creative-card";
         var _loop_1 = function (card) {
+            var cardTypeClass = void 0;
+            switch (card.type) {
+                case "comic":
+                    cardTypeClass = "aoc-comic-card";
+                    break;
+                case "ripoff":
+                    cardTypeClass = "aoc-ripoff-card";
+                    break;
+                case "artist":
+                    cardTypeClass = "aoc-creative-card";
+                    break;
+                case "writer":
+                    cardTypeClass = "aoc-creative-card";
+                    break;
+            }
             var cardDiv = "<div id='aoc-print-menu-" +
                 cardType +
                 "-" +

@@ -38,11 +38,13 @@ class AOCPerformPrintMasteryState {
         // If the player already has the mastery token, do nothing
         if ($masteryToken->getPlayerId() === $activePlayer->getId()) {
             $this->game->gamestate->nextState("checkUpgrade");
+            return;
         }
 
         // If the player hasn't printed an original comic in the genre, do nothing
         if (!$this->playerHasOriginalComic($activePlayer, $genreId)) {
             $this->game->gamestate->nextState("checkUpgrade");
+            return;
         }
 
         // If the player has more printed comics than the current mastery token owner, claim the token

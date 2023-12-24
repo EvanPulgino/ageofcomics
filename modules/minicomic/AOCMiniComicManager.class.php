@@ -53,7 +53,10 @@ class AOCMiniComicManager extends APP_GameClass {
      */
     public function getCorrespondingMiniComic($comic) {
         $type = $comic->getTypeId();
-        $typeArg = $comic->getBonus();
+        $typeArg =
+            $type == CARD_TYPE_COMIC
+                ? $comic->getBonus()
+                : $comic->getRipoffKey();
         $genre = $comic->getGenreId();
         $sql = "SELECT mini_comic_id id, mini_comic_type type, mini_comic_type_arg typeArg, mini_comic_genre genre, mini_comic_location location, mini_comic_location_arg locationArg, mini_comic_owner playerId, mini_comic_fans fans FROM mini_comic WHERE mini_comic_type = {$type} AND mini_comic_type_arg = {$typeArg} AND mini_comic_genre = {$genre}";
 
