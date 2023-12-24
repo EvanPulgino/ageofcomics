@@ -162,6 +162,14 @@ class action_ageofcomics extends APP_GameAction {
         self::ajaxResponse();
     }
 
+    public function skipDoublePrint() {
+        self::setAjaxMode();
+
+        $this->game->states[PERFORM_PRINT]->skipDoublePrint();
+
+        self::ajaxResponse();
+    }
+
     public function takeRoyalties() {
         self::setAjaxMode();
 

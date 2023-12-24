@@ -46,9 +46,9 @@ define(
 );
 define("PLAYER_ACTION_PLACE_UPGRADE_CUBE", "placeUpgradeCube");
 define("PLAYER_ACTION_PRINT_COMIC", "printComic");
-define("PLAYER_ACTION_PRINT_RIPOFF", "printRipoff");
 define("PLAYER_ACTION_SELECT_ACTION_SPACE", "selectActionSpace");
 define("PLAYER_ACTION_SELECT_START_ITEMS", "selectStartItems");
+define("PLAYER_ACTION_SKIP_DOUBLE_PRINT", "skipDoublePrint");
 define("PLAYER_ACTION_CONFIRM_DISCARD", "confirmDiscard");
 
 /** Generic */

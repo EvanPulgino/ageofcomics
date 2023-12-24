@@ -3140,6 +3140,7 @@ var PerformPrint = /** @class */ (function () {
     PerformPrint.prototype.onEnteringState = function (stateArgs) {
         if (stateArgs.isCurrentPlayerActive) {
             dojo.toggleClass("aoc-print-menu", "aoc-hidden");
+            dojo.toggleClass("aoc-player-hands", "aoc-hidden", true);
             this.createCards(stateArgs.args.printableComics, "comic");
             this.createCards(stateArgs.args.artists, "artist");
             this.createCards(stateArgs.args.writers, "writer");
@@ -3153,6 +3154,7 @@ var PerformPrint = /** @class */ (function () {
     PerformPrint.prototype.onLeavingState = function () {
         // Hide the print menu
         dojo.toggleClass("aoc-print-menu", "aoc-hidden", true);
+        dojo.toggleClass("aoc-player-hands", "aoc-hidden");
         // Remove the css classes from the comics
         dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
         dojo.query(".aoc-card-unselected").removeClass("aoc-card-unselected");
@@ -3186,6 +3188,12 @@ var PerformPrint = /** @class */ (function () {
             });
             dojo.addClass("aoc-confirm-print", "aoc-button-disabled");
             dojo.addClass("aoc-confirm-print", "aoc-button");
+            if (stateArgs.args.selectedActionSpace == "0") {
+                gameui.addActionButton("aoc-skip-double-print", _("Skip"), function () {
+                    _this.skipDoublePrint();
+                });
+                dojo.addClass("aoc-skip-double-print", "aoc-button");
+            }
         }
     };
     /**
@@ -3300,6 +3308,10 @@ var PerformPrint = /** @class */ (function () {
         }
         // Set confirm button status
         this.setButtonConfirmationStatus();
+    };
+    PerformPrint.prototype.skipDoublePrint = function () {
+        this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_SKIP_DOUBLE_PRINT, {});
+        this.onLeavingState();
     };
     /**
      * Sets the status of the confirm button

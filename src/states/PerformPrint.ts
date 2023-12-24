@@ -41,6 +41,7 @@ class PerformPrint implements State {
   onEnteringState(stateArgs: any): void {
     if (stateArgs.isCurrentPlayerActive) {
       dojo.toggleClass("aoc-print-menu", "aoc-hidden");
+      dojo.toggleClass("aoc-player-hands", "aoc-hidden", true);
       this.createCards(stateArgs.args.printableComics, "comic");
       this.createCards(stateArgs.args.artists, "artist");
       this.createCards(stateArgs.args.writers, "writer");
@@ -55,6 +56,7 @@ class PerformPrint implements State {
   onLeavingState(): void {
     // Hide the print menu
     dojo.toggleClass("aoc-print-menu", "aoc-hidden", true);
+    dojo.toggleClass("aoc-player-hands", "aoc-hidden");
 
     // Remove the css classes from the comics
     dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
@@ -91,6 +93,13 @@ class PerformPrint implements State {
       });
       dojo.addClass("aoc-confirm-print", "aoc-button-disabled");
       dojo.addClass("aoc-confirm-print", "aoc-button");
+
+      if (stateArgs.args.selectedActionSpace == "0") {
+        gameui.addActionButton("aoc-skip-double-print", _("Skip"), () => {
+          this.skipDoublePrint();
+        });
+        dojo.addClass("aoc-skip-double-print", "aoc-button");
+      }
     }
   }
 
@@ -150,7 +159,7 @@ class PerformPrint implements State {
           cardTypeClass = "aoc-creative-card";
           break;
       }
-      
+
       const cardDiv =
         "<div id='aoc-print-menu-" +
         cardType +
@@ -227,6 +236,12 @@ class PerformPrint implements State {
 
     // Set confirm button status
     this.setButtonConfirmationStatus();
+  }
+
+  skipDoublePrint(): void {
+    this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_SKIP_DOUBLE_PRINT, {});
+
+    this.onLeavingState();
   }
 
   /**

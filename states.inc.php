@@ -178,15 +178,15 @@ $machinestates = [
 
     ST_PERFORM_PRINT => [
         "name" => PERFORM_PRINT,
-        "description" => clienttranslate('${actplayer} must print a comic'),
-        "descriptionmyturn" => clienttranslate('${you} must print a comic'),
+        "description" => clienttranslate('${actplayer} ${descriptionText}'),
+        "descriptionmyturn" => clienttranslate('${you} ${descriptionText}'),
         "type" => STATE_TYPE_ACTIVE_PLAYER,
         "args" => STATE_ARGS_PERFORM_PRINT,
         "possibleactions" => [
             PLAYER_ACTION_PRINT_COMIC,
-            PLAYER_ACTION_PRINT_RIPOFF,
+            PLAYER_ACTION_SKIP_DOUBLE_PRINT
         ],
-        "transitions" => ["awardPrintBonus" => ST_PERFORM_PRINT_BONUS],
+        "transitions" => ["awardPrintBonus" => ST_PERFORM_PRINT_BONUS, "nextPlayerTurn" => ST_NEXT_PLAYER],
     ],
 
     ST_PERFORM_PRINT_BONUS => [

@@ -265,11 +265,11 @@ html {
   align-items: center;
   display: flex;
   flex-flow: row nowrap;
-  gap: 10px;
+  gap: 25px;
   justify-content: center;
-  padding-top: 15px;
   position: fixed;
-  bottom: -15px;
+  bottom: 15px;
+  left: 15px;
   z-index: 1000;
 }
 
@@ -460,7 +460,6 @@ html {
   border-top: 1px solid #7c5d45;
   border-top-right-radius: 8px;
   z-index: 1000;
-  transform: scale(0.75);
 }
 
 .aoc-game-status-row {

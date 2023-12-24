@@ -31,8 +31,11 @@ class AOCPerformPrintState {
      */
     public function getArgs() {
         $activePlayer = $this->game->playerManager->getActivePlayer();
+        $isDoublePrint =
+            $this->game->getGameStateValue(SELECTED_ACTION_SPACE) == 0;
         return [
             "artists" => $this->getArtists($activePlayer),
+            "descriptionText" => $this->getStateDescription($isDoublePrint),
             "money" => $activePlayer->getMoney(),
             "printableComics" => $this->getPrintableComics($activePlayer),
             "selectedActionSpace" => $this->game->getGameStateValue(
@@ -103,6 +106,23 @@ class AOCPerformPrintState {
         $this->game->setGameStateValue(PRINTED_COMIC, $comicCard->getId());
 
         $this->game->gamestate->nextState("awardPrintBonus");
+    }
+
+    public function skipDoublePrint() {
+        $this->game->gamestate->nextState("nextPlayerTurn");
+
+        $this->game->notifyAllPlayers(
+            "message",
+            clienttranslate('${player_name} skips printing a second comic'),
+            [
+                "player" => $this->game->playerManager
+                    ->getActivePlayer()
+                    ->getUiData(),
+                "player_name" => $this->game->playerManager
+                    ->getActivePlayer()
+                    ->getName(),
+            ]
+        );
     }
 
     /**
@@ -319,6 +339,14 @@ class AOCPerformPrintState {
         }
 
         return $printableComics;
+    }
+
+    private function getStateDescription($isDoublePrint) {
+        if ($isDoublePrint) {
+            return clienttranslate("may print a second comic");
+        } else {
+            return clienttranslate("must print a comic");
+        }
     }
 
     /**
