@@ -3140,7 +3140,6 @@ var PerformPrint = /** @class */ (function () {
     PerformPrint.prototype.onEnteringState = function (stateArgs) {
         if (stateArgs.isCurrentPlayerActive) {
             dojo.toggleClass("aoc-print-menu", "aoc-hidden");
-            dojo.toggleClass("aoc-player-hands", "aoc-hidden", true);
             this.createCards(stateArgs.args.printableComics, "comic");
             this.createCards(stateArgs.args.artists, "artist");
             this.createCards(stateArgs.args.writers, "writer");
@@ -3154,7 +3153,6 @@ var PerformPrint = /** @class */ (function () {
     PerformPrint.prototype.onLeavingState = function () {
         // Hide the print menu
         dojo.toggleClass("aoc-print-menu", "aoc-hidden", true);
-        dojo.toggleClass("aoc-player-hands", "aoc-hidden");
         // Remove the css classes from the comics
         dojo.query(".aoc-card-selected").removeClass("aoc-card-selected");
         dojo.query(".aoc-card-unselected").removeClass("aoc-card-unselected");
