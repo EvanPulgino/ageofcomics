@@ -3713,10 +3713,75 @@ var PerformRoyalties = /** @class */ (function () {
 var PerformSales = /** @class */ (function () {
     function PerformSales(game) {
         this.game = game;
+        this.salesAgentConnections = {};
+        this.salesOrderConnections = {};
     }
-    PerformSales.prototype.onEnteringState = function (stateArgs) { };
+    PerformSales.prototype.onEnteringState = function (stateArgs) {
+        // Create the remaining actions div
+        this.createRemainingActionsDiv(stateArgs.args.remainingFlipActions, stateArgs.args.remainingCollectActions);
+        if (stateArgs.isCurrentPlayerActive) {
+            this.salesAgentConnections = globalThis.SALES_AGENT_CONNECTIONS;
+            this.salesOrderConnections = globalThis.SALES_ORDER_CONNECTIONS;
+            // Highlight the spaces the sales agent can move to
+            // The player can only move if they haven't used their free walk action
+            // or they have enough money to pay to take a cab
+            if (!stateArgs.args.hasWalked || stateArgs.args.playerMoney >= 2)
+                this.highlightAdjacentSalesAgentSpaces(stateArgs.args.salesAgentLocation);
+        }
+    };
     PerformSales.prototype.onLeavingState = function () { };
-    PerformSales.prototype.onUpdateActionButtons = function (stateArgs) { };
+    PerformSales.prototype.onUpdateActionButtons = function (stateArgs) {
+        var _this = this;
+        if (stateArgs.isCurrentPlayerActive) {
+            gameui.addActionButton("aoc-end-sales", _("End action"), function () {
+                _this.endSales();
+            });
+            dojo.addClass("aoc-end-sales", "aoc-button");
+            gameui.addActionButton("aoc-use-ticket", _("Use Super-transport Ticket"), function () {
+                _this.useTicket();
+            });
+            dojo.addClass("aoc-use-ticket", "aoc-button-disabled");
+            dojo.addClass("aoc-use-ticket", "aoc-button");
+        }
+    };
+    /**
+     * Create the div that tracks remaining actions
+     */
+    PerformSales.prototype.createRemainingActionsDiv = function (remainingFlips, remainingCollects) {
+        var actionsDiv = document.getElementById("aoc-remaining-actions");
+        // If the div already exists, return
+        if (actionsDiv)
+            return;
+        var remainingActionsDiv = "<div id='aoc-remaining-actions' class='aoc-action-panel-row'></div>";
+        this.game.createHtml(remainingActionsDiv, "page-title");
+        var remainingFlipsDiv = "<div class='aoc-remaining-action'>".concat(_("Remaining flips"), ": ").concat(remainingFlips, "</div>");
+        this.game.createHtml(remainingFlipsDiv, "aoc-remaining-actions");
+        var remainingCollectsDiv = "<div class='aoc-remaining-action'>".concat(_("Remaining collects"), ": ").concat(remainingCollects, "</div>");
+        this.game.createHtml(remainingCollectsDiv, "aoc-remaining-actions");
+    };
+    /**
+     * End the sales phase
+     */
+    PerformSales.prototype.endSales = function () {
+        console.log("Ending sales phase");
+    };
+    /**
+     * Called when state is loaded.
+     * Highlights and creates click listeners for spaces that the sales agent can move to.
+     *
+     * @param salesAgentLocation - the current location of the sales agent
+     */
+    PerformSales.prototype.highlightAdjacentSalesAgentSpaces = function (salesAgentLocation) {
+        var adjacentSpaces = this.salesAgentConnections[salesAgentLocation];
+        for (var _i = 0, adjacentSpaces_1 = adjacentSpaces; _i < adjacentSpaces_1.length; _i++) {
+            var space = adjacentSpaces_1[_i];
+            var divId = "aoc-map-agent-space-".concat(space);
+            dojo.addClass(divId, "aoc-clickable");
+        }
+    };
+    PerformSales.prototype.useTicket = function () {
+        console.log("Using ticket");
+    };
     return PerformSales;
 }());
 /**

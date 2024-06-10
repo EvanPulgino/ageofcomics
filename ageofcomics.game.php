@@ -45,6 +45,9 @@ class AgeOfComics extends Table {
             CAN_HIRE_ARTIST => 24,
             CAN_HIRE_WRITER => 25,
             PRINTED_COMIC => 26,
+            HAS_WALKED => 27,
+            SALES_ORDER_COLLECTS_REMAINING => 28,
+            SALES_ORDER_FLIPS_REMAINING => 29,
         ]);
 
         // Initialize player manager
@@ -115,7 +118,7 @@ class AgeOfComics extends Table {
             sizeof($aocPlayers) + 1
         );
         self::setGameStateInitialValue(CURRENT_ROUND, 0);
-        self::setGameStateInitialValue(TICKET_SUPPLY, 4);
+        self::setGameStateInitialValue(TICKET_SUPPLY, 6);
         self::setGameStateInitialValue(START_IDEAS, 2);
         self::setGameStateInitialValue(SELECTED_ACTION_SPACE, 0);
         self::setGameStateInitialValue(
@@ -128,6 +131,9 @@ class AgeOfComics extends Table {
         self::setGameStateInitialValue(CAN_HIRE_ARTIST, 0);
         self::setGameStateInitialValue(CAN_HIRE_WRITER, 0);
         self::setGameStateInitialValue(PRINTED_COMIC, 0);
+        self::setGameStateInitialValue(HAS_WALKED, 0);
+        self::setGameStateInitialValue(SALES_ORDER_COLLECTS_REMAINING, -1);
+        self::setGameStateInitialValue(SALES_ORDER_FLIPS_REMAINING, -1);
 
         // Init game statistics
         // (note: statistics used in this file must be defined in your stats.inc.php file)

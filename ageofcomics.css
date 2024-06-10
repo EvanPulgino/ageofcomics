@@ -2961,6 +2961,16 @@ html {
   z-index: 4;
 }
 
+.aoc-ticket:nth-child(5) {
+  bottom: 12px;
+  z-index: 5;
+}
+
+.aoc-ticket:nth-child(6) {
+  bottom: 15px;
+  z-index: 6;
+}
+
 /**
  * 
  * Styles for artist cards

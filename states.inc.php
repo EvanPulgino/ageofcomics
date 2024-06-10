@@ -184,9 +184,12 @@ $machinestates = [
         "args" => STATE_ARGS_PERFORM_PRINT,
         "possibleactions" => [
             PLAYER_ACTION_PRINT_COMIC,
-            PLAYER_ACTION_SKIP_DOUBLE_PRINT
+            PLAYER_ACTION_SKIP_DOUBLE_PRINT,
         ],
-        "transitions" => ["awardPrintBonus" => ST_PERFORM_PRINT_BONUS, "nextPlayerTurn" => ST_NEXT_PLAYER],
+        "transitions" => [
+            "awardPrintBonus" => ST_PERFORM_PRINT_BONUS,
+            "nextPlayerTurn" => ST_NEXT_PLAYER,
+        ],
     ],
 
     ST_PERFORM_PRINT_BONUS => [
@@ -254,10 +257,10 @@ $machinestates = [
     ST_PERFORM_SALES => [
         "name" => PERFORM_SALES,
         "description" => clienttranslate(
-            '${actplayer} must perform a sales action'
+            '${actplayer} can move their sales agent, and perform sales order flip and collect actions'
         ),
         "descriptionmyturn" => clienttranslate(
-            '${you} must perform a sales action'
+            '${you} can move their sales agent, and perform sales order flip and collect actions'
         ),
         "type" => STATE_TYPE_ACTIVE_PLAYER,
         "args" => STATE_ARGS_PERFORM_SALES,

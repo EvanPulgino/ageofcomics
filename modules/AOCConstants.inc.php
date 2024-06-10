@@ -313,19 +313,22 @@ define("CAN_HIRE_ARTIST", "can_hire_artist");
 define("CAN_HIRE_WRITER", "can_hire_writer");
 define("CARD_SUPPLY_SIZE", "card_supply_size");
 define("CURRENT_ROUND", "current_round");
+define("HAS_WALKED", "has_walked");
 define("IDEAS_SPACE_CRIME", "ideas_space_crime");
 define("IDEAS_SPACE_HORROR", "ideas_space_horror");
 define("IDEAS_SPACE_ROMANCE", "ideas_space_romance");
 define("IDEAS_SPACE_SCIFI", "ideas_space_scifi");
 define("IDEAS_SPACE_SUPERHERO", "ideas_space_superhero");
 define("IDEAS_SPACE_WESTERN", "ideas_space_western");
+define("MAX_ACTION_SPACES", "max_action_spaces");
 define("PRINTED_COMIC", "printed_comic");
+define("SALES_ORDER_COLLECTS_REMAINING", "sales_order_collects_remaining");
+define("SALES_ORDER_FLIPS_REMAINING", "sales_order_flips_remaining");
 define("SELECTED_ACTION_SPACE", "selected_action_space");
 define("TICKET_SUPPLY", "ticket_supply");
 define("TOTAL_TURNS", "total_turns");
 define("TURNS_TAKEN", "turns_taken");
 define("START_IDEAS", "start_ideas");
-define("MAX_ACTION_SPACES", "max_action_spaces");
 
 /** Location Keys */
 define("LOCATION_VOID", -1);
@@ -355,7 +358,8 @@ define("LOCATION_ACTION_PRINT", 40000);
 define("LOCATION_ACTION_ROYALTIES", 50000);
 define("LOCATION_ACTION_SALES", 60000);
 
-/** Sales Agent Space Keys */
+/** Sales Agent Spaces */
+define("LOCATION_AGENT_SPACE_START", 0);
 define("LOCATION_AGENT_SPACE_1_1", 101);
 define("LOCATION_AGENT_SPACE_1_2", 102);
 define("LOCATION_AGENT_SPACE_1_3", 103);
@@ -381,7 +385,7 @@ define("LOCATION_AGENT_SPACE_6_2", 602);
 define("LOCATION_AGENT_SPACE_6_3", 603);
 define("LOCATION_AGENT_SPACE_6_4", 604);
 
-/** Sales Order Space Keys */
+/** Sales Order Spaces */
 define("LOCATION_ORDER_SPACE_1_5", 105);
 define("LOCATION_ORDER_SPACE_2_3", 203);
 define("LOCATION_ORDER_SPACE_2_5", 205);
@@ -446,6 +450,144 @@ define("ROYALTIES_AMOUNTS", [
     50003 => 3,
     50004 => 2,
     50005 => 1,
+]);
+
+/** Sales Agent Space Connections */
+define("SALES_AGENT_CONNECTIONS", [
+    LOCATION_AGENT_SPACE_START => [
+        LOCATION_AGENT_SPACE_3_2,
+        LOCATION_AGENT_SPACE_3_3,
+        LOCATION_AGENT_SPACE_4_2,
+        LOCATION_AGENT_SPACE_4_3,
+    ],
+    LOCATION_AGENT_SPACE_1_1 => [
+        LOCATION_AGENT_SPACE_1_2,
+        LOCATION_AGENT_SPACE_2_1,
+    ],
+    LOCATION_AGENT_SPACE_1_2 => [
+        LOCATION_AGENT_SPACE_1_1,
+        LOCATION_AGENT_SPACE_1_2,
+        LOCATION_AGENT_SPACE_2_2,
+    ],
+    LOCATION_AGENT_SPACE_1_3 => [
+        LOCATION_AGENT_SPACE_1_2,
+        LOCATION_AGENT_SPACE_1_4,
+        LOCATION_AGENT_SPACE_2_3,
+    ],
+    LOCATION_AGENT_SPACE_1_4 => [
+        LOCATION_AGENT_SPACE_1_3,
+        LOCATION_AGENT_SPACE_2_4,
+    ],
+    LOCATION_AGENT_SPACE_2_1 => [
+        LOCATION_AGENT_SPACE_1_1,
+        LOCATION_AGENT_SPACE_2_2,
+        LOCATION_AGENT_SPACE_3_1,
+    ],
+    LOCATION_AGENT_SPACE_2_2 => [
+        LOCATION_AGENT_SPACE_1_2,
+        LOCATION_AGENT_SPACE_2_1,
+        LOCATION_AGENT_SPACE_2_3,
+        LOCATION_AGENT_SPACE_3_2,
+    ],
+    LOCATION_AGENT_SPACE_2_3 => [
+        LOCATION_AGENT_SPACE_1_3,
+        LOCATION_AGENT_SPACE_2_2,
+        LOCATION_AGENT_SPACE_2_4,
+        LOCATION_AGENT_SPACE_3_3,
+    ],
+    LOCATION_AGENT_SPACE_2_4 => [
+        LOCATION_AGENT_SPACE_1_4,
+        LOCATION_AGENT_SPACE_2_3,
+        LOCATION_AGENT_SPACE_3_4,
+    ],
+    LOCATION_AGENT_SPACE_3_1 => [
+        LOCATION_AGENT_SPACE_2_1,
+        LOCATION_AGENT_SPACE_3_2,
+        LOCATION_AGENT_SPACE_4_1,
+    ],
+    LOCATION_AGENT_SPACE_3_2 => [
+        LOCATION_AGENT_SPACE_2_2,
+        LOCATION_AGENT_SPACE_3_1,
+        LOCATION_AGENT_SPACE_3_3,
+        LOCATION_AGENT_SPACE_4_2,
+        LOCATION_AGENT_SPACE_4_3,
+    ],
+    LOCATION_AGENT_SPACE_3_3 => [
+        LOCATION_AGENT_SPACE_2_3,
+        LOCATION_AGENT_SPACE_3_2,
+        LOCATION_AGENT_SPACE_3_4,
+        LOCATION_AGENT_SPACE_4_2,
+        LOCATION_AGENT_SPACE_4_3,
+    ],
+    LOCATION_AGENT_SPACE_3_4 => [
+        LOCATION_AGENT_SPACE_2_4,
+        LOCATION_AGENT_SPACE_3_3,
+        LOCATION_AGENT_SPACE_4_4,
+    ],
+    LOCATION_AGENT_SPACE_4_1 => [
+        LOCATION_AGENT_SPACE_3_1,
+        LOCATION_AGENT_SPACE_4_2,
+        LOCATION_AGENT_SPACE_5_1,
+    ],
+    LOCATION_AGENT_SPACE_4_2 => [
+        LOCATION_AGENT_SPACE_3_2,
+        LOCATION_AGENT_SPACE_3_3,
+        LOCATION_AGENT_SPACE_4_1,
+        LOCATION_AGENT_SPACE_4_3,
+        LOCATION_AGENT_SPACE_5_2,
+    ],
+    LOCATION_AGENT_SPACE_4_3 => [
+        LOCATION_AGENT_SPACE_3_2,
+        LOCATION_AGENT_SPACE_3_3,
+        LOCATION_AGENT_SPACE_4_2,
+        LOCATION_AGENT_SPACE_4_4,
+        LOCATION_AGENT_SPACE_5_3,
+    ],
+    LOCATION_AGENT_SPACE_4_4 => [
+        LOCATION_AGENT_SPACE_3_4,
+        LOCATION_AGENT_SPACE_4_3,
+        LOCATION_AGENT_SPACE_5_4,
+    ],
+    LOCATION_AGENT_SPACE_5_1 => [
+        LOCATION_AGENT_SPACE_4_1,
+        LOCATION_AGENT_SPACE_5_2,
+        LOCATION_AGENT_SPACE_6_1,
+    ],
+    LOCATION_AGENT_SPACE_5_2 => [
+        LOCATION_AGENT_SPACE_4_2,
+        LOCATION_AGENT_SPACE_5_1,
+        LOCATION_AGENT_SPACE_5_3,
+        LOCATION_AGENT_SPACE_6_2,
+    ],
+    LOCATION_AGENT_SPACE_5_3 => [
+        LOCATION_AGENT_SPACE_4_3,
+        LOCATION_AGENT_SPACE_5_2,
+        LOCATION_AGENT_SPACE_5_4,
+        LOCATION_AGENT_SPACE_6_3,
+    ],
+    LOCATION_AGENT_SPACE_5_4 => [
+        LOCATION_AGENT_SPACE_4_4,
+        LOCATION_AGENT_SPACE_5_3,
+        LOCATION_AGENT_SPACE_6_4,
+    ],
+    LOCATION_AGENT_SPACE_6_1 => [
+        LOCATION_AGENT_SPACE_5_1,
+        LOCATION_AGENT_SPACE_6_2,
+    ],
+    LOCATION_AGENT_SPACE_6_2 => [
+        LOCATION_AGENT_SPACE_5_2,
+        LOCATION_AGENT_SPACE_6_1,
+        LOCATION_AGENT_SPACE_6_3,
+    ],
+    LOCATION_AGENT_SPACE_6_3 => [
+        LOCATION_AGENT_SPACE_5_3,
+        LOCATION_AGENT_SPACE_6_2,
+        LOCATION_AGENT_SPACE_6_4,
+    ],
+    LOCATION_AGENT_SPACE_6_4 => [
+        LOCATION_AGENT_SPACE_5_4,
+        LOCATION_AGENT_SPACE_6_3,
+    ],
 ]);
 
 /** Sales Order Spaces by Player Count */
@@ -569,6 +711,7 @@ define("SALES_ORDER_SPACES", [
 /** Sales Order Connections by Player Count */
 define("SALES_ORDER_CONNECTIONS", [
     2 => [
+        LOCATION_AGENT_SPACE_START => [],
         LOCATION_AGENT_SPACE_1_2 => [
             LOCATION_ORDER_SPACE_2_5,
             LOCATION_ORDER_SPACE_3_4,
@@ -671,6 +814,7 @@ define("SALES_ORDER_CONNECTIONS", [
         ],
     ],
     3 => [
+        LOCATION_AGENT_SPACE_START => [],
         LOCATION_AGENT_SPACE_1_1 => [
             LOCATION_ORDER_SPACE_2_3,
             LOCATION_ORDER_SPACE_3_2,
@@ -793,6 +937,7 @@ define("SALES_ORDER_CONNECTIONS", [
         ],
     ],
     4 => [
+        LOCATION_AGENT_SPACE_START => [],
         LOCATION_AGENT_SPACE_1_1 => [
             LOCATION_ORDER_SPACE_2_3,
             LOCATION_ORDER_SPACE_3_2,
