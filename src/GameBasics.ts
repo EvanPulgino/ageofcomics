@@ -147,6 +147,7 @@ class GameBasics extends GameGui {
       gameui.isCurrentPlayerActive() &&
       this.currentPlayerWasActive == false
     ) {
+      args["isCurrentPlayerActive"] = gameui.isCurrentPlayerActive();
       this.debug(
         "onUpdateActionButtons: " + stateName,
         args,

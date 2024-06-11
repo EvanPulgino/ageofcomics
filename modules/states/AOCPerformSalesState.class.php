@@ -57,10 +57,57 @@ class AOCPerformSalesState {
         ];
     }
 
-    /**
-     * If this is the first time the state is entered, set the number of sales order flip and collect actions
-     */
-    public function stInitSales() {
+    public function moveSalesAgent($space) {
+        $activePlayer = $this->game->playerManager->getActivePlayer();
+
+        // Set new location of the sales agent
+        $this->game->playerManager->movePlayerSalesAgent($activePlayer, $space);
+
+        $hasWalked = $this->game->getGameStateValue(HAS_WALKED);
+
+        if ($hasWalked == 0) {
+            // If player hasn't walked yet, record it
+            $this->game->setGameStateValue(HAS_WALKED, 1);
+
+            $this->game->notifyAllPlayers(
+                "playerWalked",
+                clienttranslate(
+                    '${player_name} moves their sales agent one space'
+                ),
+                [
+                    "player" => $this->game->playerManager
+                        ->getActivePlayer()
+                        ->getUiData(),
+                    "player_name" => $this->game->playerManager
+                        ->getActivePlayer()
+                        ->getName(),
+                    "space" => $space,
+                ]
+            );
+        } else {
+            // If player has already walked, spend 2 money
+            $this->game->playerManager->adjustPlayerMoney($activePlayer, -2);
+
+            $this->game->notifyAllPlayers(
+                "playerUsedTaxi",
+                clienttranslate(
+                    '${player_name} pays 2 money to move their sales agent one space'
+                ),
+                [
+                    "player" => $this->game->playerManager
+                        ->getActivePlayer()
+                        ->getUiData(),
+                    "player_name" => $this->game->playerManager
+                        ->getActivePlayer()
+                        ->getName(),
+                    "space" => $space,
+                    "moneyAdjustment" => -2,
+                ]
+            );
+        }
+
+        // Re-enter sales action state
+        $this->game->gamestate->nextState("continueSales");
     }
 
     private function setNumberOfActions() {

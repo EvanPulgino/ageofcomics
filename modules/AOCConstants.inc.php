@@ -35,6 +35,7 @@ define("GAME_ACTION_START_NEW_ROUND", "stStartNewRound");
 define("PLAYER_ACTION_COLLECT_SALES_ORDER", "collectSalesOrder");
 define("PLAYER_ACTION_DEVELOP_COMIC", "developComic");
 define("PLAYER_ACTION_DEVELOP_FROM_GENRE", "developFromGenre");
+define("PLAYER_ACTION_END_SALES", "endSales");
 define("PLAYER_ACTION_FLIP_SALES_ORDER", "flipSalesOrder");
 define("PLAYER_ACTION_CONFIRM_GAIN_IDEAS", "confirmGainIdeas");
 define("PLAYER_ACTION_CONFIRM_GAIN_BONUS_IDEAS", "confirmGainBonusIdeas");

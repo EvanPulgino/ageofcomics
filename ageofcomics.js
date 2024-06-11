@@ -145,6 +145,7 @@ var GameBasics = /** @class */ (function (_super) {
         this.pendingUpdate = false;
         if (gameui.isCurrentPlayerActive() &&
             this.currentPlayerWasActive == false) {
+            args["isCurrentPlayerActive"] = gameui.isCurrentPlayerActive();
             this.debug("onUpdateActionButtons: " + stateName, args, this.debugStateInfo());
             this.currentPlayerWasActive = true;
             // Call appropriate method
@@ -654,8 +655,41 @@ var GameBody = /** @class */ (function (_super) {
     GameBody.prototype.notif_placeEditor = function (notif) {
         this.editorController.moveEditorToActionSpace(notif.args.editor, notif.args.space);
     };
+    /**
+     * Handle 'placeUpgradeCube' notification
+     *
+     * Notif args:
+     * - cubeMoved: the cube that was moved
+     * - actionKey: the key of the action being upgraded
+     *
+     * @param notif
+     */
     GameBody.prototype.notif_placeUpgradeCube = function (notif) {
         this.playerController.moveUpgradeCube(notif.args.player, notif.args.cubeMoved, notif.args.actionKey);
+    };
+    /**
+     * Handle 'playerUsedTaxi' notification
+     *
+     * Notif args:
+     * - space: space player sales agent moved to
+     * - moneyAdjustment: amount of money to adjust by
+     *
+     * @param notif
+     */
+    GameBody.prototype.notif_playerUsedTaxi = function (notif) {
+        this.playerController.moveSalesAgent(notif.args.player, notif.args.space);
+        this.playerController.adjustMoney(notif.args.player, notif.args.moneyAdjustment);
+    };
+    /**
+     * Handle 'playerWalked' notification
+     *
+     * Notif args:
+     * - space: space player sales agent moved to
+     *
+     * @param notif
+     */
+    GameBody.prototype.notif_playerWalked = function (notif) {
+        this.playerController.moveSalesAgent(notif.args.player, notif.args.space);
     };
     /**
      * Handle'reshuffleDiscardPile' notification
@@ -1769,7 +1803,7 @@ var PlayerController = /** @class */ (function () {
      * @param player - player to create sales agent for
      */
     PlayerController.prototype.createPlayerAgent = function (player) {
-        var playerAgentDiv = '<div id="aoc-agent' +
+        var playerAgentDiv = '<div id="aoc-agent-' +
             player.id +
             '" class="aoc-agent aoc-agent-' +
             player.colorAsText +
@@ -2003,6 +2037,29 @@ var PlayerController = /** @class */ (function () {
         this.playerCounter[player.id][counterPanel].create("aoc-player-" + counterPanel + "-count-" + player.id);
         this.playerCounter[player.id][counterPanel].setValue(initialValue);
     };
+    /**
+     * Move a player sales agent to a new space on the map
+     *
+     * @param player - player to move sales agent for
+     * @param space - space to move sales agent to
+     */
+    PlayerController.prototype.moveSalesAgent = function (player, space) {
+        var agentDiv = "aoc-agent-" + player.id;
+        var targetDiv = "aoc-map-agent-space-" + space;
+        var animation = this.ui.slideToObject(agentDiv, targetDiv);
+        dojo.connect(animation, "onEnd", function () {
+            dojo.removeAttr(agentDiv, "style");
+            dojo.place(agentDiv, targetDiv);
+        });
+        animation.play();
+    };
+    /**
+     * Move a player upgrade cube to a new location
+     *
+     * @param player - player to move cube for
+     * @param cube - cube to move
+     * @param action - action to move cube to
+     */
     PlayerController.prototype.moveUpgradeCube = function (player, cube, action) {
         var numberText = "";
         if (cube == 1) {
@@ -3713,12 +3770,28 @@ var PerformRoyalties = /** @class */ (function () {
 var PerformSales = /** @class */ (function () {
     function PerformSales(game) {
         this.game = game;
+        this.connections = {};
         this.salesAgentConnections = {};
         this.salesOrderConnections = {};
+        this.flipsCounter = {};
+        this.collectsCounter = {};
     }
     PerformSales.prototype.onEnteringState = function (stateArgs) {
         // Create the remaining actions div
-        this.createRemainingActionsDiv(stateArgs.args.remainingFlipActions, stateArgs.args.remainingCollectActions);
+        this.createRemainingActionsDiv();
+        this.flipsCounter = new ebg.counter();
+        this.flipsCounter.create("aoc-remaining-flips");
+        this.flipsCounter.setValue(stateArgs.args.remainingFlipActions);
+        this.collectsCounter = new ebg.counter();
+        this.collectsCounter.create("aoc-remaining-collects");
+        this.collectsCounter.setValue(stateArgs.args.remainingCollectActions);
+        if (stateArgs.args.hasWalked) {
+            this.addWalkNotAllowed();
+        }
+        if (stateArgs.args.playerMoney < 2) {
+            this.addTaxiNotAllowed();
+            this.addSharedSpaceNotAllowed();
+        }
         if (stateArgs.isCurrentPlayerActive) {
             this.salesAgentConnections = globalThis.SALES_AGENT_CONNECTIONS;
             this.salesOrderConnections = globalThis.SALES_ORDER_CONNECTIONS;
@@ -3744,20 +3817,38 @@ var PerformSales = /** @class */ (function () {
             dojo.addClass("aoc-use-ticket", "aoc-button");
         }
     };
+    PerformSales.prototype.addSharedSpaceNotAllowed = function () {
+        if (dojo.byId("aoc-shared-space-not-allowed-icon"))
+            return;
+        var sharedSpaceNotAllowedIconDiv = "<div id='aoc-shared-space-not-allowed-icon' class='aoc-not-allowed aoc-shared-space-not-allowed'></div>";
+        this.game.createHtml(sharedSpaceNotAllowedIconDiv, "aoc-board");
+    };
+    PerformSales.prototype.addTaxiNotAllowed = function () {
+        if (dojo.byId("aoc-taxi-not-allowed-icon"))
+            return;
+        var taxiNotAllowedIconDiv = "<div id='aoc-taxi-not-allowed-icon' class='aoc-not-allowed aoc-taxi-not-allowed'></div>";
+        this.game.createHtml(taxiNotAllowedIconDiv, "aoc-board");
+    };
+    PerformSales.prototype.addWalkNotAllowed = function () {
+        if (dojo.byId("aoc-walk-not-allowed-icon"))
+            return;
+        var walkNotAllowedIconDiv = "<div id='aoc-walk-not-allowed-icon' class='aoc-not-allowed aoc-walk-not-allowed'></div>";
+        this.game.createHtml(walkNotAllowedIconDiv, "aoc-board");
+    };
     /**
      * Create the div that tracks remaining actions
      */
-    PerformSales.prototype.createRemainingActionsDiv = function (remainingFlips, remainingCollects) {
+    PerformSales.prototype.createRemainingActionsDiv = function () {
         var actionsDiv = document.getElementById("aoc-remaining-actions");
         // If the div already exists, return
         if (actionsDiv)
             return;
         var remainingActionsDiv = "<div id='aoc-remaining-actions' class='aoc-action-panel-row'></div>";
         this.game.createHtml(remainingActionsDiv, "page-title");
-        var remainingFlipsDiv = "<div class='aoc-remaining-action'>".concat(_("Remaining flips"), ": ").concat(remainingFlips, "</div>");
-        this.game.createHtml(remainingFlipsDiv, "aoc-remaining-actions");
-        var remainingCollectsDiv = "<div class='aoc-remaining-action'>".concat(_("Remaining collects"), ": ").concat(remainingCollects, "</div>");
-        this.game.createHtml(remainingCollectsDiv, "aoc-remaining-actions");
+        var remainingFlipsContainerDiv = "<div id='aoc-remaining-flips-container' class='aoc-player-panel-supply aoc-player-panel-other-supply'><span id='aoc-remaining-flips' class='aoc-player-panel-supply-count aoc-squada' style=\"padding-right: 5px !important\"></span><span id='aoc-remaining-flips-icon' class='aoc-sales-action-icon aoc-sales-action-flip'></span></div>";
+        this.game.createHtml(remainingFlipsContainerDiv, "aoc-remaining-actions");
+        var remainingCollectsContainerDiv = "<div id='aoc-remaining-collects-container' class='aoc-player-panel-supply aoc-player-panel-other-supply'><span id='aoc-remaining-collects' class='aoc-player-panel-supply-count aoc-squada'></span><span id='aoc-remaining-collects-icon' class='aoc-sales-action-icon aoc-sales-action-collect'></span></div>";
+        this.game.createHtml(remainingCollectsContainerDiv, "aoc-remaining-actions");
     };
     /**
      * End the sales phase
@@ -3777,7 +3868,28 @@ var PerformSales = /** @class */ (function () {
             var space = adjacentSpaces_1[_i];
             var divId = "aoc-map-agent-space-".concat(space);
             dojo.addClass(divId, "aoc-clickable");
+            this.connections[divId] = dojo.connect(dojo.byId(divId), "onclick", dojo.hitch(this, this.moveSalesAgentToSpace, space));
         }
+    };
+    PerformSales.prototype.moveSalesAgentToSpace = function (space) {
+        this.resetUX();
+        this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_MOVE_SALES_AGENT, {
+            space: space,
+        });
+    };
+    PerformSales.prototype.resetUX = function (removeActionBanner) {
+        if (removeActionBanner === void 0) { removeActionBanner = false; }
+        dojo.query(".aoc-clickable").removeClass("aoc-clickable");
+        dojo.query(".aoc-button").forEach(function (button) {
+            dojo.addClass(button, "aoc-button-disabled");
+        });
+        if (removeActionBanner) {
+            dojo.destroy("aoc-remaining-actions");
+        }
+        for (var connection in this.connections) {
+            dojo.disconnect(this.connections[connection]);
+        }
+        this.connections = {};
     };
     PerformSales.prototype.useTicket = function () {
         console.log("Using ticket");

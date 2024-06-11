@@ -4,17 +4,17 @@
  *
  */
 
- #aoc-other-tokens {
+#aoc-other-tokens {
   display: flex;
   flex-flow: column nowrap;
   gap: 20px;
- }
+}
 
- .aoc-other-tokens-row {
+.aoc-other-tokens-row {
   display: flex;
   flex-flow: row nowrap;
   gap: 10px;
- }
+}
 
 .aoc-round-token {
   background-image: url(./img/aoc_round_tokens.png);
@@ -70,14 +70,14 @@
 }
 
 .aoc-increase-token {
-    background-image: url(./img/aoc_increase_tokens.jpg);
-    background-repeat: no-repeat;
-    border-radius: 5px;
-    filter: drop-shadow(1px 1px 1px black);
-    -webkit-filter: drop-shadow(1px 1px 2px #000);
-    height: 42px;
-    position: absolute;
-    width: 42px;
+  background-image: url(./img/aoc_increase_tokens.jpg);
+  background-repeat: no-repeat;
+  border-radius: 5px;
+  filter: drop-shadow(1px 1px 1px black);
+  -webkit-filter: drop-shadow(1px 1px 2px #000);
+  height: 42px;
+  position: absolute;
+  width: 42px;
 }
 
 .aoc-token-bank .aoc-increase-token:nth-child(1) {
@@ -122,14 +122,14 @@
 }
 
 .aoc-token-better-color {
-    background-image: url(./img/aoc_better_color.jpg);
-    background-repeat: no-repeat;
-    border-radius: 5px;
-    filter: drop-shadow(1px 1px 1px black);
-    -webkit-filter: drop-shadow(1px 1px 2px #000);
-    height: 44px;
-    position: absolute;
-    width: 44px;
+  background-image: url(./img/aoc_better_color.jpg);
+  background-repeat: no-repeat;
+  border-radius: 5px;
+  filter: drop-shadow(1px 1px 1px black);
+  -webkit-filter: drop-shadow(1px 1px 2px #000);
+  height: 44px;
+  position: absolute;
+  width: 44px;
 }
 
 .aoc-token-bank .aoc-token-better-color:nth-child(1) {
@@ -159,4 +159,44 @@
 
 .aoc-player-panel-supply .aoc-round-token {
   transform: scale(0.75);
+}
+
+.aoc-sales-action-icon {
+  background-image: url(./img/aoc_sales_actions.png);
+  background-repeat: no-repeat;
+  height: 45px;
+  width: 45px;
+}
+
+.aoc-sales-action-flip {
+  background-position: 0 0;
+}
+
+.aoc-sales-action-collect {
+  background-position: 100% 0;
+}
+
+.aoc-not-allowed {
+  background-image: url(./img/aoc_not_allowed.png);
+  background-repeat: no-repeat;
+  height: 68px;
+  width: 100px;
+}
+
+.aoc-walk-not-allowed {
+  position: absolute;
+  top: 10px;
+  left: 808px;
+}
+
+.aoc-taxi-not-allowed {
+  position: absolute;
+  top: 10px;
+  left: 1058px;
+}
+
+.aoc-shared-space-not-allowed {
+  position: absolute;
+  top: 10px;
+  left: 1315px;
 }

@@ -191,7 +191,7 @@ class PlayerController {
    */
   createPlayerAgent(player: any): void {
     var playerAgentDiv =
-      '<div id="aoc-agent' +
+      '<div id="aoc-agent-' +
       player.id +
       '" class="aoc-agent aoc-agent-' +
       player.colorAsText +
@@ -455,6 +455,31 @@ class PlayerController {
     this.playerCounter[player.id][counterPanel].setValue(initialValue);
   }
 
+  /**
+   * Move a player sales agent to a new space on the map
+   *
+   * @param player - player to move sales agent for
+   * @param space - space to move sales agent to
+   */
+  moveSalesAgent(player: any, space: number) {
+    const agentDiv = "aoc-agent-" + player.id;
+    const targetDiv = "aoc-map-agent-space-" + space;
+
+    const animation = this.ui.slideToObject(agentDiv, targetDiv);
+    dojo.connect(animation, "onEnd", () => {
+      dojo.removeAttr(agentDiv, "style");
+      dojo.place(agentDiv, targetDiv);
+    });
+    animation.play();
+  }
+
+  /**
+   * Move a player upgrade cube to a new location
+   *
+   * @param player - player to move cube for
+   * @param cube - cube to move
+   * @param action - action to move cube to
+   */
   moveUpgradeCube(player: any, cube: number, action: number): void {
     var numberText = "";
     if (cube == 1) {

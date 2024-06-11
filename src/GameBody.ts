@@ -448,12 +448,50 @@ class GameBody extends GameBasics {
     );
   }
 
+  /**
+   * Handle 'placeUpgradeCube' notification
+   *
+   * Notif args:
+   * - cubeMoved: the cube that was moved
+   * - actionKey: the key of the action being upgraded
+   *
+   * @param notif
+   */
   notif_placeUpgradeCube(notif: any): void {
     this.playerController.moveUpgradeCube(
       notif.args.player,
       notif.args.cubeMoved,
       notif.args.actionKey
     );
+  }
+
+  /**
+   * Handle 'playerUsedTaxi' notification
+   *
+   * Notif args:
+   * - space: space player sales agent moved to
+   * - moneyAdjustment: amount of money to adjust by
+   *
+   * @param notif
+   */
+  notif_playerUsedTaxi(notif: any): void {
+    this.playerController.moveSalesAgent(notif.args.player, notif.args.space);
+    this.playerController.adjustMoney(
+      notif.args.player,
+      notif.args.moneyAdjustment
+    );
+  }
+
+  /**
+   * Handle 'playerWalked' notification
+   *
+   * Notif args:
+   * - space: space player sales agent moved to
+   *
+   * @param notif
+   */
+  notif_playerWalked(notif: any): void {
+    this.playerController.moveSalesAgent(notif.args.player, notif.args.space);
   }
 
   /**

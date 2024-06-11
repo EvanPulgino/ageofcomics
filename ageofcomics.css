@@ -2902,6 +2902,46 @@ html {
   transform: scale(0.75);
 }
 
+.aoc-sales-action-icon {
+  background-image: url(./img/aoc_sales_actions.png);
+  background-repeat: no-repeat;
+  height: 45px;
+  width: 45px;
+}
+
+.aoc-sales-action-flip {
+  background-position: 0 0;
+}
+
+.aoc-sales-action-collect {
+  background-position: 100% 0;
+}
+
+.aoc-not-allowed {
+  background-image: url(./img/aoc_not_allowed.png);
+  background-repeat: no-repeat;
+  height: 68px;
+  width: 100px;
+}
+
+.aoc-walk-not-allowed {
+  position: absolute;
+  top: 10px;
+  left: 808px;
+}
+
+.aoc-taxi-not-allowed {
+  position: absolute;
+  top: 10px;
+  left: 1058px;
+}
+
+.aoc-shared-space-not-allowed {
+  position: absolute;
+  top: 10px;
+  left: 1315px;
+}
+
 /**
  *
  * Style for sales orders

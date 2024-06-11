@@ -266,6 +266,11 @@ class AOCPlayerManager extends APP_GameClass {
         return $player->getTurnOrder() == $playerCount;
     }
 
+    public function movePlayerSalesAgent($player, $space) {
+        $player->setAgentLocation($space);
+        $this->savePlayer($player);
+    }
+
     /**
      * Save the player object to the db
      *

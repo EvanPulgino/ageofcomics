@@ -269,8 +269,12 @@ $machinestates = [
             PLAYER_ACTION_MOVE_SALES_AGENT_WITH_TICKET,
             PLAYER_ACTION_FLIP_SALES_ORDER,
             PLAYER_ACTION_COLLECT_SALES_ORDER,
+            PLAYER_ACTION_END_SALES
         ],
-        "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
+        "transitions" => [
+            "continueSales" => ST_PERFORM_SALES,
+            "nextPlayerTurn" => ST_NEXT_PLAYER
+        ],
     ],
 
     ST_CHECK_HAND_SIZE => [

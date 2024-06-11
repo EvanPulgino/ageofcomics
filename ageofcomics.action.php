@@ -108,6 +108,16 @@ class action_ageofcomics extends APP_GameAction {
         self::ajaxResponse();
     }
 
+    public function moveSalesAgent() {
+        self::setAjaxMode();
+
+        $space = self::getArg("space", AT_posint, true);
+
+        $this->game->states[PERFORM_SALES]->moveSalesAgent($space);
+
+        self::ajaxResponse();
+    }
+
     public function placeUpgradeCube() {
         self::setAjaxMode();
 
