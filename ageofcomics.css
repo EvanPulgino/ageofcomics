@@ -24,8 +24,7 @@
  *
  */
 #page-title {
-  background-image: url(./img/aoc_paper.jpg);
-  background-size: cover;
+  background-color: #f8f8f8 !important;
 }
 
 #player_boards {
@@ -180,14 +179,23 @@
 }
 
 .player-board {
-  background-image: url(./img/aoc_paper.jpg);
-  background-size: cover;
+  background-color: #f8f8f8 !important;
   order: 2;
+}
+
+.playername {
+  text-shadow: 1px 1px 1px black;
+  font-weight: bold !important;
 }
 
 .player-name {
   text-shadow: 1px 1px 1px black;
-  font-weight: bolder;
+  font-weight: bold !important;
+}
+
+#pagemaintitletext > span {
+  text-shadow: 1px 1px 1px black;
+  font-weight: bold !important;
 }
 
 /**
@@ -519,6 +527,13 @@ html {
   border: 3px dotted black;
   height: 45px;
   width: 45px;
+  position: relative;
+}
+
+.aoc-sales-order-selection-container {
+  border: 3px dotted black;
+  height: 56px;
+  width: 56px;
   position: relative;
 }
 
@@ -2116,9 +2131,25 @@ html {
   flex-flow: column nowrap;
   gap: 40px;
   justify-content: space-evenly;
-  height: auto;
+  height: 485px;
   padding-left: 25px;
   position: relative;
+}
+
+.aoc-player-sales-orders {
+  align-items: flex-start;
+  display: flex;
+  flex-flow: row wrap;
+  gap: 50px;
+  justify-content: space-evenly;
+  height: 485px;
+  padding-left: 50px;
+  padding-top: 50px;
+  position: relative;
+}
+
+.aoc-player-sales-orders > .aoc-salesorder {
+  z-index: 10;
 }
 
 .aoc-player-area-brown {

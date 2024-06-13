@@ -445,7 +445,9 @@
                             </div>
                         </div>
                     </div>
-                    <div id="aoc-player-area-right-{player_id}" class="aoc-player-area-right"></div>
+                    <div id="aoc-player-area-right-{player_id}" class="aoc-player-area-right">
+                        <div id="aoc-player-sales-orders-{player_id}" class="aoc-player-sales-orders"></div>
+                    </div>
                 </div>
             </div>
             <!-- END playerarea -->

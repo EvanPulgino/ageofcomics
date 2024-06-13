@@ -35,6 +35,16 @@ class action_ageofcomics extends APP_GameAction {
         }
     }
 
+    public function collectSalesOrder() {
+        self::setAjaxMode();
+
+        $salesOrderId = self::getArg("salesOrderId", AT_posint, true);
+
+        $this->game->states[PERFORM_SALES]->collectSalesOrder($salesOrderId);
+
+        self::ajaxResponse();
+    }
+
     public function confirmDiscard() {
         self::setAjaxMode();
 
@@ -93,6 +103,16 @@ class action_ageofcomics extends APP_GameAction {
         $genre = self::getArg("genre", AT_alphanum, true);
 
         $this->game->states[PERFORM_DEVELOP]->developFromGenre($genre);
+
+        self::ajaxResponse();
+    }
+
+    public function flipSalesOrder() {
+        self::setAjaxMode();
+
+        $salesOrderId = self::getArg("salesOrderId", AT_posint, true);
+
+        $this->game->states[PERFORM_SALES]->flipSalesOrder($salesOrderId);
 
         self::ajaxResponse();
     }

@@ -54,7 +54,81 @@ class AOCPerformSalesState {
             "tickets" => intval($activePlayer->getTickets()),
             "salesAgentLocation" => intval($activePlayer->getAgentLocation()),
             "playerMoney" => intval($activePlayer->getMoney()),
+            "playerCount" => sizeof($this->game->playerManager->getPlayers()),
         ];
+    }
+
+    public function collectSalesOrder($salesOrderId) {
+        $activePlayer = $this->game->playerManager->getActivePlayer();
+
+        // Collect the sales order
+        $this->game->salesOrderManager->collectSalesOrder(
+            $salesOrderId,
+            $activePlayer->getId()
+        );
+
+        $collectedSalesOrder = $this->game->salesOrderManager->getSalesOrder(
+            $salesOrderId
+        );
+
+        // Decrement the number of sales order collects remaining
+        $this->game->setGameStateValue(
+            SALES_ORDER_COLLECTS_REMAINING,
+            $this->game->getGameStateValue(SALES_ORDER_COLLECTS_REMAINING) - 1
+        );
+
+        // Notify all players that the sales order was collected
+        $this->game->notifyAllPlayers(
+            "salesOrderCollected",
+            clienttranslate(
+                '${player_name} collects a value ${value} ${genre} sales order'
+            ),
+            [
+                "player" => $activePlayer->getUiData(),
+                "player_name" => $activePlayer->getName(),
+                "value" => $collectedSalesOrder->getValue(),
+                "genre" => $collectedSalesOrder->getGenre(),
+                "salesOrder" => $collectedSalesOrder->getUiData(),
+            ]
+        );
+
+        // Re-enter sales action state
+        $this->game->gamestate->nextState("continueSales");
+    }
+
+    public function flipSalesOrder($salesOrderId) {
+        $activePlayer = $this->game->playerManager->getActivePlayer();
+
+        // Flip the sales order
+        $this->game->salesOrderManager->flipSalesOrder($salesOrderId);
+
+        $flippedSalesOrder = $this->game->salesOrderManager->getSalesOrder(
+            $salesOrderId
+        );
+
+        // Decrement the number of sales order flips remaining
+        $this->game->setGameStateValue(
+            SALES_ORDER_FLIPS_REMAINING,
+            $this->game->getGameStateValue(SALES_ORDER_FLIPS_REMAINING) - 1
+        );
+
+        // Notify all players that the sales order was flipped
+        $this->game->notifyAllPlayers(
+            "salesOrderFlipped",
+            clienttranslate(
+                '${player_name} flips and reveals a value ${value} ${genre} sales order'
+            ),
+            [
+                "player" => $activePlayer->getUiData(),
+                "player_name" => $activePlayer->getName(),
+                "value" => $flippedSalesOrder->getValue(),
+                "genre" => $flippedSalesOrder->getGenre(),
+                "salesOrder" => $flippedSalesOrder->getUiData(),
+            ]
+        );
+
+        // Re-enter sales action state
+        $this->game->gamestate->nextState("continueSales");
     }
 
     public function moveSalesAgent($space) {
@@ -82,6 +156,7 @@ class AOCPerformSalesState {
                         ->getActivePlayer()
                         ->getName(),
                     "space" => $space,
+                    "arrived" => $activePlayer->getAgentArrived(),
                 ]
             );
         } else {
@@ -101,6 +176,7 @@ class AOCPerformSalesState {
                         ->getActivePlayer()
                         ->getName(),
                     "space" => $space,
+                    "arrived" => $activePlayer->getAgentArrived(),
                     "moneyAdjustment" => -2,
                 ]
             );

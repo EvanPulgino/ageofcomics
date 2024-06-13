@@ -31,6 +31,18 @@ class SalesOrderController {
     }
   }
 
+  collectSalesOrder(salesOrder: any): void {
+    this.flipSalesOrder(salesOrder);
+    const salesOrderDiv = "aoc-salesorder-" + salesOrder.id;
+    const targetDiv = "aoc-player-sales-orders-" + salesOrder.locationArg;
+    const animation = this.ui.slideToObject(salesOrderDiv, targetDiv);
+    dojo.connect(animation, "onEnd", () => {
+      dojo.removeAttr(salesOrderDiv, "style");
+      dojo.place(salesOrderDiv, targetDiv);
+    });
+    animation.play();
+  }
+
   /**
    * Creates a sales order
    *
@@ -50,6 +62,13 @@ class SalesOrderController {
         "aoc-map-order-space-" + salesOrder.locationArg
       );
     }
+
+    if (salesOrder.location == globalThis.LOCATION_PLAYER_AREA) {
+      this.ui.createHtml(
+        salesOrderDiv,
+        "aoc-player-sales-orders-" + salesOrder.locationArg
+      );
+    }
   }
 
   /**
@@ -59,11 +78,17 @@ class SalesOrderController {
    */
   flipSalesOrder(salesOrder: any): void {
     var salesOrderDiv = dojo.byId("aoc-salesorder-" + salesOrder.id);
-    dojo.removeClass(
-      salesOrderDiv,
-      "aoc-salesorder-" + salesOrder.genre + "-facedown"
-    );
-    dojo.addClass(salesOrderDiv, salesOrder.cssClass);
+    if (
+      salesOrderDiv.classList.contains(
+        "aoc-salesorder-" + salesOrder.genre + "-facedown"
+      )
+    ) {
+      dojo.removeClass(
+        salesOrderDiv,
+        "aoc-salesorder-" + salesOrder.genre + "-facedown"
+      );
+      dojo.addClass(salesOrderDiv, salesOrder.cssClass);
+    }
   }
 
   /**

@@ -5,8 +5,7 @@
  */
 
 #page-title {
-  background-image: url(./img/aoc_paper.jpg);
-  background-size: cover;
+  background-color: #f8f8f8 !important;
 }
 
 #player_boards {
@@ -161,12 +160,21 @@
 }
 
 .player-board {
-  background-image: url(./img/aoc_paper.jpg);
-  background-size: cover;
+  background-color: #f8f8f8 !important;
   order: 2;
+}
+
+.playername {
+  text-shadow: 1px 1px 1px black;
+  font-weight: bold !important;
 }
 
 .player-name {
   text-shadow: 1px 1px 1px black;
-  font-weight: bolder;
+  font-weight: bold !important;
+}
+
+#pagemaintitletext > span {
+  text-shadow: 1px 1px 1px black;
+  font-weight: bold !important;
 }

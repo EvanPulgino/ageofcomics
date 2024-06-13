@@ -183,7 +183,7 @@ class AOCPlayerManager extends APP_GameClass {
      */
     public function getPlayers($playerIds = null) {
         $sql =
-            "SELECT player_id id, player_no naturalOrder, player_turn_order turnOrder, player_name name, player_color color, player_score score, player_score_aux scoreAux, player_money money, player_income income, player_crime_ideas crimeIdeas, player_horror_ideas horrorIdeas, player_romance_ideas romanceIdeas, player_scifi_ideas scifiIdeas, player_superhero_ideas superheroIdeas, player_western_ideas westernIdeas, player_tickets tickets, player_agent_location agentLocation, player_cube_one_location cubeOneLocation, player_cube_two_location cubeTwoLocation, player_cube_three_location cubeThreeLocation, player_is_multiactive multiActive FROM player";
+            "SELECT player_id id, player_no naturalOrder, player_turn_order turnOrder, player_name name, player_color color, player_score score, player_score_aux scoreAux, player_money money, player_income income, player_crime_ideas crimeIdeas, player_horror_ideas horrorIdeas, player_romance_ideas romanceIdeas, player_scifi_ideas scifiIdeas, player_superhero_ideas superheroIdeas, player_western_ideas westernIdeas, player_tickets tickets, player_agent_location agentLocation, player_agent_arrived agentArrived, player_cube_one_location cubeOneLocation, player_cube_two_location cubeTwoLocation, player_cube_three_location cubeThreeLocation, player_is_multiactive multiActive FROM player";
         if ($playerIds) {
             $sql .= " WHERE player_id IN (" . implode(",", $playerIds) . ")";
         }
@@ -268,6 +268,7 @@ class AOCPlayerManager extends APP_GameClass {
 
     public function movePlayerSalesAgent($player, $space) {
         $player->setAgentLocation($space);
+        $player->setAgentArrived($this->game->getGameStateValue(TURNS_TAKEN));
         $this->savePlayer($player);
     }
 
@@ -290,6 +291,7 @@ class AOCPlayerManager extends APP_GameClass {
         player_western_ideas = {$player->getWesternIdeas()},
         player_tickets = {$player->getTickets()},
         player_agent_location = {$player->getAgentLocation()},
+        player_agent_arrived = {$player->getAgentArrived()},
         player_cube_one_location = {$player->getCubeOneLocation()},
         player_cube_two_location = {$player->getCubeTwoLocation()},
         player_cube_three_location = {$player->getCubeThreeLocation()}
@@ -341,7 +343,7 @@ class AOCPlayerManager extends APP_GameClass {
      */
     private function setTurnOrderToNaturalOrder() {
         $sql =
-            "UPDATE player SET player_turn_order = player_no WHERE player_no IS NOT NULL";
+            "UPDATE player SET player_turn_order = player_no, player_agent_arrived = player_no WHERE player_no IS NOT NULL";
         self::DbQuery($sql);
     }
 }

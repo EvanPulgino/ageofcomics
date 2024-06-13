@@ -38,6 +38,7 @@ class PlayerController {
     for (var key in playerData) {
       this.createPlayerOrderToken(playerData[key]);
       this.createPlayerAgent(playerData[key]);
+      this.sortAgents();
       this.createPlayerCubes(playerData[key]);
       this.createPlayerPanel(playerData[key]);
       this.createPlayerCounters(playerData[key]);
@@ -195,6 +196,8 @@ class PlayerController {
       player.id +
       '" class="aoc-agent aoc-agent-' +
       player.colorAsText +
+      '" arrived="' +
+      player.agentArrived +
       '"></div>';
     this.ui.createHtml(
       playerAgentDiv,
@@ -460,8 +463,9 @@ class PlayerController {
    *
    * @param player - player to move sales agent for
    * @param space - space to move sales agent to
+   * @param arrived - the turn the agent arrived on the space
    */
-  moveSalesAgent(player: any, space: number) {
+  moveSalesAgent(player: any, space: number, arrived: number): void {
     const agentDiv = "aoc-agent-" + player.id;
     const targetDiv = "aoc-map-agent-space-" + space;
 
@@ -469,6 +473,8 @@ class PlayerController {
     dojo.connect(animation, "onEnd", () => {
       dojo.removeAttr(agentDiv, "style");
       dojo.place(agentDiv, targetDiv);
+      dojo.setAttr(agentDiv, "arrived", arrived);
+      this.sortAgentsOnSpace(space);
     });
     animation.play();
   }
@@ -502,6 +508,29 @@ class PlayerController {
       dojo.place(cubeDiv, targetDiv);
     });
     animation.play();
+  }
+
+  sortAgents(): void {
+    const agentSpaces = globalThis.SALES_AGENT_CONNECTIONS;
+    for (const space of Object.keys(agentSpaces)) {
+      this.sortAgentsOnSpace(parseInt(space));
+    }
+  }
+
+  sortAgentsOnSpace(space: number): void {
+    const agentSpaceDivId = `aoc-map-agent-space-${space}`;
+    const agentSpaceContainer = dojo.byId(agentSpaceDivId);
+    const agents: HTMLElement[] = agentSpaceContainer.children;
+
+    const sortedAgents = Array.from(agents).sort((a, b) => {
+      const aArrived = dojo.getAttr(a, "arrived");
+      const bArrived = dojo.getAttr(b, "arrived");
+      return bArrived - aArrived;
+    });
+
+    for (let i = 0; i < sortedAgents.length; i++) {
+      dojo.place(sortedAgents[i], agentSpaceDivId);
+    }
   }
 
   /**

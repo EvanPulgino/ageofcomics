@@ -33,6 +33,22 @@ class AOCSalesOrderManager extends APP_GameClass {
     }
 
     /**
+     * Collect a sales order tile
+     *
+     * @param int $salesOrderId The id of the sales order tile to collect
+     * @return void
+     */
+    public function collectSalesOrder($salesOrderId, $playerId) {
+        $sql = "UPDATE sales_order SET sales_order_flipped = 1, sales_order_location = " . LOCATION_PLAYER_AREA . ", sales_order_location_arg = $playerId WHERE sales_order_id = $salesOrderId";
+        self::DbQuery($sql);
+    }
+
+    public function flipSalesOrder($salesOrderId) {
+        $sql = "UPDATE sales_order SET sales_order_flipped = 1 WHERE sales_order_id = $salesOrderId";
+        self::DbQuery($sql);
+    }
+
+    /**
      * Flip all sales orders of a given genre on the map
      *
      * @param int $genre The id of the genre to flip
@@ -68,14 +84,24 @@ class AOCSalesOrderManager extends APP_GameClass {
         return $uiData;
     }
 
+    public function getSalesOrder($salesOrderId) {
+        return $this->getSalesOrders([$salesOrderId])[0];
+    }
+
     /**
      * Get all sales order tiles
      *
      * @return AOCSalesOrder[]
      */
-    public function getSalesOrders() {
+    public function getSalesOrders($salesOrderIds = null) {
         $sql =
             "SELECT sales_order_id id, sales_order_genre genre, sales_order_value value, sales_order_fans fans, sales_order_owner playerId, sales_order_location location, sales_order_location_arg locationArg, sales_order_flipped flipped FROM sales_order";
+        if ($salesOrderIds) {
+            $sql .=
+                " WHERE sales_order_id IN (" .
+                implode(",", $salesOrderIds) .
+                ")";
+        }
         $rows = self::getCollectionFromDb($sql);
         $salesOrders = [];
         foreach ($rows as $row) {
@@ -89,8 +115,8 @@ class AOCSalesOrderManager extends APP_GameClass {
      *
      * @return array An array of sales order tiles formatted for the UI
      */
-    public function getSalesOrdersUiData() {
-        $salesOrders = $this->getSalesOrders();
+    public function getSalesOrdersUiData($salesOrderIds = null) {
+        $salesOrders = $this->getSalesOrders($salesOrderIds);
         $uiData = [];
         foreach ($salesOrders as $salesOrder) {
             $uiData[] = $salesOrder->getUiData();

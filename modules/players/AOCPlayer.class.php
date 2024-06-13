@@ -28,6 +28,7 @@
  * - The number of Western Ideas the player has
  * - The number of transport tickets the player has
  * - The location of the player's Sales Agent on the map
+ * - The turn number the player's Sales Agent arrived at a space
  * - The location of the player's first Special Action cube
  * - The location of the player's second Special Action cube
  * - The location of the player's third Special Action cube
@@ -132,6 +133,11 @@ class AOCPlayer {
     private $agentLocation;
 
     /**
+     * @var int $agentArrived The turn number the player's sales agent arrived at a space
+     */
+    private $agentArrived;
+
+    /**
      * @var int $cubeOneLocation The location of the player's first special action cube
      * - 5 = On the player mat
      * - 10000 = On the Hire action
@@ -196,6 +202,7 @@ class AOCPlayer {
         $this->westernIdeas = $row["westernIdeas"];
         $this->tickets = $row["tickets"];
         $this->agentLocation = $row["agentLocation"];
+        $this->agentArrived = $row["agentArrived"];
         $this->cubeOneLocation = $row["cubeOneLocation"];
         $this->cubeTwoLocation = $row["cubeTwoLocation"];
         $this->cubeThreeLocation = $row["cubeThreeLocation"];
@@ -545,6 +552,25 @@ class AOCPlayer {
     }
 
     /**
+     * Get the turn number the player's sales agent arrived at a space
+     *
+     * @return int
+     */
+    public function getAgentArrived() {
+        return $this->agentArrived;
+    }
+
+    /**
+     * Set the turn number the player's sales agent arrived at a space
+     *
+     * @param int $agentArrived The turn number the player's sales agent arrived at a space
+     * @return void
+     */
+    public function setAgentArrived($agentArrived) {
+        $this->agentArrived = $agentArrived;
+    }
+
+    /**
      * Get the location of the player's first special action cube
      * - 5 = On the player mat
      * - 10000 = On the Hire action
@@ -686,6 +712,7 @@ class AOCPlayer {
             "westernIdeas" => $this->westernIdeas,
             "tickets" => $this->tickets,
             "agentLocation" => $this->agentLocation,
+            "agentArrived" => $this->agentArrived,
             "cubeOneLocation" => $this->cubeOneLocation,
             "cubeTwoLocation" => $this->cubeTwoLocation,
             "cubeThreeLocation" => $this->cubeThreeLocation,

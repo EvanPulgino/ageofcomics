@@ -88,6 +88,7 @@ class GameBody extends GameBasics {
     this.notifqueue.setSynchronous("gainStartingIdea", 500);
     this.notifqueue.setSynchronous("masteryTokenClaimed", 500);
     this.notifqueue.setSynchronous("placeUpgradeCube", 500);
+    this.notifqueue.setSynchronous("salesOrderCollected", 500);
 
     this.notifqueue.setIgnoreNotificationCheck(
       "developComic",
@@ -475,7 +476,11 @@ class GameBody extends GameBasics {
    * @param notif
    */
   notif_playerUsedTaxi(notif: any): void {
-    this.playerController.moveSalesAgent(notif.args.player, notif.args.space);
+    this.playerController.moveSalesAgent(
+      notif.args.player,
+      notif.args.space,
+      notif.args.arrived
+    );
     this.playerController.adjustMoney(
       notif.args.player,
       notif.args.moneyAdjustment
@@ -491,7 +496,11 @@ class GameBody extends GameBasics {
    * @param notif
    */
   notif_playerWalked(notif: any): void {
-    this.playerController.moveSalesAgent(notif.args.player, notif.args.space);
+    this.playerController.moveSalesAgent(
+      notif.args.player,
+      notif.args.space,
+      notif.args.arrived
+    );
   }
 
   /**
@@ -504,6 +513,14 @@ class GameBody extends GameBasics {
    */
   notif_reshuffleDiscardPile(notif: any): void {
     this.cardController.setupCards(notif.args.deck);
+  }
+
+  notif_salesOrderCollected(notif: any): void {
+    this.salesOrderController.collectSalesOrder(notif.args.salesOrder);
+  }
+
+  notif_salesOrderFlipped(notif: any): void {
+    this.salesOrderController.flipSalesOrder(notif.args.salesOrder);
   }
 
   /**

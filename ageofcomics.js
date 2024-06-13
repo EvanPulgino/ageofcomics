@@ -373,6 +373,7 @@ var GameBody = /** @class */ (function (_super) {
         this.notifqueue.setSynchronous("gainStartingIdea", 500);
         this.notifqueue.setSynchronous("masteryTokenClaimed", 500);
         this.notifqueue.setSynchronous("placeUpgradeCube", 500);
+        this.notifqueue.setSynchronous("salesOrderCollected", 500);
         this.notifqueue.setIgnoreNotificationCheck("developComic", function (notif) {
             return notif.args.player_id == gameui.player_id;
         });
@@ -677,7 +678,7 @@ var GameBody = /** @class */ (function (_super) {
      * @param notif
      */
     GameBody.prototype.notif_playerUsedTaxi = function (notif) {
-        this.playerController.moveSalesAgent(notif.args.player, notif.args.space);
+        this.playerController.moveSalesAgent(notif.args.player, notif.args.space, notif.args.arrived);
         this.playerController.adjustMoney(notif.args.player, notif.args.moneyAdjustment);
     };
     /**
@@ -689,7 +690,7 @@ var GameBody = /** @class */ (function (_super) {
      * @param notif
      */
     GameBody.prototype.notif_playerWalked = function (notif) {
-        this.playerController.moveSalesAgent(notif.args.player, notif.args.space);
+        this.playerController.moveSalesAgent(notif.args.player, notif.args.space, notif.args.arrived);
     };
     /**
      * Handle'reshuffleDiscardPile' notification
@@ -701,6 +702,12 @@ var GameBody = /** @class */ (function (_super) {
      */
     GameBody.prototype.notif_reshuffleDiscardPile = function (notif) {
         this.cardController.setupCards(notif.args.deck);
+    };
+    GameBody.prototype.notif_salesOrderCollected = function (notif) {
+        this.salesOrderController.collectSalesOrder(notif.args.salesOrder);
+    };
+    GameBody.prototype.notif_salesOrderFlipped = function (notif) {
+        this.salesOrderController.flipSalesOrder(notif.args.salesOrder);
     };
     /**
      * Handle 'setupMoney' notification
@@ -1695,6 +1702,7 @@ var PlayerController = /** @class */ (function () {
         for (var key in playerData) {
             this.createPlayerOrderToken(playerData[key]);
             this.createPlayerAgent(playerData[key]);
+            this.sortAgents();
             this.createPlayerCubes(playerData[key]);
             this.createPlayerPanel(playerData[key]);
             this.createPlayerCounters(playerData[key]);
@@ -1807,6 +1815,8 @@ var PlayerController = /** @class */ (function () {
             player.id +
             '" class="aoc-agent aoc-agent-' +
             player.colorAsText +
+            '" arrived="' +
+            player.agentArrived +
             '"></div>';
         this.ui.createHtml(playerAgentDiv, "aoc-map-agent-space-" + player.agentLocation);
     };
@@ -2042,14 +2052,18 @@ var PlayerController = /** @class */ (function () {
      *
      * @param player - player to move sales agent for
      * @param space - space to move sales agent to
+     * @param arrived - the turn the agent arrived on the space
      */
-    PlayerController.prototype.moveSalesAgent = function (player, space) {
+    PlayerController.prototype.moveSalesAgent = function (player, space, arrived) {
+        var _this = this;
         var agentDiv = "aoc-agent-" + player.id;
         var targetDiv = "aoc-map-agent-space-" + space;
         var animation = this.ui.slideToObject(agentDiv, targetDiv);
         dojo.connect(animation, "onEnd", function () {
             dojo.removeAttr(agentDiv, "style");
             dojo.place(agentDiv, targetDiv);
+            dojo.setAttr(agentDiv, "arrived", arrived);
+            _this.sortAgentsOnSpace(space);
         });
         animation.play();
     };
@@ -2080,6 +2094,26 @@ var PlayerController = /** @class */ (function () {
             dojo.place(cubeDiv, targetDiv);
         });
         animation.play();
+    };
+    PlayerController.prototype.sortAgents = function () {
+        var agentSpaces = globalThis.SALES_AGENT_CONNECTIONS;
+        for (var _i = 0, _a = Object.keys(agentSpaces); _i < _a.length; _i++) {
+            var space = _a[_i];
+            this.sortAgentsOnSpace(parseInt(space));
+        }
+    };
+    PlayerController.prototype.sortAgentsOnSpace = function (space) {
+        var agentSpaceDivId = "aoc-map-agent-space-".concat(space);
+        var agentSpaceContainer = dojo.byId(agentSpaceDivId);
+        var agents = agentSpaceContainer.children;
+        var sortedAgents = Array.from(agents).sort(function (a, b) {
+            var aArrived = dojo.getAttr(a, "arrived");
+            var bArrived = dojo.getAttr(b, "arrived");
+            return bArrived - aArrived;
+        });
+        for (var i = 0; i < sortedAgents.length; i++) {
+            dojo.place(sortedAgents[i], agentSpaceDivId);
+        }
     };
     /**
      * Update the value of a player counter
@@ -2167,6 +2201,17 @@ var SalesOrderController = /** @class */ (function () {
             this.createSalesOrder(salesOrders[key]);
         }
     };
+    SalesOrderController.prototype.collectSalesOrder = function (salesOrder) {
+        this.flipSalesOrder(salesOrder);
+        var salesOrderDiv = "aoc-salesorder-" + salesOrder.id;
+        var targetDiv = "aoc-player-sales-orders-" + salesOrder.locationArg;
+        var animation = this.ui.slideToObject(salesOrderDiv, targetDiv);
+        dojo.connect(animation, "onEnd", function () {
+            dojo.removeAttr(salesOrderDiv, "style");
+            dojo.place(salesOrderDiv, targetDiv);
+        });
+        animation.play();
+    };
     /**
      * Creates a sales order
      *
@@ -2181,6 +2226,9 @@ var SalesOrderController = /** @class */ (function () {
         if (salesOrder.location == globalThis.LOCATION_MAP) {
             this.ui.createHtml(salesOrderDiv, "aoc-map-order-space-" + salesOrder.locationArg);
         }
+        if (salesOrder.location == globalThis.LOCATION_PLAYER_AREA) {
+            this.ui.createHtml(salesOrderDiv, "aoc-player-sales-orders-" + salesOrder.locationArg);
+        }
     };
     /**
      * Flips a sales order
@@ -2189,8 +2237,10 @@ var SalesOrderController = /** @class */ (function () {
      */
     SalesOrderController.prototype.flipSalesOrder = function (salesOrder) {
         var salesOrderDiv = dojo.byId("aoc-salesorder-" + salesOrder.id);
-        dojo.removeClass(salesOrderDiv, "aoc-salesorder-" + salesOrder.genre + "-facedown");
-        dojo.addClass(salesOrderDiv, salesOrder.cssClass);
+        if (salesOrderDiv.classList.contains("aoc-salesorder-" + salesOrder.genre + "-facedown")) {
+            dojo.removeClass(salesOrderDiv, "aoc-salesorder-" + salesOrder.genre + "-facedown");
+            dojo.addClass(salesOrderDiv, salesOrder.cssClass);
+        }
     };
     /**
      * Flips sales orders
@@ -3775,8 +3825,12 @@ var PerformSales = /** @class */ (function () {
         this.salesOrderConnections = {};
         this.flipsCounter = {};
         this.collectsCounter = {};
+        this.remainingFlipActions = 0;
+        this.remainingCollectActions = 0;
     }
     PerformSales.prototype.onEnteringState = function (stateArgs) {
+        this.remainingCollectActions = stateArgs.args.remainingCollectActions;
+        this.remainingFlipActions = stateArgs.args.remainingFlipActions;
         // Create the remaining actions div
         this.createRemainingActionsDiv();
         this.flipsCounter = new ebg.counter();
@@ -3793,13 +3847,24 @@ var PerformSales = /** @class */ (function () {
             this.addSharedSpaceNotAllowed();
         }
         if (stateArgs.isCurrentPlayerActive) {
+            this.createFlipOrCollectCounterDiv();
             this.salesAgentConnections = globalThis.SALES_AGENT_CONNECTIONS;
-            this.salesOrderConnections = globalThis.SALES_ORDER_CONNECTIONS;
+            this.salesOrderConnections =
+                globalThis.SALES_ORDER_CONNECTIONS[stateArgs.args.playerCount];
             // Highlight the spaces the sales agent can move to
             // The player can only move if they haven't used their free walk action
             // or they have enough money to pay to take a cab
-            if (!stateArgs.args.hasWalked || stateArgs.args.playerMoney >= 2)
+            if (!stateArgs.args.hasWalked || stateArgs.args.playerMoney >= 2) {
                 this.highlightAdjacentSalesAgentSpaces(stateArgs.args.salesAgentLocation);
+            }
+            var salesAgentsOnSpace = this.getSalesAgentsOnSpace(stateArgs.args.salesAgentLocation);
+            var canAffordToInteract = salesAgentsOnSpace.length == 1 || stateArgs.args.playerMoney >= 2;
+            // Highlight the sales orders the player can interact with as long as
+            // player has at least 1 collect or flip action remaining
+            if ((canAffordToInteract && stateArgs.args.remainingCollectActions > 0) ||
+                stateArgs.args.remainingFlipActions > 0) {
+                this.highlightConnectedSalesOrderSpaces(stateArgs.args.salesAgentLocation, stateArgs.args.remainingCollectActions);
+            }
         }
     };
     PerformSales.prototype.onLeavingState = function () { };
@@ -3835,6 +3900,37 @@ var PerformSales = /** @class */ (function () {
         var walkNotAllowedIconDiv = "<div id='aoc-walk-not-allowed-icon' class='aoc-not-allowed aoc-walk-not-allowed'></div>";
         this.game.createHtml(walkNotAllowedIconDiv, "aoc-board");
     };
+    PerformSales.prototype.cancelSalesOrderAction = function () {
+        this.resetActionPanel();
+    };
+    PerformSales.prototype.clickSalesOrder = function (salesOrderTileId) {
+        this.resetActionPanel();
+        var salesOrderTile = dojo.byId(salesOrderTileId);
+        var tileId = salesOrderTileId.split("-")[2];
+        var selectedSalesOrderTile = dojo.clone(salesOrderTile);
+        dojo.attr(selectedSalesOrderTile, "id", "aoc-selected-sales-order");
+        dojo.attr(selectedSalesOrderTile, "sales-order-id", tileId);
+        dojo.removeClass(selectedSalesOrderTile, "aoc-clickable");
+        dojo.place(selectedSalesOrderTile, "aoc-selected-sales-order-container");
+        dojo.addClass(salesOrderTile, "aoc-selected");
+        dojo.removeClass("aoc-flip-or-collect-counter", "aoc-hidden");
+        if (this.remainingFlipActions > 0 && this.isTileFacedown(salesOrderTile)) {
+            dojo.removeClass("aoc-flip-button", "aoc-button-disabled");
+        }
+        if (this.remainingCollectActions > 0) {
+            dojo.removeClass("aoc-collect-button", "aoc-button-disabled");
+        }
+    };
+    PerformSales.prototype.collectSalesOrder = function () {
+        var salesOrderId = dojo
+            .byId("aoc-selected-sales-order")
+            .getAttribute("sales-order-id");
+        this.resetUX();
+        this.collectsCounter.incValue(-1);
+        this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_COLLECT_SALES_ORDER, {
+            salesOrderId: salesOrderId,
+        });
+    };
     /**
      * Create the div that tracks remaining actions
      */
@@ -3850,11 +3946,69 @@ var PerformSales = /** @class */ (function () {
         var remainingCollectsContainerDiv = "<div id='aoc-remaining-collects-container' class='aoc-player-panel-supply aoc-player-panel-other-supply'><span id='aoc-remaining-collects' class='aoc-player-panel-supply-count aoc-squada'></span><span id='aoc-remaining-collects-icon' class='aoc-sales-action-icon aoc-sales-action-collect'></span></div>";
         this.game.createHtml(remainingCollectsContainerDiv, "aoc-remaining-actions");
     };
+    PerformSales.prototype.createFlipOrCollectCounterDiv = function () {
+        var interactionDiv = document.getElementById("aoc-flip-or-collect-counter");
+        // If the div already exists, return
+        if (interactionDiv) {
+            this.connections["flipSalesOrder"] = dojo.connect(dojo.byId("aoc-flip-button"), "onclick", dojo.hitch(this, this.flipSalesOrder));
+            this.connections["collectSalesOrder"] = dojo.connect(dojo.byId("aoc-collect-button"), "onclick", dojo.hitch(this, this.collectSalesOrder));
+            this.connections["cancelSalesOrderAction"] = dojo.connect(dojo.byId("aoc-cancel-button"), "onclick", dojo.hitch(this, this.cancelSalesOrderAction));
+            return;
+        }
+        var flipOrCollectCounterDiv = "<div id='aoc-flip-or-collect-counter' class='aoc-action-panel-row'></div>";
+        this.game.createHtml(flipOrCollectCounterDiv, "page-title");
+        var selectedSalesOrderContainerDiv = "<div id='aoc-selected-sales-order-container' class='aoc-sales-order-selection-container'></div>";
+        this.game.createHtml(selectedSalesOrderContainerDiv, "aoc-flip-or-collect-counter");
+        var flipButtonDiv = "<a id='aoc-flip-button' class='action-button bgabutton bgabutton_blue aoc-button aoc-button-disabled'>" +
+            _("Flip") +
+            "</a>";
+        this.game.createHtml(flipButtonDiv, "aoc-flip-or-collect-counter");
+        this.connections["flipSalesOrder"] = dojo.connect(dojo.byId("aoc-flip-button"), "onclick", dojo.hitch(this, this.flipSalesOrder));
+        var collectButtonDiv = "<a id='aoc-collect-button' class='action-button bgabutton bgabutton_blue aoc-button aoc-button-disabled'>" +
+            _("Collect") +
+            "</a>";
+        this.game.createHtml(collectButtonDiv, "aoc-flip-or-collect-counter");
+        this.connections["collectSalesOrder"] = dojo.connect(dojo.byId("aoc-collect-button"), "onclick", dojo.hitch(this, this.collectSalesOrder));
+        var cancelButtonDiv = "<a id='aoc-cancel-button' class='action-button bgabutton bgabutton_blue aoc-button'>" +
+            _("Cancel") +
+            "</a>";
+        this.game.createHtml(cancelButtonDiv, "aoc-flip-or-collect-counter");
+        this.connections["cancelSalesOrderAction"] = dojo.connect(dojo.byId("aoc-cancel-button"), "onclick", dojo.hitch(this, this.cancelSalesOrderAction));
+    };
     /**
      * End the sales phase
      */
     PerformSales.prototype.endSales = function () {
         console.log("Ending sales phase");
+    };
+    PerformSales.prototype.flipSalesOrder = function () {
+        var salesOrderId = dojo
+            .byId("aoc-selected-sales-order")
+            .getAttribute("sales-order-id");
+        this.resetUX();
+        this.flipsCounter.incValue(-1);
+        this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_FLIP_SALES_ORDER, {
+            salesOrderId: salesOrderId,
+        });
+    };
+    PerformSales.prototype.getConnectedSalesOrderTiles = function (agentSpace) {
+        var connectedSpaces = this.salesOrderConnections[agentSpace];
+        var salesOrderTiles = [];
+        for (var _i = 0, connectedSpaces_1 = connectedSpaces; _i < connectedSpaces_1.length; _i++) {
+            var space = connectedSpaces_1[_i];
+            var spaceDivId = "aoc-map-order-space-".concat(space);
+            var spaceContainer = dojo.byId(spaceDivId);
+            var salesOrderTile = spaceContainer.firstChild;
+            if (salesOrderTile) {
+                salesOrderTiles.push(salesOrderTile);
+            }
+        }
+        return salesOrderTiles;
+    };
+    PerformSales.prototype.getSalesAgentsOnSpace = function (space) {
+        var agentSpaceDivId = "aoc-map-agent-space-".concat(space);
+        var agentSpaceContainer = dojo.byId(agentSpaceDivId);
+        return agentSpaceContainer.children;
     };
     /**
      * Called when state is loaded.
@@ -3871,14 +4025,46 @@ var PerformSales = /** @class */ (function () {
             this.connections[divId] = dojo.connect(dojo.byId(divId), "onclick", dojo.hitch(this, this.moveSalesAgentToSpace, space));
         }
     };
+    PerformSales.prototype.highlightConnectedSalesOrderSpaces = function (agentSpace, remainingCollectActions) {
+        var salesOrderTiles = this.getConnectedSalesOrderTiles(agentSpace);
+        for (var _i = 0, salesOrderTiles_1 = salesOrderTiles; _i < salesOrderTiles_1.length; _i++) {
+            var salesOrderTile = salesOrderTiles_1[_i];
+            // If the tile is face up and the player has no remaining collect actions, skip it as it can't be flipped
+            if (!this.isTileFacedown(salesOrderTile) &&
+                remainingCollectActions === 0) {
+                continue;
+            }
+            if (salesOrderTile.parentElement.classList.contains("aoc-player-sales-orders")) {
+                continue;
+            }
+            dojo.addClass(salesOrderTile.id, "aoc-clickable");
+            this.connections[salesOrderTile.id] = dojo.connect(salesOrderTile, "onclick", dojo.hitch(this, this.clickSalesOrder, salesOrderTile.id));
+        }
+    };
+    PerformSales.prototype.isTileFacedown = function (salesOrderTile) {
+        for (var _i = 0, _a = salesOrderTile.classList; _i < _a.length; _i++) {
+            var divClass = _a[_i];
+            if (divClass.includes("facedown")) {
+                return true;
+            }
+        }
+        return false;
+    };
     PerformSales.prototype.moveSalesAgentToSpace = function (space) {
         this.resetUX();
         this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_MOVE_SALES_AGENT, {
             space: space,
         });
     };
+    PerformSales.prototype.resetActionPanel = function () {
+        dojo.destroy("aoc-selected-sales-order");
+        dojo.query(".aoc-selected").removeClass("aoc-selected");
+        dojo.addClass("aoc-flip-button", "aoc-button-disabled");
+        dojo.addClass("aoc-collect-button", "aoc-button-disabled");
+    };
     PerformSales.prototype.resetUX = function (removeActionBanner) {
         if (removeActionBanner === void 0) { removeActionBanner = false; }
+        this.resetActionPanel();
         dojo.query(".aoc-clickable").removeClass("aoc-clickable");
         dojo.query(".aoc-button").forEach(function (button) {
             dojo.addClass(button, "aoc-button-disabled");

@@ -260,7 +260,7 @@ $machinestates = [
             '${actplayer} can move their sales agent, and perform sales order flip and collect actions'
         ),
         "descriptionmyturn" => clienttranslate(
-            '${you} can move their sales agent, and perform sales order flip and collect actions'
+            '${you} can move your sales agent, and perform sales order flip and collect actions'
         ),
         "type" => STATE_TYPE_ACTIVE_PLAYER,
         "args" => STATE_ARGS_PERFORM_SALES,
