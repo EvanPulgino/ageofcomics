@@ -39,8 +39,12 @@ class action_ageofcomics extends APP_GameAction {
         self::setAjaxMode();
 
         $salesOrderId = self::getArg("salesOrderId", AT_posint, true);
+        $playerIdToPay = self::getArg("playerIdToPay", AT_posint, true);
 
-        $this->game->states[PERFORM_SALES]->collectSalesOrder($salesOrderId);
+        $this->game->states[PERFORM_SALES]->collectSalesOrder(
+            $salesOrderId,
+            $playerIdToPay
+        );
 
         self::ajaxResponse();
     }
@@ -107,12 +111,21 @@ class action_ageofcomics extends APP_GameAction {
         self::ajaxResponse();
     }
 
+    public function endSales() {
+        self::setAjaxMode();
+
+        $this->game->states[PERFORM_SALES]->endSales();
+
+        self::ajaxResponse();
+    }
+
     public function flipSalesOrder() {
         self::setAjaxMode();
 
         $salesOrderId = self::getArg("salesOrderId", AT_posint, true);
+        $playerIdToPay = self::getArg("playerIdToPay", AT_posint, true);
 
-        $this->game->states[PERFORM_SALES]->flipSalesOrder($salesOrderId);
+        $this->game->states[PERFORM_SALES]->flipSalesOrder($salesOrderId, $playerIdToPay);
 
         self::ajaxResponse();
     }
@@ -134,6 +147,16 @@ class action_ageofcomics extends APP_GameAction {
         $space = self::getArg("space", AT_posint, true);
 
         $this->game->states[PERFORM_SALES]->moveSalesAgent($space);
+
+        self::ajaxResponse();
+    }
+
+    public function moveSalesAgentWithTicket() {
+        self::setAjaxMode();
+
+        $space = self::getArg("space", AT_posint, true);
+
+        $this->game->states[PERFORM_SALES]->moveSalesAgentWithTicket($space);
 
         self::ajaxResponse();
     }

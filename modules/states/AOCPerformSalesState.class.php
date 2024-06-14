@@ -41,10 +41,15 @@ class AOCPerformSalesState {
         $hasWalked =
             $this->game->getGameStateValue(HAS_WALKED) == "1" ? true : false;
         $this->setNumberOfActions();
+        $paidForCurrentSpace =
+            $this->game->getGameStateValue(PAID_FOR_CURRENT_SPACE) == "1"
+                ? true
+                : false;
 
         return [
             "selectedActionSpace" => $selectedActionSpace,
             "hasWalked" => $hasWalked,
+            "paidForCurrentSpace" => $paidForCurrentSpace,
             "remainingCollectActions" => $this->game->getGameStateValue(
                 SALES_ORDER_COLLECTS_REMAINING
             ),
@@ -58,7 +63,7 @@ class AOCPerformSalesState {
         ];
     }
 
-    public function collectSalesOrder($salesOrderId) {
+    public function collectSalesOrder($salesOrderId, $playerIdToPay) {
         $activePlayer = $this->game->playerManager->getActivePlayer();
 
         // Collect the sales order
@@ -76,6 +81,9 @@ class AOCPerformSalesState {
             SALES_ORDER_COLLECTS_REMAINING,
             $this->game->getGameStateValue(SALES_ORDER_COLLECTS_REMAINING) - 1
         );
+
+        // Pay the player who already on the space that arrived last
+        $this->payLastArrivedPlayer($activePlayer, $playerIdToPay);
 
         // Notify all players that the sales order was collected
         $this->game->notifyAllPlayers(
@@ -96,7 +104,30 @@ class AOCPerformSalesState {
         $this->game->gamestate->nextState("continueSales");
     }
 
-    public function flipSalesOrder($salesOrderId) {
+    public function endSales() {
+        $activePlayer = $this->game->playerManager->getActivePlayer();
+
+        // Reset sales variables
+        $this->game->setGameStateValue(HAS_WALKED, 0);
+        $this->game->setGameStateValue(PAID_FOR_CURRENT_SPACE, 0);
+        $this->game->setGameStateValue(SALES_ORDER_COLLECTS_REMAINING, -1);
+        $this->game->setGameStateValue(SALES_ORDER_FLIPS_REMAINING, -1);
+
+        // Notify all players that the active player has ended their sales
+        $this->game->notifyAllPlayers(
+            "salesEnded",
+            clienttranslate('${player_name} ends their sales actoion'),
+            [
+                "player" => $activePlayer->getUiData(),
+                "player_name" => $activePlayer->getName(),
+            ]
+        );
+
+        // End the sales action state
+        $this->game->gamestate->nextState("nextPlayerTurn");
+    }
+
+    public function flipSalesOrder($salesOrderId, $playerIdToPay) {
         $activePlayer = $this->game->playerManager->getActivePlayer();
 
         // Flip the sales order
@@ -111,6 +142,9 @@ class AOCPerformSalesState {
             SALES_ORDER_FLIPS_REMAINING,
             $this->game->getGameStateValue(SALES_ORDER_FLIPS_REMAINING) - 1
         );
+
+        // Pay the player who already on the space that arrived last
+        $this->payLastArrivedPlayer($activePlayer, $playerIdToPay);
 
         // Notify all players that the sales order was flipped
         $this->game->notifyAllPlayers(
@@ -136,6 +170,9 @@ class AOCPerformSalesState {
 
         // Set new location of the sales agent
         $this->game->playerManager->movePlayerSalesAgent($activePlayer, $space);
+
+        // Reset paid for current space
+        $this->game->setGameStateValue(PAID_FOR_CURRENT_SPACE, 0);
 
         $hasWalked = $this->game->getGameStateValue(HAS_WALKED);
 
@@ -184,6 +221,69 @@ class AOCPerformSalesState {
 
         // Re-enter sales action state
         $this->game->gamestate->nextState("continueSales");
+    }
+
+    public function moveSalesAgentWithTicket($space) {
+        $activePlayer = $this->game->playerManager->getActivePlayer();
+
+        // Set new location of the sales agent
+        $this->game->playerManager->movePlayerSalesAgent($activePlayer, $space);
+
+        // Reset paid for current space
+        $this->game->setGameStateValue(PAID_FOR_CURRENT_SPACE, 0);
+
+        // Spend a ticket
+        $this->game->playerManager->adjustPlayerTickets($activePlayer, -1);
+
+        $this->game->notifyAllPlayers(
+            "playerUsedTicket",
+            clienttranslate(
+                '${player_name} uses a Super-transport ticket to move their sales agent'
+            ),
+            [
+                "player" => $this->game->playerManager
+                    ->getActivePlayer()
+                    ->getUiData(),
+                "player_name" => $this->game->playerManager
+                    ->getActivePlayer()
+                    ->getName(),
+                "space" => $space,
+                "arrived" => $activePlayer->getAgentArrived(),
+            ]
+        );
+
+        // Re-enter sales action state
+        $this->game->gamestate->nextState("continueSales");
+    }
+
+    private function payLastArrivedPlayer($activePlayer, $playerIdToPay) {
+        if ($playerIdToPay > 0) {
+            if ($this->game->getGameStateValue(PAID_FOR_CURRENT_SPACE) == 0) {
+                $playerToPay = $this->game->playerManager->getPlayer(
+                    $playerIdToPay
+                );
+                $this->game->playerManager->adjustPlayerMoney(
+                    $activePlayer,
+                    -2
+                );
+                $this->game->playerManager->adjustPlayerMoney($playerToPay, 2);
+                $this->game->setGameStateValue(PAID_FOR_CURRENT_SPACE, 1);
+
+                $this->game->notifyAllPlayers(
+                    "payPlayerForSpace",
+                    clienttranslate(
+                        '${player_name} pays 2 money to ${player_to_pay_name} to interact with the tiles on their space'
+                    ),
+                    [
+                        "player" => $activePlayer->getUiData(),
+                        "player_name" => $activePlayer->getName(),
+                        "player_to_pay" => $playerToPay->getUiData(),
+                        "player_to_pay_name" => $playerToPay->getName(),
+                        "moneyAdjustment" => 2,
+                    ]
+                );
+            }
+        }
     }
 
     private function setNumberOfActions() {

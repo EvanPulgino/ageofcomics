@@ -343,7 +343,7 @@ class AOCPlayerManager extends APP_GameClass {
      */
     private function setTurnOrderToNaturalOrder() {
         $sql =
-            "UPDATE player SET player_turn_order = player_no, player_agent_arrived = player_no WHERE player_no IS NOT NULL";
+            "UPDATE player SET player_turn_order = player_no WHERE player_no IS NOT NULL";
         self::DbQuery($sql);
     }
 }

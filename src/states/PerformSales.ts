@@ -25,6 +25,8 @@ class PerformSales implements State {
   collectsCounter: any;
   remainingFlipActions: number;
   remainingCollectActions: number;
+  playerIdToPay: number;
+  stateArgs: any;
 
   constructor(game: any) {
     this.game = game;
@@ -35,34 +37,41 @@ class PerformSales implements State {
     this.collectsCounter = {};
     this.remainingFlipActions = 0;
     this.remainingCollectActions = 0;
+    this.playerIdToPay = 0;
+    this.stateArgs = {};
   }
 
   onEnteringState(stateArgs: any): void {
-    this.remainingCollectActions = stateArgs.args.remainingCollectActions;
-    this.remainingFlipActions = stateArgs.args.remainingFlipActions;
-
-    // Create the remaining actions div
-    this.createRemainingActionsDiv();
-
-    this.flipsCounter = new ebg.counter();
-    this.flipsCounter.create("aoc-remaining-flips");
-    this.flipsCounter.setValue(stateArgs.args.remainingFlipActions);
-
-    this.collectsCounter = new ebg.counter();
-    this.collectsCounter.create("aoc-remaining-collects");
-    this.collectsCounter.setValue(stateArgs.args.remainingCollectActions);
-
-    if (stateArgs.args.hasWalked) {
-      this.addWalkNotAllowed();
-    }
-
-    if (stateArgs.args.playerMoney < 2) {
-      this.addTaxiNotAllowed();
-      this.addSharedSpaceNotAllowed();
-    }
-
     if (stateArgs.isCurrentPlayerActive) {
+      this.stateArgs = stateArgs;
+      this.remainingCollectActions = stateArgs.args.remainingCollectActions;
+      this.remainingFlipActions = stateArgs.args.remainingFlipActions;
+
+      // Create the remaining actions div
+      this.createRemainingActionsDiv();
+
+      this.flipsCounter = new ebg.counter();
+      this.flipsCounter.create("aoc-remaining-flips");
+      this.flipsCounter.setValue(stateArgs.args.remainingFlipActions);
+
+      this.collectsCounter = new ebg.counter();
+      this.collectsCounter.create("aoc-remaining-collects");
+      this.collectsCounter.setValue(stateArgs.args.remainingCollectActions);
+
+      if (stateArgs.args.hasWalked) {
+        this.addWalkNotAllowed();
+      }
+
+      if (stateArgs.args.playerMoney < 2) {
+        this.addTaxiNotAllowed();
+        this.addSharedSpaceNotAllowed();
+      }
+
       this.createFlipOrCollectCounterDiv();
+      this.determinePlayerToPayForSpace(
+        stateArgs.args.salesAgentLocation,
+        parseInt(stateArgs.active_player)
+      );
 
       this.salesAgentConnections = globalThis.SALES_AGENT_CONNECTIONS;
       this.salesOrderConnections =
@@ -82,7 +91,9 @@ class PerformSales implements State {
       );
 
       const canAffordToInteract =
-        salesAgentsOnSpace.length == 1 || stateArgs.args.playerMoney >= 2;
+        salesAgentsOnSpace.length == 1 ||
+        stateArgs.args.playerMoney >= 2 ||
+        stateArgs.args.paidForCurrentSpace;
 
       // Highlight the sales orders the player can interact with as long as
       // player has at least 1 collect or flip action remaining
@@ -115,8 +126,10 @@ class PerformSales implements State {
         }
       );
 
-      dojo.addClass("aoc-use-ticket", "aoc-button-disabled");
       dojo.addClass("aoc-use-ticket", "aoc-button");
+      if (stateArgs.args.tickets === 0) {
+        dojo.addClass("aoc-use-ticket", "aoc-button-disabled");
+      }
     }
   }
 
@@ -146,6 +159,14 @@ class PerformSales implements State {
 
   cancelSalesOrderAction(): void {
     this.resetActionPanel();
+  }
+
+  cancelTicket(): void {
+    dojo.destroy("aoc-cancel-use-ticket");
+    this.resetUX();
+    this.onEnteringState(this.stateArgs);
+    dojo.removeClass("aoc-end-sales", "aoc-button-disabled");
+    dojo.removeClass("aoc-use-ticket", "aoc-button-disabled");
   }
 
   clickSalesOrder(salesOrderTileId: string): void {
@@ -180,6 +201,7 @@ class PerformSales implements State {
 
     this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_COLLECT_SALES_ORDER, {
       salesOrderId: salesOrderId,
+      playerIdToPay: this.playerIdToPay,
     });
   }
 
@@ -279,11 +301,37 @@ class PerformSales implements State {
     );
   }
 
+  determinePlayerToPayForSpace(space: number, activePlayerId: number): void {
+    if (space === 0) return;
+
+    const agentsOnSpace = this.getSalesAgentsOnSpace(space);
+    var opponentArrivedLast = -1;
+    var opponentArrivedId = -1;
+    if (agentsOnSpace.length > 1) {
+      for (const agent of agentsOnSpace) {
+        if (parseInt(agent.id.split("-")[2]) === activePlayerId) {
+          continue;
+        }
+        const arrived = parseInt(agent.getAttribute("arrived"));
+        if (arrived > opponentArrivedLast) {
+          opponentArrivedLast = arrived;
+          opponentArrivedId = parseInt(agent.id.split("-")[2]);
+        }
+      }
+      this.playerIdToPay = opponentArrivedId;
+      const highlightPayPlayer = "<div id='aoc-highlight-pay-player'></div>";
+      this.game.createHtml(highlightPayPlayer, "aoc-board");
+    } else {
+      this.playerIdToPay = 0;
+    }
+  }
+
   /**
    * End the sales phase
    */
   endSales(): void {
-    console.log("Ending sales phase");
+    this.resetUX(true);
+    this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_END_SALES, {});
   }
 
   flipSalesOrder(): void {
@@ -296,11 +344,13 @@ class PerformSales implements State {
 
     this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_FLIP_SALES_ORDER, {
       salesOrderId: salesOrderId,
+      playerIdToPay: this.playerIdToPay,
     });
   }
 
   getConnectedSalesOrderTiles(agentSpace: number): any[] {
     const connectedSpaces = this.salesOrderConnections[agentSpace];
+    if (!connectedSpaces) return [];
 
     var salesOrderTiles = [];
 
@@ -387,6 +437,15 @@ class PerformSales implements State {
       space: space,
     });
   }
+  moveSalesAgentToSpaceWithTicket(space: number): void {
+    this.resetUX();
+    this.game.ajaxcallwrapper(
+      globalThis.PLAYER_ACTION_MOVE_SALES_AGENT_WITH_TICKET,
+      {
+        space: space,
+      }
+    );
+  }
 
   resetActionPanel(): void {
     dojo.destroy("aoc-selected-sales-order");
@@ -401,8 +460,13 @@ class PerformSales implements State {
     dojo.query(".aoc-button").forEach((button) => {
       dojo.addClass(button, "aoc-button-disabled");
     });
+    dojo.destroy("aoc-highlight-pay-player");
     if (removeActionBanner) {
       dojo.destroy("aoc-remaining-actions");
+      dojo.destroy("aoc-flip-or-collect-counter");
+      dojo.destroy("aoc-walk-not-allowed-icon");
+      dojo.destroy("aoc-taxi-not-allowed-icon");
+      dojo.destroy("aoc-shared-space-not-allowed-icon");
     }
     for (const connection in this.connections) {
       dojo.disconnect(this.connections[connection]);
@@ -411,6 +475,29 @@ class PerformSales implements State {
   }
 
   useTicket(): void {
-    console.log("Using ticket");
+    this.resetUX();
+    dojo.addClass("aoc-use-ticket", "aoc-button-disabled");
+
+    const agentSpaces = globalThis.SALES_AGENT_CONNECTIONS;
+
+    for (const space of Object.keys(agentSpaces)) {
+      const divId = `aoc-map-agent-space-${space}`;
+      dojo.addClass(divId, "aoc-clickable");
+      this.connections[divId] = dojo.connect(
+        dojo.byId(divId),
+        "onclick",
+        dojo.hitch(this, this.moveSalesAgentToSpaceWithTicket, space)
+      );
+    }
+
+    gameui.addActionButton(
+      "aoc-cancel-use-ticket",
+      _("Cancel using ticket"),
+      () => {
+        this.cancelTicket();
+      }
+    );
+
+    dojo.addClass("aoc-cancel-use-ticket", "aoc-button");
   }
 }

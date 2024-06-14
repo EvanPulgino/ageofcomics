@@ -433,6 +433,17 @@ class GameBody extends GameBasics {
     this.masteryController.moveMasteryToken(notif.args.masteryToken);
   }
 
+  notif_payPlayerForSpace(notif: any): void {
+    this.playerController.adjustMoney(
+      notif.args.player,
+      notif.args.moneyAdjustment * -1
+    );
+    this.playerController.adjustMoney(
+      notif.args.player_to_pay,
+      notif.args.moneyAdjustment
+    );
+  }
+
   /**
    * Handle 'placeEditor' notification
    *
@@ -485,6 +496,15 @@ class GameBody extends GameBasics {
       notif.args.player,
       notif.args.moneyAdjustment
     );
+  }
+
+  notif_playerUsedTicket(notif: any): void {
+    this.playerController.moveSalesAgent(
+      notif.args.player,
+      notif.args.space,
+      notif.args.arrived
+    );
+    this.playerController.adjustTickets(notif.args.player, -1);
   }
 
   /**

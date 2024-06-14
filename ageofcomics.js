@@ -145,11 +145,18 @@ var GameBasics = /** @class */ (function (_super) {
         this.pendingUpdate = false;
         if (gameui.isCurrentPlayerActive() &&
             this.currentPlayerWasActive == false) {
-            args["isCurrentPlayerActive"] = gameui.isCurrentPlayerActive();
-            this.debug("onUpdateActionButtons: " + stateName, args, this.debugStateInfo());
+            var stateArgs = [];
+            if (args.id === undefined) {
+                stateArgs["isCurrentPlayerActive"] = gameui.isCurrentPlayerActive();
+                stateArgs["args"] = args;
+            }
+            else {
+                stateArgs = args;
+            }
+            this.debug("onUpdateActionButtons: " + stateName, stateArgs, this.debugStateInfo());
             this.currentPlayerWasActive = true;
             // Call appropriate method
-            this.gameState[stateName].onUpdateActionButtons(args);
+            this.gameState[stateName].onUpdateActionButtons(stateArgs);
         }
         else {
             this.currentPlayerWasActive = false;
@@ -644,6 +651,10 @@ var GameBody = /** @class */ (function (_super) {
     GameBody.prototype.notif_masteryTokenClaimed = function (notif) {
         this.masteryController.moveMasteryToken(notif.args.masteryToken);
     };
+    GameBody.prototype.notif_payPlayerForSpace = function (notif) {
+        this.playerController.adjustMoney(notif.args.player, notif.args.moneyAdjustment * -1);
+        this.playerController.adjustMoney(notif.args.player_to_pay, notif.args.moneyAdjustment);
+    };
     /**
      * Handle 'placeEditor' notification
      *
@@ -680,6 +691,10 @@ var GameBody = /** @class */ (function (_super) {
     GameBody.prototype.notif_playerUsedTaxi = function (notif) {
         this.playerController.moveSalesAgent(notif.args.player, notif.args.space, notif.args.arrived);
         this.playerController.adjustMoney(notif.args.player, notif.args.moneyAdjustment);
+    };
+    GameBody.prototype.notif_playerUsedTicket = function (notif) {
+        this.playerController.moveSalesAgent(notif.args.player, notif.args.space, notif.args.arrived);
+        this.playerController.adjustTickets(notif.args.player, -1);
     };
     /**
      * Handle 'playerWalked' notification
@@ -2109,7 +2124,7 @@ var PlayerController = /** @class */ (function () {
         var sortedAgents = Array.from(agents).sort(function (a, b) {
             var aArrived = dojo.getAttr(a, "arrived");
             var bArrived = dojo.getAttr(b, "arrived");
-            return bArrived - aArrived;
+            return aArrived - bArrived;
         });
         for (var i = 0; i < sortedAgents.length; i++) {
             dojo.place(sortedAgents[i], agentSpaceDivId);
@@ -3827,27 +3842,31 @@ var PerformSales = /** @class */ (function () {
         this.collectsCounter = {};
         this.remainingFlipActions = 0;
         this.remainingCollectActions = 0;
+        this.playerIdToPay = 0;
+        this.stateArgs = {};
     }
     PerformSales.prototype.onEnteringState = function (stateArgs) {
-        this.remainingCollectActions = stateArgs.args.remainingCollectActions;
-        this.remainingFlipActions = stateArgs.args.remainingFlipActions;
-        // Create the remaining actions div
-        this.createRemainingActionsDiv();
-        this.flipsCounter = new ebg.counter();
-        this.flipsCounter.create("aoc-remaining-flips");
-        this.flipsCounter.setValue(stateArgs.args.remainingFlipActions);
-        this.collectsCounter = new ebg.counter();
-        this.collectsCounter.create("aoc-remaining-collects");
-        this.collectsCounter.setValue(stateArgs.args.remainingCollectActions);
-        if (stateArgs.args.hasWalked) {
-            this.addWalkNotAllowed();
-        }
-        if (stateArgs.args.playerMoney < 2) {
-            this.addTaxiNotAllowed();
-            this.addSharedSpaceNotAllowed();
-        }
         if (stateArgs.isCurrentPlayerActive) {
+            this.stateArgs = stateArgs;
+            this.remainingCollectActions = stateArgs.args.remainingCollectActions;
+            this.remainingFlipActions = stateArgs.args.remainingFlipActions;
+            // Create the remaining actions div
+            this.createRemainingActionsDiv();
+            this.flipsCounter = new ebg.counter();
+            this.flipsCounter.create("aoc-remaining-flips");
+            this.flipsCounter.setValue(stateArgs.args.remainingFlipActions);
+            this.collectsCounter = new ebg.counter();
+            this.collectsCounter.create("aoc-remaining-collects");
+            this.collectsCounter.setValue(stateArgs.args.remainingCollectActions);
+            if (stateArgs.args.hasWalked) {
+                this.addWalkNotAllowed();
+            }
+            if (stateArgs.args.playerMoney < 2) {
+                this.addTaxiNotAllowed();
+                this.addSharedSpaceNotAllowed();
+            }
             this.createFlipOrCollectCounterDiv();
+            this.determinePlayerToPayForSpace(stateArgs.args.salesAgentLocation, parseInt(stateArgs.active_player));
             this.salesAgentConnections = globalThis.SALES_AGENT_CONNECTIONS;
             this.salesOrderConnections =
                 globalThis.SALES_ORDER_CONNECTIONS[stateArgs.args.playerCount];
@@ -3858,7 +3877,9 @@ var PerformSales = /** @class */ (function () {
                 this.highlightAdjacentSalesAgentSpaces(stateArgs.args.salesAgentLocation);
             }
             var salesAgentsOnSpace = this.getSalesAgentsOnSpace(stateArgs.args.salesAgentLocation);
-            var canAffordToInteract = salesAgentsOnSpace.length == 1 || stateArgs.args.playerMoney >= 2;
+            var canAffordToInteract = salesAgentsOnSpace.length == 1 ||
+                stateArgs.args.playerMoney >= 2 ||
+                stateArgs.args.paidForCurrentSpace;
             // Highlight the sales orders the player can interact with as long as
             // player has at least 1 collect or flip action remaining
             if ((canAffordToInteract && stateArgs.args.remainingCollectActions > 0) ||
@@ -3878,8 +3899,10 @@ var PerformSales = /** @class */ (function () {
             gameui.addActionButton("aoc-use-ticket", _("Use Super-transport Ticket"), function () {
                 _this.useTicket();
             });
-            dojo.addClass("aoc-use-ticket", "aoc-button-disabled");
             dojo.addClass("aoc-use-ticket", "aoc-button");
+            if (stateArgs.args.tickets === 0) {
+                dojo.addClass("aoc-use-ticket", "aoc-button-disabled");
+            }
         }
     };
     PerformSales.prototype.addSharedSpaceNotAllowed = function () {
@@ -3902,6 +3925,13 @@ var PerformSales = /** @class */ (function () {
     };
     PerformSales.prototype.cancelSalesOrderAction = function () {
         this.resetActionPanel();
+    };
+    PerformSales.prototype.cancelTicket = function () {
+        dojo.destroy("aoc-cancel-use-ticket");
+        this.resetUX();
+        this.onEnteringState(this.stateArgs);
+        dojo.removeClass("aoc-end-sales", "aoc-button-disabled");
+        dojo.removeClass("aoc-use-ticket", "aoc-button-disabled");
     };
     PerformSales.prototype.clickSalesOrder = function (salesOrderTileId) {
         this.resetActionPanel();
@@ -3929,6 +3959,7 @@ var PerformSales = /** @class */ (function () {
         this.collectsCounter.incValue(-1);
         this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_COLLECT_SALES_ORDER, {
             salesOrderId: salesOrderId,
+            playerIdToPay: this.playerIdToPay,
         });
     };
     /**
@@ -3975,11 +4006,38 @@ var PerformSales = /** @class */ (function () {
         this.game.createHtml(cancelButtonDiv, "aoc-flip-or-collect-counter");
         this.connections["cancelSalesOrderAction"] = dojo.connect(dojo.byId("aoc-cancel-button"), "onclick", dojo.hitch(this, this.cancelSalesOrderAction));
     };
+    PerformSales.prototype.determinePlayerToPayForSpace = function (space, activePlayerId) {
+        if (space === 0)
+            return;
+        var agentsOnSpace = this.getSalesAgentsOnSpace(space);
+        var opponentArrivedLast = -1;
+        var opponentArrivedId = -1;
+        if (agentsOnSpace.length > 1) {
+            for (var _i = 0, agentsOnSpace_1 = agentsOnSpace; _i < agentsOnSpace_1.length; _i++) {
+                var agent = agentsOnSpace_1[_i];
+                if (parseInt(agent.id.split("-")[2]) === activePlayerId) {
+                    continue;
+                }
+                var arrived = parseInt(agent.getAttribute("arrived"));
+                if (arrived > opponentArrivedLast) {
+                    opponentArrivedLast = arrived;
+                    opponentArrivedId = parseInt(agent.id.split("-")[2]);
+                }
+            }
+            this.playerIdToPay = opponentArrivedId;
+            var highlightPayPlayer = "<div id='aoc-highlight-pay-player'></div>";
+            this.game.createHtml(highlightPayPlayer, "aoc-board");
+        }
+        else {
+            this.playerIdToPay = 0;
+        }
+    };
     /**
      * End the sales phase
      */
     PerformSales.prototype.endSales = function () {
-        console.log("Ending sales phase");
+        this.resetUX(true);
+        this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_END_SALES, {});
     };
     PerformSales.prototype.flipSalesOrder = function () {
         var salesOrderId = dojo
@@ -3989,10 +4047,13 @@ var PerformSales = /** @class */ (function () {
         this.flipsCounter.incValue(-1);
         this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_FLIP_SALES_ORDER, {
             salesOrderId: salesOrderId,
+            playerIdToPay: this.playerIdToPay,
         });
     };
     PerformSales.prototype.getConnectedSalesOrderTiles = function (agentSpace) {
         var connectedSpaces = this.salesOrderConnections[agentSpace];
+        if (!connectedSpaces)
+            return [];
         var salesOrderTiles = [];
         for (var _i = 0, connectedSpaces_1 = connectedSpaces; _i < connectedSpaces_1.length; _i++) {
             var space = connectedSpaces_1[_i];
@@ -4056,6 +4117,12 @@ var PerformSales = /** @class */ (function () {
             space: space,
         });
     };
+    PerformSales.prototype.moveSalesAgentToSpaceWithTicket = function (space) {
+        this.resetUX();
+        this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_MOVE_SALES_AGENT_WITH_TICKET, {
+            space: space,
+        });
+    };
     PerformSales.prototype.resetActionPanel = function () {
         dojo.destroy("aoc-selected-sales-order");
         dojo.query(".aoc-selected").removeClass("aoc-selected");
@@ -4069,8 +4136,13 @@ var PerformSales = /** @class */ (function () {
         dojo.query(".aoc-button").forEach(function (button) {
             dojo.addClass(button, "aoc-button-disabled");
         });
+        dojo.destroy("aoc-highlight-pay-player");
         if (removeActionBanner) {
             dojo.destroy("aoc-remaining-actions");
+            dojo.destroy("aoc-flip-or-collect-counter");
+            dojo.destroy("aoc-walk-not-allowed-icon");
+            dojo.destroy("aoc-taxi-not-allowed-icon");
+            dojo.destroy("aoc-shared-space-not-allowed-icon");
         }
         for (var connection in this.connections) {
             dojo.disconnect(this.connections[connection]);
@@ -4078,7 +4150,20 @@ var PerformSales = /** @class */ (function () {
         this.connections = {};
     };
     PerformSales.prototype.useTicket = function () {
-        console.log("Using ticket");
+        var _this = this;
+        this.resetUX();
+        dojo.addClass("aoc-use-ticket", "aoc-button-disabled");
+        var agentSpaces = globalThis.SALES_AGENT_CONNECTIONS;
+        for (var _i = 0, _a = Object.keys(agentSpaces); _i < _a.length; _i++) {
+            var space = _a[_i];
+            var divId = "aoc-map-agent-space-".concat(space);
+            dojo.addClass(divId, "aoc-clickable");
+            this.connections[divId] = dojo.connect(dojo.byId(divId), "onclick", dojo.hitch(this, this.moveSalesAgentToSpaceWithTicket, space));
+        }
+        gameui.addActionButton("aoc-cancel-use-ticket", _("Cancel using ticket"), function () {
+            _this.cancelTicket();
+        });
+        dojo.addClass("aoc-cancel-use-ticket", "aoc-button");
     };
     return PerformSales;
 }());

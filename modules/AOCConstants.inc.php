@@ -322,6 +322,7 @@ define("IDEAS_SPACE_SCIFI", "ideas_space_scifi");
 define("IDEAS_SPACE_SUPERHERO", "ideas_space_superhero");
 define("IDEAS_SPACE_WESTERN", "ideas_space_western");
 define("MAX_ACTION_SPACES", "max_action_spaces");
+define("PAID_FOR_CURRENT_SPACE", "paid_for_current_space");
 define("PRINTED_COMIC", "printed_comic");
 define("SALES_ORDER_COLLECTS_REMAINING", "sales_order_collects_remaining");
 define("SALES_ORDER_FLIPS_REMAINING", "sales_order_flips_remaining");

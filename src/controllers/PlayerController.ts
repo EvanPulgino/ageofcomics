@@ -525,7 +525,7 @@ class PlayerController {
     const sortedAgents = Array.from(agents).sort((a, b) => {
       const aArrived = dojo.getAttr(a, "arrived");
       const bArrived = dojo.getAttr(b, "arrived");
-      return bArrived - aArrived;
+      return aArrived - bArrived;
     });
 
     for (let i = 0; i < sortedAgents.length; i++) {
