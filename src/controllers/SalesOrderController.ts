@@ -34,7 +34,7 @@ class SalesOrderController {
   collectSalesOrder(salesOrder: any): void {
     this.flipSalesOrder(salesOrder);
     const salesOrderDiv = "aoc-salesorder-" + salesOrder.id;
-    const targetDiv = "aoc-player-sales-orders-" + salesOrder.locationArg;
+    const targetDiv = "aoc-sales-order-container-" + salesOrder.locationArg;
     const animation = this.ui.slideToObject(salesOrderDiv, targetDiv);
     dojo.connect(animation, "onEnd", () => {
       dojo.removeAttr(salesOrderDiv, "style");
@@ -66,7 +66,7 @@ class SalesOrderController {
     if (salesOrder.location == globalThis.LOCATION_PLAYER_AREA) {
       this.ui.createHtml(
         salesOrderDiv,
-        "aoc-player-sales-orders-" + salesOrder.locationArg
+        "aoc-sales-order-container-" + salesOrder.locationArg
       );
     }
   }

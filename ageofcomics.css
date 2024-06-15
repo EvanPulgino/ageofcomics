@@ -559,8 +559,8 @@ html {
   gap: 10px;
   justify-content: flex-start;
   position: relative;
-  padding: 25px;
-  margin-left: 25px;
+  padding-top: 5px;
+  margin-left: 20px;
 }
 
 .aoc-mastery-container {
@@ -2119,7 +2119,7 @@ html {
   border-radius: 5px;
   box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.6274509804);
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
   gap: 25px;
   justify-content: start;
   position: relative;
@@ -2134,30 +2134,7 @@ html {
   height: 485px;
 }
 
-.aoc-player-area-right {
-  align-items: flex-start;
-  display: flex;
-  flex-flow: column nowrap;
-  gap: 40px;
-  justify-content: space-evenly;
-  height: 485px;
-  padding-left: 25px;
-  position: relative;
-}
-
-.aoc-player-sales-orders {
-  align-items: flex-start;
-  display: flex;
-  flex-flow: row wrap;
-  gap: 50px;
-  justify-content: space-evenly;
-  height: 485px;
-  padding-left: 50px;
-  padding-top: 50px;
-  position: relative;
-}
-
-.aoc-player-sales-orders > .aoc-salesorder {
+.aoc-sales-order-container > .aoc-salesorder {
   z-index: 10;
 }
 
@@ -2368,6 +2345,14 @@ html {
   font-size: 33px;
   line-height: 30px;
   text-align: center;
+}
+
+.aoc-sales-order-container {
+  align-items: center;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  gap: 5px;
 }
 
 /**

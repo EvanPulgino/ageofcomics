@@ -81,6 +81,7 @@ class GameBody extends GameBasics {
     this.notifqueue.setSynchronous("adjustMiniComic", 500);
     this.notifqueue.setSynchronous("assignComic", 500);
     this.notifqueue.setSynchronous("assignCreative", 500);
+    this.notifqueue.setSynchronous("collectSalesOrder", 1000);
     this.notifqueue.setSynchronous("discardCard", 500);
     this.notifqueue.setSynchronous("discardCardFromDeck", 500);
     this.notifqueue.setSynchronous("gainIdeaFromBoard", 500);

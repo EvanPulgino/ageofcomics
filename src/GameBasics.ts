@@ -147,21 +147,14 @@ class GameBasics extends GameGui {
       gameui.isCurrentPlayerActive() &&
       this.currentPlayerWasActive == false
     ) {
-      var stateArgs = [];
-      if (args.id === undefined) {
-        stateArgs["isCurrentPlayerActive"] = gameui.isCurrentPlayerActive();
-        stateArgs["args"] = args;
-      } else {
-        stateArgs = args;
-      }
       this.debug(
         "onUpdateActionButtons: " + stateName,
-        stateArgs,
+        args,
         this.debugStateInfo()
       );
       this.currentPlayerWasActive = true;
       // Call appropriate method
-      this.gameState[stateName].onUpdateActionButtons(stateArgs);
+      this.gameState[stateName].onUpdateActionButtons(args);
     } else {
       this.currentPlayerWasActive = false;
     }

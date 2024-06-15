@@ -65,6 +65,7 @@ class AgeOfComics extends Table {
         // Initialize states
         $this->states[CHECK_HAND_SIZE] = new AOCCheckHandSizeState($this);
         $this->states[COMPLETE_SETUP] = new AOCCompleteSetupState($this);
+        $this->states[CONTINUE_SALES] = new AOCContinueSalesState($this);
         $this->states[NEXT_PLAYER] = new AOCNextPlayerState($this);
         $this->states[NEXT_PLAYER_SETUP] = new AOCNextPlayerSetupState($this);
         $this->states[PERFORM_DEVELOP] = new AOCPerformDevelopState($this);
@@ -260,6 +261,9 @@ class AgeOfComics extends Table {
     }
     function argsCompleteSetup() {
         return $this->states[COMPLETE_SETUP]->getArgs();
+    }
+    function argsContinueSales() {
+        return $this->states[CONTINUE_SALES]->getArgs();
     }
     function argsNextPlayer() {
         return $this->states[NEXT_PLAYER]->getArgs();

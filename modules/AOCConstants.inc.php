@@ -16,6 +16,7 @@
 
 /** Game State Actions */
 define("GAME_ACTION_COMPLETE_SETUP", "stCompleteSetup");
+define("GAME_ACTION_CONTINUE_SALES", "stContinueSales");
 define("GAME_ACTION_GAIN_ROYALITES", "stGainRoyalties");
 define("GAME_ACTION_GAME_END", "stGameEnd");
 define("GAME_ACTION_GAME_SETUP", "stGameSetup");
@@ -1084,6 +1085,7 @@ define("SALES_ORDERS_FOR_PLAYER_COUNT", [
 /** State Args */
 define("STATE_ARGS_CHECK_HAND_SIZE", "argsCheckHandSize");
 define("STATE_ARGS_COMPLETE_SETUP", "argsCompleteSetup");
+define("STATE_ARGS_CONTINUE_SALES", "argsContinueSales");
 define("STATE_ARGS_GAME_END", "argsGameEnd");
 define("STATE_ARGS_NEXT_PLAYER", "argsNextPlayer");
 define("STATE_ARGS_NEXT_PLAYER_SETUP", "argsNextPlayerSetup");
@@ -1121,6 +1123,7 @@ define("ST_PERFORM_PRINT_UPGRADE", 243);
 define("ST_PERFORM_PRINT_FULFILL_ORDERS", 244);
 define("ST_PERFORM_ROYALTIES", 25);
 define("ST_PERFORM_SALES", 26);
+define("ST_CONTINUE_SALES", 27);
 define("ST_CHECK_HAND_SIZE", 28);
 define("ST_NEXT_PLAYER", 29);
 define("ST_GAME_END", 99);
@@ -1128,6 +1131,7 @@ define("ST_GAME_END", 99);
 /** State Names */
 define("CHECK_HAND_SIZE", "checkHandSize");
 define("COMPLETE_SETUP", "completeSetup");
+define("CONTINUE_SALES", "continueSales");
 define("GAME_END", "gameEnd");
 define("GAME_SETUP", "gameSetup");
 define("NEXT_PLAYER", "nextPlayer");
