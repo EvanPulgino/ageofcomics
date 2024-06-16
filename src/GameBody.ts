@@ -79,6 +79,7 @@ class GameBody extends GameBasics {
       }
     }
     this.notifqueue.setSynchronous("adjustMiniComic", 500);
+    this.notifqueue.setSynchronous("adjustScore", 500);
     this.notifqueue.setSynchronous("assignComic", 500);
     this.notifqueue.setSynchronous("assignCreative", 500);
     this.notifqueue.setSynchronous("collectSalesOrder", 1000);
@@ -150,6 +151,13 @@ class GameBody extends GameBasics {
    */
   notif_adjustMoney(notif: any): void {
     this.playerController.adjustMoney(notif.args.player, notif.args.amount);
+  }
+
+  notif_adjustScore(notif: any): void {
+    this.playerController.adjustPoints(
+      notif.args.player,
+      notif.args.scoreChange
+    );
   }
 
   notif_assignComic(notif: any): void {

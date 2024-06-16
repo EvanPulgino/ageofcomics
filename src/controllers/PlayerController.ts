@@ -95,6 +95,7 @@ class PlayerController {
    */
   adjustPoints(player: any, amount: number): void {
     this.updatePlayerCounter(player.id, "point", amount);
+    this.ui.scoreCtrl[player.id].incValue(amount);
   }
 
   /**

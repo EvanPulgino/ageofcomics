@@ -363,6 +363,7 @@ var GameBody = /** @class */ (function (_super) {
             }
         }
         this.notifqueue.setSynchronous("adjustMiniComic", 500);
+        this.notifqueue.setSynchronous("adjustScore", 500);
         this.notifqueue.setSynchronous("assignComic", 500);
         this.notifqueue.setSynchronous("assignCreative", 500);
         this.notifqueue.setSynchronous("collectSalesOrder", 1000);
@@ -412,6 +413,9 @@ var GameBody = /** @class */ (function (_super) {
      */
     GameBody.prototype.notif_adjustMoney = function (notif) {
         this.playerController.adjustMoney(notif.args.player, notif.args.amount);
+    };
+    GameBody.prototype.notif_adjustScore = function (notif) {
+        this.playerController.adjustPoints(notif.args.player, notif.args.scoreChange);
     };
     GameBody.prototype.notif_assignComic = function (notif) {
         this.cardController.slideCardToPlayerMat(notif.args.player, notif.args.card, notif.args.slot);
@@ -1769,6 +1773,7 @@ var PlayerController = /** @class */ (function () {
      */
     PlayerController.prototype.adjustPoints = function (player, amount) {
         this.updatePlayerCounter(player.id, "point", amount);
+        this.ui.scoreCtrl[player.id].incValue(amount);
     };
     /**
      * Adjust a player's ticket counter by a given amount

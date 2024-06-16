@@ -114,7 +114,7 @@ class AOCPlayerManager extends APP_GameClass {
     /**
      * Adjust how many points a player has
      *
-     * @param AOCPlayer $playerId The player
+     * @param AOCPlayer $player The player
      * @param int $score The number of points to adjust by
      * @return void
      */
