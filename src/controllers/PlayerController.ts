@@ -511,6 +511,9 @@ class PlayerController {
     animation.play();
   }
 
+  /**
+   * Sort all agents on the map by the turn they arrived
+   */
   sortAgents(): void {
     const agentSpaces = globalThis.SALES_AGENT_CONNECTIONS;
     for (const space of Object.keys(agentSpaces)) {
@@ -518,6 +521,11 @@ class PlayerController {
     }
   }
 
+  /**
+   * Sort agents on a given space by the turn they arrived
+   *
+   * @param space
+   */
   sortAgentsOnSpace(space: number): void {
     const agentSpaceDivId = `aoc-map-agent-space-${space}`;
     const agentSpaceContainer = dojo.byId(agentSpaceDivId);
@@ -546,5 +554,25 @@ class PlayerController {
     var counterPanel = "panel-" + counter;
     this.playerCounter[playerId][counterKey].incValue(value);
     this.playerCounter[playerId][counterPanel].incValue(value);
+  }
+
+  /**
+   * Moves a player's order token to a new turn order space
+   *
+   * @param player
+   */
+  updatePlayerOrder(player: any): void {
+    const playerOrderTokenDiv = `aoc-player-order-token${player.id}`;
+    const turnOrderSpaceDiv = `aoc-player-order-space-${player.turnOrder}`;
+
+    const animation = this.ui.slideToObject(
+      playerOrderTokenDiv,
+      turnOrderSpaceDiv
+    );
+    dojo.connect(animation, "onEnd", () => {
+      dojo.removeAttr(playerOrderTokenDiv, "style");
+      dojo.place(playerOrderTokenDiv, turnOrderSpaceDiv);
+    });
+    animation.play();
   }
 }

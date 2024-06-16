@@ -272,6 +272,11 @@ class AOCPlayerManager extends APP_GameClass {
         $this->savePlayer($player);
     }
 
+    public function setNewTurnOrder($player, $turnOrder) {
+        $player->setTurnOrder($turnOrder);
+        $this->savePlayer($player);
+    }
+
     /**
      * Save the player object to the db
      *
@@ -279,6 +284,7 @@ class AOCPlayerManager extends APP_GameClass {
      */
     public function savePlayer($player) {
         $sql = "UPDATE player SET 
+        player_turn_order = {$player->getTurnOrder()},
         player_score = {$player->getScore()},
         player_score_aux = {$player->getScoreAux()},
         player_money = {$player->getMoney()},

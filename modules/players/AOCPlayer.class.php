@@ -238,6 +238,16 @@ class AOCPlayer {
     }
 
     /**
+     * Set the turn order of the player, this the order players take turns during a round
+     *
+     * @param int $turnOrder The turn order of the player
+     * @return void
+     */
+    public function setTurnOrder($turnOrder) {
+        $this->turnOrder = $turnOrder;
+    }
+
+    /**
      * Get the player's name
      *
      * @return string

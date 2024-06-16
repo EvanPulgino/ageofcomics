@@ -442,6 +442,14 @@ class GameBody extends GameBasics {
     this.masteryController.moveMasteryToken(notif.args.masteryToken);
   }
 
+  notif_newTurnOrder(notif: any): void {
+    const newTurnOrder = notif.args.newTurnOrder;
+    for (let i = 0; i < newTurnOrder.length; i++) {
+      const player = newTurnOrder[i];
+      this.playerController.updatePlayerOrder(player);
+    }
+  }
+
   notif_payPlayerForSpace(notif: any): void {
     this.playerController.adjustMoney(
       notif.args.player,

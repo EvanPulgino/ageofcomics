@@ -648,6 +648,13 @@ var GameBody = /** @class */ (function (_super) {
     GameBody.prototype.notif_masteryTokenClaimed = function (notif) {
         this.masteryController.moveMasteryToken(notif.args.masteryToken);
     };
+    GameBody.prototype.notif_newTurnOrder = function (notif) {
+        var newTurnOrder = notif.args.newTurnOrder;
+        for (var i = 0; i < newTurnOrder.length; i++) {
+            var player = newTurnOrder[i];
+            this.playerController.updatePlayerOrder(player);
+        }
+    };
     GameBody.prototype.notif_payPlayerForSpace = function (notif) {
         this.playerController.adjustMoney(notif.args.player, notif.args.moneyAdjustment * -1);
         this.playerController.adjustMoney(notif.args.player_to_pay, notif.args.moneyAdjustment);
@@ -2115,6 +2122,9 @@ var PlayerController = /** @class */ (function () {
         });
         animation.play();
     };
+    /**
+     * Sort all agents on the map by the turn they arrived
+     */
     PlayerController.prototype.sortAgents = function () {
         var agentSpaces = globalThis.SALES_AGENT_CONNECTIONS;
         for (var _i = 0, _a = Object.keys(agentSpaces); _i < _a.length; _i++) {
@@ -2122,6 +2132,11 @@ var PlayerController = /** @class */ (function () {
             this.sortAgentsOnSpace(parseInt(space));
         }
     };
+    /**
+     * Sort agents on a given space by the turn they arrived
+     *
+     * @param space
+     */
     PlayerController.prototype.sortAgentsOnSpace = function (space) {
         var agentSpaceDivId = "aoc-map-agent-space-".concat(space);
         var agentSpaceContainer = dojo.byId(agentSpaceDivId);
@@ -2147,6 +2162,21 @@ var PlayerController = /** @class */ (function () {
         var counterPanel = "panel-" + counter;
         this.playerCounter[playerId][counterKey].incValue(value);
         this.playerCounter[playerId][counterPanel].incValue(value);
+    };
+    /**
+     * Moves a player's order token to a new turn order space
+     *
+     * @param player
+     */
+    PlayerController.prototype.updatePlayerOrder = function (player) {
+        var playerOrderTokenDiv = "aoc-player-order-token".concat(player.id);
+        var turnOrderSpaceDiv = "aoc-player-order-space-".concat(player.turnOrder);
+        var animation = this.ui.slideToObject(playerOrderTokenDiv, turnOrderSpaceDiv);
+        dojo.connect(animation, "onEnd", function () {
+            dojo.removeAttr(playerOrderTokenDiv, "style");
+            dojo.place(playerOrderTokenDiv, turnOrderSpaceDiv);
+        });
+        animation.play();
     };
     return PlayerController;
 }());
