@@ -39,7 +39,33 @@ class AOCRoundEndPayEarningsState {
      * @return void
      */
     public function stRoundEndPayEarnings() {
-        // Do some stuff here
+        // Get the list of players
+        $players = $this->game->playerManager->getPlayers();
+
+        // Sort in ascending turn order
+        usort($players, function ($a, $b) {
+            return $a->getTurnOrder() - $b->getTurnOrder();
+        });
+
+        // Iterate through each player
+        foreach ($players as $player) {
+            // Get the player's income
+            $income = $player->getIncome();
+
+            // Pay the player their income
+            $this->game->playerManager->adjustPlayerMoney($player, $income);
+
+            // Notify the player of their earnings
+            $this->game->notifyAllPlayers(
+                "adjustMoney",
+                clienttranslate('${player_name} earns ${amount} money from their printed comics'),
+                [
+                    "player_name" => $player->getName(),
+                    "player" => $player->getUiData(),
+                    "amount" => $income,
+                ]
+            );
+        }
 
         // If the game has reached the end of the final round, end the game here
         // Otherwise, move to the next state
