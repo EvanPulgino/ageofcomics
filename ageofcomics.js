@@ -778,6 +778,12 @@ var GameState = /** @class */ (function () {
         this.performSales = new PerformSales(game);
         this.playerSetup = new PlayerSetup(game);
         this.playerTurn = new PlayerTurn(game);
+        this.roundEndEstablishPlayerOrder = new RoundEndEstablishPlayerOrder(game);
+        this.roundEndEstablishRanking = new RoundEndEstablishRanking(game);
+        this.roundEndPayEarnings = new RoundEndPayEarnings(game);
+        this.roundEndRefillCards = new RoundEndRefillCards(game);
+        this.roundEndRemoveEditors = new RoundEndRemoveEditors(game);
+        this.roundEndSubtractFans = new RoundEndSubtractFans(game);
         this.startNewRound = new StartNewRound(game);
     }
     return GameState;
@@ -2557,7 +2563,7 @@ var CompleteSetup = /** @class */ (function () {
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * GameEnd.ts
+ * ContinueSales.ts
  *
  * AgeOfComics continue sales state
  *
@@ -4702,6 +4708,162 @@ var PlayerTurn = /** @class */ (function () {
         });
     };
     return PlayerTurn;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * RoundEndEstablishPlayerOrder.ts
+ *
+ * AgeOfComics round end establish player order state
+ *
+ * State vars:
+ * - game: game object reference
+ *
+ */
+var RoundEndEstablishPlayerOrder = /** @class */ (function () {
+    function RoundEndEstablishPlayerOrder(game) {
+        this.game = game;
+    }
+    RoundEndEstablishPlayerOrder.prototype.onEnteringState = function (stateArgs) { };
+    RoundEndEstablishPlayerOrder.prototype.onLeavingState = function () { };
+    RoundEndEstablishPlayerOrder.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return RoundEndEstablishPlayerOrder;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * RoundEndEstablishRanking.ts
+ *
+ * AgeOfComics round end establish ranking state
+ *
+ * State vars:
+ * - game: game object reference
+ *
+ */
+var RoundEndEstablishRanking = /** @class */ (function () {
+    function RoundEndEstablishRanking(game) {
+        this.game = game;
+    }
+    RoundEndEstablishRanking.prototype.onEnteringState = function (stateArgs) { };
+    RoundEndEstablishRanking.prototype.onLeavingState = function () { };
+    RoundEndEstablishRanking.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return RoundEndEstablishRanking;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * RoundEndPayEarnings.ts
+ *
+ * AgeOfComics round end pay earnings state
+ *
+ * State vars:
+ * - game: game object reference
+ *
+ */
+var RoundEndPayEarnings = /** @class */ (function () {
+    function RoundEndPayEarnings(game) {
+        this.game = game;
+    }
+    RoundEndPayEarnings.prototype.onEnteringState = function (stateArgs) { };
+    RoundEndPayEarnings.prototype.onLeavingState = function () { };
+    RoundEndPayEarnings.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return RoundEndPayEarnings;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * RoundEndRefillCards.ts
+ *
+ * AgeOfComics round end refill cards state
+ *
+ * State vars:
+ * - game: game object reference
+ *
+ */
+var RoundEndRefillCards = /** @class */ (function () {
+    function RoundEndRefillCards(game) {
+        this.game = game;
+    }
+    RoundEndRefillCards.prototype.onEnteringState = function (stateArgs) { };
+    RoundEndRefillCards.prototype.onLeavingState = function () { };
+    RoundEndRefillCards.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return RoundEndRefillCards;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * RoundEndRemoveEditors.ts
+ *
+ * AgeOfComics round end remove editors state
+ *
+ * State vars:
+ * - game: game object reference
+ *
+ */
+var RoundEndRemoveEditors = /** @class */ (function () {
+    function RoundEndRemoveEditors(game) {
+        this.game = game;
+    }
+    RoundEndRemoveEditors.prototype.onEnteringState = function (stateArgs) { };
+    RoundEndRemoveEditors.prototype.onLeavingState = function () { };
+    RoundEndRemoveEditors.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return RoundEndRemoveEditors;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * RoundEndRemoveEditors.ts
+ *
+ * AgeOfComics round end subtract fans state
+ *
+ * State vars:
+ * - game: game object reference
+ *
+ */
+var RoundEndSubtractFans = /** @class */ (function () {
+    function RoundEndSubtractFans(game) {
+        this.game = game;
+    }
+    RoundEndSubtractFans.prototype.onEnteringState = function (stateArgs) { };
+    RoundEndSubtractFans.prototype.onLeavingState = function () { };
+    RoundEndSubtractFans.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return RoundEndSubtractFans;
 }());
 /**
  *------

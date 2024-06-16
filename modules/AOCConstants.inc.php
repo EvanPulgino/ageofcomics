@@ -30,6 +30,15 @@ define(
 define("GAME_ACTION_PLAYER_SETUP", "stPlayerSetup");
 define("GAME_ACTION_NEXT_PLAYER", "stNextPlayer");
 define("GAME_ACTION_NEXT_PLAYER_SETUP", "stNextPlayerSetup");
+define(
+    "GAME_ACTION_ROUND_END_ESTABLISH_PLAYER_ORDER",
+    "stRoundEndEstablishPlayerOrder"
+);
+define("GAME_ACTION_ROUND_END_ESTABLISH_RANKING", "stRoundEndEstablishRanking");
+define("GAME_ACTION_ROUND_END_PAY_EARNINGS", "stRoundEndPayEarnings");
+define("GAME_ACTION_ROUND_END_REFILL_CARDS", "stRoundEndRefillCards");
+define("GAME_ACTION_ROUND_END_REMOVE_EDITORS", "stRoundEndRemoveEditors");
+define("GAME_ACTION_ROUND_END_SUBTRACT_FANS", "stRoundEndSubtractFans");
 define("GAME_ACTION_START_NEW_ROUND", "stStartNewRound");
 
 /** Player Actions */
@@ -1104,6 +1113,18 @@ define("STATE_ARGS_PERFORM_ROYALTIES", "argsPerformRoyalties");
 define("STATE_ARGS_PERFORM_SALES", "argsPerformSales");
 define("STATE_ARGS_PLAYER_SETUP", "argsPlayerSetup");
 define("STATE_ARGS_PLAYER_TURN", "argsPlayerTurn");
+define(
+    "STATE_ARGS_ROUND_END_ESTABLISH_PLAYER_ORDER",
+    "argsRoundEndEstablishPlayerOrder"
+);
+define(
+    "STATE_ARGS_ROUND_END_ESTABLISH_RANKING",
+    "argsRoundEndEstablishRanking"
+);
+define("STATE_ARGS_ROUND_END_PAY_EARNINGS", "argsRoundEndPayEarnings");
+define("STATE_ARGS_ROUND_END_REFILL_CARDS", "argsRoundEndRefillCards");
+define("STATE_ARGS_ROUND_END_REMOVE_EDITORS", "argsRoundEndRemoveEditors");
+define("STATE_ARGS_ROUND_END_SUBTRACT_FANS", "argsRoundEndSubtractFans");
 define("STATE_ARGS_START_NEW_ROUND", "argsStartNewRound");
 
 /** State IDs */
@@ -1126,6 +1147,12 @@ define("ST_PERFORM_SALES", 26);
 define("ST_CONTINUE_SALES", 27);
 define("ST_CHECK_HAND_SIZE", 28);
 define("ST_NEXT_PLAYER", 29);
+define("ST_ROUND_END_ESTABLISH_RANKING", 40);
+define("ST_ROUND_END_PAY_EARNINGS", 41);
+define("ST_ROUND_END_ESTABLISH_PLAYER_ORDER", 42);
+define("ST_ROUND_END_SUBTRACT_FANS", 43);
+define("ST_ROUND_END_REMOVE_EDITORS", 44);
+define("ST_ROUND_END_REFILL_CARDS", 45);
 define("ST_GAME_END", 99);
 
 /** State Names */
@@ -1148,6 +1175,12 @@ define("PERFORM_ROYALTIES", "performRoyalties");
 define("PERFORM_SALES", "performSales");
 define("PLAYER_SETUP", "playerSetup");
 define("PLAYER_TURN", "playerTurn");
+define("ROUND_END_ESTABLISH_PLAYER_ORDER", "roundEndEstablishPlayerOrder");
+define("ROUND_END_ESTABLISH_RANKING", "roundEndEstablishRanking");
+define("ROUND_END_PAY_EARNINGS", "roundEndPayEarnings");
+define("ROUND_END_REFILL_CARDS", "roundEndRefillCards");
+define("ROUND_END_REMOVE_EDITORS", "roundEndRemoveEditors");
+define("ROUND_END_SUBTRACT_FANS", "roundEndSubtractFans");
 define("START_NEW_ROUND", "startNewRound");
 
 /** State Types */

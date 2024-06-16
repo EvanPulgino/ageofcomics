@@ -7,15 +7,15 @@
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * ContinueSales.ts
+ * RoundEndEstablishPlayerOrder.ts
  *
- * AgeOfComics continue sales state
+ * AgeOfComics round end establish player order state
  *
  * State vars:
  * - game: game object reference
  *
  */
-class ContinueSales implements State {
+class RoundEndEstablishPlayerOrder implements State {
   game: any;
   constructor(game: any) {
     this.game = game;

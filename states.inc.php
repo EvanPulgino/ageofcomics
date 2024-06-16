@@ -309,8 +309,65 @@ $machinestates = [
         "transitions" => [
             "nextPlayerTurn" => ST_PLAYER_TURN,
             "skipPlayer" => ST_NEXT_PLAYER,
-            "endActionsPhase" => ST_GAME_END,
+            "endActionsPhase" => ST_ROUND_END_ESTABLISH_RANKING,
         ],
+    ],
+
+    ST_ROUND_END_ESTABLISH_RANKING => [
+        "name" => ROUND_END_ESTABLISH_RANKING,
+        "description" => "",
+        "type" => STATE_TYPE_GAME,
+        "args" => STATE_ARGS_ROUND_END_ESTABLISH_RANKING,
+        "action" => GAME_ACTION_ROUND_END_ESTABLISH_RANKING,
+        "transitions" => ["payEarnings" => ST_ROUND_END_PAY_EARNINGS],
+    ],
+
+    ST_ROUND_END_PAY_EARNINGS => [
+        "name" => ROUND_END_PAY_EARNINGS,
+        "description" => "",
+        "type" => STATE_TYPE_GAME,
+        "args" => STATE_ARGS_ROUND_END_PAY_EARNINGS,
+        "action" => GAME_ACTION_ROUND_END_PAY_EARNINGS,
+        "transitions" => [
+            "establishPlayerOrder" => ST_ROUND_END_ESTABLISH_PLAYER_ORDER,
+            "endGame" => ST_GAME_END,
+        ],
+    ],
+
+    ST_ROUND_END_ESTABLISH_PLAYER_ORDER => [
+        "name" => ROUND_END_ESTABLISH_PLAYER_ORDER,
+        "description" => "",
+        "type" => STATE_TYPE_GAME,
+        "args" => STATE_ARGS_ROUND_END_ESTABLISH_PLAYER_ORDER,
+        "action" => GAME_ACTION_ROUND_END_ESTABLISH_PLAYER_ORDER,
+        "transitions" => ["subtractFans" => ST_ROUND_END_SUBTRACT_FANS],
+    ],
+
+    ST_ROUND_END_SUBTRACT_FANS => [
+        "name" => ROUND_END_SUBTRACT_FANS,
+        "description" => "",
+        "type" => STATE_TYPE_GAME,
+        "args" => STATE_ARGS_ROUND_END_SUBTRACT_FANS,
+        "action" => GAME_ACTION_ROUND_END_SUBTRACT_FANS,
+        "transitions" => ["removeEditors" => ST_ROUND_END_REMOVE_EDITORS],
+    ],
+
+    ST_ROUND_END_REMOVE_EDITORS => [
+        "name" => ROUND_END_REMOVE_EDITORS,
+        "description" => "",
+        "type" => STATE_TYPE_GAME,
+        "args" => STATE_ARGS_ROUND_END_REMOVE_EDITORS,
+        "action" => GAME_ACTION_ROUND_END_REMOVE_EDITORS,
+        "transitions" => ["refillCards" => ST_ROUND_END_REFILL_CARDS],
+    ],
+
+    ST_ROUND_END_REFILL_CARDS => [
+        "name" => ROUND_END_REFILL_CARDS,
+        "description" => "",
+        "type" => STATE_TYPE_GAME,
+        "args" => STATE_ARGS_ROUND_END_REFILL_CARDS,
+        "action" => GAME_ACTION_ROUND_END_REFILL_CARDS,
+        "transitions" => ["startNewRound" => ST_START_NEW_ROUND],
     ],
 
     ST_GAME_END => [

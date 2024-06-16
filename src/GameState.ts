@@ -33,6 +33,12 @@ class GameState {
   performSales: State;
   playerSetup: State;
   playerTurn: State;
+  roundEndEstablishPlayerOrder: State;
+  roundEndEstablishRanking: State;
+  roundEndPayEarnings: State;
+  roundEndRefillCards: State;
+  roundEndRemoveEditors: State;
+  roundEndSubtractFans: State;
   startNewRound: State;
   constructor(game: any) {
     this.checkHandSize = new CheckHandSize(game);
@@ -54,6 +60,12 @@ class GameState {
     this.performSales = new PerformSales(game);
     this.playerSetup = new PlayerSetup(game);
     this.playerTurn = new PlayerTurn(game);
+    this.roundEndEstablishPlayerOrder = new RoundEndEstablishPlayerOrder(game);
+    this.roundEndEstablishRanking = new RoundEndEstablishRanking(game);
+    this.roundEndPayEarnings = new RoundEndPayEarnings(game);
+    this.roundEndRefillCards = new RoundEndRefillCards(game);
+    this.roundEndRemoveEditors = new RoundEndRemoveEditors(game);
+    this.roundEndSubtractFans = new RoundEndSubtractFans(game);
     this.startNewRound = new StartNewRound(game);
   }
 }

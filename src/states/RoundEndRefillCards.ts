@@ -7,15 +7,15 @@
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * ContinueSales.ts
+ * RoundEndRefillCards.ts
  *
- * AgeOfComics continue sales state
+ * AgeOfComics round end refill cards state
  *
  * State vars:
  * - game: game object reference
  *
  */
-class ContinueSales implements State {
+class RoundEndRefillCards implements State {
   game: any;
   constructor(game: any) {
     this.game = game;

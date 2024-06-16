@@ -88,6 +88,24 @@ class AgeOfComics extends Table {
         $this->states[PERFORM_SALES] = new AOCPerformSalesState($this);
         $this->states[PLAYER_SETUP] = new AOCPlayerSetupState($this);
         $this->states[PLAYER_TURN] = new AOCPlayerTurnState($this);
+        $this->states[
+            ROUND_END_ESTABLISH_PLAYER_ORDER
+        ] = new AOCRoundEndEstablishPlayerOrderState($this);
+        $this->states[
+            ROUND_END_ESTABLISH_RANKING
+        ] = new AOCRoundEndEstablishRankingState($this);
+        $this->states[ROUND_END_PAY_EARNINGS] = new AOCRoundEndPayEarningsState(
+            $this
+        );
+        $this->states[ROUND_END_REFILL_CARDS] = new AOCRoundEndRefillCardsState(
+            $this
+        );
+        $this->states[
+            ROUND_END_REMOVE_EDITORS
+        ] = new AOCRoundEndRemoveEditorsState($this);
+        $this->states[
+            ROUND_END_SUBTRACT_FANS
+        ] = new AOCRoundEndSubtractFansState($this);
         $this->states[START_NEW_ROUND] = new AOCStartNewRoundState($this);
     }
 
@@ -306,6 +324,24 @@ class AgeOfComics extends Table {
     }
     function argsPlayerTurn() {
         return $this->states[PLAYER_TURN]->getArgs();
+    }
+    function argsRoundEndEstablishPlayerOrder() {
+        return $this->states[ROUND_END_ESTABLISH_PLAYER_ORDER]->getArgs();
+    }
+    function argsRoundEndEstablishRanking() {
+        return $this->states[ROUND_END_ESTABLISH_RANKING]->getArgs();
+    }
+    function argsRoundEndPayEarnings() {
+        return $this->states[ROUND_END_PAY_EARNINGS]->getArgs();
+    }
+    function argsRoundEndRefillCards() {
+        return $this->states[ROUND_END_REFILL_CARDS]->getArgs();
+    }
+    function argsRoundEndRemoveEditors() {
+        return $this->states[ROUND_END_REMOVE_EDITORS]->getArgs();
+    }
+    function argsRoundEndSubtractFans() {
+        return $this->states[ROUND_END_SUBTRACT_FANS]->getArgs();
     }
     function argsStartNewRound() {
         return $this->states[START_NEW_ROUND]->getArgs();
