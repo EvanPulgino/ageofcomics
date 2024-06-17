@@ -208,7 +208,6 @@ class GameBody extends GameBasics {
   }
 
   notif_dealCardToSupply(notif: any): void {
-    console.log("dealCardToSupply", notif);
     this.cardController.dealCardToSupply(notif.args.card);
   }
 
@@ -558,6 +557,10 @@ class GameBody extends GameBasics {
       notif.args.space,
       notif.args.arrived
     );
+  }
+
+  notif_refillIdeas(notif: any): void {
+    this.ideaController.createIdeaTokensOnBoard(notif.args.ideasSpaceContents);
   }
 
   /**

@@ -447,7 +447,6 @@ var GameBody = /** @class */ (function (_super) {
         this.cardController.setupCards(notif.args.comicCards.supply);
     };
     GameBody.prototype.notif_dealCardToSupply = function (notif) {
-        console.log("dealCardToSupply", notif);
         this.cardController.dealCardToSupply(notif.args.card);
     };
     /**
@@ -723,6 +722,9 @@ var GameBody = /** @class */ (function (_super) {
      */
     GameBody.prototype.notif_playerWalked = function (notif) {
         this.playerController.moveSalesAgent(notif.args.player, notif.args.space, notif.args.arrived);
+    };
+    GameBody.prototype.notif_refillIdeas = function (notif) {
+        this.ideaController.createIdeaTokensOnBoard(notif.args.ideasSpaceContents);
     };
     /**
      * Handle'reshuffleDiscardPile' notification
@@ -1552,8 +1554,9 @@ var IdeaController = /** @class */ (function () {
      * @param exists - whether or not the idea token exists on the board
      */
     IdeaController.prototype.createIdeaTokenOnBoard = function (genreId, exists) {
-        if (exists == 1) {
-            var genre = this.ui.getGenreName(genreId);
+        var genre = this.ui.getGenreName(genreId);
+        var ideaContainer = dojo.byId("aoc-action-ideas-" + genre);
+        if (exists == 1 && ideaContainer.childElementCount == 0) {
             var ideaTokenDiv = '<div id="aoc-idea-token-' +
                 genre +
                 '" class="aoc-idea-token aoc-idea-token-' +

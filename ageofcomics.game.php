@@ -252,7 +252,7 @@ class AgeOfComics extends Table {
      *
      * @return array Array of contents of the Ideas space on the board
      */
-    function getIdeasSpaceContents() {
+    public function getIdeasSpaceContents() {
         $ideasSpaceContents = [];
         foreach (GENRES as $genreId => $genreName) {
             $ideasSpaceContents[$genreId] = self::getGameStateValue(

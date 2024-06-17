@@ -34,7 +34,7 @@ class IdeaController {
    */
   createIdeaTokensOnBoard(ideasSpaceContents: any) {
     for (var key in ideasSpaceContents) {
-      var genreSpace = ideasSpaceContents[key];
+      const genreSpace = ideasSpaceContents[key];
       this.createIdeaTokenOnBoard(key, genreSpace);
     }
   }
@@ -46,8 +46,9 @@ class IdeaController {
    * @param exists - whether or not the idea token exists on the board
    */
   createIdeaTokenOnBoard(genreId: any, exists: number) {
-    if (exists == 1) {
-      var genre = this.ui.getGenreName(genreId);
+    const genre = this.ui.getGenreName(genreId);
+    const ideaContainer = dojo.byId("aoc-action-ideas-" + genre);
+    if (exists == 1 && ideaContainer.childElementCount == 0) {
       var ideaTokenDiv =
         '<div id="aoc-idea-token-' +
         genre +

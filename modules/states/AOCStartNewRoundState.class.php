@@ -84,6 +84,14 @@ class AOCStartNewRoundState {
         }
 
         // 4. Refill Ideas
+        foreach (GENRES as $genreId => $genreName) {
+            $this->game->setGameStateValue("ideas_space_{$genreName}", 1);
+        }
+
+        $this->game->notifyAllPlayers("refillIdeas", "", [
+            "ideasSpaceContents" => $this->game->getIdeasSpaceContents(),
+        ]);
+
         // 5. Add Hype
 
         $this->game->playerManager->activateFirstPlayer();
