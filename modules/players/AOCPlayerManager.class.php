@@ -56,6 +56,16 @@ class AOCPlayerManager extends APP_GameClass {
     }
 
     /**
+     * Activate the first player in turn order
+     *
+     * @return void
+     */
+    public function activateFirstPlayer() {
+        $firstPlayerId = $this->getPlayerIdByTurnOrder(1);
+        $this->game->gamestate->changeActivePlayer($firstPlayerId);
+    }
+
+    /**
      * Activate the next player in turn order
      *
      * @return void

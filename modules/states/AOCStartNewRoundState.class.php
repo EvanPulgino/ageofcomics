@@ -86,7 +86,7 @@ class AOCStartNewRoundState {
         // 4. Refill Ideas
         // 5. Add Hype
 
-        $this->game->playerManager->activateNextPlayer();
+        $this->game->playerManager->activateFirstPlayer();
         $this->game->gamestate->nextState("startActionsPhase");
     }
 }
