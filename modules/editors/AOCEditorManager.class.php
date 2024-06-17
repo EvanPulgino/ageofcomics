@@ -94,6 +94,23 @@ class AOCEditorManager extends APP_GameClass {
     }
 
     /**
+     * Gets all of the player's editors that are on action spaces
+     *
+     * @param int $playerId - the ID of the player
+     * @return AOCEditor[] - the player's editors on action spaces
+     */
+    public function getPlayerEditorsOnBoard($playerId) {
+        $sql = "SELECT editor_id id, editor_owner owner, editor_color color, editor_location location FROM editor WHERE editor_owner = $playerId AND editor_location >= 10001 AND editor_location <= 60005";
+        $rows = self::getObjectListFromDB($sql);
+
+        $editors = [];
+        foreach ($rows as $row) {
+            $editors[] = new AOCEditor($row);
+        }
+        return $editors;
+    }
+
+    /**
      * Get a count of the number of editors a player has in their player area
      *
      * @param int $playerId - the ID of the player

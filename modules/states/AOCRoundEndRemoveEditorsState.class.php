@@ -39,7 +39,53 @@ class AOCRoundEndRemoveEditorsState {
      * @return void
      */
     public function stRoundEndRemoveEditors() {
-        // Do some stuff here
+        // Get all the players
+        $players = $this->game->playerManager->getPlayers();
+
+        // Iterate over each player
+        foreach ($players as $player) {
+            // Get all the editors owned by the player
+            $editors = $this->game->editorManager->getPlayerEditorsOnBoard(
+                $player->getId()
+            );
+
+            $hasExtraEditor = count($editors) === 5;
+
+            // Iterate over each editor
+            foreach ($editors as $editor) {
+                if ($hasExtraEditor) {
+                    // If the player has an extra editor, return it to the board
+                    $this->game->editorManager->moveEditor(
+                        $editor->getId(),
+                        LOCATION_EXTRA_EDITOR
+                    );
+                    $hasExtraEditor = false;
+                    $this->game->notifyAllPlayers(
+                        "moveEditorToExtraEditorSpace",
+                        "",
+                        [
+                            "editor" => $editor->getUiData(),
+                        ]
+                    );
+                } else {
+                    // Otherwise, return it to the player
+                    $this->game->editorManager->moveEditor(
+                        $editor->getId(),
+                        LOCATION_PLAYER_AREA
+                    );
+                    $this->game->notifyAllPlayers(
+                        "moveEditorToPlayerArea",
+                        "",
+                        [
+                            "editor" => $editor->getUiData(),
+                            "player" => $player->getUiData(),
+                        ]
+                    );
+                }
+            }
+        }
+
+        // Go to next state
         $this->game->gamestate->nextState("refillCards");
     }
 }

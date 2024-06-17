@@ -420,6 +420,17 @@ class GameBody extends GameBasics {
     this.playerController.adjustHand(notif.args.player, 1);
   }
 
+  notif_moveEditorToExtraEditorSpace(notif: any): void {
+    this.editorController.moveEditorToExtraEditorSpace(notif.args.editor);
+  }
+
+  notif_moveEditorToPlayerArea(notif: any): void {
+    this.editorController.moveEditorToPlayerArea(
+      notif.args.editor,
+      notif.args.player.id
+    );
+  }
+
   /**
    * Handle 'moveMiniComic' notification
    *

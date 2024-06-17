@@ -631,6 +631,12 @@ var GameBody = /** @class */ (function (_super) {
         this.cardController.slideCardToPlayerHand(notif.args.card);
         this.playerController.adjustHand(notif.args.player, 1);
     };
+    GameBody.prototype.notif_moveEditorToExtraEditorSpace = function (notif) {
+        this.editorController.moveEditorToExtraEditorSpace(notif.args.editor);
+    };
+    GameBody.prototype.notif_moveEditorToPlayerArea = function (notif) {
+        this.editorController.moveEditorToPlayerArea(notif.args.editor, notif.args.player.id);
+    };
     /**
      * Handle 'moveMiniComic' notification
      *
@@ -1220,6 +1226,42 @@ var EditorController = /** @class */ (function () {
             gameui.attachToNewParent(editorDiv, actionSpaceDiv);
         });
         // Play the animation
+        animation.play();
+    };
+    /**
+     * Move an editor to the extra editor space
+     */
+    EditorController.prototype.moveEditorToExtraEditorSpace = function (editor) {
+        // Get the editor div
+        var editorDiv = dojo.byId("aoc-editor-" + editor.id);
+        // Get the extra editor space div
+        var extraEditorSpaceDiv = dojo.byId("aoc-extra-editor-space-" + this.ui.getPlayerColorAsString(editor.color));
+        // Create the animation to move the editor to the extra editor space
+        var animation = gameui.slideToObject(editorDiv, extraEditorSpaceDiv);
+        dojo.connect(animation, "onEnd", function () {
+            dojo.removeAttr(editorDiv, "style");
+            dojo.place(editorDiv, extraEditorSpaceDiv);
+        });
+        // Play the animation
+        animation.play();
+    };
+    /**
+     * Move an editor to a player area
+     *
+     * @param editor - the editor to move
+     * @param playerId - the player to move the editor to
+     */
+    EditorController.prototype.moveEditorToPlayerArea = function (editor, playerId) {
+        // Get the editor div
+        var editorDiv = dojo.byId("aoc-editor-" + editor.id);
+        // Get the player area div
+        var playerAreaDiv = dojo.byId("aoc-editor-container-" + playerId);
+        // Create the animation to move the editor to the player area
+        var animation = gameui.slideToObject(editorDiv, playerAreaDiv);
+        dojo.connect(animation, "onEnd", function () {
+            dojo.removeAttr(editorDiv, "style");
+            dojo.place(editorDiv, playerAreaDiv);
+        });
         animation.play();
     };
     return EditorController;

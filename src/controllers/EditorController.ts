@@ -83,4 +83,50 @@ class EditorController {
     // Play the animation
     animation.play();
   }
+
+  /**
+   * Move an editor to the extra editor space
+   */
+  moveEditorToExtraEditorSpace(editor: any): void {
+    // Get the editor div
+    const editorDiv = dojo.byId("aoc-editor-" + editor.id);
+    // Get the extra editor space div
+    const extraEditorSpaceDiv = dojo.byId(
+      "aoc-extra-editor-space-" + this.ui.getPlayerColorAsString(editor.color)
+    );
+
+    // Create the animation to move the editor to the extra editor space
+    var animation = gameui.slideToObject(editorDiv, extraEditorSpaceDiv);
+
+    dojo.connect(animation, "onEnd", () => {
+      dojo.removeAttr(editorDiv, "style");
+      dojo.place(editorDiv, extraEditorSpaceDiv);
+    });
+
+    // Play the animation
+    animation.play();
+  }
+
+  /**
+   * Move an editor to a player area
+   *
+   * @param editor - the editor to move
+   * @param playerId - the player to move the editor to
+   */
+  moveEditorToPlayerArea(editor: any, playerId: any): void {
+    // Get the editor div
+    const editorDiv = dojo.byId("aoc-editor-" + editor.id);
+    // Get the player area div
+    const playerAreaDiv = dojo.byId("aoc-editor-container-" + playerId);
+
+    // Create the animation to move the editor to the player area
+    var animation = gameui.slideToObject(editorDiv, playerAreaDiv);
+
+    dojo.connect(animation, "onEnd", () => {
+      dojo.removeAttr(editorDiv, "style");
+      dojo.place(editorDiv, playerAreaDiv);
+    });
+
+    animation.play();
+  }
 }
