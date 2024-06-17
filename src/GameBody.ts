@@ -207,6 +207,11 @@ class GameBody extends GameBasics {
     this.cardController.setupCards(notif.args.comicCards.supply);
   }
 
+  notif_dealCardToSupply(notif: any): void {
+    console.log("dealCardToSupply", notif);
+    this.cardController.dealCardToSupply(notif.args.card);
+  }
+
   /**
    * Handle 'developComic' notification
    *
@@ -257,6 +262,10 @@ class GameBody extends GameBasics {
    */
   notif_discardCardFromDeck(notif: any): void {
     this.cardController.discardCardFromDeck(notif.args.card);
+  }
+
+  notif_discardCardFromSupply(notif: any): void {
+    this.cardController.discardCardFromSupply(notif.args.card);
   }
 
   /**

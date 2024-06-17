@@ -126,6 +126,28 @@ class CardController {
     }
   }
 
+  dealCardToSupply(card: any): void {
+    const cardType = card.type;
+    const cardDiv = dojo.byId("aoc-card-" + card.id);
+    const supplyDiv = dojo.byId("aoc-" + cardType + "s-available");
+
+    // Flip the card face-up
+    cardDiv.classList.remove(card.facedownClass);
+    cardDiv.classList.add(card.baseClass);
+    dojo.setAttr(cardDiv, "order", card.locationArg);
+
+    // Create the animation
+    var animation = gameui.slideToObject(cardDiv, supplyDiv, 500);
+    dojo.connect(animation, "onEnd", () => {
+      // After animation ends, remove styling added by animation and place in new parent div
+      dojo.removeAttr(cardDiv, "style");
+      dojo.place(cardDiv, supplyDiv);
+    });
+
+    // Play the animation
+    animation.play();
+  }
+
   /**
    * Moves card from a player's hand to the appropriate discard pile.
    *
@@ -172,6 +194,25 @@ class CardController {
     // Flip the card face-up
     cardDiv.classList.remove(card.facedownClass);
     cardDiv.classList.add(card.baseClass);
+
+    // Get the discard pile for the card's type
+    var discardDiv = dojo.byId("aoc-" + card.type + "s-discard");
+
+    // Create the animation
+    var animation = gameui.slideToObject(cardDiv, discardDiv, 500);
+    dojo.connect(animation, "onEnd", () => {
+      // After animation ends, remove styling added by animation and place in new parent div
+      dojo.removeAttr(cardDiv, "style");
+      dojo.place(cardDiv, discardDiv);
+    });
+
+    // Play the animation
+    animation.play();
+  }
+
+  discardCardFromSupply(card: any): void {
+    // Get the card div
+    var cardDiv = dojo.byId("aoc-card-" + card.id);
 
     // Get the discard pile for the card's type
     var discardDiv = dojo.byId("aoc-" + card.type + "s-discard");

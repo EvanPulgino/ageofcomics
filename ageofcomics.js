@@ -446,6 +446,10 @@ var GameBody = /** @class */ (function (_super) {
         this.cardController.setupCards(notif.args.writerCards.supply);
         this.cardController.setupCards(notif.args.comicCards.supply);
     };
+    GameBody.prototype.notif_dealCardToSupply = function (notif) {
+        console.log("dealCardToSupply", notif);
+        this.cardController.dealCardToSupply(notif.args.card);
+    };
     /**
      * Handle 'developComic' notification
      *
@@ -493,6 +497,9 @@ var GameBody = /** @class */ (function (_super) {
      */
     GameBody.prototype.notif_discardCardFromDeck = function (notif) {
         this.cardController.discardCardFromDeck(notif.args.card);
+    };
+    GameBody.prototype.notif_discardCardFromSupply = function (notif) {
+        this.cardController.discardCardFromSupply(notif.args.card);
     };
     /**
      * Handle 'flipCalendarTiles' notification
@@ -1001,6 +1008,24 @@ var CardController = /** @class */ (function () {
                 return "aoc-ripoff-card";
         }
     };
+    CardController.prototype.dealCardToSupply = function (card) {
+        var cardType = card.type;
+        var cardDiv = dojo.byId("aoc-card-" + card.id);
+        var supplyDiv = dojo.byId("aoc-" + cardType + "s-available");
+        // Flip the card face-up
+        cardDiv.classList.remove(card.facedownClass);
+        cardDiv.classList.add(card.baseClass);
+        dojo.setAttr(cardDiv, "order", card.locationArg);
+        // Create the animation
+        var animation = gameui.slideToObject(cardDiv, supplyDiv, 500);
+        dojo.connect(animation, "onEnd", function () {
+            // After animation ends, remove styling added by animation and place in new parent div
+            dojo.removeAttr(cardDiv, "style");
+            dojo.place(cardDiv, supplyDiv);
+        });
+        // Play the animation
+        animation.play();
+    };
     /**
      * Moves card from a player's hand to the appropriate discard pile.
      *
@@ -1040,6 +1065,21 @@ var CardController = /** @class */ (function () {
         // Flip the card face-up
         cardDiv.classList.remove(card.facedownClass);
         cardDiv.classList.add(card.baseClass);
+        // Get the discard pile for the card's type
+        var discardDiv = dojo.byId("aoc-" + card.type + "s-discard");
+        // Create the animation
+        var animation = gameui.slideToObject(cardDiv, discardDiv, 500);
+        dojo.connect(animation, "onEnd", function () {
+            // After animation ends, remove styling added by animation and place in new parent div
+            dojo.removeAttr(cardDiv, "style");
+            dojo.place(cardDiv, discardDiv);
+        });
+        // Play the animation
+        animation.play();
+    };
+    CardController.prototype.discardCardFromSupply = function (card) {
+        // Get the card div
+        var cardDiv = dojo.byId("aoc-card-" + card.id);
         // Get the discard pile for the card's type
         var discardDiv = dojo.byId("aoc-" + card.type + "s-discard");
         // Create the animation
