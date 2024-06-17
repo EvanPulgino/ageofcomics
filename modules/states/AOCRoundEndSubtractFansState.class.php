@@ -39,7 +39,46 @@ class AOCRoundEndSubtractFansState {
      * @return void
      */
     public function stRoundEndSubtractFans() {
-        // Do some stuff here
+        // Get all printed comics
+        $printedComics = $this->game->miniComicManager->getOwnedMiniComics();
+
+        // Subtract one fan from each printed comic
+        foreach ($printedComics as $printedComic) {
+            $this->subtractFanFromMiniComic($printedComic);
+        }
+
         $this->game->gamestate->nextState("removeEditors");
+    }
+
+    private function subtractFanFromMiniComic($miniComic) {
+        if ($miniComic->getFans() > 1) {
+            $incomeChange = $this->game->miniComicManager->adjustMiniComicFansFromSelf(
+                $miniComic,
+                -1
+            );
+            $player = $this->game->playerManager->getPlayer(
+                $miniComic->getPlayerId()
+            );
+            $this->game->playerManager->adjustPlayerIncome(
+                $player,
+                $incomeChange
+            );
+            $this->game->notifyAllPlayers(
+                "adjustMiniComic",
+                clienttranslate('${comicName} loses a fan'),
+                [
+                    "player" => $player->getUiData(),
+                    "player_name" => $player->getName(),
+                    "comicName" => $this->game->formatNotificationString(
+                        $miniComic->getName(),
+                        $miniComic->getGenreId()
+                    ),
+                    "miniComic" => $this->game->miniComicManager->getMiniComicUiData(
+                        $miniComic->getId()
+                    ),
+                    "incomeChange" => $incomeChange,
+                ]
+            );
+        }
     }
 }
