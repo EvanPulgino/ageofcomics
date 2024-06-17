@@ -36,6 +36,7 @@ class AOCPerformPrintUpgradeState {
             $upgradableActions[] = HIRE_ACTION;
             $upgradableActions[] = DEVELOP_ACTION;
             $upgradableActions[] = IDEAS_ACTION;
+            $upgradableActions[] = PRINT_ACTION;
         }
 
         if ($printedComicCount == 4 || $printedComicCount == 5) {
@@ -78,7 +79,7 @@ class AOCPerformPrintUpgradeState {
     public function placeUpgradeCube($actionKey, $cubeMoved) {
         $activePlayer = $this->game->playerManager->getActivePlayer();
 
-        switch($cubeMoved) {
+        switch ($cubeMoved) {
             case 1:
                 $activePlayer->setCubeOneLocation($actionKey);
                 break;
