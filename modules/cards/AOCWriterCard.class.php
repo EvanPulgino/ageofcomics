@@ -154,6 +154,7 @@ class AOCWriterCard extends AOCCard {
             "locationArg" => $this->getLocationArg(),
             "playerId" => $this->getPlayerId(),
             "value" => $this->getValue(),
+            "displayValue" => $this->getDisplayValue(),
             "fans" => $this->getFans(),
             "ideas" => $this->getIdeas(),
             "baseClass" => $this->getBaseClass(),

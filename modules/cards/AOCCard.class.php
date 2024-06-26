@@ -18,6 +18,7 @@
  * - The location of the card
  * - The location argument of the card
  * - The ID of the player who owns the card
+ * - The display value of the card - used when creatives are improved
  *
  * This is a generic class for all cards. Each card type has its own class that extends this class:
  * - @see AOCArtistCard
@@ -73,6 +74,11 @@ class AOCCard {
      */
     private $playerId;
 
+    /**
+     * @var int $displayValue The value of the creative card, including improvements
+     */
+    private $displayValue;
+
     public function __construct($row) {
         $this->id = (int) $row["id"];
         $this->typeId = (int) $row["type"];
@@ -82,6 +88,7 @@ class AOCCard {
         $this->location = (int) $row["location"];
         $this->locationArg = (int) $row["locationArg"];
         $this->playerId = (int) $row["playerId"];
+        $this->displayValue = (int) $row["displayValue"];
     }
 
     /**
@@ -187,6 +194,25 @@ class AOCCard {
     }
 
     /**
+     * Get the display value of the card
+     *
+     * @return int The display value of the card
+     */
+    public function getDisplayValue() {
+        return $this->displayValue;
+    }
+
+    /**
+     * Set the display value of the card
+     *
+     * @param int $displayValue The display value of the card
+     * @return void
+     */
+    public function setDisplayValue($displayValue) {
+        $this->displayValue = $displayValue;
+    }
+
+    /**
      * Get uiData for this card
      * @return array uiData for this card
      */
@@ -200,6 +226,7 @@ class AOCCard {
             "location" => $this->location,
             "locationArg" => $this->locationArg,
             "playerId" => $this->playerId,
+            "displayValue" => $this->displayValue,
         ];
     }
 }

@@ -66,6 +66,16 @@ class AgeOfComics extends Table {
         $this->states[CHECK_HAND_SIZE] = new AOCCheckHandSizeState($this);
         $this->states[COMPLETE_SETUP] = new AOCCompleteSetupState($this);
         $this->states[CONTINUE_SALES] = new AOCContinueSalesState($this);
+        $this->states[END_START_NEW_ROUND] = new AOCEndStartNewRoundState($this);
+        $this->states[
+            ENTER_INCREASE_CREATIVES
+        ] = new AOCEnterIncreaseCreativesState($this);
+        $this->states[INCREASE_CREATIVES] = new AOCIncreaseCreativesState(
+            $this
+        );
+        $this->states[
+            INCREASE_CREATIVES_FULFILL_ORDERS
+        ] = new AOCIncreaseCreativesFulfillOrdersState($this);
         $this->states[NEXT_PLAYER] = new AOCNextPlayerState($this);
         $this->states[NEXT_PLAYER_SETUP] = new AOCNextPlayerSetupState($this);
         $this->states[PERFORM_DEVELOP] = new AOCPerformDevelopState($this);
@@ -282,6 +292,18 @@ class AgeOfComics extends Table {
     }
     function argsContinueSales() {
         return $this->states[CONTINUE_SALES]->getArgs();
+    }
+    function argsEndStartNewRound() {
+        return $this->states[END_START_NEW_ROUND]->getArgs();
+    }
+    function argsEnterIncreaseCreatives() {
+        return $this->states[ENTER_INCREASE_CREATIVES]->getArgs();
+    }
+    function argsIncreaseCreatives($playerId) {
+        return $this->states[INCREASE_CREATIVES]->getArgs($playerId);
+    }
+    function argsIncreaseCreativesFulfillOrders() {
+        return $this->states[INCREASE_CREATIVES_FULFILL_ORDERS]->getArgs();
     }
     function argsNextPlayer() {
         return $this->states[NEXT_PLAYER]->getArgs();

@@ -102,6 +102,58 @@ $machinestates = [
         "type" => STATE_TYPE_GAME,
         "args" => STATE_ARGS_START_NEW_ROUND,
         "action" => GAME_ACTION_START_NEW_ROUND,
+        "transitions" => [
+            "increaseCreatives" => ST_ENTER_INCREASE_CREATIVES,
+            "startActionsPhase" => ST_PLAYER_TURN,
+        ],
+    ],
+
+    ST_ENTER_INCREASE_CREATIVES => [
+        "name" => ENTER_INCREASE_CREATIVES,
+        "description" => clienttranslate(
+            "Waiting for other players to finish increasing creatives"
+        ),
+        "descriptionmyturn" => "",
+        "type" => STATE_TYPE_MULTIPLE_ACTIVE_PLAYER,
+        "initialprivate" => ST_INCREASE_CREATIVES,
+        "args" => STATE_ARGS_ENTER_INCREASE_CREATIVES,
+        "action" => GAME_ACTION_ENTER_INCREASE_CREATIVES,
+        "transitions" => ["startActionsPhase" => ST_END_START_NEW_ROUND],
+    ],
+
+    ST_INCREASE_CREATIVES => [
+        "name" => INCREASE_CREATIVES,
+        "descriptionmyturn" => clienttranslate(
+            '${you} may take a Learn or Train action on each printed comic'
+        ),
+        "type" => STATE_TYPE_PRIVATE,
+        "args" => STATE_ARGS_INCREASE_CREATIVES,
+        "possibleactions" => [PLAYER_ACTION_LEARN, PLAYER_ACTION_TRAIN],
+        "transitions" => [
+            "fulfillOrders" => ST_INCREASE_CREATIVES_FULFILL_ORDERS,
+            "finishIncreaseCreatives" => ST_ENTER_INCREASE_CREATIVES,
+        ],
+    ],
+
+    ST_INCREASE_CREATIVES_FULFILL_ORDERS => [
+        "name" => INCREASE_CREATIVES_FULFILL_ORDERS,
+        "descriptionmyturn" => clienttranslate(
+            '${you} must fulfill completed sales orders'
+        ),
+        "type" => STATE_TYPE_PRIVATE,
+        "args" => STATE_ARGS_INCREASE_CREATIVES_FULFILL_ORDERS,
+        "possibleactions" => [PLAYER_ACTION_FULFILL_SALES_ORDER],
+        "transitions" => [
+            "finishIncreaseCreatives" => ST_ENTER_INCREASE_CREATIVES,
+        ],
+    ],
+
+    ST_END_START_NEW_ROUND => [
+        "name" => END_START_NEW_ROUND,
+        "description" => "",
+        "type" => STATE_TYPE_GAME,
+        "args" => STATE_ARGS_END_START_NEW_ROUND,
+        "action" => GAME_ACTION_END_START_NEW_ROUND,
         "transitions" => ["startActionsPhase" => ST_PLAYER_TURN],
     ],
 

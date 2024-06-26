@@ -31,6 +31,12 @@
             </div>
             <div id="aoc-print-artists-menu" class="aoc-print-menu"></div>
         </div>
+        <div id="aoc-improve-creatives-menu" class="aoc-hidden whiteblock">
+            <div id="aoc-improve-creatives-header">
+                <div id="aoc-improve-creatives-header-text" class="aoc-header-text aoc-squada">Improve Creatives</div>
+            </div>
+            <div id="aoc-improve-creatives-comics" class="aoc-increase-menu"></div>
+        </div>
         <div id="aoc-select-start-items" class="whiteblock" style="display: none;">
             <div id="aoc-select-start-items-header">
                 <div id="aoc-select-start-items-header-text" class="aoc-squada">{SELECT_START_ITEMS}</div>
@@ -397,7 +403,8 @@
                             </div>
                             <div id="aoc-token-container-{player_id}" class="aoc-token-container">
                                 <div id="aoc-mastery-container-{player_id}" class="aoc-mastery-container"></div>
-                                <div id="aoc-sales-order-container-{player_id}" class="aoc-sales-order-container"></div>
+                                <div id="aoc-sales-order-container-{player_id}" class="aoc-sales-order-container">
+                                </div>
                             </div>
                         </div>
                         <div id="aoc-player-mat-{player_id}" class="aoc-player-mat aoc-player-mat-{color}">

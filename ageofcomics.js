@@ -788,8 +788,12 @@ var GameState = /** @class */ (function () {
         this.checkHandSize = new CheckHandSize(game);
         this.completeSetup = new CompleteSetup(game);
         this.continueSales = new ContinueSales(game);
+        this.endStartNewRound = new EndStartNewRound(game);
+        this.enterIncreaseCreatives = new EnterIncreaseCreatives(game);
         this.gameEnd = new GameEnd(game);
         this.gameSetup = new GameSetup(game);
+        this.increaseCreatives = new IncreaseCreatives(game);
+        this.increaseCreativesFulfillOrders = new IncreaseCreativesFulfillOrders(game);
         this.nextPlayer = new NextPlayer(game);
         this.nextPlayerSetup = new NextPlayerSetup(game);
         this.performDevelop = new PerformDevelop(game);
@@ -962,7 +966,8 @@ var CardController = /** @class */ (function () {
                 this.ui.createHtml(cardDiv, "aoc-" + card.type + "s-available");
                 break;
             case globalThis.LOCATION_PLAYER_MAT:
-                this.ui.createHtml(cardDiv, "aoc-" + card.type + "-slot-" + card.locationArg + "-" + card.playerId);
+                var cardType = this.getCardTypeForMatSlot(card);
+                this.ui.createHtml(cardDiv, "aoc-" + cardType + "-slot-" + card.locationArg + "-" + card.playerId);
                 break;
         }
     };
@@ -2709,6 +2714,58 @@ var ContinueSales = /** @class */ (function () {
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
+ * EndStartNewRound.ts
+ *
+ * AgeOfComics end start new round state
+ *
+ * State vars:
+ * - game: game object reference
+ *
+ */
+var EndStartNewRound = /** @class */ (function () {
+    function EndStartNewRound(game) {
+        this.game = game;
+    }
+    EndStartNewRound.prototype.onEnteringState = function (stateArgs) { };
+    EndStartNewRound.prototype.onLeavingState = function () { };
+    EndStartNewRound.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return EndStartNewRound;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * EnterIncreaseCreatives.ts
+ *
+ * AgeOfComics enter increase creatives state
+ *
+ * State vars:
+ * - game: game object reference
+ *
+ */
+var EnterIncreaseCreatives = /** @class */ (function () {
+    function EnterIncreaseCreatives(game) {
+        this.game = game;
+    }
+    EnterIncreaseCreatives.prototype.onEnteringState = function (stateArgs) { };
+    EnterIncreaseCreatives.prototype.onLeavingState = function () { };
+    EnterIncreaseCreatives.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return EnterIncreaseCreatives;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
  * GameEnd.ts
  *
  * AgeOfComics game end state
@@ -2751,6 +2808,315 @@ var GameSetup = /** @class */ (function () {
     GameSetup.prototype.onLeavingState = function () { };
     GameSetup.prototype.onUpdateActionButtons = function (stateArgs) { };
     return GameSetup;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * IncreaseCreatives.ts
+ *
+ * AgeOfComics increase creatives state
+ *
+ * State vars:
+ * - game: game object reference
+ *
+ */
+var IncreaseCreatives = /** @class */ (function () {
+    function IncreaseCreatives(game) {
+        this.game = game;
+        this.connections = {};
+    }
+    IncreaseCreatives.prototype.onEnteringState = function (stateArgs) {
+        if (stateArgs.isCurrentPlayerActive) {
+            gameui.addActionButton("aoc-finish-increase", _("End increasing creatives"), function () {
+                console.log("Finish increasing creatives");
+            });
+            dojo.addClass("aoc-finish-increase", "aoc-button");
+            dojo.toggleClass("aoc-improve-creatives-menu", "aoc-hidden");
+            this.addComicsToMenu(stateArgs.args.cardsOnPlayerMat, parseInt(stateArgs.args.currentPlayer.money));
+        }
+    };
+    IncreaseCreatives.prototype.onLeavingState = function () { };
+    IncreaseCreatives.prototype.onUpdateActionButtons = function (stateArgs) { };
+    IncreaseCreatives.prototype.addComicsToMenu = function (cards, playerMoney) {
+        var numOfComics = cards.filter(function (card) { return card.type === "comic" || card.type === "ripoff"; }).length;
+        for (var i = 1; i <= numOfComics; i++) {
+            this.createActionColumn(i, cards, playerMoney);
+        }
+    };
+    /**
+     * Check if a creative on this comic can learn
+     *
+     * A creative can learn if:
+     * - Both creatives match the genre of the comic
+     * - The creatives have different values
+     *
+     * @param slot - the slot of the comic on the player mat
+     * @param cards - the cards on the player mat
+     *
+     * @returns boolean - true if a creative can learn
+     */
+    IncreaseCreatives.prototype.canLearn = function (slot, cards) {
+        var comicCard = this.getComicCardInSlot(slot, cards);
+        var artistCard = this.getCreativeTypeCardInSlot("artist", slot, cards);
+        var writerCard = this.getCreativeTypeCardInSlot("writer", slot, cards);
+        if (comicCard && artistCard && writerCard) {
+            return (comicCard.genre === artistCard.genre &&
+                comicCard.genre === writerCard.genre &&
+                artistCard.displayValue !== writerCard.displayValue);
+        }
+        return false;
+    };
+    /**
+     * Checks if player can can train both creatives with one action.
+     *
+     * Can double train if:
+     * - Both creatives match the genre of the comic
+     * - The creatives have the same values
+     * - That value is less than 3
+     *
+     * @param slot - the slot of the comic on the player mat
+     * @param cards - the cards on the player mat
+     *
+     * @returns boolean - true if the player can double train
+     */
+    IncreaseCreatives.prototype.canDoubleTrain = function (slot, cards) {
+        var comicCard = this.getComicCardInSlot(slot, cards);
+        var artistCard = this.getCreativeTypeCardInSlot("artist", slot, cards);
+        var writerCard = this.getCreativeTypeCardInSlot("writer", slot, cards);
+        if (comicCard && artistCard && writerCard) {
+            return (comicCard.genre === artistCard.genre &&
+                comicCard.genre === writerCard.genre &&
+                artistCard.displayValue === writerCard.displayValue &&
+                artistCard.displayValue < 3);
+        }
+        return false;
+    };
+    /**
+     * Check if the player can train a creative
+     *
+     * A creative can be trained if:
+     * - Exactly one creative matches the genre of the comic
+     * - The matching creative has a value less than 3
+     *
+     * @param slot
+     * @param cards
+     * @returns
+     */
+    IncreaseCreatives.prototype.canTrain = function (slot, cards) {
+        var comicCard = this.getComicCardInSlot(slot, cards);
+        var artistCard = this.getCreativeTypeCardInSlot("artist", slot, cards);
+        var writerCard = this.getCreativeTypeCardInSlot("writer", slot, cards);
+        if (comicCard && artistCard && writerCard) {
+            return ((comicCard.genre === artistCard.genre &&
+                artistCard.displayValue < 3 &&
+                comicCard.genre !== writerCard.genre) ||
+                (comicCard.genre === writerCard.genre &&
+                    writerCard.displayValue < 3 &&
+                    comicCard.genre !== artistCard.genre));
+        }
+        return false;
+    };
+    IncreaseCreatives.prototype.createActionColumn = function (slot, cards, playerMoney) {
+        var increaseActionColumn = "<div id='aoc-increase-action-column-" +
+            slot +
+            "' class='aoc-increase-action-column'></div>";
+        dojo.place(increaseActionColumn, "aoc-improve-creatives-comics");
+        var increasableComicDiv = "<div id='aoc-increasable-comic-" +
+            slot +
+            "' class='aoc-increasable-comic-slot'></div>";
+        dojo.place(increasableComicDiv, "aoc-increase-action-column-" + slot);
+        // Add the comic card to the slot
+        this.createComicCardInColumn(slot, cards);
+        // Add the artist to the slot
+        this.createCreativeCardInColumn("artist", slot, cards);
+        // Add the writer to the slot
+        this.createCreativeCardInColumn("writer", slot, cards);
+        // Add the action buttons to the slot
+        this.createColumnActionButtions(slot, cards, playerMoney);
+    };
+    IncreaseCreatives.prototype.createComicCardInColumn = function (slot, cards) {
+        var comicCard = this.getComicCardInSlot(slot, cards);
+        if (comicCard) {
+            var typeCss = "aoc-" + comicCard.type + "-card";
+            var comicCardDiv = "<div id='aoc-inc-comic-card-" +
+                comicCard.id +
+                "' class='aoc-card " +
+                typeCss +
+                " " +
+                comicCard.cssClass +
+                "'></div>";
+            dojo.place(comicCardDiv, "aoc-increasable-comic-" + slot);
+        }
+    };
+    IncreaseCreatives.prototype.createCreativeCardInColumn = function (type, slot, cards) {
+        var creativeCard = this.getCreativeTypeCardInSlot(type, slot, cards);
+        if (creativeCard) {
+            var creativeCardDiv = "<div id='aoc-inc-" +
+                type +
+                "-card-" +
+                creativeCard.id +
+                "' class='aoc-card aoc-" +
+                type +
+                "-card aoc-creative-card " +
+                creativeCard.cssClass +
+                "'></div>";
+            dojo.place(creativeCardDiv, "aoc-increasable-comic-" + slot);
+        }
+    };
+    IncreaseCreatives.prototype.createColumnActionButtions = function (slot, cards, playerMoney) {
+        // Create button if creative can learn
+        if (this.canLearn(slot, cards)) {
+            this.createLearnButton(slot, cards, playerMoney);
+        }
+        else if (this.canDoubleTrain(slot, cards)) {
+        }
+        else if (this.canTrain(slot, cards)) {
+            this.createTrainButton(slot, cards, playerMoney);
+        }
+    };
+    /**
+     * Createthe buttons if a double train is possible
+     *
+     * @param slot
+     * @param cards
+     * @param playerMoney
+     */
+    IncreaseCreatives.prototype.createDoubleTrainButtons = function (slot, cards, playerMoney) {
+        // Get one creative
+        var artistCard = this.getCreativeTypeCardInSlot("artist", slot, cards);
+        // Determine the cost of training
+        var trainingCost = artistCard.displayValue + 1;
+        // Determine cost of double training
+        var doubleTrainingCost = trainingCost * 2;
+        // Create train writer button
+        var trainWriterButtonDiv = "<a id='aoc-train-writer-" +
+            slot +
+            "' class='action-button bgabutton bgabutton_blue aoc-button'>" +
+            _("Train (Writer) - $" + trainingCost) +
+            "</a>";
+        dojo.place(trainWriterButtonDiv, "aoc-increase-action-column-" + slot);
+        if (playerMoney < trainingCost) {
+            dojo.addClass("aoc-train-writer-" + slot, "aoc-button-disabled");
+        }
+        // Create train artist button
+        var trainArtistButtonDiv = "<a id='aoc-train-artist-" +
+            slot +
+            "' class='action-button bgabutton bgabutton_blue aoc-button'>" +
+            _("Train (Artist) - $" + trainingCost) +
+            "</a>";
+        dojo.place(trainArtistButtonDiv, "aoc-increase-action-column-" + slot);
+        if (playerMoney < trainingCost) {
+            dojo.addClass("aoc-train-artist-" + slot, "aoc-button-disabled");
+        }
+        // Create train both button
+        var trainBothButtonDiv = "<a id='aoc-train-both-" +
+            slot +
+            "' class='action-button bgabutton bgabutton_blue aoc-button'>" +
+            _("Train (Both) - $" + doubleTrainingCost) +
+            "</a>";
+        dojo.place(trainBothButtonDiv, "aoc-increase-action-column-" + slot);
+        if (playerMoney < doubleTrainingCost) {
+            dojo.addClass("aoc-train-both-" + slot, "aoc-button-disabled");
+        }
+    };
+    /**
+     * Create the learn button for a comic
+     *
+     * @param slot
+     * @param cards
+     * @param playerMoney
+     */
+    IncreaseCreatives.prototype.createLearnButton = function (slot, cards, playerMoney) {
+        // Get the creatives
+        var artistCard = this.getCreativeTypeCardInSlot("artist", slot, cards);
+        var writerCard = this.getCreativeTypeCardInSlot("writer", slot, cards);
+        // Determine creative with lower value
+        var lowerValueCreative = artistCard.displayValue < writerCard.displayValue
+            ? artistCard
+            : writerCard;
+        // Determine the cost of learning
+        var learningCost = 1;
+        // Create the learn button
+        var learnButtonDiv = "<a id='aoc-learn-" +
+            slot +
+            "' class='action-button bgabutton bgabutton_blue aoc-button'>" +
+            _("Learn (" + lowerValueCreative.type + ") - $" + learningCost) +
+            "</a>";
+        dojo.place(learnButtonDiv, "aoc-increase-action-column-" + slot);
+        // Disable the button if the player cannot afford it - should never happen but just in case
+        if (playerMoney < learningCost) {
+            dojo.addClass("aoc-learn-" + slot, "aoc-button-disabled");
+        }
+    };
+    /**
+     * Create the train button for a comic
+     * @param slot
+     * @param cards
+     * @param playerMoney
+     */
+    IncreaseCreatives.prototype.createTrainButton = function (slot, cards, playerMoney) {
+        // Get the creatives
+        var comicCard = this.getComicCardInSlot(slot, cards);
+        var artistCard = this.getCreativeTypeCardInSlot("artist", slot, cards);
+        var writerCard = this.getCreativeTypeCardInSlot("writer", slot, cards);
+        // Get the creative with the matching genre
+        var matchingCreative = comicCard.genre === artistCard.genre ? artistCard : writerCard;
+        // Determine the cost of training
+        var trainingCost = matchingCreative.displayValue + 1;
+        // Create the train button
+        var trainButtonDiv = "<a id='aoc-train-" +
+            slot +
+            "' class='action-button bgabutton bgabutton_blue aoc-button'>" +
+            _("Train (" + matchingCreative.type + ") - $" + trainingCost) +
+            "</a>";
+        dojo.place(trainButtonDiv, "aoc-increase-action-column-" + slot);
+        // Disable the button if the player cannot afford it
+        if (playerMoney < trainingCost) {
+            dojo.addClass("aoc-train-" + slot, "aoc-button-disabled");
+        }
+    };
+    IncreaseCreatives.prototype.getCreativeTypeCardInSlot = function (type, slot, cards) {
+        return cards.find(function (card) { return card.type === type && card.locationArg === slot; });
+    };
+    IncreaseCreatives.prototype.getComicCardInSlot = function (slot, cards) {
+        return cards.find(function (card) {
+            return (card.type === "comic" || card.type === "ripoff") &&
+                card.locationArg === slot;
+        });
+    };
+    return IncreaseCreatives;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * IncreaseCreatives.ts
+ *
+ * AgeOfComics increase creatives fulfill orders state
+ *
+ * State vars:
+ * - game: game object reference
+ *
+ */
+var IncreaseCreativesFulfillOrders = /** @class */ (function () {
+    function IncreaseCreativesFulfillOrders(game) {
+        this.game = game;
+    }
+    IncreaseCreativesFulfillOrders.prototype.onEnteringState = function (stateArgs) { };
+    IncreaseCreativesFulfillOrders.prototype.onLeavingState = function () { };
+    IncreaseCreativesFulfillOrders.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return IncreaseCreativesFulfillOrders;
 }());
 /**
  *------

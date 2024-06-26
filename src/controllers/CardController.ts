@@ -68,9 +68,10 @@ class CardController {
         this.ui.createHtml(cardDiv, "aoc-" + card.type + "s-available");
         break;
       case globalThis.LOCATION_PLAYER_MAT:
+        const cardType = this.getCardTypeForMatSlot(card);
         this.ui.createHtml(
           cardDiv,
-          "aoc-" + card.type + "-slot-" + card.locationArg + "-" + card.playerId
+          "aoc-" + cardType + "-slot-" + card.locationArg + "-" + card.playerId
         );
         break;
     }

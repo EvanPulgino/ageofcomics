@@ -51,6 +51,29 @@ $four: 100%;
   position: relative !important;
 }
 
+#aoc-improve-creatives-comics .aoc-card {
+  position: absolute !important;
+}
+
+#aoc-improve-creatives-comics .aoc-artist-card {
+  z-index: 1002;
+  top: 50px;
+}
+
+#aoc-improve-creatives-comics .aoc-comic-card {
+  z-index: 1003;
+  top: 100px;
+}
+
+#aoc-improve-creatives-comics .aoc-ripoff-card {
+  z-index: 1003;
+  top: 100px;
+}
+
+#aoc-improve-creatives-comics .aoc-writer-card {
+  z-index: 1001;
+}
+
 .aoc-deck .aoc-comic-card:nth-child(1) {
   bottom: 0;
   z-index: 1;

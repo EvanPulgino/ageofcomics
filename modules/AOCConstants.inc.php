@@ -17,6 +17,8 @@
 /** Game State Actions */
 define("GAME_ACTION_COMPLETE_SETUP", "stCompleteSetup");
 define("GAME_ACTION_CONTINUE_SALES", "stContinueSales");
+define("GAME_ACTION_END_START_NEW_ROUND", "stEndStartNewRound");
+define("GAME_ACTION_ENTER_INCREASE_CREATIVES", "stEnterIncreaseCreatives");
 define("GAME_ACTION_GAIN_ROYALITES", "stGainRoyalties");
 define("GAME_ACTION_GAME_END", "stGameEnd");
 define("GAME_ACTION_GAME_SETUP", "stGameSetup");
@@ -43,13 +45,16 @@ define("GAME_ACTION_START_NEW_ROUND", "stStartNewRound");
 
 /** Player Actions */
 define("PLAYER_ACTION_COLLECT_SALES_ORDER", "collectSalesOrder");
+define("PLAYER_ACTION_CONFIRM_GAIN_BONUS_IDEAS", "confirmGainBonusIdeas");
+define("PLAYER_ACTION_CONFIRM_DISCARD", "confirmDiscard");
+define("PLAYER_ACTION_CONFIRM_GAIN_IDEAS", "confirmGainIdeas");
 define("PLAYER_ACTION_DEVELOP_COMIC", "developComic");
 define("PLAYER_ACTION_DEVELOP_FROM_GENRE", "developFromGenre");
 define("PLAYER_ACTION_END_SALES", "endSales");
 define("PLAYER_ACTION_FLIP_SALES_ORDER", "flipSalesOrder");
-define("PLAYER_ACTION_CONFIRM_GAIN_IDEAS", "confirmGainIdeas");
-define("PLAYER_ACTION_CONFIRM_GAIN_BONUS_IDEAS", "confirmGainBonusIdeas");
+define("PLAYER_ACTION_FULFILL_SALES_ORDER", "fulfillSalesOrder");
 define("PLAYER_ACTION_HIRE_CREATIVE", "hireCreative");
+define("PLAYER_ACTION_LEARN", "learn");
 define("PLAYER_ACTION_MOVE_SALES_AGENT", "moveSalesAgent");
 define(
     "PLAYER_ACTION_MOVE_SALES_AGENT_WITH_TICKET",
@@ -60,7 +65,7 @@ define("PLAYER_ACTION_PRINT_COMIC", "printComic");
 define("PLAYER_ACTION_SELECT_ACTION_SPACE", "selectActionSpace");
 define("PLAYER_ACTION_SELECT_START_ITEMS", "selectStartItems");
 define("PLAYER_ACTION_SKIP_DOUBLE_PRINT", "skipDoublePrint");
-define("PLAYER_ACTION_CONFIRM_DISCARD", "confirmDiscard");
+define("PLAYER_ACTION_TRAIN", "train");
 
 /** Generic */
 define("CARD_LOCATION_ARG", "card_location_arg");
@@ -1095,7 +1100,14 @@ define("SALES_ORDERS_FOR_PLAYER_COUNT", [
 define("STATE_ARGS_CHECK_HAND_SIZE", "argsCheckHandSize");
 define("STATE_ARGS_COMPLETE_SETUP", "argsCompleteSetup");
 define("STATE_ARGS_CONTINUE_SALES", "argsContinueSales");
+define("STATE_ARGS_END_START_NEW_ROUND", "argsEndStartNewRound");
+define("STATE_ARGS_ENTER_INCREASE_CREATIVES", "argsEnterIncreaseCreatives");
 define("STATE_ARGS_GAME_END", "argsGameEnd");
+define("STATE_ARGS_INCREASE_CREATIVES", "argsIncreaseCreatives");
+define(
+    "STATE_ARGS_INCREASE_CREATIVES_FULFILL_ORDERS",
+    "argsIncreaseCreativesFulfillOrders"
+);
 define("STATE_ARGS_NEXT_PLAYER", "argsNextPlayer");
 define("STATE_ARGS_NEXT_PLAYER_SETUP", "argsNextPlayerSetup");
 define("STATE_ARGS_PERFORM_DEVELOP", "argsPerformDevelop");
@@ -1133,6 +1145,10 @@ define("ST_PLAYER_SETUP", 2);
 define("ST_NEXT_PLAYER_SETUP", 3);
 define("ST_COMPLETE_SETUP", 4);
 define("ST_START_NEW_ROUND", 10);
+define("ST_ENTER_INCREASE_CREATIVES", 11);
+define("ST_INCREASE_CREATIVES", 12);
+define("ST_INCREASE_CREATIVES_FULFILL_ORDERS", 13);
+define("ST_END_START_NEW_ROUND", 14);
 define("ST_PLAYER_TURN", 20);
 define("ST_PERFORM_HIRE", 21);
 define("ST_PERFORM_DEVELOP", 22);
@@ -1159,8 +1175,12 @@ define("ST_GAME_END", 99);
 define("CHECK_HAND_SIZE", "checkHandSize");
 define("COMPLETE_SETUP", "completeSetup");
 define("CONTINUE_SALES", "continueSales");
+define("END_START_NEW_ROUND", "endStartNewRound");
+define("ENTER_INCREASE_CREATIVES", "enterIncreaseCreatives");
 define("GAME_END", "gameEnd");
 define("GAME_SETUP", "gameSetup");
+define("INCREASE_CREATIVES", "increaseCreatives");
+define("INCREASE_CREATIVES_FULFILL_ORDERS", "increaseCreativesFulfillOrders");
 define("NEXT_PLAYER", "nextPlayer");
 define("NEXT_PLAYER_SETUP", "nextPlayerSetup");
 define("PERFORM_DEVELOP", "performDevelop");
@@ -1188,3 +1208,4 @@ define("STATE_TYPE_ACTIVE_PLAYER", "activeplayer");
 define("STATE_TYPE_GAME", "game");
 define("STATE_TYPE_MANAGER", "manager");
 define("STATE_TYPE_MULTIPLE_ACTIVE_PLAYER", "multipleactiveplayer");
+define("STATE_TYPE_PRIVATE", "private");

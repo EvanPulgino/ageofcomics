@@ -226,7 +226,7 @@ class AOCPerformPrintState {
 
         $this->game->playerManager->adjustPlayerMoney(
             $player,
-            -$card->getValue()
+            -$card->getDisplayValue()
         );
 
         $this->game->notifyAllPlayers(
@@ -237,7 +237,7 @@ class AOCPerformPrintState {
             [
                 "player" => $player->getUiData(),
                 "player_name" => $player->getName(),
-                "cost" => $card->getValue(),
+                "cost" => $card->getDisplayValue(),
                 "creativeTypeText" => $this->game->formatNotificationString(
                     $cardType == CARD_TYPE_ARTIST
                         ? clienttranslate("artist")

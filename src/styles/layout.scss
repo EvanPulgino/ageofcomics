@@ -103,6 +103,31 @@ html {
   display: block;
 }
 
+#aoc-improve-creatives-menu {
+  background-color: rgba(233, 225, 204, 0.9);
+  border: 5px solid;
+  border-radius: 25px;
+  position: fixed;
+  z-index: 1000;
+  top: 15%;
+  display: block;
+}
+
+.aoc-increasable-comic-slot {
+  position: relative;
+  width: 172px;
+  height: 345px;
+  transform: scale(0.95);
+}
+
+.aoc-increase-action-column {
+  align-items: center;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 5px;
+  justify-content: center;
+}
+
 #aoc-select-start-comic-buttons {
   align-items: center;
   display: flex;
@@ -305,6 +330,14 @@ html {
   opacity: 25% !important;
   cursor: not-allowed !important;
   pointer-events: none !important;
+}
+
+.aoc-increase-menu {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 15px;
+  justify-content: center;
 }
 
 .aoc-print-menu {

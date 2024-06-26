@@ -94,7 +94,7 @@ class AOCStartNewRoundState {
 
         // 5. Add Hype
 
-        $this->game->playerManager->activateFirstPlayer();
-        $this->game->gamestate->nextState("startActionsPhase");
+        // 6. Increase Creatives
+        $this->game->gamestate->nextState("increaseCreatives");
     }
 }

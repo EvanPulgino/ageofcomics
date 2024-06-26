@@ -78,6 +78,10 @@
   box-shadow: 0 0 20px 20px #f5c86e;
 }
 
+.aoc-button {
+  text-transform: capitalize;
+}
+
 .aoc-button:hover {
   transform: scale(1.05);
   background: green !important;
@@ -302,6 +306,31 @@ html {
   display: block;
 }
 
+#aoc-improve-creatives-menu {
+  background-color: rgba(233, 225, 204, 0.9);
+  border: 5px solid;
+  border-radius: 25px;
+  position: fixed;
+  z-index: 1000;
+  top: 15%;
+  display: block;
+}
+
+.aoc-increasable-comic-slot {
+  position: relative;
+  width: 172px;
+  height: 345px;
+  transform: scale(0.95);
+}
+
+.aoc-increase-action-column {
+  align-items: center;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 5px;
+  justify-content: center;
+}
+
 #aoc-select-start-comic-buttons {
   align-items: center;
   display: flex;
@@ -504,6 +533,14 @@ html {
   opacity: 25% !important;
   cursor: not-allowed !important;
   pointer-events: none !important;
+}
+
+.aoc-increase-menu {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 15px;
+  justify-content: center;
 }
 
 .aoc-print-menu {
@@ -3190,6 +3227,29 @@ html {
 
 #aoc-comics-available .aoc-comic-card {
   position: relative !important;
+}
+
+#aoc-improve-creatives-comics .aoc-card {
+  position: absolute !important;
+}
+
+#aoc-improve-creatives-comics .aoc-artist-card {
+  z-index: 1002;
+  top: 50px;
+}
+
+#aoc-improve-creatives-comics .aoc-comic-card {
+  z-index: 1003;
+  top: 100px;
+}
+
+#aoc-improve-creatives-comics .aoc-ripoff-card {
+  z-index: 1003;
+  top: 100px;
+}
+
+#aoc-improve-creatives-comics .aoc-writer-card {
+  z-index: 1001;
 }
 
 .aoc-deck .aoc-comic-card:nth-child(1) {

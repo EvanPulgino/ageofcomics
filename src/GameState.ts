@@ -17,8 +17,12 @@ class GameState {
   checkHandSize: State;
   completeSetup: State;
   continueSales: State;
+  endStartNewRound: State;
+  enterIncreaseCreatives: State;
   gameEnd: State;
   gameSetup: State;
+  increaseCreatives: State;
+  increaseCreativesFulfillOrders: State;
   nextPlayer: State;
   nextPlayerSetup: State;
   performDevelop: State;
@@ -44,8 +48,14 @@ class GameState {
     this.checkHandSize = new CheckHandSize(game);
     this.completeSetup = new CompleteSetup(game);
     this.continueSales = new ContinueSales(game);
+    this.endStartNewRound = new EndStartNewRound(game);
+    this.enterIncreaseCreatives = new EnterIncreaseCreatives(game);
     this.gameEnd = new GameEnd(game);
     this.gameSetup = new GameSetup(game);
+    this.increaseCreatives = new IncreaseCreatives(game);
+    this.increaseCreativesFulfillOrders = new IncreaseCreativesFulfillOrders(
+      game
+    );
     this.nextPlayer = new NextPlayer(game);
     this.nextPlayerSetup = new NextPlayerSetup(game);
     this.performDevelop = new PerformDevelop(game);

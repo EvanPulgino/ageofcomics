@@ -88,7 +88,7 @@ class AOCCardManager extends APP_GameClass {
      */
     public function drawCard($playerId, $cardId, $cardType) {
         $sql =
-            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_id = " .
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId, card_display_value displayValue FROM card WHERE card_id = " .
             $cardId;
         $row = self::getObjectFromDB($sql);
         switch ($cardType) {
@@ -137,7 +137,7 @@ class AOCCardManager extends APP_GameClass {
      */
     public function getCard($cardId) {
         $sql =
-            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_id = " .
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId, card_display_value displayValue FROM card WHERE card_id = " .
             $cardId;
         $row = self::getObjectFromDB($sql);
 
@@ -194,7 +194,7 @@ class AOCCardManager extends APP_GameClass {
         $operator = "WHERE";
 
         $sql =
-            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card ";
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId, card_display_value displayValue FROM card ";
         if ($cardType) {
             $sql .= " " . $operator . " card_type = " . $cardType;
             $operator = "AND";
@@ -257,9 +257,15 @@ class AOCCardManager extends APP_GameClass {
         $currentPlayerId,
         $cardType = null,
         $cardGenre = null,
-        $cardLocation = null
+        $cardLocation = null,
+        $cardOwner = null
     ) {
-        $cards = $this->getCards($cardType, $cardGenre, $cardLocation);
+        $cards = $this->getCards(
+            $cardType,
+            $cardGenre,
+            $cardLocation,
+            $cardOwner
+        );
 
         $uiData = [];
         foreach ($cards as $card) {
@@ -289,7 +295,7 @@ class AOCCardManager extends APP_GameClass {
 
     public function getPrintableRipoffsByPlayer($playerId) {
         $sql =
-            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE NOT card_owner = " .
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId, card_display_value displayValue FROM card WHERE NOT card_owner = " .
             $playerId .
             " AND card_location = " .
             LOCATION_PLAYER_MAT .
@@ -302,12 +308,12 @@ class AOCCardManager extends APP_GameClass {
         foreach ($rows as $row) {
             $printedOriginals[] = new AOCComicCard($row);
         }
-        
+
         $printableRipoffs = [];
 
         foreach ($printedOriginals as $original) {
             $sql =
-                "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId FROM card WHERE card_type = " .
+                "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId, card_display_value displayValue FROM card WHERE card_type = " .
                 CARD_TYPE_RIPOFF .
                 " AND card_type_arg = " .
                 $original->getBonus() .
@@ -323,6 +329,65 @@ class AOCCardManager extends APP_GameClass {
         return $printableRipoffs;
     }
 
+    public function getPrintedComicsByPlayer($playerId) {
+        $sql =
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId, card_display_value displayValue FROM card WHERE card_owner = " .
+            $playerId .
+            " AND card_location = " .
+            LOCATION_PLAYER_MAT .
+            " AND (card_type = " .
+            CARD_TYPE_COMIC .
+            " OR card_type = " .
+            CARD_TYPE_RIPOFF .
+            ")";
+
+        $rows = self::getObjectListFromDB($sql);
+
+        $cards = [];
+        foreach ($rows as $row) {
+            switch ($row["type"]) {
+                case CARD_TYPE_COMIC:
+                    $cards[] = new AOCComicCard($row);
+                    break;
+                case CARD_TYPE_RIPOFF:
+                    $cards[] = new AOCRipoffCard($row);
+                    break;
+            }
+        }
+
+        return $cards;
+    }
+
+    public function getArtistCardForPrintedComic($playerId, $comicSlot) {
+        $sql =
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId, card_display_value displayValue FROM card WHERE card_owner = " .
+            $playerId .
+            " AND card_location = " .
+            LOCATION_PLAYER_MAT .
+            " AND card_type = " .
+            CARD_TYPE_ARTIST .
+            " AND card_location_arg = " .
+            $comicSlot;
+
+        $row = self::getObjectFromDB($sql);
+        return new AOCArtistCard($row);
+    }
+
+    public function getWriterCardForPrintedComic($playerId, $comicSlot) {
+        $sql =
+            "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId, card_display_value displayValue FROM card WHERE card_owner = " .
+            $playerId .
+            " AND card_location = " .
+            LOCATION_PLAYER_MAT .
+            " AND card_type = " .
+            CARD_TYPE_WRITER .
+            " AND card_location_arg = " .
+            $comicSlot;
+
+        $row = self::getObjectFromDB($sql);
+        return new AOCWriterCard($row);
+    }
+
     /**
      * Save a card to the database
      *
@@ -330,7 +395,7 @@ class AOCCardManager extends APP_GameClass {
      * @return void
      */
     public function saveCard($card) {
-        $sql = "UPDATE card SET card_location = {$card->getLocation()}, card_location_arg = {$card->getLocationArg()}, card_owner = {$card->getPlayerId()} WHERE card_id = {$card->getId()}";
+        $sql = "UPDATE card SET card_location = {$card->getLocation()}, card_location_arg = {$card->getLocationArg()}, card_owner = {$card->getPlayerId()}, card_display_value = {$card->getDisplayValue()} WHERE card_id = {$card->getId()}";
         self::DbQuery($sql);
     }
 
@@ -371,7 +436,7 @@ class AOCCardManager extends APP_GameClass {
      */
     private function createCreativeCards($creativeType) {
         $sql =
-            "INSERT INTO card (card_type, card_type_arg, card_genre, card_location) VALUES ";
+            "INSERT INTO card (card_type, card_type_arg, card_genre, card_location, card_display_value) VALUES ";
         $values = [];
 
         // For each genre, create:
@@ -379,10 +444,10 @@ class AOCCardManager extends APP_GameClass {
         // - 2 level 2 cards
         // - 1 level 3 card
         foreach (GENRE_KEYS as $genreKey) {
-            $values[] = "({$creativeType}, 10, {$genreKey}, -1)";
-            $values[] = "({$creativeType}, 21, {$genreKey}, -1)";
-            $values[] = "({$creativeType}, 22, {$genreKey}, -1)";
-            $values[] = "({$creativeType}, 30, {$genreKey}, -1)";
+            $values[] = "({$creativeType}, 10, {$genreKey}, -1, 1)";
+            $values[] = "({$creativeType}, 21, {$genreKey}, -1, 2)";
+            $values[] = "({$creativeType}, 22, {$genreKey}, -1, 2)";
+            $values[] = "({$creativeType}, 30, {$genreKey}, -1, 3)";
         }
 
         $sql .= implode(", ", $values);
