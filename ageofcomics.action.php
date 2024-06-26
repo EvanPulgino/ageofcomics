@@ -111,6 +111,18 @@ class action_ageofcomics extends APP_GameAction {
         self::ajaxResponse();
     }
 
+    public function endIncreaseCreatives() {
+        self::setAjaxMode();
+
+        $playerId = self::getArg("playerId", AT_posint, true);
+        
+        $this->game->states[INCREASE_CREATIVES]->endIncreaseCreatives(
+            $playerId
+        );
+
+        self::ajaxResponse();
+    }
+
     public function endSales() {
         self::setAjaxMode();
 
@@ -125,7 +137,10 @@ class action_ageofcomics extends APP_GameAction {
         $salesOrderId = self::getArg("salesOrderId", AT_posint, true);
         $playerIdToPay = self::getArg("playerIdToPay", AT_posint, true);
 
-        $this->game->states[PERFORM_SALES]->flipSalesOrder($salesOrderId, $playerIdToPay);
+        $this->game->states[PERFORM_SALES]->flipSalesOrder(
+            $salesOrderId,
+            $playerIdToPay
+        );
 
         self::ajaxResponse();
     }

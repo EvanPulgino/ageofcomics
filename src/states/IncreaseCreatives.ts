@@ -25,14 +25,7 @@ class IncreaseCreatives implements State {
 
   onEnteringState(stateArgs: any): void {
     if (stateArgs.isCurrentPlayerActive) {
-      gameui.addActionButton(
-        "aoc-finish-increase",
-        _("End increasing creatives"),
-        () => {
-          console.log("Finish increasing creatives");
-        }
-      );
-      dojo.addClass("aoc-finish-increase", "aoc-button");
+      this.createEndActionButton(parseInt(stateArgs.args.currentPlayer.id));
 
       dojo.toggleClass("aoc-improve-creatives-menu", "aoc-hidden");
       this.addComicsToMenu(
@@ -41,7 +34,16 @@ class IncreaseCreatives implements State {
       );
     }
   }
-  onLeavingState(): void {}
+  onLeavingState(): void {
+    dojo.empty("aoc-improve-creatives-button-container");
+    dojo.empty("aoc-improve-creatives-comics");
+    dojo.toggleClass("aoc-improve-creatives-menu", "aoc-hidden", true);
+    for (const connection in this.connections) {
+      dojo.disconnect(this.connections[connection]);
+    }
+    this.connections = {};
+  }
+
   onUpdateActionButtons(stateArgs: any): void {}
 
   addComicsToMenu(cards: any[], playerMoney: number): void {
@@ -213,8 +215,26 @@ class IncreaseCreatives implements State {
     }
   }
 
+  createEndActionButton(playerId: number): void {
+    const endActionButtonDiv =
+      "<a id='aoc-finish-increase-" +
+      playerId +
+      "' class='action-button bgabutton bgabutton_blue aoc-button'>" +
+      _("End increasing creatives") +
+      "</a>";
+    dojo.place(endActionButtonDiv, "aoc-improve-creatives-button-container");
+    this.connections["aoc-finish-increase-" + playerId] = dojo.connect(
+      dojo.byId("aoc-finish-increase-" + playerId),
+      "onclick",
+      this,
+      () => {
+        this.finishIncreaseCreatives(playerId);
+      }
+    );
+  }
+
   /**
-   * Createthe buttons if a double train is possible
+   * Create the buttons if a double train is possible
    *
    * @param slot
    * @param cards
@@ -342,6 +362,13 @@ class IncreaseCreatives implements State {
     if (playerMoney < trainingCost) {
       dojo.addClass("aoc-train-" + slot, "aoc-button-disabled");
     }
+  }
+
+  finishIncreaseCreatives(playerId: number): void {
+    this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_END_INCREASE_CREATIVES, {
+      playerId: playerId,
+    });
+    this.onLeavingState();
   }
 
   getCreativeTypeCardInSlot(type: string, slot: number, cards: any[]): any {

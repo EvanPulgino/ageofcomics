@@ -32,6 +32,7 @@
             <div id="aoc-print-artists-menu" class="aoc-print-menu"></div>
         </div>
         <div id="aoc-improve-creatives-menu" class="aoc-hidden whiteblock">
+            <div id="aoc-improve-creatives-button-container"></div>
             <div id="aoc-improve-creatives-header">
                 <div id="aoc-improve-creatives-header-text" class="aoc-header-text aoc-squada">Improve Creatives</div>
             </div>

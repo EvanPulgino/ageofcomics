@@ -50,6 +50,7 @@ define("PLAYER_ACTION_CONFIRM_DISCARD", "confirmDiscard");
 define("PLAYER_ACTION_CONFIRM_GAIN_IDEAS", "confirmGainIdeas");
 define("PLAYER_ACTION_DEVELOP_COMIC", "developComic");
 define("PLAYER_ACTION_DEVELOP_FROM_GENRE", "developFromGenre");
+define("PLAYER_ACTION_END_INCREASE_CREATIVES", "endIncreaseCreatives");
 define("PLAYER_ACTION_END_SALES", "endSales");
 define("PLAYER_ACTION_FLIP_SALES_ORDER", "flipSalesOrder");
 define("PLAYER_ACTION_FULFILL_SALES_ORDER", "fulfillSalesOrder");

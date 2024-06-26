@@ -128,7 +128,11 @@ $machinestates = [
         ),
         "type" => STATE_TYPE_PRIVATE,
         "args" => STATE_ARGS_INCREASE_CREATIVES,
-        "possibleactions" => [PLAYER_ACTION_LEARN, PLAYER_ACTION_TRAIN],
+        "possibleactions" => [
+            PLAYER_ACTION_END_INCREASE_CREATIVES,
+            PLAYER_ACTION_LEARN,
+            PLAYER_ACTION_TRAIN
+        ],
         "transitions" => [
             "fulfillOrders" => ST_INCREASE_CREATIVES_FULFILL_ORDERS,
             "finishIncreaseCreatives" => ST_ENTER_INCREASE_CREATIVES,

@@ -44,4 +44,8 @@ class AOCIncreaseCreativesState {
             "currentPlayer" => $currentPlayer->getUiData(),
         ];
     }
+
+    public function endIncreaseCreatives($playerId) {
+        $this->game->gamestate->setPlayerNonMultiactive($playerId, "startActionsPhase");
+    }
 }

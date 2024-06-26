@@ -2833,15 +2833,20 @@ var IncreaseCreatives = /** @class */ (function () {
     }
     IncreaseCreatives.prototype.onEnteringState = function (stateArgs) {
         if (stateArgs.isCurrentPlayerActive) {
-            gameui.addActionButton("aoc-finish-increase", _("End increasing creatives"), function () {
-                console.log("Finish increasing creatives");
-            });
-            dojo.addClass("aoc-finish-increase", "aoc-button");
+            this.createEndActionButton(parseInt(stateArgs.args.currentPlayer.id));
             dojo.toggleClass("aoc-improve-creatives-menu", "aoc-hidden");
             this.addComicsToMenu(stateArgs.args.cardsOnPlayerMat, parseInt(stateArgs.args.currentPlayer.money));
         }
     };
-    IncreaseCreatives.prototype.onLeavingState = function () { };
+    IncreaseCreatives.prototype.onLeavingState = function () {
+        dojo.empty("aoc-improve-creatives-button-container");
+        dojo.empty("aoc-improve-creatives-comics");
+        dojo.toggleClass("aoc-improve-creatives-menu", "aoc-hidden", true);
+        for (var connection in this.connections) {
+            dojo.disconnect(this.connections[connection]);
+        }
+        this.connections = {};
+    };
     IncreaseCreatives.prototype.onUpdateActionButtons = function (stateArgs) { };
     IncreaseCreatives.prototype.addComicsToMenu = function (cards, playerMoney) {
         var numOfComics = cards.filter(function (card) { return card.type === "comic" || card.type === "ripoff"; }).length;
@@ -2980,8 +2985,20 @@ var IncreaseCreatives = /** @class */ (function () {
             this.createTrainButton(slot, cards, playerMoney);
         }
     };
+    IncreaseCreatives.prototype.createEndActionButton = function (playerId) {
+        var _this = this;
+        var endActionButtonDiv = "<a id='aoc-finish-increase-" +
+            playerId +
+            "' class='action-button bgabutton bgabutton_blue aoc-button'>" +
+            _("End increasing creatives") +
+            "</a>";
+        dojo.place(endActionButtonDiv, "aoc-improve-creatives-button-container");
+        this.connections["aoc-finish-increase-" + playerId] = dojo.connect(dojo.byId("aoc-finish-increase-" + playerId), "onclick", this, function () {
+            _this.finishIncreaseCreatives(playerId);
+        });
+    };
     /**
-     * Createthe buttons if a double train is possible
+     * Create the buttons if a double train is possible
      *
      * @param slot
      * @param cards
@@ -3080,6 +3097,12 @@ var IncreaseCreatives = /** @class */ (function () {
         if (playerMoney < trainingCost) {
             dojo.addClass("aoc-train-" + slot, "aoc-button-disabled");
         }
+    };
+    IncreaseCreatives.prototype.finishIncreaseCreatives = function (playerId) {
+        this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_END_INCREASE_CREATIVES, {
+            playerId: playerId,
+        });
+        this.onLeavingState();
     };
     IncreaseCreatives.prototype.getCreativeTypeCardInSlot = function (type, slot, cards) {
         return cards.find(function (card) { return card.type === type && card.locationArg === slot; });

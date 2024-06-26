@@ -110,7 +110,10 @@ html {
   position: fixed;
   z-index: 1000;
   top: 15%;
-  display: block;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
 }
 
 .aoc-increasable-comic-slot {
