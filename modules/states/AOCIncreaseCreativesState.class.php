@@ -29,7 +29,7 @@ class AOCIncreaseCreativesState {
      * Args:
      * - None
      */
-    public function getArgs($playerId) {
+    public function getArgs($playerId = null) {
         $currentPlayer = $this->game->playerManager->getPlayer($playerId);
         $cardsOnPlayerMat = $this->game->cardManager->getCardsUiData(
             $playerId,

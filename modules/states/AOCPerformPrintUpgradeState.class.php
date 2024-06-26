@@ -21,7 +21,7 @@ class AOCPerformPrintUpgradeState {
         $this->game = $game;
     }
 
-    public function getArgs() {
+    public function getArgs($playerId = null) {
         $activePlayer = $this->game->playerManager->getActivePlayer();
         $printedComicCount = $this->printedComicCount($activePlayer);
         $upgradableActions = [];

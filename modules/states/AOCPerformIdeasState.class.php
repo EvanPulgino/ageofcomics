@@ -32,7 +32,7 @@ class AOCPerformIdeasState {
      *
      * @return array The list of args used by the PerformIdeas state
      */
-    public function getArgs() {
+    public function getArgs($playerId = null) {
         $selectedActionSpace = $this->game->getGameStateValue(
             SELECTED_ACTION_SPACE
         );

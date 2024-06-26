@@ -21,7 +21,7 @@ class AOCPerformPrintBonusState {
         $this->game = $game;
     }
 
-    public function getArgs() {
+    public function getArgs($playerId = null) {
         $printedComicId = $this->game->getGameStateValue(PRINTED_COMIC);
         $comic = $this->game->cardManager->getCard($printedComicId);
 
@@ -30,7 +30,10 @@ class AOCPerformPrintBonusState {
                 $comic->getName(),
                 $comic->getGenreId()
             ),
-            "comicBonus" => $comic->getTypeId() == CARD_TYPE_COMIC ? $comic->getBonus() : null,
+            "comicBonus" =>
+                $comic->getTypeId() == CARD_TYPE_COMIC
+                    ? $comic->getBonus()
+                    : null,
         ];
     }
 

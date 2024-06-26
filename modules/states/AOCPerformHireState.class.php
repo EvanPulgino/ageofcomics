@@ -33,7 +33,7 @@ class AOCPerformHireState {
      *
      * @return array The list of args used by the PerformHire state
      */
-    public function getArgs() {
+    public function getArgs($playerId = null) {
         $canHireArtist = $this->game->getGameStateValue(CAN_HIRE_ARTIST);
         $canHireWriter = $this->game->getGameStateValue(CAN_HIRE_WRITER);
         $hireText = "";

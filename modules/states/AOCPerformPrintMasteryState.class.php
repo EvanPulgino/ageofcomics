@@ -21,7 +21,8 @@ class AOCPerformPrintMasteryState {
         $this->game = $game;
     }
 
-    public function getArgs() {
+    public function getArgs($playerId = null) {
+        return [];
     }
 
     public function stPerformPrintMastery() {

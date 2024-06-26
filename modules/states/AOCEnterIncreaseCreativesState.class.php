@@ -29,7 +29,7 @@ class AOCEnterIncreaseCreativesState {
      * Args:
      * - None
      */
-    public function getArgs() {
+    public function getArgs($playerId = null) {
         return [];
     }
 

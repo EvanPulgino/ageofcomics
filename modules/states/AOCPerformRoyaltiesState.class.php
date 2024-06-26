@@ -31,7 +31,7 @@ class AOCPerformRoyaltiesState {
      *
      * @return array The list of args used by the PerformRoyalties state
      */
-    public function getArgs() {
+    public function getArgs($playerId = null) {
         return [
             "selectedActionSpace" => $this->game->getGameStateValue(
                 SELECTED_ACTION_SPACE
@@ -54,10 +54,7 @@ class AOCPerformRoyaltiesState {
         $amount = ROYALTIES_AMOUNTS[$actionSpace];
 
         // Give the player the royalties
-        $this->game->playerManager->adjustPlayerMoney(
-            $activePlayer,
-            $amount
-        );
+        $this->game->playerManager->adjustPlayerMoney($activePlayer, $amount);
 
         // Notify the players
         $this->game->notifyAllPlayers(

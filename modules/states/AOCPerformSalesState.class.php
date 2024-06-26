@@ -33,7 +33,7 @@ class AOCPerformSalesState {
      *
      * @return array The list of args used by the PerformPrint state
      */
-    public function getArgs() {
+    public function getArgs($playerId = null) {
         $activePlayer = $this->game->playerManager->getActivePlayer();
         $selectedActionSpace = $this->game->getGameStateValue(
             SELECTED_ACTION_SPACE

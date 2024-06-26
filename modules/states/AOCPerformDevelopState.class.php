@@ -35,7 +35,7 @@ class AOCPerformDevelopState {
      *
      * @return array The list of args used by the PerformDevelop state
      */
-    public function getArgs() {
+    public function getArgs($playerId = null) {
         // Get the active player
         $activePlayer = $this->game->playerManager->getActivePlayer();
 

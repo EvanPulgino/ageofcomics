@@ -31,7 +31,7 @@ class AOCCheckHandSizeState {
      *
      * @return array The list of args used by the CheckHandSize state
      */
-    public function getArgs() {
+    public function getArgs($playerId = null) {
         $cardsInHand = $this->game->cardManager->getCountForHandSizeCheck(
             $this->game->getActivePlayerId()
         );

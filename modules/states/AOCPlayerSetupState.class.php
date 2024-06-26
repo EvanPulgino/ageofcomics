@@ -30,7 +30,7 @@ class AOCPlayerSetupState {
      *
      * @return array The list of args used by the playerSetup state
      */
-    public function getArgs() {
+    public function getArgs($playerId = null) {
         return [
             "startIdeas" => $this->game->getGameStateValue(START_IDEAS),
         ];

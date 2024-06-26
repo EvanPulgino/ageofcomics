@@ -29,7 +29,7 @@ class AOCRoundEndPayEarningsState {
      * Args:
      * - None
      */
-    public function getArgs() {
+    public function getArgs($playerId = null) {
         return [];
     }
 
@@ -58,7 +58,9 @@ class AOCRoundEndPayEarningsState {
             // Notify the player of their earnings
             $this->game->notifyAllPlayers(
                 "adjustMoney",
-                clienttranslate('${player_name} earns ${amount} money from their printed comics'),
+                clienttranslate(
+                    '${player_name} earns ${amount} money from their printed comics'
+                ),
                 [
                     "player_name" => $player->getName(),
                     "player" => $player->getUiData(),

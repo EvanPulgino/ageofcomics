@@ -34,7 +34,7 @@ class AOCPlayerTurnState {
      * - royaltiesActionSpace => The id of the next available royalties action space
      * - salesActionSpace => The id of the next available sales action space
      */
-    public function getArgs() {
+    public function getArgs($playerId = null) {
         $activePlayer = $this->game->playerManager->getActivePlayer();
 
         return [

@@ -21,7 +21,7 @@ class AOCPerformPrintFulfillOrdersState {
         $this->game = $game;
     }
 
-    public function getArgs() {
+    public function getArgs($playerId = null) {
     }
 
     public function stPerformPrintFulfillOrders() {
@@ -88,7 +88,8 @@ class AOCPerformPrintFulfillOrdersState {
 
         // Get the lowest possible cost to print a comic
         $lowestPossibleComicCost =
-            $lowestCostArtist->getDisplayValue() + $lowestCostWriter->getDisplayValue();
+            $lowestCostArtist->getDisplayValue() +
+            $lowestCostWriter->getDisplayValue();
         // If the player doesn't have enough money to print a comic, they can't print
         if ($lowestPossibleComicCost > $player->getMoney()) {
             return false;

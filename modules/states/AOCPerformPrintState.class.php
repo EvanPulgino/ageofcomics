@@ -29,7 +29,7 @@ class AOCPerformPrintState {
      *
      * @return array The list of args used by the PerformPrint state
      */
-    public function getArgs() {
+    public function getArgs($playerId = null) {
         $activePlayer = $this->game->playerManager->getActivePlayer();
         $isDoublePrint =
             $this->game->getGameStateValue(SELECTED_ACTION_SPACE) == 0;

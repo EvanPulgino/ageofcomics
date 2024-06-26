@@ -35,7 +35,7 @@ class AOCStartNewRoundState {
         return [];
     }
 
-    function stStartNewRound() {
+    function stStartNewRound($playerId = null) {
         // 1. Increment round number
         $currentRound = $this->game->getGameStateValue(CURRENT_ROUND) + 1;
         $this->game->setGameStateValue(CURRENT_ROUND, $currentRound);

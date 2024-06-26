@@ -29,7 +29,7 @@ class AOCCompleteSetupState {
      * Args:
      *  - None
      */
-    public function getArgs() {
+    public function getArgs($playerId = null) {
         return [];
     }
 
@@ -90,7 +90,7 @@ class AOCCompleteSetupState {
         $cards = $this->game->cardManager->getCards(
             $cardType,
             null,
-            LOCATION_VOID,
+            LOCATION_VOID
         );
 
         shuffle($cards);
