@@ -135,6 +135,18 @@ class AOCSalesOrderManager extends APP_GameClass {
         return $uiData;
     }
 
+    public function getSalesOrdersByPlayer($playerId) {
+        $sql =
+            "SELECT sales_order_id id, sales_order_genre genre, sales_order_value value, sales_order_fans fans, sales_order_owner playerId, sales_order_location location, sales_order_location_arg locationArg, sales_order_flipped flipped FROM sales_order WHERE sales_order_location_arg = $playerId AND sales_order_location = " .
+            LOCATION_PLAYER_AREA;
+        $rows = self::getCollectionFromDb($sql);
+        $salesOrders = [];
+        foreach ($rows as $row) {
+            $salesOrders[] = new AOCSalesOrder($row);
+        }
+        return $salesOrders;
+    }
+
     /**
      * Create sales order tiles for a new game based on the number of players
      *

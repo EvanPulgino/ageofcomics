@@ -85,7 +85,7 @@ class AOCIncreaseCreativesState {
             ]
         );
 
-        $this->completeIncreaseAction($player);
+        $this->completeIncreaseAction($player, $comicCard);
     }
 
     public function endIncreaseCreatives($playerId) {
@@ -132,7 +132,7 @@ class AOCIncreaseCreativesState {
             ]
         );
 
-        $this->completeIncreaseAction($player);
+        $this->completeIncreaseAction($player, $comicCard);
     }
 
     public function train($playerId, $comicId, $cardId) {
@@ -173,10 +173,93 @@ class AOCIncreaseCreativesState {
             ]
         );
 
-        $this->completeIncreaseAction($player);
+        $this->completeIncreaseAction($player, $comicCard);
     }
 
-    private function completeIncreaseAction($player) {
+    private function canComicFulfillSalesOrder($player, $comic, $salesOrder) {
+        if ($comic->getGenre() === $salesOrder->getGenre()) {
+            // Get the creatives for the comic
+            $comicArtist = $this->game->cardManager->getArtistCardForPrintedComic(
+                $player->getId(),
+                $comic->getLocationArg()
+            );
+            $comicWriter = $this->game->cardManager->getWriterCardForPrintedComic(
+                $player->getId(),
+                $comic->getLocationArg()
+            );
+            $comicValue =
+                $comicArtist->getDisplayValue() +
+                $comicWriter->getDisplayValue();
+
+            if ($comicValue >= $salesOrder->getValue()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function completeIncreaseAction($player, $improvedComic) {
+        // Get the sales orders for the player
+        $salesOrders = $this->game->salesOrderManager->getSalesOrdersByPlayer(
+            $player->getId()
+        );
+
+        // Check if any sales orders can be fulfilled
+        foreach ($salesOrders as $salesOrder) {
+            if (
+                $this->canComicFulfillSalesOrder(
+                    $player,
+                    $improvedComic,
+                    $salesOrder
+                )
+            ) {
+                // Increase comic fans
+                $incomeChange = $this->game->miniComicManager->adjustMiniComicFans(
+                    $improvedComic,
+                    $salesOrder->getFans()
+                );
+
+                $miniComic = $this->game->miniComicManager->getCorrespondingMiniComic(
+                    $improvedComic
+                );
+
+                // Adjust player income
+                $this->game->playerManager->adjustPlayerIncome(
+                    $player,
+                    $incomeChange
+                );
+
+                // Discard the sales order
+                $this->game->salesOrderManager->discardSalesOrder(
+                    $salesOrder->getId()
+                );
+
+                // Notify all players that the sales order was fulfilled
+                $this->game->notifyAllPlayers(
+                    "salesOrderFulfilled",
+                    clienttranslate(
+                        '${player_name} fulfills a value ${value} ${genre} sales order using ${comicName}, gaining ${fans} ${fanPlural}'
+                    ),
+                    [
+                        "player" => $player->getUiData(),
+                        "player_name" => $player->getName(),
+                        "value" => $salesOrder->getValue(),
+                        "genre" => $salesOrder->getGenre(),
+                        "salesOrder" => $salesOrder->getUiData(),
+                        "comicName" => $this->game->formatNotificationString(
+                            $improvedComic->getName(),
+                            $improvedComic->getGenreId()
+                        ),
+                        "fans" => $salesOrder->getFans(),
+                        "fanPlural" =>
+                            $salesOrder->getFans() == 1 ? "fan" : "fans",
+                        "incomeChange" => $incomeChange,
+                        "miniComic" => $miniComic->getUiData(),
+                    ]
+                );
+            }
+        }
+
         if ($this->playerCanContinueIncreasing($player)) {
             // If player can continue increasing, set them as active
             $this->game->gamestate->nextPrivateState(
