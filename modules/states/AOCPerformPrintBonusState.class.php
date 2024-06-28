@@ -138,7 +138,8 @@ class AOCPerformPrintBonusState {
         $miniComic = $this->game->miniComicManager->getCorrespondingMiniComic(
             $comic
         );
-
+        $miniComic->setCssClass();
+        
         $this->game->playerManager->adjustPlayerIncome($player, $incomeChange);
         $this->game->notifyAllPlayers(
             "moveMiniComic",

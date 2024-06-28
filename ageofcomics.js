@@ -1797,9 +1797,16 @@ var MiniComicController = /** @class */ (function () {
         }
     };
     MiniComicController.prototype.moveMiniComic = function (miniComic) {
-        console.log("moveMiniComic");
+        var fansSpace = miniComic.fans > 10 ? miniComic.fans - 10 : miniComic.fans;
         var miniComicDiv = dojo.byId("aoc-mini-comic-" + miniComic.id);
-        var chartSpaceDiv = dojo.byId("aoc-chart-space-" + miniComic.playerId + "-" + miniComic.fans);
+        if (miniComic.fans > 10) {
+            if (!dojo.hasClass(miniComicDiv, miniComic.cssClass)) {
+                var unflippedClass = miniComic.cssClass.replace("-flipped", "");
+                dojo.removeClass(miniComicDiv, unflippedClass);
+                dojo.addClass(miniComicDiv, miniComic.cssClass);
+            }
+        }
+        var chartSpaceDiv = dojo.byId("aoc-chart-space-" + miniComic.playerId + "-" + fansSpace);
         var animation = gameui.slideToObject(miniComicDiv, chartSpaceDiv, 500);
         dojo.connect(animation, "onEnd", function () {
             dojo.removeAttr(miniComicDiv, "style");

@@ -277,6 +277,10 @@ class AOCMiniComic {
         return $this->cssClass;
     }
 
+    public function setCssClass() {
+        $this->cssClass = $this->deriveCssClass();
+    }
+
     public function getUiData() {
         return [
             "id" => $this->getId(),

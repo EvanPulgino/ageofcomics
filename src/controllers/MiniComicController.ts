@@ -58,10 +58,20 @@ class MiniComicController {
   }
 
   moveMiniComic(miniComic: any): void {
-    console.log("moveMiniComic");
+    const fansSpace =
+      miniComic.fans > 10 ? miniComic.fans - 10 : miniComic.fans;
     const miniComicDiv = dojo.byId("aoc-mini-comic-" + miniComic.id);
+
+    if (miniComic.fans > 10) {
+      if (!dojo.hasClass(miniComicDiv, miniComic.cssClass)) {
+        const unflippedClass = miniComic.cssClass.replace("-flipped", "");
+        dojo.removeClass(miniComicDiv, unflippedClass);
+        dojo.addClass(miniComicDiv, miniComic.cssClass);
+      }
+    }
+
     const chartSpaceDiv = dojo.byId(
-      "aoc-chart-space-" + miniComic.playerId + "-" + miniComic.fans
+      "aoc-chart-space-" + miniComic.playerId + "-" + fansSpace
     );
     const animation = gameui.slideToObject(miniComicDiv, chartSpaceDiv, 500);
     dojo.connect(animation, "onEnd", () => {
@@ -70,6 +80,7 @@ class MiniComicController {
     });
     animation.play();
   }
+
   moveMiniComicToChart(miniComic: any): void {
     const miniComicDiv = dojo.byId("aoc-mini-comic-" + miniComic.id);
     const chartSpaceDiv = dojo.byId(

@@ -145,6 +145,8 @@ class AOCPerformSalesState {
                     $collectedSalesOrder->getId()
                 );
 
+                $miniComic->setCssClass();
+
                 // Notify all players that the sales order was fulfilled
                 $this->game->notifyAllPlayers(
                     "salesOrderFulfilled",
