@@ -112,6 +112,20 @@ class AOCCardManager extends APP_GameClass {
         return $card;
     }
 
+    public function flagComicAsImproved($comicId) {
+        $comicCard = $this->getCard($comicId);
+        $comicCard->setDisplayValue(1);
+        $this->saveCard($comicCard);
+    }
+
+    public function unflagComicsAsImproved($playerId) {
+        $printedComics = $this->getPrintedComicsByPlayer($playerId);
+        foreach ($printedComics as $comic) {
+            $comic->setDisplayValue(0);
+            $this->saveCard($comic);
+        }
+    }
+
     /**
      * Get a count of remaining comics available for a specific genre
      *
@@ -386,6 +400,11 @@ class AOCCardManager extends APP_GameClass {
 
         $row = self::getObjectFromDB($sql);
         return new AOCWriterCard($row);
+    }
+
+    public function improveCreativeCard($card) {
+        $card->setDisplayValue($card->getDisplayValue() + 1);
+        $this->saveCard($card);
     }
 
     /**

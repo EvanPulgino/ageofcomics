@@ -129,11 +129,13 @@ $machinestates = [
         "type" => STATE_TYPE_PRIVATE,
         "args" => STATE_ARGS_INCREASE_CREATIVES,
         "possibleactions" => [
+            PLAYER_ACTION_DOUBLE_TRAIN,
             PLAYER_ACTION_END_INCREASE_CREATIVES,
             PLAYER_ACTION_LEARN,
-            PLAYER_ACTION_TRAIN
+            PLAYER_ACTION_TRAIN,
         ],
         "transitions" => [
+            "continue" => ST_INCREASE_CREATIVES,
             "fulfillOrders" => ST_INCREASE_CREATIVES_FULFILL_ORDERS,
             "finishIncreaseCreatives" => ST_ENTER_INCREASE_CREATIVES,
         ],
@@ -148,6 +150,8 @@ $machinestates = [
         "args" => STATE_ARGS_INCREASE_CREATIVES_FULFILL_ORDERS,
         "possibleactions" => [PLAYER_ACTION_FULFILL_SALES_ORDER],
         "transitions" => [
+            "continue" => ST_INCREASE_CREATIVES_FULFILL_ORDERS,
+            "increaseCreatives" => ST_INCREASE_CREATIVES,
             "finishIncreaseCreatives" => ST_ENTER_INCREASE_CREATIVES,
         ],
     ],

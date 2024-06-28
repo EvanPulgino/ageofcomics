@@ -111,11 +111,29 @@ class action_ageofcomics extends APP_GameAction {
         self::ajaxResponse();
     }
 
+    public function doubleTrain() {
+        self::setAjaxMode();
+
+        $playerId = self::getArg("playerId", AT_posint, true);
+        $comicId = self::getArg("comicId", AT_posint, true);
+        $artistId = self::getArg("artistId", AT_posint, true);
+        $writerId = self::getArg("writerId", AT_posint, true);
+
+        $this->game->states[INCREASE_CREATIVES]->doubleTrain(
+            $playerId,
+            $comicId,
+            $artistId,
+            $writerId
+        );
+
+        self::ajaxResponse();
+    }
+
     public function endIncreaseCreatives() {
         self::setAjaxMode();
 
         $playerId = self::getArg("playerId", AT_posint, true);
-        
+
         $this->game->states[INCREASE_CREATIVES]->endIncreaseCreatives(
             $playerId
         );
@@ -152,6 +170,22 @@ class action_ageofcomics extends APP_GameAction {
         $creativeType = self::getArg("creativeType", AT_alphanum, true);
 
         $this->game->states[PERFORM_HIRE]->hireCreative($cardId, $creativeType);
+
+        self::ajaxResponse();
+    }
+
+    public function learn() {
+        self::setAjaxMode();
+
+        $playerId = self::getArg("playerId", AT_posint, true);
+        $comicId = self::getArg("comicId", AT_posint, true);
+        $cardId = self::getArg("cardId", AT_posint, true);
+
+        $this->game->states[INCREASE_CREATIVES]->learn(
+            $playerId,
+            $comicId,
+            $cardId
+        );
 
         self::ajaxResponse();
     }
@@ -245,6 +279,22 @@ class action_ageofcomics extends APP_GameAction {
         $space = self::getArg("space", AT_posint, true);
 
         $this->game->takeRoyalties($amount, $space);
+
+        self::ajaxResponse();
+    }
+
+    public function train() {
+        self::setAjaxMode();
+
+        $playerId = self::getArg("playerId", AT_posint, true);
+        $comicId = self::getArg("comicId", AT_posint, true);
+        $cardId = self::getArg("cardId", AT_posint, true);
+
+        $this->game->states[INCREASE_CREATIVES]->train(
+            $playerId,
+            $comicId,
+            $cardId
+        );
 
         self::ajaxResponse();
     }

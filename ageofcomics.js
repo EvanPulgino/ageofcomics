@@ -643,6 +643,15 @@ var GameBody = /** @class */ (function (_super) {
     GameBody.prototype.notif_moveEditorToPlayerArea = function (notif) {
         this.editorController.moveEditorToPlayerArea(notif.args.editor, notif.args.player.id);
     };
+    GameBody.prototype.notif_improveCreative = function (notif) {
+        this.cardController.addImproveToken(notif.args.card);
+        this.playerController.adjustMoney(notif.args.player, notif.args.paid * -1);
+    };
+    GameBody.prototype.notif_improveCreativeDouble = function (notif) {
+        this.cardController.addImproveToken(notif.args.artistCard);
+        this.cardController.addImproveToken(notif.args.writerCard);
+        this.playerController.adjustMoney(notif.args.player, notif.args.paid * -1);
+    };
     /**
      * Handle 'moveMiniComic' notification
      *
@@ -981,7 +990,19 @@ var CardController = /** @class */ (function () {
         var id = "aoc-card-" + card.id;
         var css = this.getCardDivCss(card);
         var order = card.locationArg;
-        return "<div id=\"".concat(id, "\" class=\"").concat(css, "\" order=\"").concat(order, "\"></div>");
+        var cardDiv = "<div id=\"".concat(id, "\" class=\"").concat(css, "\" order=\"").concat(order, "\">");
+        if (card.type === "artist" || card.type === "writer") {
+            var improveTokenContainerId = "aoc-improve-token-container-" + card.id;
+            cardDiv += "<div id=\"".concat(improveTokenContainerId, "\" class=\"aoc-improve-token-container\">");
+            if (card.displayValue > card.value) {
+                var improveTokenDivId = "aoc-improve-token-" + card.id;
+                var improveTokenCssClass = "aoc-token-increase-".concat(card.type, "-").concat(card.displayValue);
+                cardDiv += "<div id=\"".concat(improveTokenDivId, "\" class=\"aoc-increase-token ").concat(improveTokenCssClass, "\"></div>");
+            }
+            cardDiv += "</div>";
+        }
+        cardDiv += "</div>";
+        return cardDiv;
     };
     /**
      * Get the css class for a card based on its type
@@ -1032,6 +1053,15 @@ var CardController = /** @class */ (function () {
         });
         // Play the animation
         animation.play();
+    };
+    CardController.prototype.addImproveToken = function (card) {
+        // First remove any existing improve token
+        dojo.empty("aoc-improve-token-container-" + card.id);
+        // Create the improve token
+        var improveTokenDivId = "aoc-improve-token-" + card.id;
+        var improveTokenCssClass = "aoc-token-increase-".concat(card.type, "-").concat(card.displayValue);
+        var tokenDiv = "<div id=\"".concat(improveTokenDivId, "\" class=\"aoc-increase-token ").concat(improveTokenCssClass, "\"></div>");
+        this.ui.createHtml(tokenDiv, "aoc-improve-token-container-" + card.id);
     };
     /**
      * Moves card from a player's hand to the appropriate discard pile.
@@ -2835,7 +2865,7 @@ var IncreaseCreatives = /** @class */ (function () {
         if (stateArgs.isCurrentPlayerActive) {
             this.createEndActionButton(parseInt(stateArgs.args.currentPlayer.id));
             dojo.toggleClass("aoc-improve-creatives-menu", "aoc-hidden");
-            this.addComicsToMenu(stateArgs.args.cardsOnPlayerMat, parseInt(stateArgs.args.currentPlayer.money));
+            this.addComicsToMenu(stateArgs.args.cardsOnPlayerMat, stateArgs.args.currentPlayer);
         }
     };
     IncreaseCreatives.prototype.onLeavingState = function () {
@@ -2848,11 +2878,62 @@ var IncreaseCreatives = /** @class */ (function () {
         this.connections = {};
     };
     IncreaseCreatives.prototype.onUpdateActionButtons = function (stateArgs) { };
-    IncreaseCreatives.prototype.addComicsToMenu = function (cards, playerMoney) {
+    IncreaseCreatives.prototype.addComicsToMenu = function (cards, player) {
         var numOfComics = cards.filter(function (card) { return card.type === "comic" || card.type === "ripoff"; }).length;
         for (var i = 1; i <= numOfComics; i++) {
-            this.createActionColumn(i, cards, playerMoney);
+            if (this.canImproveCreatives(i, cards, player)) {
+                this.createActionColumn(i, cards, player);
+            }
         }
+    };
+    IncreaseCreatives.prototype.canImproveCreatives = function (slot, cards, player) {
+        var comicCard = this.getComicCardInSlot(slot, cards);
+        //If comic already impoved, return false
+        if (comicCard.improvedThisRound) {
+            return false;
+        }
+        if (this.canAffordToLearn(slot, cards, player)) {
+            return true;
+        }
+        if (this.canAffordToTrain(slot, cards, player)) {
+            return true;
+        }
+        return false;
+    };
+    IncreaseCreatives.prototype.canAffordToLearn = function (slot, cards, player) {
+        if (this.canLearn(slot, cards) && player.money >= 1) {
+            return true;
+        }
+        return false;
+    };
+    IncreaseCreatives.prototype.canAffordToTrain = function (slot, cards, player) {
+        var comicCard = this.getComicCardInSlot(slot, cards);
+        var artistCard = this.getCreativeTypeCardInSlot("artist", slot, cards);
+        var writerCard = this.getCreativeTypeCardInSlot("writer", slot, cards);
+        if (comicCard && artistCard && writerCard) {
+            if (comicCard.genre === artistCard.genre &&
+                comicCard.genre !== writerCard.genre) {
+                if (artistCard.displayValue < 3 &&
+                    player.money >= artistCard.displayValue + 1) {
+                    return true;
+                }
+            }
+            if (comicCard.genre === writerCard.genre &&
+                comicCard.genre !== artistCard.genre) {
+                if (writerCard.displayValue < 3 &&
+                    player.money >= writerCard.displayValue + 1) {
+                    return true;
+                }
+            }
+            if (comicCard.genre === writerCard.genre &&
+                comicCard.genre === artistCard.genre) {
+                if (writerCard.displayValue < 3 &&
+                    player.money >= writerCard.displayValue + 1) {
+                    return true;
+                }
+            }
+        }
+        return false;
     };
     /**
      * Check if a creative on this comic can learn
@@ -2927,7 +3008,7 @@ var IncreaseCreatives = /** @class */ (function () {
         }
         return false;
     };
-    IncreaseCreatives.prototype.createActionColumn = function (slot, cards, playerMoney) {
+    IncreaseCreatives.prototype.createActionColumn = function (slot, cards, player) {
         var increaseActionColumn = "<div id='aoc-increase-action-column-" +
             slot +
             "' class='aoc-increase-action-column'></div>";
@@ -2943,7 +3024,7 @@ var IncreaseCreatives = /** @class */ (function () {
         // Add the writer to the slot
         this.createCreativeCardInColumn("writer", slot, cards);
         // Add the action buttons to the slot
-        this.createColumnActionButtions(slot, cards, playerMoney);
+        this.createColumnActionButtions(slot, cards, player);
     };
     IncreaseCreatives.prototype.createComicCardInColumn = function (slot, cards) {
         var comicCard = this.getComicCardInSlot(slot, cards);
@@ -2972,17 +3053,32 @@ var IncreaseCreatives = /** @class */ (function () {
                 creativeCard.cssClass +
                 "'></div>";
             dojo.place(creativeCardDiv, "aoc-increasable-comic-" + slot);
+            var increaseContainerDiv = "<div id='aoc-inc-improve-token-container-" +
+                creativeCard.id +
+                "' class='aoc-improve-token-container'></div>";
+            dojo.place(increaseContainerDiv, "aoc-inc-" + type + "-card-" + creativeCard.id);
+            if (creativeCard.displayValue > creativeCard.value) {
+                var increaseTokenCssClass = "aoc-token-increase-" +
+                    creativeCard.type +
+                    "-" +
+                    creativeCard.displayValue;
+                var increaseTokenDiv = "<div id='aoc-inc-improve-token-" +
+                    creativeCard.id +
+                    "' class='aoc-increase-token " + increaseTokenCssClass + "'></div>";
+                dojo.place(increaseTokenDiv, "aoc-inc-improve-token-container-" + creativeCard.id);
+            }
         }
     };
-    IncreaseCreatives.prototype.createColumnActionButtions = function (slot, cards, playerMoney) {
+    IncreaseCreatives.prototype.createColumnActionButtions = function (slot, cards, player) {
         // Create button if creative can learn
         if (this.canLearn(slot, cards)) {
-            this.createLearnButton(slot, cards, playerMoney);
+            this.createLearnButton(slot, cards, player);
         }
         else if (this.canDoubleTrain(slot, cards)) {
+            this.createDoubleTrainButtons(slot, cards, player);
         }
         else if (this.canTrain(slot, cards)) {
-            this.createTrainButton(slot, cards, playerMoney);
+            this.createTrainButton(slot, cards, player);
         }
     };
     IncreaseCreatives.prototype.createEndActionButton = function (playerId) {
@@ -3004,9 +3100,14 @@ var IncreaseCreatives = /** @class */ (function () {
      * @param cards
      * @param playerMoney
      */
-    IncreaseCreatives.prototype.createDoubleTrainButtons = function (slot, cards, playerMoney) {
-        // Get one creative
+    IncreaseCreatives.prototype.createDoubleTrainButtons = function (slot, cards, player) {
+        var _this = this;
+        // Get the player money
+        var playerMoney = player.money;
+        // Get the cards
+        var comicCard = this.getComicCardInSlot(slot, cards);
         var artistCard = this.getCreativeTypeCardInSlot("artist", slot, cards);
+        var writerCard = this.getCreativeTypeCardInSlot("writer", slot, cards);
         // Determine the cost of training
         var trainingCost = artistCard.displayValue + 1;
         // Determine cost of double training
@@ -3021,6 +3122,9 @@ var IncreaseCreatives = /** @class */ (function () {
         if (playerMoney < trainingCost) {
             dojo.addClass("aoc-train-writer-" + slot, "aoc-button-disabled");
         }
+        this.connections["aoc-train-writer-" + slot] = dojo.connect(dojo.byId("aoc-train-writer-" + slot), "onclick", this, function () {
+            _this.train(player.id, comicCard.id, writerCard.id);
+        });
         // Create train artist button
         var trainArtistButtonDiv = "<a id='aoc-train-artist-" +
             slot +
@@ -3031,6 +3135,9 @@ var IncreaseCreatives = /** @class */ (function () {
         if (playerMoney < trainingCost) {
             dojo.addClass("aoc-train-artist-" + slot, "aoc-button-disabled");
         }
+        this.connections["aoc-train-artist-" + slot] = dojo.connect(dojo.byId("aoc-train-artist-" + slot), "onclick", this, function () {
+            _this.train(player.id, comicCard.id, artistCard.id);
+        });
         // Create train both button
         var trainBothButtonDiv = "<a id='aoc-train-both-" +
             slot +
@@ -3041,6 +3148,9 @@ var IncreaseCreatives = /** @class */ (function () {
         if (playerMoney < doubleTrainingCost) {
             dojo.addClass("aoc-train-both-" + slot, "aoc-button-disabled");
         }
+        this.connections["aoc-train-both-" + slot] = dojo.connect(dojo.byId("aoc-train-both-" + slot), "onclick", this, function () {
+            _this.doubleTrain(player.id, comicCard.id, writerCard.id, artistCard.id);
+        });
     };
     /**
      * Create the learn button for a comic
@@ -3049,8 +3159,12 @@ var IncreaseCreatives = /** @class */ (function () {
      * @param cards
      * @param playerMoney
      */
-    IncreaseCreatives.prototype.createLearnButton = function (slot, cards, playerMoney) {
-        // Get the creatives
+    IncreaseCreatives.prototype.createLearnButton = function (slot, cards, player) {
+        var _this = this;
+        // Get the player money
+        var playerMoney = player.money;
+        // Get the cards
+        var comicCard = this.getComicCardInSlot(slot, cards);
         var artistCard = this.getCreativeTypeCardInSlot("artist", slot, cards);
         var writerCard = this.getCreativeTypeCardInSlot("writer", slot, cards);
         // Determine creative with lower value
@@ -3070,6 +3184,10 @@ var IncreaseCreatives = /** @class */ (function () {
         if (playerMoney < learningCost) {
             dojo.addClass("aoc-learn-" + slot, "aoc-button-disabled");
         }
+        // Connect the button
+        this.connections["aoc-learn-" + slot] = dojo.connect(dojo.byId("aoc-learn-" + slot), "onclick", this, function () {
+            _this.learn(player.id, comicCard.id, lowerValueCreative.id);
+        });
     };
     /**
      * Create the train button for a comic
@@ -3077,7 +3195,10 @@ var IncreaseCreatives = /** @class */ (function () {
      * @param cards
      * @param playerMoney
      */
-    IncreaseCreatives.prototype.createTrainButton = function (slot, cards, playerMoney) {
+    IncreaseCreatives.prototype.createTrainButton = function (slot, cards, player) {
+        var _this = this;
+        // Get the player money
+        var playerMoney = player.money;
         // Get the creatives
         var comicCard = this.getComicCardInSlot(slot, cards);
         var artistCard = this.getCreativeTypeCardInSlot("artist", slot, cards);
@@ -3097,6 +3218,10 @@ var IncreaseCreatives = /** @class */ (function () {
         if (playerMoney < trainingCost) {
             dojo.addClass("aoc-train-" + slot, "aoc-button-disabled");
         }
+        // Connect the button
+        this.connections["aoc-train-" + slot] = dojo.connect(dojo.byId("aoc-train-" + slot), "onclick", this, function () {
+            _this.train(player.id, comicCard.id, matchingCreative.id);
+        });
     };
     IncreaseCreatives.prototype.finishIncreaseCreatives = function (playerId) {
         this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_END_INCREASE_CREATIVES, {
@@ -3112,6 +3237,31 @@ var IncreaseCreatives = /** @class */ (function () {
             return (card.type === "comic" || card.type === "ripoff") &&
                 card.locationArg === slot;
         });
+    };
+    IncreaseCreatives.prototype.learn = function (playerId, comicId, cardId) {
+        this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_LEARN, {
+            playerId: playerId,
+            comicId: comicId,
+            cardId: cardId,
+        });
+        this.onLeavingState();
+    };
+    IncreaseCreatives.prototype.train = function (playerId, comicId, cardId) {
+        this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_TRAIN, {
+            playerId: playerId,
+            comicId: comicId,
+            cardId: cardId,
+        });
+        this.onLeavingState();
+    };
+    IncreaseCreatives.prototype.doubleTrain = function (playerId, comicId, artistId, writerId) {
+        this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_DOUBLE_TRAIN, {
+            playerId: playerId,
+            comicId: comicId,
+            artistId: artistId,
+            writerId: writerId,
+        });
+        this.onLeavingState();
     };
     return IncreaseCreatives;
 }());

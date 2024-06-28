@@ -30,10 +30,11 @@ class IncreaseCreatives implements State {
       dojo.toggleClass("aoc-improve-creatives-menu", "aoc-hidden");
       this.addComicsToMenu(
         stateArgs.args.cardsOnPlayerMat,
-        parseInt(stateArgs.args.currentPlayer.money)
+        stateArgs.args.currentPlayer
       );
     }
   }
+
   onLeavingState(): void {
     dojo.empty("aoc-improve-creatives-button-container");
     dojo.empty("aoc-improve-creatives-comics");
@@ -46,13 +47,86 @@ class IncreaseCreatives implements State {
 
   onUpdateActionButtons(stateArgs: any): void {}
 
-  addComicsToMenu(cards: any[], playerMoney: number): void {
+  addComicsToMenu(cards: any[], player: any): void {
     const numOfComics = cards.filter(
       (card) => card.type === "comic" || card.type === "ripoff"
     ).length;
     for (let i = 1; i <= numOfComics; i++) {
-      this.createActionColumn(i, cards, playerMoney);
+      if (this.canImproveCreatives(i, cards, player)) {
+        this.createActionColumn(i, cards, player);
+      }
     }
+  }
+
+  canImproveCreatives(slot: number, cards: any[], player: any): boolean {
+    const comicCard = this.getComicCardInSlot(slot, cards);
+
+    //If comic already impoved, return false
+    if (comicCard.improvedThisRound) {
+      return false;
+    }
+
+    if (this.canAffordToLearn(slot, cards, player)) {
+      return true;
+    }
+
+    if (this.canAffordToTrain(slot, cards, player)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  canAffordToLearn(slot: number, cards: any[], player: any): boolean {
+    if (this.canLearn(slot, cards) && player.money >= 1) {
+      return true;
+    }
+
+    return false;
+  }
+
+  canAffordToTrain(slot: number, cards: any[], player: any): boolean {
+    const comicCard = this.getComicCardInSlot(slot, cards);
+    const artistCard = this.getCreativeTypeCardInSlot("artist", slot, cards);
+    const writerCard = this.getCreativeTypeCardInSlot("writer", slot, cards);
+
+    if (comicCard && artistCard && writerCard) {
+      if (
+        comicCard.genre === artistCard.genre &&
+        comicCard.genre !== writerCard.genre
+      ) {
+        if (
+          artistCard.displayValue < 3 &&
+          player.money >= artistCard.displayValue + 1
+        ) {
+          return true;
+        }
+      }
+      if (
+        comicCard.genre === writerCard.genre &&
+        comicCard.genre !== artistCard.genre
+      ) {
+        if (
+          writerCard.displayValue < 3 &&
+          player.money >= writerCard.displayValue + 1
+        ) {
+          return true;
+        }
+      }
+      if (
+        comicCard.genre === writerCard.genre &&
+        comicCard.genre === artistCard.genre
+      ) {
+        if (
+          writerCard.displayValue < 3 &&
+          player.money >= writerCard.displayValue + 1
+        ) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   /**
@@ -143,7 +217,7 @@ class IncreaseCreatives implements State {
     return false;
   }
 
-  createActionColumn(slot: number, cards: any[], playerMoney: number): void {
+  createActionColumn(slot: number, cards: any[], player: any): void {
     const increaseActionColumn =
       "<div id='aoc-increase-action-column-" +
       slot +
@@ -165,7 +239,7 @@ class IncreaseCreatives implements State {
     this.createCreativeCardInColumn("writer", slot, cards);
 
     // Add the action buttons to the slot
-    this.createColumnActionButtions(slot, cards, playerMoney);
+    this.createColumnActionButtions(slot, cards, player);
   }
 
   createComicCardInColumn(slot: number, cards: any[]): void {
@@ -198,20 +272,40 @@ class IncreaseCreatives implements State {
         creativeCard.cssClass +
         "'></div>";
       dojo.place(creativeCardDiv, "aoc-increasable-comic-" + slot);
+      const increaseContainerDiv =
+        "<div id='aoc-inc-improve-token-container-" +
+        creativeCard.id +
+        "' class='aoc-improve-token-container'></div>";
+      dojo.place(
+        increaseContainerDiv,
+        "aoc-inc-" + type + "-card-" + creativeCard.id
+      );
+      if (creativeCard.displayValue > creativeCard.value) {
+        const increaseTokenCssClass =
+          "aoc-token-increase-" +
+          creativeCard.type +
+          "-" +
+          creativeCard.displayValue;
+        const increaseTokenDiv =
+          "<div id='aoc-inc-improve-token-" +
+          creativeCard.id +
+          "' class='aoc-increase-token " + increaseTokenCssClass + "'></div>";
+        dojo.place(
+          increaseTokenDiv,
+          "aoc-inc-improve-token-container-" + creativeCard.id
+        );
+      }
     }
   }
 
-  createColumnActionButtions(
-    slot: number,
-    cards: any[],
-    playerMoney: number
-  ): void {
+  createColumnActionButtions(slot: number, cards: any[], player: any): void {
     // Create button if creative can learn
     if (this.canLearn(slot, cards)) {
-      this.createLearnButton(slot, cards, playerMoney);
+      this.createLearnButton(slot, cards, player);
     } else if (this.canDoubleTrain(slot, cards)) {
+      this.createDoubleTrainButtons(slot, cards, player);
     } else if (this.canTrain(slot, cards)) {
-      this.createTrainButton(slot, cards, playerMoney);
+      this.createTrainButton(slot, cards, player);
     }
   }
 
@@ -240,13 +334,14 @@ class IncreaseCreatives implements State {
    * @param cards
    * @param playerMoney
    */
-  createDoubleTrainButtons(
-    slot: number,
-    cards: any[],
-    playerMoney: number
-  ): void {
-    // Get one creative
+  createDoubleTrainButtons(slot: number, cards: any[], player: any): void {
+    // Get the player money
+    const playerMoney = player.money;
+
+    // Get the cards
+    const comicCard = this.getComicCardInSlot(slot, cards);
     const artistCard = this.getCreativeTypeCardInSlot("artist", slot, cards);
+    const writerCard = this.getCreativeTypeCardInSlot("writer", slot, cards);
 
     // Determine the cost of training
     const trainingCost = artistCard.displayValue + 1;
@@ -267,6 +362,15 @@ class IncreaseCreatives implements State {
       dojo.addClass("aoc-train-writer-" + slot, "aoc-button-disabled");
     }
 
+    this.connections["aoc-train-writer-" + slot] = dojo.connect(
+      dojo.byId("aoc-train-writer-" + slot),
+      "onclick",
+      this,
+      () => {
+        this.train(player.id, comicCard.id, writerCard.id);
+      }
+    );
+
     // Create train artist button
     const trainArtistButtonDiv =
       "<a id='aoc-train-artist-" +
@@ -280,6 +384,15 @@ class IncreaseCreatives implements State {
       dojo.addClass("aoc-train-artist-" + slot, "aoc-button-disabled");
     }
 
+    this.connections["aoc-train-artist-" + slot] = dojo.connect(
+      dojo.byId("aoc-train-artist-" + slot),
+      "onclick",
+      this,
+      () => {
+        this.train(player.id, comicCard.id, artistCard.id);
+      }
+    );
+
     // Create train both button
     const trainBothButtonDiv =
       "<a id='aoc-train-both-" +
@@ -292,6 +405,20 @@ class IncreaseCreatives implements State {
     if (playerMoney < doubleTrainingCost) {
       dojo.addClass("aoc-train-both-" + slot, "aoc-button-disabled");
     }
+
+    this.connections["aoc-train-both-" + slot] = dojo.connect(
+      dojo.byId("aoc-train-both-" + slot),
+      "onclick",
+      this,
+      () => {
+        this.doubleTrain(
+          player.id,
+          comicCard.id,
+          writerCard.id,
+          artistCard.id
+        );
+      }
+    );
   }
 
   /**
@@ -301,8 +428,12 @@ class IncreaseCreatives implements State {
    * @param cards
    * @param playerMoney
    */
-  createLearnButton(slot: number, cards: any[], playerMoney: number): void {
-    // Get the creatives
+  createLearnButton(slot: number, cards: any[], player: any): void {
+    // Get the player money
+    const playerMoney = player.money;
+
+    // Get the cards
+    const comicCard = this.getComicCardInSlot(slot, cards);
     const artistCard = this.getCreativeTypeCardInSlot("artist", slot, cards);
     const writerCard = this.getCreativeTypeCardInSlot("writer", slot, cards);
 
@@ -328,6 +459,16 @@ class IncreaseCreatives implements State {
     if (playerMoney < learningCost) {
       dojo.addClass("aoc-learn-" + slot, "aoc-button-disabled");
     }
+
+    // Connect the button
+    this.connections["aoc-learn-" + slot] = dojo.connect(
+      dojo.byId("aoc-learn-" + slot),
+      "onclick",
+      this,
+      () => {
+        this.learn(player.id, comicCard.id, lowerValueCreative.id);
+      }
+    );
   }
 
   /**
@@ -336,7 +477,10 @@ class IncreaseCreatives implements State {
    * @param cards
    * @param playerMoney
    */
-  createTrainButton(slot: number, cards: any[], playerMoney): void {
+  createTrainButton(slot: number, cards: any[], player: any): void {
+    // Get the player money
+    const playerMoney = player.money;
+
     // Get the creatives
     const comicCard = this.getComicCardInSlot(slot, cards);
     const artistCard = this.getCreativeTypeCardInSlot("artist", slot, cards);
@@ -362,6 +506,16 @@ class IncreaseCreatives implements State {
     if (playerMoney < trainingCost) {
       dojo.addClass("aoc-train-" + slot, "aoc-button-disabled");
     }
+
+    // Connect the button
+    this.connections["aoc-train-" + slot] = dojo.connect(
+      dojo.byId("aoc-train-" + slot),
+      "onclick",
+      this,
+      () => {
+        this.train(player.id, comicCard.id, matchingCreative.id);
+      }
+    );
   }
 
   finishIncreaseCreatives(playerId: number): void {
@@ -383,5 +537,38 @@ class IncreaseCreatives implements State {
         (card.type === "comic" || card.type === "ripoff") &&
         card.locationArg === slot
     );
+  }
+
+  learn(playerId: number, comicId: number, cardId: number): void {
+    this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_LEARN, {
+      playerId: playerId,
+      comicId: comicId,
+      cardId: cardId,
+    });
+    this.onLeavingState();
+  }
+
+  train(playerId: number, comicId: number, cardId: number): void {
+    this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_TRAIN, {
+      playerId: playerId,
+      comicId: comicId,
+      cardId: cardId,
+    });
+    this.onLeavingState();
+  }
+
+  doubleTrain(
+    playerId: number,
+    comicId: number,
+    artistId: number,
+    writerId
+  ): void {
+    this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_DOUBLE_TRAIN, {
+      playerId: playerId,
+      comicId: comicId,
+      artistId: artistId,
+      writerId: writerId,
+    });
+    this.onLeavingState();
   }
 }

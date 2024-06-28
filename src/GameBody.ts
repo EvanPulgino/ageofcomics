@@ -439,6 +439,17 @@ class GameBody extends GameBasics {
     );
   }
 
+  notif_improveCreative(notif: any): void {
+    this.cardController.addImproveToken(notif.args.card);
+    this.playerController.adjustMoney(notif.args.player, notif.args.paid * -1);
+  }
+
+  notif_improveCreativeDouble(notif: any): void {
+    this.cardController.addImproveToken(notif.args.artistCard);
+    this.cardController.addImproveToken(notif.args.writerCard);
+    this.playerController.adjustMoney(notif.args.player, notif.args.paid * -1);
+  }
+
   /**
    * Handle 'moveMiniComic' notification
    *

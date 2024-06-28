@@ -166,6 +166,7 @@ class AOCComicCard extends AOCCard {
             "facedownClass" => $this->facedownClass,
             "cssClass" => $this->deriveCssClass($currentPlayerId),
             "handSortOrder" => $this->getHandSortOrder(),
+            "improvedThisRound" => $this->getDisplayValue(),
         ];
     }
 

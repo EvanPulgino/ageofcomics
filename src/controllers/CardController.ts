@@ -88,7 +88,24 @@ class CardController {
     const css = this.getCardDivCss(card);
     const order = card.locationArg;
 
-    return `<div id="${id}" class="${css}" order="${order}"></div>`;
+    let cardDiv = `<div id="${id}" class="${css}" order="${order}">`;
+
+    if (card.type === "artist" || card.type === "writer") {
+      const improveTokenContainerId = "aoc-improve-token-container-" + card.id;
+      cardDiv += `<div id="${improveTokenContainerId}" class="aoc-improve-token-container">`;
+
+      if (card.displayValue > card.value) {
+        const improveTokenDivId = "aoc-improve-token-" + card.id;
+        const improveTokenCssClass = `aoc-token-increase-${card.type}-${card.displayValue}`;
+        cardDiv += `<div id="${improveTokenDivId}" class="aoc-increase-token ${improveTokenCssClass}"></div>`;
+      }
+
+      cardDiv += `</div>`;
+    }
+
+    cardDiv += `</div>`;
+
+    return cardDiv;
   }
 
   /**
@@ -147,6 +164,17 @@ class CardController {
 
     // Play the animation
     animation.play();
+  }
+
+  addImproveToken(card: any): void {
+    // First remove any existing improve token
+    dojo.empty("aoc-improve-token-container-" + card.id);
+
+    // Create the improve token
+    const improveTokenDivId = "aoc-improve-token-" + card.id;
+    const improveTokenCssClass = `aoc-token-increase-${card.type}-${card.displayValue}`;
+    const tokenDiv = `<div id="${improveTokenDivId}" class="aoc-increase-token ${improveTokenCssClass}"></div>`;
+    this.ui.createHtml(tokenDiv, "aoc-improve-token-container-" + card.id);
   }
 
   /**

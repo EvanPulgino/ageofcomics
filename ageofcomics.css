@@ -542,8 +542,9 @@ html {
   align-items: center;
   display: flex;
   flex-flow: row nowrap;
-  gap: 15px;
+  gap: 50px;
   justify-content: center;
+  padding: 25px;
 }
 
 .aoc-print-menu {
@@ -4045,6 +4046,11 @@ html {
 
 .aoc-print-menu .aoc-card {
   cursor: pointer;
+}
+
+.aoc-improve-token-container {
+  position: relative;
+  top: 3px;
 }
 
 /**
