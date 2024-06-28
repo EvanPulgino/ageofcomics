@@ -39,7 +39,18 @@ class AOCSalesOrderManager extends APP_GameClass {
      * @return void
      */
     public function collectSalesOrder($salesOrderId, $playerId) {
-        $sql = "UPDATE sales_order SET sales_order_flipped = 1, sales_order_location = " . LOCATION_PLAYER_AREA . ", sales_order_location_arg = $playerId WHERE sales_order_id = $salesOrderId";
+        $sql =
+            "UPDATE sales_order SET sales_order_flipped = 1, sales_order_location = " .
+            LOCATION_PLAYER_AREA .
+            ", sales_order_location_arg = $playerId WHERE sales_order_id = $salesOrderId";
+        self::DbQuery($sql);
+    }
+
+    public function discardSalesOrder($salesOrderId) {
+        $sql =
+            "UPDATE sales_order SET sales_order_location = " .
+            LOCATION_DISCARD .
+            " WHERE sales_order_id = $salesOrderId";
         self::DbQuery($sql);
     }
 

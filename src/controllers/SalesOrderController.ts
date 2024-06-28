@@ -71,6 +71,10 @@ class SalesOrderController {
     }
   }
 
+  discardSalesOrder(salesOrder: any): void {
+    dojo.destroy("aoc-salesorder-" + salesOrder.id);
+  }
+
   /**
    * Flips a sales order
    *

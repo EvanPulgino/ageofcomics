@@ -174,7 +174,7 @@ class AOCPerformHireState {
                     $card->getGenreId()
                 ),
                 "card_type_singular" =>
-                    $card->getTypeId() == CARD_TYPE_ARTIST
+                    $card->getTypeId() === CARD_TYPE_ARTIST
                         ? "an "
                         : "a " .
                             $this->game->formatNotificationString(

@@ -594,6 +594,15 @@ class GameBody extends GameBasics {
     this.salesOrderController.flipSalesOrder(notif.args.salesOrder);
   }
 
+  notif_salesOrderFulfilled(notif: any): void {
+    this.miniComicController.moveMiniComic(notif.args.miniComic);
+    this.playerController.adjustIncome(
+      notif.args.player,
+      notif.args.incomeChange
+    );
+    this.salesOrderController.discardSalesOrder(notif.args.salesOrder);
+  }
+
   /**
    * Handle 'setupMoney' notification
    *

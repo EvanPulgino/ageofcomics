@@ -100,8 +100,81 @@ class AOCPerformSalesState {
             ]
         );
 
-        // Re-enter sales action state
-        $this->game->gamestate->nextState("continueSales");
+        // Check if the sales order can be fulfilled by any printed comics
+        $printedComics = $this->game->cardManager->getPrintedComicsByPlayer(
+            $activePlayer->getId()
+        );
+        $eligibleComics = [];
+        foreach ($printedComics as $comic) {
+            if (
+                $this->canComicFulfillSalesOrder(
+                    $activePlayer,
+                    $comic,
+                    $collectedSalesOrder
+                )
+            ) {
+                $eligibleComics[] = $comic;
+            }
+        }
+
+        if (count($eligibleComics) > 1) {
+            // If there is more than one eligible comic, move to new state to select how to fulfill the sales order
+        } else {
+            // If there is only one eligible comic, fulfill the sales order automatically
+            if (count($eligibleComics) === 1) {
+                $comic = $eligibleComics[0];
+
+                // Increase comic fans
+                $incomeChange = $this->game->miniComicManager->adjustMiniComicFans(
+                    $comic,
+                    $collectedSalesOrder->getFans()
+                );
+
+                $miniComic = $this->game->miniComicManager->getCorrespondingMiniComic(
+                    $comic
+                );
+
+                // Adjust player income
+                $this->game->playerManager->adjustPlayerIncome(
+                    $activePlayer,
+                    $incomeChange
+                );
+
+                // Discard the sales order
+                $this->game->salesOrderManager->discardSalesOrder(
+                    $collectedSalesOrder->getId()
+                );
+
+                // Notify all players that the sales order was fulfilled
+                $this->game->notifyAllPlayers(
+                    "salesOrderFulfilled",
+                    clienttranslate(
+                        '${player_name} fulfills a value ${value} ${genre} sales order using ${comicName}, gaining ${fans} ${fanPlural}'
+                    ),
+                    [
+                        "player" => $activePlayer->getUiData(),
+                        "player_name" => $activePlayer->getName(),
+                        "value" => $collectedSalesOrder->getValue(),
+                        "genre" => $collectedSalesOrder->getGenre(),
+                        "salesOrder" => $collectedSalesOrder->getUiData(),
+                        "comicName" => $this->game->formatNotificationString(
+                            $comic->getName(),
+                            $comic->getGenreId()
+                        ),
+                        "fans" => $collectedSalesOrder->getFans(),
+                        "fanPlural" =>
+                            $collectedSalesOrder->getFans() == 1
+                                ? "fan"
+                                : "fans",
+                        "incomeChange" => $incomeChange,
+                        "miniComic" => $miniComic->getUiData(),
+                    ]
+                );
+            }
+
+            // Re-enter sales action state
+            $this->game->gamestate->nextState("continueSales");
+        }
     }
 
     public function endSales() {
@@ -254,6 +327,28 @@ class AOCPerformSalesState {
 
         // Re-enter sales action state
         $this->game->gamestate->nextState("continueSales");
+    }
+
+    private function canComicFulfillSalesOrder($player, $comic, $salesOrder) {
+        if ($comic->getGenre() === $salesOrder->getGenre()) {
+            // Get the creatives for the comic
+            $comicArtist = $this->game->cardManager->getArtistCardForPrintedComic(
+                $player->getId(),
+                $comic->getLocationArg()
+            );
+            $comicWriter = $this->game->cardManager->getWriterCardForPrintedComic(
+                $player->getId(),
+                $comic->getLocationArg()
+            );
+            $comicValue =
+                $comicArtist->getDisplayValue() +
+                $comicWriter->getDisplayValue();
+
+            if ($comicValue >= $salesOrder->getValue()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private function payLastArrivedPlayer($activePlayer, $playerIdToPay) {

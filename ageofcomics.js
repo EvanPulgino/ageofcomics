@@ -752,6 +752,11 @@ var GameBody = /** @class */ (function (_super) {
     GameBody.prototype.notif_salesOrderFlipped = function (notif) {
         this.salesOrderController.flipSalesOrder(notif.args.salesOrder);
     };
+    GameBody.prototype.notif_salesOrderFulfilled = function (notif) {
+        this.miniComicController.moveMiniComic(notif.args.miniComic);
+        this.playerController.adjustIncome(notif.args.player, notif.args.incomeChange);
+        this.salesOrderController.discardSalesOrder(notif.args.salesOrder);
+    };
     /**
      * Handle 'setupMoney' notification
      *
@@ -2399,6 +2404,9 @@ var SalesOrderController = /** @class */ (function () {
         if (salesOrder.location == globalThis.LOCATION_PLAYER_AREA) {
             this.ui.createHtml(salesOrderDiv, "aoc-sales-order-container-" + salesOrder.locationArg);
         }
+    };
+    SalesOrderController.prototype.discardSalesOrder = function (salesOrder) {
+        dojo.destroy("aoc-salesorder-" + salesOrder.id);
     };
     /**
      * Flips a sales order
