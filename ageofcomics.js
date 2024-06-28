@@ -1073,7 +1073,7 @@ var CardController = /** @class */ (function () {
         // Get the card div
         var cardDiv = dojo.byId("aoc-card-" + card.id);
         // Move card out of overlay to allow animation
-        dojo.place(cardDiv, "aoc-player-area-right-" + playerId);
+        dojo.place(cardDiv, "aoc-player-area-" + playerId);
         // If the card is face down, flip it face up
         if (cardDiv.classList.contains(card.facedownClass)) {
             cardDiv.classList.remove(card.facedownClass);

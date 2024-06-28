@@ -118,22 +118,22 @@ class AOCEnterIncreaseCreativesState {
         if (
             $comicArtist->getGenreId() === $comic->getGenreId() &&
             $comicWriter->getGenreId() === $comic->getGenreId() &&
-            $comicArtist->getValue() !== $comicWriter->getValue()
+            $comicArtist->getDisplayValue() !== $comicWriter->getDisplayValue()
         ) {
             $costToIncrease = 1;
         } elseif (
             $comicArtist->getGenreId() === $comic->getGenreId() &&
             $comicWriter->getGenreId() === $comic->getGenreId() &&
-            $comicArtist->getValue() === $comicWriter->getValue()
+            $comicArtist->getDisplayValue() === $comicWriter->getDisplayValue()
         ) {
-            //If both creatives have the same genre as the comic, and have the same value, the cost is the value being increased to
+            // If both creatives have the same genre as the comic, and have the same value, the cost is the value being increased to
 
             // If the value is 3, the creative cannot be increased
-            if ($comicArtist->getValue() === 3) {
+            if ($comicArtist->getDisplayValue() === 3) {
                 return false;
             }
 
-            $costToIncrease = $comicArtist->getValue() + 1;
+            $costToIncrease = $comicArtist->getDisplayValue() + 1;
         } else {
             // If we get here, one creative has the same genre as the comic and the other does not
             // Get the creative that has the same genre as the comic
@@ -143,12 +143,12 @@ class AOCEnterIncreaseCreativesState {
                     : $comicWriter;
 
             // If the creative is already at 3, the creative cannot be increased
-            if ($sameGenreCreative->getValue() === 3) {
+            if ($sameGenreCreative->getDisplayValue() === 3) {
                 return false;
             }
 
             // Otherwise the cost to increase is the value the matching creative will increase to (always one higher)
-            $costToIncrease = $sameGenreCreative->getValue() + 1;
+            $costToIncrease = $sameGenreCreative->getDisplayValue() + 1;
         }
 
         return $playerMoney >= $costToIncrease;
