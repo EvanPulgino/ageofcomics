@@ -9,12 +9,12 @@
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * Backend functions used by the performPrintFulfillOrders State
+ * Backend functions used by the performPrintContinue State
  *
  * @EvanPulgino
  */
 
-class AOCPerformPrintFulfillOrdersState {
+class AOCPerformPrintContinueState {
     private $game;
 
     public function __construct($game) {
@@ -24,7 +24,7 @@ class AOCPerformPrintFulfillOrdersState {
     public function getArgs($playerId = null) {
     }
 
-    public function stPerformPrintFulfillOrders() {
+    public function stPerformPrintContinue() {
         $activePlayer = $this->game->playerManager->getActivePlayer();
         $actionSpace = $this->game->getGameStateValue(SELECTED_ACTION_SPACE);
         if ($actionSpace == 40001 && $this->playerCanPrint($activePlayer)) {

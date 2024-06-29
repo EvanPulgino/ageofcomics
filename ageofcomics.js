@@ -814,7 +814,7 @@ var GameState = /** @class */ (function () {
         this.performIdeas = new PerformIdeas(game);
         this.performPrint = new PerformPrint(game);
         this.performPrintBonus = new PerformPrintBonus(game);
-        this.performPrintFulfillOrders = new PerformPrintFulfillOrders(game);
+        this.performPrintContinue = new PerformPrintContinue(game);
         this.performPrintMastery = new PerformPrintMastery(game);
         this.performPrintUpgrade = new PerformPrintUpgrade(game);
         this.performRoyalties = new PerformRoyalties(game);
@@ -4332,22 +4332,22 @@ var PerformPrintBonus = /** @class */ (function () {
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * PerformPrintMastery.ts
+ * PerformPrintContinue.ts
  *
- * AgeOfComics perform print fulfill orders state
+ * AgeOfComics perform print continue state
  *
  * State vars:
  * - game: game object reference
  *
  */
-var PerformPrintFulfillOrders = /** @class */ (function () {
-    function PerformPrintFulfillOrders(game) {
+var PerformPrintContinue = /** @class */ (function () {
+    function PerformPrintContinue(game) {
         this.game = game;
     }
-    PerformPrintFulfillOrders.prototype.onEnteringState = function (stateArgs) { };
-    PerformPrintFulfillOrders.prototype.onLeavingState = function () { };
-    PerformPrintFulfillOrders.prototype.onUpdateActionButtons = function (stateArgs) { };
-    return PerformPrintFulfillOrders;
+    PerformPrintContinue.prototype.onEnteringState = function (stateArgs) { };
+    PerformPrintContinue.prototype.onLeavingState = function () { };
+    PerformPrintContinue.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return PerformPrintContinue;
 }());
 /**
  *------

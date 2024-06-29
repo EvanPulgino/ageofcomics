@@ -7,15 +7,15 @@
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * PerformPrintMastery.ts
+ * PerformPrintContinue.ts
  *
- * AgeOfComics perform print fulfill orders state
+ * AgeOfComics perform print continue state
  *
  * State vars:
  * - game: game object reference
  *
  */
-class PerformPrintFulfillOrders implements State {
+class PerformPrintContinue implements State {
   game: any;
   constructor(game: any) {
     this.game = game;

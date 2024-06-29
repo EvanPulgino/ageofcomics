@@ -273,16 +273,16 @@ $machinestates = [
         "action" => GAME_ACTION_PERFORM_PRINT_UPGRADE,
         "possibleactions" => [PLAYER_ACTION_PLACE_UPGRADE_CUBE],
         "transitions" => [
-            "checkFulfillOrders" => ST_PERFORM_PRINT_FULFILL_ORDERS,
+            "checkFulfillOrders" => ST_PERFORM_PRINT_CONTINUE,
         ],
     ],
 
-    ST_PERFORM_PRINT_FULFILL_ORDERS => [
-        "name" => PERFORM_PRINT_FULFILL_ORDERS,
+    ST_PERFORM_PRINT_CONTINUE => [
+        "name" => PERFORM_PRINT_CONTINUE,
         "description" => "",
         "type" => STATE_TYPE_GAME,
-        "args" => STATE_ARGS_PERFORM_PRINT_FULFILL_ORDERS,
-        "action" => GAME_ACTION_PERFORM_PRINT_FULFILL_ORDERS,
+        "args" => STATE_ARGS_PERFORM_PRINT_CONTINUE,
+        "action" => GAME_ACTION_PERFORM_PRINT_CONTINUE,
         "transitions" => [
             "doublePrint" => ST_PERFORM_PRINT,
             "nextPlayerTurn" => ST_NEXT_PLAYER,

@@ -66,7 +66,9 @@ class AgeOfComics extends Table {
         $this->states[CHECK_HAND_SIZE] = new AOCCheckHandSizeState($this);
         $this->states[COMPLETE_SETUP] = new AOCCompleteSetupState($this);
         $this->states[CONTINUE_SALES] = new AOCContinueSalesState($this);
-        $this->states[END_START_NEW_ROUND] = new AOCEndStartNewRoundState($this);
+        $this->states[END_START_NEW_ROUND] = new AOCEndStartNewRoundState(
+            $this
+        );
         $this->states[
             ENTER_INCREASE_CREATIVES
         ] = new AOCEnterIncreaseCreativesState($this);
@@ -83,8 +85,8 @@ class AgeOfComics extends Table {
             $this
         );
         $this->states[
-            PERFORM_PRINT_FULFILL_ORDERS
-        ] = new AOCPerformPrintFulfillOrdersState($this);
+            PERFORM_PRINT_CONTINUE
+        ] = new AOCPerformPrintContinueState($this);
         $this->states[PERFORM_PRINT_MASTERY] = new AOCPerformPrintMasteryState(
             $this
         );
@@ -320,8 +322,8 @@ class AgeOfComics extends Table {
     function argsPerformPrintBonus() {
         return $this->states[PERFORM_PRINT_BONUS]->getArgs();
     }
-    function argsPerformPrintFulfillOrders() {
-        return $this->states[PERFORM_PRINT_FULFILL_ORDERS]->getArgs();
+    function argsPerformPrintContinue() {
+        return $this->states[PERFORM_PRINT_CONTINUE]->getArgs();
     }
     function argsPerformPrintMastery() {
         return $this->states[PERFORM_PRINT_MASTERY]->getArgs();

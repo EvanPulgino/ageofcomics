@@ -26,8 +26,8 @@ define("GAME_ACTION_PERFORM_PRINT_BONUS", "stPerformPrintBonus");
 define("GAME_ACTION_PERFORM_PRINT_MASTERY", "stPerformPrintMastery");
 define("GAME_ACTION_PERFORM_PRINT_UPGRADE", "stPerformPrintUpgrade");
 define(
-    "GAME_ACTION_PERFORM_PRINT_FULFILL_ORDERS",
-    "stPerformPrintFulfillOrders"
+    "GAME_ACTION_PERFORM_PRINT_CONTINUE",
+    "stPerformPrintContinue"
 );
 define("GAME_ACTION_PLAYER_SETUP", "stPlayerSetup");
 define("GAME_ACTION_NEXT_PLAYER", "stNextPlayer");
@@ -1150,8 +1150,8 @@ define("STATE_ARGS_PERFORM_PRINT_BONUS", "argsPerformPrintBonus");
 define("STATE_ARGS_PERFORM_PRINT_MASTERY", "argsPerformPrintMastery");
 define("STATE_ARGS_PERFORM_PRINT_UPGRADE", "argsPerformPrintUpgrade");
 define(
-    "STATE_ARGS_PERFORM_PRINT_FULFILL_ORDERS",
-    "argsPerformPrintFulfillOrders"
+    "STATE_ARGS_PERFORM_PRINT_CONTINUE",
+    "argsPerformPrintContinue"
 );
 define("STATE_ARGS_PERFORM_ROYALTIES", "argsPerformRoyalties");
 define("STATE_ARGS_PERFORM_SALES", "argsPerformSales");
@@ -1189,7 +1189,7 @@ define("ST_PERFORM_PRINT", 24);
 define("ST_PERFORM_PRINT_BONUS", 241);
 define("ST_PERFORM_PRINT_MASTERY", 242);
 define("ST_PERFORM_PRINT_UPGRADE", 243);
-define("ST_PERFORM_PRINT_FULFILL_ORDERS", 244);
+define("ST_PERFORM_PRINT_CONTINUE", 244);
 define("ST_PERFORM_ROYALTIES", 25);
 define("ST_PERFORM_SALES", 26);
 define("ST_CONTINUE_SALES", 27);
@@ -1222,7 +1222,7 @@ define("PERFORM_PRINT", "performPrint");
 define("PERFORM_PRINT_BONUS", "performPrintBonus");
 define("PERFORM_PRINT_MASTERY", "performPrintMastery");
 define("PERFORM_PRINT_UPGRADE", "performPrintUpgrade");
-define("PERFORM_PRINT_FULFILL_ORDERS", "performPrintFulfillOrders");
+define("PERFORM_PRINT_CONTINUE", "performPrintContinue");
 define("PERFORM_ROYALTIES", "performRoyalties");
 define("PERFORM_SALES", "performSales");
 define("PLAYER_SETUP", "playerSetup");
