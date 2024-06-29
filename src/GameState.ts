@@ -16,7 +16,6 @@
 class GameState {
   checkHandSize: State;
   completeSetup: State;
-  continueSales: State;
   endStartNewRound: State;
   enterIncreaseCreatives: State;
   gameEnd: State;
@@ -34,6 +33,8 @@ class GameState {
   performPrintUpgrade: State;
   performRoyalties: State;
   performSales: State;
+  performSalesContinue: State;
+  performSalesFulfillOrder: State;
   playerSetup: State;
   playerTurn: State;
   roundEndEstablishPlayerOrder: State;
@@ -46,7 +47,6 @@ class GameState {
   constructor(game: any) {
     this.checkHandSize = new CheckHandSize(game);
     this.completeSetup = new CompleteSetup(game);
-    this.continueSales = new ContinueSales(game);
     this.endStartNewRound = new EndStartNewRound(game);
     this.enterIncreaseCreatives = new EnterIncreaseCreatives(game);
     this.gameEnd = new GameEnd(game);
@@ -64,6 +64,8 @@ class GameState {
     this.performPrintUpgrade = new PerformPrintUpgrade(game);
     this.performRoyalties = new PerformRoyalties(game);
     this.performSales = new PerformSales(game);
+    this.performSalesContinue = new PerformSalesContinue(game);
+    this.performSalesFulfillOrder = new PerformSalesFulfillOrder(game);
     this.playerSetup = new PlayerSetup(game);
     this.playerTurn = new PlayerTurn(game);
     this.roundEndEstablishPlayerOrder = new RoundEndEstablishPlayerOrder(game);

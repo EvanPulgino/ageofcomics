@@ -250,6 +250,20 @@ class action_ageofcomics extends APP_GameAction {
         self::ajaxResponse();
     }
 
+    public function selectComicForOrder() {
+        self::setAjaxMode();
+
+        $comicId = self::getArg("comicId", AT_posint, true);
+        $salesOrderId = self::getArg("salesOrderId", AT_posint, true);
+
+        $this->game->states[PERFORM_SALES_FULFILL_ORDER]->selectComicForOrder(
+            $comicId,
+            $salesOrderId
+        );
+
+        self::ajaxResponse();
+    }
+
     public function selectStartItems() {
         self::setAjaxMode();
 

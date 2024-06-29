@@ -119,6 +119,8 @@ class AOCPerformSalesState {
 
         if (count($eligibleComics) > 1) {
             // If there is more than one eligible comic, move to new state to select how to fulfill the sales order
+            $this->game->setGameStateValue(SALES_ORDER_BEING_FULFILLED, $salesOrderId);
+            $this->game->gamestate->nextState("fulfillSalesOrder");
         } else {
             // If there is only one eligible comic, fulfill the sales order automatically
             if (count($eligibleComics) === 1) {

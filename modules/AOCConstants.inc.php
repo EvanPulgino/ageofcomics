@@ -16,7 +16,6 @@
 
 /** Game State Actions */
 define("GAME_ACTION_COMPLETE_SETUP", "stCompleteSetup");
-define("GAME_ACTION_CONTINUE_SALES", "stContinueSales");
 define("GAME_ACTION_END_START_NEW_ROUND", "stEndStartNewRound");
 define("GAME_ACTION_ENTER_INCREASE_CREATIVES", "stEnterIncreaseCreatives");
 define("GAME_ACTION_GAIN_ROYALITES", "stGainRoyalties");
@@ -25,10 +24,8 @@ define("GAME_ACTION_GAME_SETUP", "stGameSetup");
 define("GAME_ACTION_PERFORM_PRINT_BONUS", "stPerformPrintBonus");
 define("GAME_ACTION_PERFORM_PRINT_MASTERY", "stPerformPrintMastery");
 define("GAME_ACTION_PERFORM_PRINT_UPGRADE", "stPerformPrintUpgrade");
-define(
-    "GAME_ACTION_PERFORM_PRINT_CONTINUE",
-    "stPerformPrintContinue"
-);
+define("GAME_ACTION_PERFORM_PRINT_CONTINUE", "stPerformPrintContinue");
+define("GAME_ACTION_PERFORM_SALES_CONTINUE", "stPerformSalesContinue");
 define("GAME_ACTION_PLAYER_SETUP", "stPlayerSetup");
 define("GAME_ACTION_NEXT_PLAYER", "stNextPlayer");
 define("GAME_ACTION_NEXT_PLAYER_SETUP", "stNextPlayerSetup");
@@ -65,6 +62,7 @@ define(
 define("PLAYER_ACTION_PLACE_UPGRADE_CUBE", "placeUpgradeCube");
 define("PLAYER_ACTION_PRINT_COMIC", "printComic");
 define("PLAYER_ACTION_SELECT_ACTION_SPACE", "selectActionSpace");
+define("PLAYER_ACTION_SELECT_COMIC_FOR_ORDER", "selectComicForOrder");
 define("PLAYER_ACTION_SELECT_START_ITEMS", "selectStartItems");
 define("PLAYER_ACTION_SKIP_DOUBLE_PRINT", "skipDoublePrint");
 define("PLAYER_ACTION_TRAIN", "train");
@@ -371,6 +369,7 @@ define("IDEAS_SPACE_WESTERN", "ideas_space_western");
 define("MAX_ACTION_SPACES", "max_action_spaces");
 define("PAID_FOR_CURRENT_SPACE", "paid_for_current_space");
 define("PRINTED_COMIC", "printed_comic");
+define("SALES_ORDER_BEING_FULFILLED", "sales_order_being_fulfilled");
 define("SALES_ORDER_COLLECTS_REMAINING", "sales_order_collects_remaining");
 define("SALES_ORDER_FLIPS_REMAINING", "sales_order_flips_remaining");
 define("SELECTED_ACTION_SPACE", "selected_action_space");
@@ -1131,7 +1130,6 @@ define("SALES_ORDERS_FOR_PLAYER_COUNT", [
 /** State Args */
 define("STATE_ARGS_CHECK_HAND_SIZE", "argsCheckHandSize");
 define("STATE_ARGS_COMPLETE_SETUP", "argsCompleteSetup");
-define("STATE_ARGS_CONTINUE_SALES", "argsContinueSales");
 define("STATE_ARGS_END_START_NEW_ROUND", "argsEndStartNewRound");
 define("STATE_ARGS_ENTER_INCREASE_CREATIVES", "argsEnterIncreaseCreatives");
 define("STATE_ARGS_GAME_END", "argsGameEnd");
@@ -1149,12 +1147,14 @@ define("STATE_ARGS_PERFORM_PRINT", "argsPerformPrint");
 define("STATE_ARGS_PERFORM_PRINT_BONUS", "argsPerformPrintBonus");
 define("STATE_ARGS_PERFORM_PRINT_MASTERY", "argsPerformPrintMastery");
 define("STATE_ARGS_PERFORM_PRINT_UPGRADE", "argsPerformPrintUpgrade");
-define(
-    "STATE_ARGS_PERFORM_PRINT_CONTINUE",
-    "argsPerformPrintContinue"
-);
+define("STATE_ARGS_PERFORM_PRINT_CONTINUE", "argsPerformPrintContinue");
 define("STATE_ARGS_PERFORM_ROYALTIES", "argsPerformRoyalties");
 define("STATE_ARGS_PERFORM_SALES", "argsPerformSales");
+define("STATE_ARGS_PERFORM_SALES_CONTINUE", "argsPerformSalesContinue");
+define(
+    "STATE_ARGS_PERFORM_SALES_FULFILL_ORDER",
+    "argsPerformSalesFulfillOrder"
+);
 define("STATE_ARGS_PLAYER_SETUP", "argsPlayerSetup");
 define("STATE_ARGS_PLAYER_TURN", "argsPlayerTurn");
 define(
@@ -1179,7 +1179,6 @@ define("ST_COMPLETE_SETUP", 4);
 define("ST_START_NEW_ROUND", 10);
 define("ST_ENTER_INCREASE_CREATIVES", 11);
 define("ST_INCREASE_CREATIVES", 12);
-define("ST_INCREASE_CREATIVES_FULFILL_ORDERS", 13);
 define("ST_END_START_NEW_ROUND", 14);
 define("ST_PLAYER_TURN", 20);
 define("ST_PERFORM_HIRE", 21);
@@ -1192,7 +1191,8 @@ define("ST_PERFORM_PRINT_UPGRADE", 243);
 define("ST_PERFORM_PRINT_CONTINUE", 244);
 define("ST_PERFORM_ROYALTIES", 25);
 define("ST_PERFORM_SALES", 26);
-define("ST_CONTINUE_SALES", 27);
+define("ST_PERFORM_SALES_FULFILL_ORDER", 261);
+define("ST_PERFORM_SALES_CONTINUE", 262);
 define("ST_CHECK_HAND_SIZE", 28);
 define("ST_NEXT_PLAYER", 29);
 define("ST_ROUND_END_ESTABLISH_RANKING", 40);
@@ -1206,7 +1206,6 @@ define("ST_GAME_END", 99);
 /** State Names */
 define("CHECK_HAND_SIZE", "checkHandSize");
 define("COMPLETE_SETUP", "completeSetup");
-define("CONTINUE_SALES", "continueSales");
 define("END_START_NEW_ROUND", "endStartNewRound");
 define("ENTER_INCREASE_CREATIVES", "enterIncreaseCreatives");
 define("GAME_END", "gameEnd");
@@ -1225,6 +1224,8 @@ define("PERFORM_PRINT_UPGRADE", "performPrintUpgrade");
 define("PERFORM_PRINT_CONTINUE", "performPrintContinue");
 define("PERFORM_ROYALTIES", "performRoyalties");
 define("PERFORM_SALES", "performSales");
+define("PERFORM_SALES_CONTINUE", "performSalesContinue");
+define("PERFORM_SALES_FULFILL_ORDER", "performSalesFulfillOrder");
 define("PLAYER_SETUP", "playerSetup");
 define("PLAYER_TURN", "playerTurn");
 define("ROUND_END_ESTABLISH_PLAYER_ORDER", "roundEndEstablishPlayerOrder");

@@ -801,7 +801,6 @@ var GameState = /** @class */ (function () {
     function GameState(game) {
         this.checkHandSize = new CheckHandSize(game);
         this.completeSetup = new CompleteSetup(game);
-        this.continueSales = new ContinueSales(game);
         this.endStartNewRound = new EndStartNewRound(game);
         this.enterIncreaseCreatives = new EnterIncreaseCreatives(game);
         this.gameEnd = new GameEnd(game);
@@ -819,6 +818,8 @@ var GameState = /** @class */ (function () {
         this.performPrintUpgrade = new PerformPrintUpgrade(game);
         this.performRoyalties = new PerformRoyalties(game);
         this.performSales = new PerformSales(game);
+        this.performSalesContinue = new PerformSalesContinue(game);
+        this.performSalesFulfillOrder = new PerformSalesFulfillOrder(game);
         this.playerSetup = new PlayerSetup(game);
         this.playerTurn = new PlayerTurn(game);
         this.roundEndEstablishPlayerOrder = new RoundEndEstablishPlayerOrder(game);
@@ -2722,32 +2723,6 @@ var CompleteSetup = /** @class */ (function () {
     CompleteSetup.prototype.onLeavingState = function () { };
     CompleteSetup.prototype.onUpdateActionButtons = function (stateArgs) { };
     return CompleteSetup;
-}());
-/**
- *------
- * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
- * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
- *
- * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
- * See http://en.boardgamearena.com/#!doc/Studio for more information.
- * -----
- *
- * ContinueSales.ts
- *
- * AgeOfComics continue sales state
- *
- * State vars:
- * - game: game object reference
- *
- */
-var ContinueSales = /** @class */ (function () {
-    function ContinueSales(game) {
-        this.game = game;
-    }
-    ContinueSales.prototype.onEnteringState = function (stateArgs) { };
-    ContinueSales.prototype.onLeavingState = function () { };
-    ContinueSales.prototype.onUpdateActionButtons = function (stateArgs) { };
-    return ContinueSales;
 }());
 /**
  *------
@@ -5006,6 +4981,187 @@ var PerformSales = /** @class */ (function () {
         dojo.addClass("aoc-cancel-use-ticket", "aoc-button");
     };
     return PerformSales;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * ContinueSales.ts
+ *
+ * AgeOfComics continue sales state
+ *
+ * State vars:
+ * - game: game object reference
+ *
+ */
+var PerformSalesContinue = /** @class */ (function () {
+    function PerformSalesContinue(game) {
+        this.game = game;
+    }
+    PerformSalesContinue.prototype.onEnteringState = function (stateArgs) { };
+    PerformSalesContinue.prototype.onLeavingState = function () { };
+    PerformSalesContinue.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return PerformSalesContinue;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * PerformSalesFulillOrder.ts
+ *
+ * AgeOfComics perform sales fulfill order state
+ *
+ */
+var PerformSalesFulfillOrder = /** @class */ (function () {
+    function PerformSalesFulfillOrder(game) {
+        this.game = game;
+        this.connections = {};
+    }
+    PerformSalesFulfillOrder.prototype.onEnteringState = function (stateArgs) {
+        if (stateArgs.isCurrentPlayerActive) {
+            var salesOrder = stateArgs.args.salesOrderBeingFulfilled;
+            // Show the comic selection menu
+            dojo.removeClass("aoc-select-comic-for-order-menu", "aoc-hidden");
+            // Add tile to header
+            var tileDiv = "<div id='sales-order-being-fulfilled' class='aoc-salesorder " +
+                salesOrder.cssClass +
+                "'></div>";
+            dojo.place(tileDiv, "aoc-select-comic-for-order-header-text");
+            // Add eligible comics to menu
+            this.addComicsToMenu(stateArgs.args.cardsOnPlayerMat, salesOrder);
+        }
+    };
+    PerformSalesFulfillOrder.prototype.onLeavingState = function () {
+        dojo.empty("aoc-select-comics");
+        dojo.destroy("sales-order-being-fulfilled");
+        dojo.toggleClass("aoc-select-comic-for-order-menu", "aoc-hidden", true);
+        for (var connection in this.connections) {
+            dojo.disconnect(this.connections[connection]);
+        }
+        this.connections = {};
+    };
+    PerformSalesFulfillOrder.prototype.onUpdateActionButtons = function (stateArgs) { };
+    PerformSalesFulfillOrder.prototype.addComicsToMenu = function (cards, salesOrder) {
+        var numOfComics = cards.filter(function (card) { return card.type === "comic" || card.type === "ripoff"; }).length;
+        for (var i = 1; i <= numOfComics; i++) {
+            if (this.canFullfillOrder(i, cards, salesOrder)) {
+                this.createActionColumn(i, cards, salesOrder);
+            }
+        }
+    };
+    PerformSalesFulfillOrder.prototype.canFullfillOrder = function (i, cards, salesOrder) {
+        var comicCard = this.getComicCardInSlot(i, cards);
+        if (comicCard.genre === salesOrder.genre) {
+            var artistCard = this.getCreativeTypeCardInSlot("artist", i, cards);
+            var writerCard = this.getCreativeTypeCardInSlot("writer", i, cards);
+            var comicValue = artistCard.displayValue + writerCard.displayValue;
+            if (comicValue >= salesOrder.value) {
+                return true;
+            }
+        }
+        return false;
+    };
+    PerformSalesFulfillOrder.prototype.createActionColumn = function (slot, cards, salesOrder) {
+        var _this = this;
+        var fulfillOrderColumn = "<div id='aoc-fulfill-order-column-" +
+            slot +
+            "' class='aoc-increase-action-column'></div>";
+        dojo.place(fulfillOrderColumn, "aoc-select-comics");
+        var selectableComicDiv = "<div id='aoc-selectable-comic-" +
+            slot +
+            "' class='aoc-increasable-comic-slot'></div>";
+        dojo.place(selectableComicDiv, "aoc-fulfill-order-column-" + slot);
+        // Add comic card to column
+        this.createComicCardInColumn(slot, cards);
+        // Add the artist card to the column
+        this.createCreativeCardInColumn("artist", slot, cards);
+        // Add the writer card to the column
+        this.createCreativeCardInColumn("writer", slot, cards);
+        // Create the fulfill order button
+        var comicCard = this.getComicCardInSlot(slot, cards);
+        var selectButtonDiv = "<a id='aoc-select-" +
+            slot +
+            "' class='action-button bgabutton bgabutton_blue aoc-button'>" +
+            _("Select") +
+            "</a>";
+        dojo.place(selectButtonDiv, "aoc-fulfill-order-column-" + slot);
+        // Connect the button
+        this.connections["aoc-select-" + slot] = dojo.connect(dojo.byId("aoc-select-" + slot), "onclick", this, function () {
+            _this.select(comicCard.id, salesOrder.id);
+        });
+    };
+    PerformSalesFulfillOrder.prototype.createComicCardInColumn = function (slot, cards) {
+        var comicCard = this.getComicCardInSlot(slot, cards);
+        if (comicCard) {
+            var typeCss = "aoc-" + comicCard.type + "-card";
+            var comicCardDiv = "<div id='aoc-inc-comic-card-" +
+                comicCard.id +
+                "' class='aoc-card " +
+                typeCss +
+                " " +
+                comicCard.cssClass +
+                "'></div>";
+            dojo.place(comicCardDiv, "aoc-selectable-comic-" + slot);
+        }
+    };
+    PerformSalesFulfillOrder.prototype.createCreativeCardInColumn = function (type, slot, cards) {
+        var creativeCard = this.getCreativeTypeCardInSlot(type, slot, cards);
+        if (creativeCard) {
+            var creativeCardDiv = "<div id='aoc-inc-" +
+                type +
+                "-card-" +
+                creativeCard.id +
+                "' class='aoc-card aoc-" +
+                type +
+                "-card aoc-creative-card " +
+                creativeCard.cssClass +
+                "'></div>";
+            dojo.place(creativeCardDiv, "aoc-selectable-comic-" + slot);
+            var increaseContainerDiv = "<div id='aoc-inc-improve-token-container-" +
+                creativeCard.id +
+                "' class='aoc-improve-token-container'></div>";
+            dojo.place(increaseContainerDiv, "aoc-inc-" + type + "-card-" + creativeCard.id);
+            if (creativeCard.displayValue > creativeCard.value) {
+                var increaseTokenCssClass = "aoc-token-increase-" +
+                    creativeCard.type +
+                    "-" +
+                    creativeCard.displayValue;
+                var increaseTokenDiv = "<div id='aoc-inc-improve-token-" +
+                    creativeCard.id +
+                    "' class='aoc-increase-token " +
+                    increaseTokenCssClass +
+                    "'></div>";
+                dojo.place(increaseTokenDiv, "aoc-inc-improve-token-container-" + creativeCard.id);
+            }
+        }
+    };
+    PerformSalesFulfillOrder.prototype.getCreativeTypeCardInSlot = function (type, slot, cards) {
+        return cards.find(function (card) { return card.type === type && card.locationArg === slot; });
+    };
+    PerformSalesFulfillOrder.prototype.getComicCardInSlot = function (slot, cards) {
+        return cards.find(function (card) {
+            return (card.type === "comic" || card.type === "ripoff") &&
+                card.locationArg === slot;
+        });
+    };
+    PerformSalesFulfillOrder.prototype.select = function (comicId, salesOrderId) {
+        this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_SELECT_COMIC_FOR_ORDER, {
+            comicId: comicId,
+            salesOrderId: salesOrderId,
+        });
+        this.onLeavingState();
+    };
+    return PerformSalesFulfillOrder;
 }());
 /**
  *------

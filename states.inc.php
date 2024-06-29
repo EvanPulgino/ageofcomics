@@ -316,17 +316,34 @@ $machinestates = [
             PLAYER_ACTION_END_SALES,
         ],
         "transitions" => [
-            "continueSales" => ST_CONTINUE_SALES,
+            "fulfillSalesOrder" => ST_PERFORM_SALES_FULFILL_ORDER,
+            "continueSales" => ST_PERFORM_SALES_CONTINUE,
             "nextPlayerTurn" => ST_NEXT_PLAYER,
         ],
     ],
 
-    ST_CONTINUE_SALES => [
-        "name" => CONTINUE_SALES,
+    ST_PERFORM_SALES_FULFILL_ORDER => [
+        "name" => PERFORM_SALES_FULFILL_ORDER,
+        "description" => clienttranslate(
+            '${actplayer} must select a comic to fulfill the collected sales order'
+        ),
+        "descriptionmyturn" => clienttranslate(
+            '${you} must select a comic to fulfill the collected sales order'
+        ),
+        "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "args" => STATE_ARGS_PERFORM_SALES_FULFILL_ORDER,
+        "possibleactions" => [PLAYER_ACTION_SELECT_COMIC_FOR_ORDER],
+        "transitions" => [
+            "continueSales" => ST_PERFORM_SALES_CONTINUE,
+        ],
+    ],
+
+    ST_PERFORM_SALES_CONTINUE => [
+        "name" => PERFORM_SALES_CONTINUE,
         "description" => "",
         "type" => STATE_TYPE_GAME,
-        "args" => STATE_ARGS_CONTINUE_SALES,
-        "action" => GAME_ACTION_CONTINUE_SALES,
+        "args" => STATE_ARGS_PERFORM_SALES_CONTINUE,
+        "action" => GAME_ACTION_PERFORM_SALES_CONTINUE,
         "transitions" => ["continueSales" => ST_PERFORM_SALES],
     ],
 

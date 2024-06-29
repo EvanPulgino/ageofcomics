@@ -34,11 +34,19 @@
         <div id="aoc-improve-creatives-menu" class="aoc-hidden whiteblock">
             <div id="aoc-improve-creatives-button-container"></div>
             <div id="aoc-improve-creatives-header">
-                <div id="aoc-improve-creatives-header-text" class="aoc-header-text aoc-squada">Improve Creatives</div>
+                <div id="aoc-improve-creatives-header-text" class="aoc-header-text aoc-squada">{IMPROVE_CREATIVES}</div>
             </div>
             <div id="aoc-improve-creatives-comics" class="aoc-increase-menu"></div>
         </div>
-        <div id="aoc-select-start-items" class="whiteblock" style="display: none;">
+        <div id="aoc-select-comic-for-order-menu" class="aoc-hidden whiteblock">
+            <div id="aoc-select-comic-for-order-header">
+                <div id="aoc-select-comic-for-order-header-text" class="aoc-header-text aoc-squada">
+                    {SELECT_COMIC_FOR_ORDER}
+                </div>
+            </div>
+            <div id="aoc-select-comics" class="aoc-increase-menu"></div>
+        </div>
+        <div id=" aoc-select-start-items" class="whiteblock" style="display: none;">
             <div id="aoc-select-start-items-header">
                 <div id="aoc-select-start-items-header-text" class="aoc-squada">{SELECT_START_ITEMS}</div>
             </div>

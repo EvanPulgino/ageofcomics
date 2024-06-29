@@ -219,6 +219,7 @@ class AOCIncreaseCreativesState {
                     $salesOrder->getFans()
                 );
 
+                // Get the mini comic corresponding to the improved comic
                 $miniComic = $this->game->miniComicManager->getCorrespondingMiniComic(
                     $improvedComic
                 );

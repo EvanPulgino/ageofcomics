@@ -15,7 +15,7 @@
  * - game: game object reference
  *
  */
-class ContinueSales implements State {
+class PerformSalesContinue implements State {
   game: any;
   constructor(game: any) {
     this.game = game;

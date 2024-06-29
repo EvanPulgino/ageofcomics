@@ -49,6 +49,7 @@ class AgeOfComics extends Table {
             SALES_ORDER_COLLECTS_REMAINING => 28,
             SALES_ORDER_FLIPS_REMAINING => 29,
             PAID_FOR_CURRENT_SPACE => 30,
+            SALES_ORDER_BEING_FULFILLED => 31,
         ]);
 
         // Initialize player manager
@@ -65,7 +66,6 @@ class AgeOfComics extends Table {
         // Initialize states
         $this->states[CHECK_HAND_SIZE] = new AOCCheckHandSizeState($this);
         $this->states[COMPLETE_SETUP] = new AOCCompleteSetupState($this);
-        $this->states[CONTINUE_SALES] = new AOCContinueSalesState($this);
         $this->states[END_START_NEW_ROUND] = new AOCEndStartNewRoundState(
             $this
         );
@@ -95,6 +95,12 @@ class AgeOfComics extends Table {
         );
         $this->states[PERFORM_ROYALTIES] = new AOCPerformRoyaltiesState($this);
         $this->states[PERFORM_SALES] = new AOCPerformSalesState($this);
+        $this->states[
+            PERFORM_SALES_CONTINUE
+        ] = new AOCPerformSalesContinueState($this);
+        $this->states[
+            PERFORM_SALES_FULFILL_ORDER
+        ] = new AOCPerformSalesFulfillOrderState($this);
         $this->states[PLAYER_SETUP] = new AOCPlayerSetupState($this);
         $this->states[PLAYER_TURN] = new AOCPlayerTurnState($this);
         $this->states[
@@ -164,6 +170,7 @@ class AgeOfComics extends Table {
         self::setGameStateInitialValue(HAS_WALKED, 0);
         self::setGameStateInitialValue(SALES_ORDER_COLLECTS_REMAINING, -1);
         self::setGameStateInitialValue(SALES_ORDER_FLIPS_REMAINING, -1);
+        self::setGameStateInitialValue(SALES_ORDER_BEING_FULFILLED, 0);
 
         // Init game statistics
         // (note: statistics used in this file must be defined in your stats.inc.php file)
@@ -289,9 +296,6 @@ class AgeOfComics extends Table {
     function argsCompleteSetup() {
         return $this->states[COMPLETE_SETUP]->getArgs();
     }
-    function argsContinueSales() {
-        return $this->states[CONTINUE_SALES]->getArgs();
-    }
     function argsEndStartNewRound() {
         return $this->states[END_START_NEW_ROUND]->getArgs();
     }
@@ -336,6 +340,12 @@ class AgeOfComics extends Table {
     }
     function argsPerformSales() {
         return $this->states[PERFORM_SALES]->getArgs();
+    }
+    function argsPerformSalesContinue() {
+        return $this->states[PERFORM_SALES_CONTINUE]->getArgs();
+    }
+    function argsPerformSalesFulfillOrder() {
+        return $this->states[PERFORM_SALES_FULFILL_ORDER]->getArgs();
     }
     function argsPlayerSetup() {
         return $this->states[PLAYER_SETUP]->getArgs();

@@ -16,7 +16,7 @@
  * @EvanPulgino
  */
 
-class AOCContinueSalesState {
+class AOCPerformSalesContinueState {
     private $game;
 
     public function __construct($game) {
@@ -38,7 +38,7 @@ class AOCContinueSalesState {
      *
      * @return void
      */
-    public function stContinueSales() {
+    public function stPerformSalesContinue() {
         // Re-enter perform sales state
         $this->game->gamestate->nextState("continueSales");
     }
