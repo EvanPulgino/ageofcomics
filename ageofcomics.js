@@ -807,7 +807,6 @@ var GameState = /** @class */ (function () {
         this.gameEnd = new GameEnd(game);
         this.gameSetup = new GameSetup(game);
         this.increaseCreatives = new IncreaseCreatives(game);
-        this.increaseCreativesFulfillOrders = new IncreaseCreativesFulfillOrders(game);
         this.nextPlayer = new NextPlayer(game);
         this.nextPlayerSetup = new NextPlayerSetup(game);
         this.performDevelop = new PerformDevelop(game);
@@ -3279,32 +3278,6 @@ var IncreaseCreatives = /** @class */ (function () {
         this.onLeavingState();
     };
     return IncreaseCreatives;
-}());
-/**
- *------
- * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
- * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
- *
- * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
- * See http://en.boardgamearena.com/#!doc/Studio for more information.
- * -----
- *
- * IncreaseCreatives.ts
- *
- * AgeOfComics increase creatives fulfill orders state
- *
- * State vars:
- * - game: game object reference
- *
- */
-var IncreaseCreativesFulfillOrders = /** @class */ (function () {
-    function IncreaseCreativesFulfillOrders(game) {
-        this.game = game;
-    }
-    IncreaseCreativesFulfillOrders.prototype.onEnteringState = function (stateArgs) { };
-    IncreaseCreativesFulfillOrders.prototype.onLeavingState = function () { };
-    IncreaseCreativesFulfillOrders.prototype.onUpdateActionButtons = function (stateArgs) { };
-    return IncreaseCreativesFulfillOrders;
 }());
 /**
  *------

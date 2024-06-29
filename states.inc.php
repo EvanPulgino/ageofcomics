@@ -136,22 +136,6 @@ $machinestates = [
         ],
         "transitions" => [
             "continue" => ST_INCREASE_CREATIVES,
-            "fulfillOrders" => ST_INCREASE_CREATIVES_FULFILL_ORDERS,
-            "finishIncreaseCreatives" => ST_ENTER_INCREASE_CREATIVES,
-        ],
-    ],
-
-    ST_INCREASE_CREATIVES_FULFILL_ORDERS => [
-        "name" => INCREASE_CREATIVES_FULFILL_ORDERS,
-        "descriptionmyturn" => clienttranslate(
-            '${you} must fulfill completed sales orders'
-        ),
-        "type" => STATE_TYPE_PRIVATE,
-        "args" => STATE_ARGS_INCREASE_CREATIVES_FULFILL_ORDERS,
-        "possibleactions" => [PLAYER_ACTION_FULFILL_SALES_ORDER],
-        "transitions" => [
-            "continue" => ST_INCREASE_CREATIVES_FULFILL_ORDERS,
-            "increaseCreatives" => ST_INCREASE_CREATIVES,
             "finishIncreaseCreatives" => ST_ENTER_INCREASE_CREATIVES,
         ],
     ],

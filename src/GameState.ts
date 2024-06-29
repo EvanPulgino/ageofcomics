@@ -22,7 +22,6 @@ class GameState {
   gameEnd: State;
   gameSetup: State;
   increaseCreatives: State;
-  increaseCreativesFulfillOrders: State;
   nextPlayer: State;
   nextPlayerSetup: State;
   performDevelop: State;
@@ -53,9 +52,6 @@ class GameState {
     this.gameEnd = new GameEnd(game);
     this.gameSetup = new GameSetup(game);
     this.increaseCreatives = new IncreaseCreatives(game);
-    this.increaseCreativesFulfillOrders = new IncreaseCreativesFulfillOrders(
-      game
-    );
     this.nextPlayer = new NextPlayer(game);
     this.nextPlayerSetup = new NextPlayerSetup(game);
     this.performDevelop = new PerformDevelop(game);

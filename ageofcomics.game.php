@@ -73,9 +73,6 @@ class AgeOfComics extends Table {
         $this->states[INCREASE_CREATIVES] = new AOCIncreaseCreativesState(
             $this
         );
-        $this->states[
-            INCREASE_CREATIVES_FULFILL_ORDERS
-        ] = new AOCIncreaseCreativesFulfillOrdersState($this);
         $this->states[NEXT_PLAYER] = new AOCNextPlayerState($this);
         $this->states[NEXT_PLAYER_SETUP] = new AOCNextPlayerSetupState($this);
         $this->states[PERFORM_DEVELOP] = new AOCPerformDevelopState($this);
@@ -301,9 +298,6 @@ class AgeOfComics extends Table {
     }
     function argsIncreaseCreatives($playerId) {
         return $this->states[INCREASE_CREATIVES]->getArgs($playerId);
-    }
-    function argsIncreaseCreativesFulfillOrders() {
-        return $this->states[INCREASE_CREATIVES_FULFILL_ORDERS]->getArgs();
     }
     function argsNextPlayer() {
         return $this->states[NEXT_PLAYER]->getArgs();
