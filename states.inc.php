@@ -257,7 +257,28 @@ $machinestates = [
         "type" => STATE_TYPE_GAME,
         "args" => STATE_ARGS_PERFORM_PRINT_MASTERY,
         "action" => GAME_ACTION_PERFORM_PRINT_MASTERY,
-        "transitions" => ["checkUpgrade" => ST_PERFORM_PRINT_UPGRADE],
+        "transitions" => ["checkUpgrade" => ST_PERFORM_PRINT_GET_UPGRADE_CUBE],
+    ],
+
+    ST_PERFORM_PRINT_GET_UPGRADE_CUBE => [
+        "name" => PERFORM_PRINT_GET_UPGRADE_CUBE,
+        "description" => clienttranslate(
+            '${actplayer} may select an upgrade cube to relocate or skip getting an upgrade'
+        ),
+        "descriptionmyturn" => clienttranslate(
+            '${you} may select an upgrade cube to relocate or skip getting an upgrade'
+        ),
+        "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "args" => STATE_ARGS_PERFORM_PRINT_GET_UPGRADE_CUBE,
+        "action" => GAME_ACTION_PERFORM_PRINT_GET_UPGRADE_CUBE,
+        "possibleactions" => [
+            PLAYER_ACTION_SELECT_UPGRADE_CUBE,
+            PLAYER_ACTION_SKIP_UPGRADE,
+        ],
+        "transitions" => [
+            "continuePrint" => ST_PERFORM_PRINT_CONTINUE,
+            "performPrintUpgrade" => ST_PERFORM_PRINT_UPGRADE,
+        ],
     ],
 
     ST_PERFORM_PRINT_UPGRADE => [
@@ -270,10 +291,9 @@ $machinestates = [
         ),
         "type" => STATE_TYPE_ACTIVE_PLAYER,
         "args" => STATE_ARGS_PERFORM_PRINT_UPGRADE,
-        "action" => GAME_ACTION_PERFORM_PRINT_UPGRADE,
         "possibleactions" => [PLAYER_ACTION_PLACE_UPGRADE_CUBE],
         "transitions" => [
-            "checkFulfillOrders" => ST_PERFORM_PRINT_CONTINUE,
+            "continuePrint" => ST_PERFORM_PRINT_CONTINUE,
         ],
     ],
 

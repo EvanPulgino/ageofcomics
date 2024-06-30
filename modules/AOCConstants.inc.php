@@ -22,8 +22,11 @@ define("GAME_ACTION_GAIN_ROYALITES", "stGainRoyalties");
 define("GAME_ACTION_GAME_END", "stGameEnd");
 define("GAME_ACTION_GAME_SETUP", "stGameSetup");
 define("GAME_ACTION_PERFORM_PRINT_BONUS", "stPerformPrintBonus");
+define(
+    "GAME_ACTION_PERFORM_PRINT_GET_UPGRADE_CUBE",
+    "stPerformPrintGetUpgradeCube"
+);
 define("GAME_ACTION_PERFORM_PRINT_MASTERY", "stPerformPrintMastery");
-define("GAME_ACTION_PERFORM_PRINT_UPGRADE", "stPerformPrintUpgrade");
 define("GAME_ACTION_PERFORM_PRINT_CONTINUE", "stPerformPrintContinue");
 define("GAME_ACTION_PERFORM_SALES_CONTINUE", "stPerformSalesContinue");
 define("GAME_ACTION_PLAYER_SETUP", "stPlayerSetup");
@@ -64,7 +67,9 @@ define("PLAYER_ACTION_PRINT_COMIC", "printComic");
 define("PLAYER_ACTION_SELECT_ACTION_SPACE", "selectActionSpace");
 define("PLAYER_ACTION_SELECT_COMIC_FOR_ORDER", "selectComicForOrder");
 define("PLAYER_ACTION_SELECT_START_ITEMS", "selectStartItems");
+define("PLAYER_ACTION_SELECT_UPGRADE_CUBE", "selectUpgradeCube");
 define("PLAYER_ACTION_SKIP_DOUBLE_PRINT", "skipDoublePrint");
+define("PLAYER_ACTION_SKIP_UPGRADE", "skipUpgrade");
 define("PLAYER_ACTION_TRAIN", "train");
 
 /** Generic */
@@ -377,6 +382,7 @@ define("TICKET_SUPPLY", "ticket_supply");
 define("TOTAL_TURNS", "total_turns");
 define("TURNS_TAKEN", "turns_taken");
 define("START_IDEAS", "start_ideas");
+define("UPGRADE_CUBE_TO_USE", "upgrade_cube_to_use");
 
 /** Location Keys */
 define("LOCATION_VOID", -1);
@@ -1146,6 +1152,10 @@ define("STATE_ARGS_PERFORM_IDEAS", "argsPerformIdeas");
 define("STATE_ARGS_PERFORM_PRINT", "argsPerformPrint");
 define("STATE_ARGS_PERFORM_PRINT_BONUS", "argsPerformPrintBonus");
 define("STATE_ARGS_PERFORM_PRINT_MASTERY", "argsPerformPrintMastery");
+define(
+    "STATE_ARGS_PERFORM_PRINT_GET_UPGRADE_CUBE",
+    "argsPerformPrintGetUpgradeCube"
+);
 define("STATE_ARGS_PERFORM_PRINT_UPGRADE", "argsPerformPrintUpgrade");
 define("STATE_ARGS_PERFORM_PRINT_CONTINUE", "argsPerformPrintContinue");
 define("STATE_ARGS_PERFORM_ROYALTIES", "argsPerformRoyalties");
@@ -1187,8 +1197,9 @@ define("ST_PERFORM_IDEAS", 23);
 define("ST_PERFORM_PRINT", 24);
 define("ST_PERFORM_PRINT_BONUS", 241);
 define("ST_PERFORM_PRINT_MASTERY", 242);
-define("ST_PERFORM_PRINT_UPGRADE", 243);
-define("ST_PERFORM_PRINT_CONTINUE", 244);
+define("ST_PERFORM_PRINT_GET_UPGRADE_CUBE", 243);
+define("ST_PERFORM_PRINT_UPGRADE", 244);
+define("ST_PERFORM_PRINT_CONTINUE", 245);
 define("ST_PERFORM_ROYALTIES", 25);
 define("ST_PERFORM_SALES", 26);
 define("ST_PERFORM_SALES_FULFILL_ORDER", 261);
@@ -1219,6 +1230,7 @@ define("PERFORM_HIRE", "performHire");
 define("PERFORM_IDEAS", "performIdeas");
 define("PERFORM_PRINT", "performPrint");
 define("PERFORM_PRINT_BONUS", "performPrintBonus");
+define("PERFORM_PRINT_GET_UPGRADE_CUBE", "performPrintGetUpgradeCube");
 define("PERFORM_PRINT_MASTERY", "performPrintMastery");
 define("PERFORM_PRINT_UPGRADE", "performPrintUpgrade");
 define("PERFORM_PRINT_CONTINUE", "performPrintContinue");

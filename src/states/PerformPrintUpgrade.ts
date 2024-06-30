@@ -41,8 +41,14 @@ class PerformPrintUpgrade implements State {
       }
       if (this.placedCubes < 3) {
         this.cubeToMove = this.placedCubes + 1;
-        this.highlightUpgradableActions(stateArgs.args.upgradableActions);
       }
+      if (this.placedCubes == 3 && stateArgs.args.upgradeCubeToUse > 0) {
+        this.cubeToMove = this.getCubeToMove(
+          player,
+          stateArgs.args.upgradeCubeToUse
+        );
+      }
+      this.highlightUpgradableActions(stateArgs.args.upgradableActions);
     }
   }
   onLeavingState(): void {
@@ -51,10 +57,23 @@ class PerformPrintUpgrade implements State {
       dojo.disconnect(connection);
     }
   }
+
   onUpdateActionButtons(stateArgs: any): void {}
 
-  highlightUpgradableActions(upgradableActions: any): void {
-    for (const action of upgradableActions) {
+  getCubeToMove(player: any, cubeLocation: number) {
+    if (player.cubeOneLocation === cubeLocation) {
+      return 1;
+    } else if (player.cubeTwoLocation === cubeLocation) {
+      return 2;
+    } else if (player.cubeThreeLocation === cubeLocation) {
+      return 3;
+    }
+    return 0;
+  }
+
+  highlightUpgradableActions(upgradableActions: any[]): void {
+    for (const key in upgradableActions) {
+      const action = upgradableActions[key];
       switch (action) {
         case 1:
           this.highlightUpgradableAction(
@@ -83,7 +102,7 @@ class PerformPrintUpgrade implements State {
         case 5:
           this.highlightUpgradableAction(
             action,
-            "aoc-action-royalites-upgrade-spaces"
+            "aoc-action-royalties-upgrade-spaces"
           );
           break;
         case 6:
@@ -97,7 +116,7 @@ class PerformPrintUpgrade implements State {
   }
 
   highlightUpgradableAction(actionKey: number, divId: any): void {
-    dojo.toggleClass(divId, "aoc-clickable");
+    dojo.toggleClass(divId, "aoc-clickable", true);
     this.connections[actionKey] = dojo.connect(
       dojo.byId(divId),
       "onclick",

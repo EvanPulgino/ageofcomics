@@ -256,6 +256,14 @@ class PlayerController {
       '"></div>';
     if (player.cubeTwoLocation == 0) {
       this.ui.createHtml(cubeDiv, "aoc-cube-two-space-" + player.id);
+    } else {
+      this.ui.createHtml(
+        cubeDiv,
+        "aoc-action-upgrade-" +
+          this.actions[player.cubeTwoLocation] +
+          "-" +
+          player.colorAsText
+      );
     }
   }
 
@@ -273,6 +281,14 @@ class PlayerController {
       '"></div>';
     if (player.cubeThreeLocation == 0) {
       this.ui.createHtml(cubeDiv, "aoc-cube-three-space-" + player.id);
+    } else {
+      this.ui.createHtml(
+        cubeDiv,
+        "aoc-action-upgrade-" +
+          this.actions[player.cubeThreeLocation] +
+          "-" +
+          player.colorAsText
+      );
     }
   }
 

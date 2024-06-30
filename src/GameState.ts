@@ -29,6 +29,7 @@ class GameState {
   performPrint: State;
   performPrintBonus: State;
   performPrintContinue: State;
+  performPrintGetUpgradeCube: State;
   performPrintMastery: State;
   performPrintUpgrade: State;
   performRoyalties: State;
@@ -60,6 +61,7 @@ class GameState {
     this.performPrint = new PerformPrint(game);
     this.performPrintBonus = new PerformPrintBonus(game);
     this.performPrintContinue = new PerformPrintContinue(game);
+    this.performPrintGetUpgradeCube = new PerformPrintGetUpgradeCube(game);
     this.performPrintMastery = new PerformPrintMastery(game);
     this.performPrintUpgrade = new PerformPrintUpgrade(game);
     this.performRoyalties = new PerformRoyalties(game);

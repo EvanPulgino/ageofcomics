@@ -278,10 +278,30 @@ class action_ageofcomics extends APP_GameAction {
         self::ajaxResponse();
     }
 
+    public function selectUpgradeCube() {
+        self::setAjaxMode();
+
+        $cubeLocation = self::getArg("actionKey", AT_posint, true);
+
+        $this->game->states[PERFORM_PRINT_GET_UPGRADE_CUBE]->selectUpgradeCube(
+            $cubeLocation
+        );
+
+        self::ajaxResponse();
+    }
+
     public function skipDoublePrint() {
         self::setAjaxMode();
 
         $this->game->states[PERFORM_PRINT]->skipDoublePrint();
+
+        self::ajaxResponse();
+    }
+
+    public function skipUpgrade() {
+        self::setAjaxMode();
+
+        $this->game->states[PERFORM_PRINT_GET_UPGRADE_CUBE]->skipUpgrade();
 
         self::ajaxResponse();
     }

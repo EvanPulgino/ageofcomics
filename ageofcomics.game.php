@@ -50,6 +50,7 @@ class AgeOfComics extends Table {
             SALES_ORDER_FLIPS_REMAINING => 29,
             PAID_FOR_CURRENT_SPACE => 30,
             SALES_ORDER_BEING_FULFILLED => 31,
+            UPGRADE_CUBE_TO_USE => 32,
         ]);
 
         // Initialize player manager
@@ -84,6 +85,9 @@ class AgeOfComics extends Table {
         $this->states[PERFORM_PRINT_BONUS] = new AOCPerformPrintBonusState(
             $this
         );
+        $this->states[
+            PERFORM_PRINT_GET_UPGRADE_CUBE
+        ] = new AOCPerformPrintGetUpgradeCubeState($this);
         $this->states[
             PERFORM_PRINT_CONTINUE
         ] = new AOCPerformPrintContinueState($this);
@@ -171,6 +175,7 @@ class AgeOfComics extends Table {
         self::setGameStateInitialValue(SALES_ORDER_COLLECTS_REMAINING, -1);
         self::setGameStateInitialValue(SALES_ORDER_FLIPS_REMAINING, -1);
         self::setGameStateInitialValue(SALES_ORDER_BEING_FULFILLED, 0);
+        self::setGameStateInitialValue(UPGRADE_CUBE_TO_USE, 0);
 
         // Init game statistics
         // (note: statistics used in this file must be defined in your stats.inc.php file)
@@ -328,6 +333,9 @@ class AgeOfComics extends Table {
     }
     function argsPerformPrintContinue() {
         return $this->states[PERFORM_PRINT_CONTINUE]->getArgs();
+    }
+    function argsPerformPrintGetUpgradeCube() {
+        return $this->states[PERFORM_PRINT_GET_UPGRADE_CUBE]->getArgs();
     }
     function argsPerformPrintMastery() {
         return $this->states[PERFORM_PRINT_MASTERY]->getArgs();

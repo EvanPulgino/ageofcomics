@@ -46,7 +46,7 @@
             </div>
             <div id="aoc-select-comics" class="aoc-increase-menu"></div>
         </div>
-        <div id=" aoc-select-start-items" class="whiteblock" style="display: none;">
+        <div id="aoc-select-start-items" class="whiteblock" style="display: none;">
             <div id="aoc-select-start-items-header">
                 <div id="aoc-select-start-items-header-text" class="aoc-squada">{SELECT_START_ITEMS}</div>
             </div>

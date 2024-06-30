@@ -60,24 +60,20 @@ class AOCPerformPrintUpgradeState {
             return !in_array($action, $playerCubes);
         });
 
+        $upgradeCubeToUse = $this->game->getGameStateValue(UPGRADE_CUBE_TO_USE);
+
         return [
             "player" => $activePlayer->getUiData(),
-            "relocateCube" => $printedComicCount == 5,
             "upgradableActions" => $upgradableActions,
+            "upgradeCubeToUse" => $upgradeCubeToUse,
         ];
-    }
-
-    public function stPerformPrintUpgrade() {
-        $activePlayer = $this->game->playerManager->getActivePlayer();
-        $printedComicCount = $this->printedComicCount($activePlayer);
-
-        if ($printedComicCount < 2 || $printedComicCount > 5) {
-            $this->game->gamestate->nextState("checkFulfillOrders");
-        }
     }
 
     public function placeUpgradeCube($actionKey, $cubeMoved) {
         $activePlayer = $this->game->playerManager->getActivePlayer();
+
+        // Reset the upgrade cube to use variable
+        $this->game->setGameStateValue(UPGRADE_CUBE_TO_USE, 0);
 
         switch ($cubeMoved) {
             case 1:
@@ -107,7 +103,7 @@ class AOCPerformPrintUpgradeState {
             ]
         );
 
-        $this->game->gamestate->nextState("checkFulfillOrders");
+        $this->game->gamestate->nextState("continuePrint");
     }
 
     /**

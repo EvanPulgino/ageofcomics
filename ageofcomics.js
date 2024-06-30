@@ -814,6 +814,7 @@ var GameState = /** @class */ (function () {
         this.performPrint = new PerformPrint(game);
         this.performPrintBonus = new PerformPrintBonus(game);
         this.performPrintContinue = new PerformPrintContinue(game);
+        this.performPrintGetUpgradeCube = new PerformPrintGetUpgradeCube(game);
         this.performPrintMastery = new PerformPrintMastery(game);
         this.performPrintUpgrade = new PerformPrintUpgrade(game);
         this.performRoyalties = new PerformRoyalties(game);
@@ -2024,6 +2025,12 @@ var PlayerController = /** @class */ (function () {
         if (player.cubeTwoLocation == 0) {
             this.ui.createHtml(cubeDiv, "aoc-cube-two-space-" + player.id);
         }
+        else {
+            this.ui.createHtml(cubeDiv, "aoc-action-upgrade-" +
+                this.actions[player.cubeTwoLocation] +
+                "-" +
+                player.colorAsText);
+        }
     };
     /**
      * Create a player cube three element
@@ -2038,6 +2045,12 @@ var PlayerController = /** @class */ (function () {
             '"></div>';
         if (player.cubeThreeLocation == 0) {
             this.ui.createHtml(cubeDiv, "aoc-cube-three-space-" + player.id);
+        }
+        else {
+            this.ui.createHtml(cubeDiv, "aoc-action-upgrade-" +
+                this.actions[player.cubeThreeLocation] +
+                "-" +
+                player.colorAsText);
         }
     };
     /**
@@ -4333,6 +4346,100 @@ var PerformPrintContinue = /** @class */ (function () {
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
+ * PerformPrintGetUpgradeCube.ts
+ *
+ * AgeOfComics perform print get upgrade cube state
+ *
+ * State vars:
+ * - game: game object reference
+ *
+ */
+var PerformPrintGetUpgradeCube = /** @class */ (function () {
+    function PerformPrintGetUpgradeCube(game) {
+        this.game = game;
+        this.connections = {};
+    }
+    PerformPrintGetUpgradeCube.prototype.onEnteringState = function (stateArgs) {
+        if (stateArgs.isCurrentPlayerActive) {
+            var player = stateArgs.args.player;
+            var spacesWithCubes = this.getSpacesWithCubes(player);
+            this.highlightSelectableLocations(spacesWithCubes);
+        }
+    };
+    PerformPrintGetUpgradeCube.prototype.onLeavingState = function () {
+        dojo.query(".aoc-clickable").removeClass("aoc-clickable");
+        for (var _i = 0, _a = Object.values(this.connections); _i < _a.length; _i++) {
+            var connection = _a[_i];
+            dojo.disconnect(connection);
+        }
+    };
+    PerformPrintGetUpgradeCube.prototype.onUpdateActionButtons = function (stateArgs) {
+        var _this = this;
+        if (stateArgs.isCurrentPlayerActive) {
+            // Add skip button
+            gameui.addActionButton("skip-button", _("Skip Upgrade"), function () {
+                _this.skipUpgrade();
+            });
+            dojo.addClass("skip-button", "aoc-button");
+        }
+    };
+    PerformPrintGetUpgradeCube.prototype.getSpacesWithCubes = function (player) {
+        var spacesWithCubes = [];
+        spacesWithCubes.push(parseInt(player.cubeOneLocation));
+        spacesWithCubes.push(parseInt(player.cubeTwoLocation));
+        spacesWithCubes.push(parseInt(player.cubeThreeLocation));
+        return spacesWithCubes;
+    };
+    PerformPrintGetUpgradeCube.prototype.highlightSelectableLocations = function (spacesWithCubes) {
+        console.log(spacesWithCubes);
+        for (var _i = 0, spacesWithCubes_1 = spacesWithCubes; _i < spacesWithCubes_1.length; _i++) {
+            var locationKey = spacesWithCubes_1[_i];
+            switch (locationKey) {
+                case 1:
+                    this.highlightSelectableCubeLocation(locationKey, "aoc-action-hire-upgrade-spaces");
+                    break;
+                case 2:
+                    this.highlightSelectableCubeLocation(locationKey, "aoc-action-develop-upgrade-spaces");
+                    break;
+                case 3:
+                    this.highlightSelectableCubeLocation(locationKey, "aoc-action-ideas-upgrade-spaces");
+                    break;
+                case 4:
+                    this.highlightSelectableCubeLocation(locationKey, "aoc-action-print-upgrade-spaces");
+                    break;
+                case 5:
+                    this.highlightSelectableCubeLocation(locationKey, "aoc-action-royalties-upgrade-spaces");
+                    break;
+                case 6:
+                    this.highlightSelectableCubeLocation(locationKey, "aoc-action-sales-upgrade-spaces");
+                    break;
+            }
+        }
+    };
+    PerformPrintGetUpgradeCube.prototype.highlightSelectableCubeLocation = function (actionKey, divId) {
+        dojo.toggleClass(divId, "aoc-clickable", true);
+        this.connections[actionKey] = dojo.connect(dojo.byId(divId), "onclick", dojo.hitch(this, "selectCubeLocation", actionKey));
+    };
+    PerformPrintGetUpgradeCube.prototype.selectCubeLocation = function (actionKey) {
+        this.onLeavingState();
+        this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_SELECT_UPGRADE_CUBE, {
+            actionKey: actionKey,
+        });
+    };
+    PerformPrintGetUpgradeCube.prototype.skipUpgrade = function () {
+        this.game.ajaxcallwrapper(globalThis.PLAYER_ACTION_SKIP_UPGRADE, {});
+    };
+    return PerformPrintGetUpgradeCube;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
  * PerformPrintMastery.ts
  *
  * AgeOfComics perform print mastery state
@@ -4388,8 +4495,11 @@ var PerformPrintUpgrade = /** @class */ (function () {
             }
             if (this.placedCubes < 3) {
                 this.cubeToMove = this.placedCubes + 1;
-                this.highlightUpgradableActions(stateArgs.args.upgradableActions);
             }
+            if (this.placedCubes == 3 && stateArgs.args.upgradeCubeToUse > 0) {
+                this.cubeToMove = this.getCubeToMove(player, stateArgs.args.upgradeCubeToUse);
+            }
+            this.highlightUpgradableActions(stateArgs.args.upgradableActions);
         }
     };
     PerformPrintUpgrade.prototype.onLeavingState = function () {
@@ -4400,9 +4510,21 @@ var PerformPrintUpgrade = /** @class */ (function () {
         }
     };
     PerformPrintUpgrade.prototype.onUpdateActionButtons = function (stateArgs) { };
+    PerformPrintUpgrade.prototype.getCubeToMove = function (player, cubeLocation) {
+        if (player.cubeOneLocation === cubeLocation) {
+            return 1;
+        }
+        else if (player.cubeTwoLocation === cubeLocation) {
+            return 2;
+        }
+        else if (player.cubeThreeLocation === cubeLocation) {
+            return 3;
+        }
+        return 0;
+    };
     PerformPrintUpgrade.prototype.highlightUpgradableActions = function (upgradableActions) {
-        for (var _i = 0, upgradableActions_1 = upgradableActions; _i < upgradableActions_1.length; _i++) {
-            var action = upgradableActions_1[_i];
+        for (var key in upgradableActions) {
+            var action = upgradableActions[key];
             switch (action) {
                 case 1:
                     this.highlightUpgradableAction(action, "aoc-action-hire-upgrade-spaces");
@@ -4417,7 +4539,7 @@ var PerformPrintUpgrade = /** @class */ (function () {
                     this.highlightUpgradableAction(action, "aoc-action-print-upgrade-spaces");
                     break;
                 case 5:
-                    this.highlightUpgradableAction(action, "aoc-action-royalites-upgrade-spaces");
+                    this.highlightUpgradableAction(action, "aoc-action-royalties-upgrade-spaces");
                     break;
                 case 6:
                     this.highlightUpgradableAction(action, "aoc-action-sales-upgrade-spaces");
@@ -4426,7 +4548,7 @@ var PerformPrintUpgrade = /** @class */ (function () {
         }
     };
     PerformPrintUpgrade.prototype.highlightUpgradableAction = function (actionKey, divId) {
-        dojo.toggleClass(divId, "aoc-clickable");
+        dojo.toggleClass(divId, "aoc-clickable", true);
         this.connections[actionKey] = dojo.connect(dojo.byId(divId), "onclick", dojo.hitch(this, "upgradeAction", actionKey));
     };
     PerformPrintUpgrade.prototype.upgradeAction = function (actionKey) {
