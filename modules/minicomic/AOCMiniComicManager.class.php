@@ -121,6 +121,13 @@ class AOCMiniComicManager extends APP_GameClass {
         return $uiData;
     }
 
+    /**
+     * Get all mini comics from a player of a specific genre
+     *
+     * @param int $playerId The ID of the player
+     * @param int $genreId The ID of the genre
+     * @return AOCMiniComic[] All mini comics from a player of a specific genre
+     */
     public function getMiniComicsByPlayerAndGenre($playerId, $genreId) {
         $sql = "SELECT mini_comic_id id, mini_comic_type type, mini_comic_type_arg typeArg, mini_comic_genre genre, mini_comic_location location, mini_comic_location_arg locationArg, mini_comic_owner playerId, mini_comic_fans fans FROM mini_comic WHERE mini_comic_owner = {$playerId} AND mini_comic_genre = {$genreId}";
         $rows = self::getCollectionFromDb($sql);
@@ -133,6 +140,12 @@ class AOCMiniComicManager extends APP_GameClass {
         return $miniComics;
     }
 
+    /**
+     * Get all mini comics from a player
+     *
+     * @param int $playerId The ID of the player
+     * @return AOCMiniComic[] All mini comics from a player
+     */
     public function getMiniComicsByPlayer($playerId) {
         $sql = "SELECT mini_comic_id id, mini_comic_type type, mini_comic_type_arg typeArg, mini_comic_genre genre, mini_comic_location location, mini_comic_location_arg locationArg, mini_comic_owner playerId, mini_comic_fans fans FROM mini_comic WHERE mini_comic_owner = {$playerId}";
         $rows = self::getCollectionFromDb($sql);
@@ -145,6 +158,11 @@ class AOCMiniComicManager extends APP_GameClass {
         return $miniComics;
     }
 
+    /**
+     * Get how much income a mini comic generates
+     *
+     * @param AOCMiniComic $miniComic The mini comic to get income for
+     */
     public function getMiniComicIncomeLevel($miniComic) {
         if ($miniComic->getFans() > 10) {
             return CHART_INCOME_LEVELS[$miniComic->getFans() - 10] + 6;
@@ -152,8 +170,14 @@ class AOCMiniComicManager extends APP_GameClass {
         return CHART_INCOME_LEVELS[$miniComic->getFans()];
     }
 
+    /**
+     * Get all mini comics owned by players
+     *
+     * @return AOCMiniComic[] All mini comics owned by players
+     */
     public function getOwnedMiniComics() {
-        $sql = "SELECT mini_comic_id id, mini_comic_type type, mini_comic_type_arg typeArg, mini_comic_genre genre, mini_comic_location location, mini_comic_location_arg locationArg, mini_comic_owner playerId, mini_comic_fans fans FROM mini_comic WHERE mini_comic_owner IS NOT NULL";
+        $sql =
+            "SELECT mini_comic_id id, mini_comic_type type, mini_comic_type_arg typeArg, mini_comic_genre genre, mini_comic_location location, mini_comic_location_arg locationArg, mini_comic_owner playerId, mini_comic_fans fans FROM mini_comic WHERE mini_comic_owner IS NOT NULL";
         $rows = self::getCollectionFromDb($sql);
 
         $miniComics = [];

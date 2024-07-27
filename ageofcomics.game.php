@@ -268,6 +268,7 @@ class AgeOfComics extends Table {
         $color = GENRE_COLORS[$genreId];
         return "<span class='aoc-notify-text' style='color: $color'>$formattedText</span>";
     }
+
     /**
      * Gets the current contents of the ideas space
      *
@@ -295,6 +296,7 @@ class AgeOfComics extends Table {
         return self::getCurrentPlayerId();
     }
 
+    // Args methods for every state
     function argsCheckHandSize() {
         return $this->states[CHECK_HAND_SIZE]->getArgs();
     }

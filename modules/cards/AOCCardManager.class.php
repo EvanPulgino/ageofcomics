@@ -112,12 +112,28 @@ class AOCCardManager extends APP_GameClass {
         return $card;
     }
 
+    /**
+     * Flags a comic as improved during the increase creatives phase.
+     * This is used to track which comics have been improved during the phase, since they can only be improved once per phase.
+     * Re-uses the displayValue field of the card to track this.(this value only matters for creative cards, so it's safe to use here)
+     *
+     * @param int $comicId The ID of the comic card
+     * @return void
+     */
     public function flagComicAsImproved($comicId) {
         $comicCard = $this->getCard($comicId);
         $comicCard->setDisplayValue(1);
         $this->saveCard($comicCard);
     }
 
+    /**
+     * Unflags all comics as improved during the increase creatives phase.
+     * This is used to track which comics have been improved during the phase, since they can only be improved once per phase.
+     * Re-uses the displayValue field of the card to track this.(this value only matters for creative cards, so it's safe to use here)
+     *
+     * @param int $playerId The ID of the player to unflag comics for
+     * @return void
+     */
     public function unflagComicsAsImproved($playerId) {
         $printedComics = $this->getPrintedComicsByPlayer($playerId);
         foreach ($printedComics as $comic) {
@@ -307,6 +323,13 @@ class AOCCardManager extends APP_GameClass {
         return self::getUniqueValueFromDB($sql);
     }
 
+    /**
+     * Gets the ripoffs that a player can print.
+     * A player can print a ripoff if another player had printed the original comic.
+     *
+     * @param int $playerId The ID of the player printing the ripoff
+     * @return AOCRipoffCard[] An array of ripoff cards that the player can print
+     */
     public function getPrintableRipoffsByPlayer($playerId) {
         $sql =
             "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId, card_display_value displayValue FROM card WHERE NOT card_owner = " .
@@ -343,6 +366,12 @@ class AOCCardManager extends APP_GameClass {
         return $printableRipoffs;
     }
 
+    /**
+     * Gets all of the comics (including ripoffs) printed by a player.
+     *
+     * @param int $playerId The ID of the player
+     * @return AOCComicCard[]|AOCRipoffCard[] An array of comic cards printed by the player
+     */
     public function getPrintedComicsByPlayer($playerId) {
         $sql =
             "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId, card_display_value displayValue FROM card WHERE card_owner = " .
@@ -372,6 +401,13 @@ class AOCCardManager extends APP_GameClass {
         return $cards;
     }
 
+    /**
+     * Gets the artist card for a printed comic.
+     *
+     * @param int $playerId The ID of the player
+     * @param int $comicSlot The slot of the comic on the player mat
+     * @return AOCArtistCard The artist card for the printed comic
+     */
     public function getArtistCardForPrintedComic($playerId, $comicSlot) {
         $sql =
             "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId, card_display_value displayValue FROM card WHERE card_owner = " .
@@ -387,6 +423,13 @@ class AOCCardManager extends APP_GameClass {
         return new AOCArtistCard($row);
     }
 
+    /**
+     * Gets the writer card for a printed comic.
+     *
+     * @param int $playerId The ID of the player
+     * @param int $comicSlot The slot of the comic on the player mat
+     * @return AOCWriterCard The writer card for the printed comic
+     */
     public function getWriterCardForPrintedComic($playerId, $comicSlot) {
         $sql =
             "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId, card_display_value displayValue FROM card WHERE card_owner = " .
@@ -402,6 +445,13 @@ class AOCCardManager extends APP_GameClass {
         return new AOCWriterCard($row);
     }
 
+    /**
+     * Increase the display value of a creative card by 1
+     * Used during the increase creatives phase
+     *
+     * @param AOCCard $card The card to improve
+     * @return void
+     */
     public function improveCreativeCard($card) {
         $card->setDisplayValue($card->getDisplayValue() + 1);
         $this->saveCard($card);
