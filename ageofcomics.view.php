@@ -55,6 +55,9 @@ class view_ageofcomics_ageofcomics extends game_view {
         $players = $this->game->playerManager->getPlayersInViewOrder();
         $players_nbr = count($players);
 
+        $this->tpl["ARTIST_DISCARDS"] = self::_("Discarded Artist Cards");
+        $this->tpl["WRITER_DISCARDS"] = self::_("Discarded Writer Cards");
+        $this->tpl["COMIC_DISCARDS"] = self::_("Discarded Comic Cards");
         $this->tpl["SELECT_START_ITEMS"] = self::_(
             "Select Starting Comic and Idea Tokens"
         );
@@ -64,7 +67,9 @@ class view_ageofcomics_ageofcomics extends game_view {
         $this->tpl["SELECT_WRITER"] = self::_("Select a Writer");
         $this->tpl["SELECT_ARTIST"] = self::_("Select an Artist");
         $this->tpl["IMPROVE_CREATIVES"] = self::_("Improve Creatives");
-        $this->tpl["SELECT_COMIC_FOR_ORDER"] = self::_("Select Comic to Fulfill Order:");
+        $this->tpl["SELECT_COMIC_FOR_ORDER"] = self::_(
+            "Select Comic to Fulfill Order:"
+        );
 
         $this->createPlayersSection($template, $players, "playerarea");
         $this->createPlayersSection($template, $players, "playerhands");

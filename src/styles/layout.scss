@@ -116,6 +116,16 @@ html {
   justify-content: center;
 }
 
+.aoc-discard-popup {
+  background-color: rgba(233, 225, 204, 0.9);
+  border: 5px solid;
+  border-radius: 25px;
+  position: fixed;
+  z-index: 1000;
+  top: 15%;
+  display: block;
+}
+
 .aoc-increasable-comic-slot {
   position: relative;
   width: 172px;
@@ -202,6 +212,23 @@ html {
 }
 
 #aoc-show-chart-close:hover {
+  transform: scale(1.5);
+  color: red !important;
+}
+
+.aoc-discard-popup-close {
+  right: -23px;
+  top: -23px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  z-index: 2;
+  color: #000 !important;
+  background-color: transparent;
+}
+
+.aoc-discard-popup-close:hover {
   transform: scale(1.5);
   color: red !important;
 }

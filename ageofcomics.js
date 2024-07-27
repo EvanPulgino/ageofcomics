@@ -1448,6 +1448,12 @@ var GameController = /** @class */ (function () {
      * - hide chart
      * - carousel view
      * - list view
+     * - show artist discards
+     * - close artist discards
+     * - show comic discards
+     * - close comic discards
+     * - show writer discards
+     * - close writer discards
      * - next player
      * - previous player
      */
@@ -1456,6 +1462,12 @@ var GameController = /** @class */ (function () {
         dojo.connect($("aoc-show-chart-close"), "onclick", this, "hideChart");
         dojo.connect($("aoc-carousel-button"), "onclick", this, "carouselView");
         dojo.connect($("aoc-list-button"), "onclick", this, "listView");
+        dojo.connect($("aoc-artists-trash"), "onclick", this, "showArtistDiscards");
+        dojo.connect($("aoc-artists-discard-close"), "onclick", this, "closeArtistDiscards");
+        dojo.connect($("aoc-comics-trash"), "onclick", this, "showComicDiscards");
+        dojo.connect($("aoc-comics-discard-close"), "onclick", this, "closeComicDiscards");
+        dojo.connect($("aoc-writers-trash"), "onclick", this, "showWriterDiscards");
+        dojo.connect($("aoc-writers-discard-close"), "onclick", this, "closeWriterDiscards");
         dojo.query(".fa6-circle-right").connect("onclick", this, "nextPlayer");
         dojo.query(".fa6-circle-left").connect("onclick", this, "previousPlayer");
     };
@@ -1550,6 +1562,69 @@ var GameController = /** @class */ (function () {
         }
         dojo.toggleClass(visiblePlayerSection, "aoc-hidden");
         dojo.toggleClass(previousPlayerSection, "aoc-hidden");
+    };
+    /**
+     * Show discard popup for artist cards
+     */
+    GameController.prototype.showArtistDiscards = function () {
+        if (this.canShowDiscardPopup()) {
+            var artistDiscards = dojo.byId("aoc-artists-discard-popup");
+            dojo.removeClass(artistDiscards, "aoc-hidden");
+        }
+    };
+    /**
+     * Close discard popup for artist cards
+     */
+    GameController.prototype.closeArtistDiscards = function () {
+        var artistDiscards = dojo.byId("aoc-artists-discard-popup");
+        dojo.addClass(artistDiscards, "aoc-hidden");
+    };
+    /**
+     * Show discard popup for comic cards
+     */
+    GameController.prototype.showComicDiscards = function () {
+        if (this.canShowDiscardPopup()) {
+            var comicDiscards = dojo.byId("aoc-comics-discard-popup");
+            dojo.removeClass(comicDiscards, "aoc-hidden");
+        }
+    };
+    /**
+     * Close discard popup for comic cards
+     */
+    GameController.prototype.closeComicDiscards = function () {
+        var comicDiscards = dojo.byId("aoc-comics-discard-popup");
+        dojo.addClass(comicDiscards, "aoc-hidden");
+    };
+    /**
+     * Show discard popup for writer cards
+     */
+    GameController.prototype.showWriterDiscards = function () {
+        if (this.canShowDiscardPopup()) {
+            var writerDiscards = dojo.byId("aoc-writers-discard-popup");
+            dojo.removeClass(writerDiscards, "aoc-hidden");
+        }
+    };
+    /**
+     * Close discard popup for writer cards
+     */
+    GameController.prototype.closeWriterDiscards = function () {
+        var writerDiscards = dojo.byId("aoc-writers-discard-popup");
+        dojo.addClass(writerDiscards, "aoc-hidden");
+    };
+    /**
+     * Check if the discard popups are hidden - only one can be shown at a time
+     * @returns {boolean} - true if all discard popups are hidden
+     */
+    GameController.prototype.canShowDiscardPopup = function () {
+        var artistDiscards = dojo.byId("aoc-artists-discard-popup");
+        var comicDiscards = dojo.byId("aoc-comics-discard-popup");
+        var writerDiscards = dojo.byId("aoc-writers-discard-popup");
+        if (dojo.hasClass(artistDiscards, "aoc-hidden") &&
+            dojo.hasClass(comicDiscards, "aoc-hidden") &&
+            dojo.hasClass(writerDiscards, "aoc-hidden")) {
+            return true;
+        }
+        return false;
     };
     return GameController;
 }());

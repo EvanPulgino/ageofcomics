@@ -17,7 +17,33 @@
 
 <div id="aoc-gboard">
     <div id="aoc-layout">
-        <div id="aoc-print-menu" class="aoc-hidden whiteblock">
+        <div id="aoc-artists-discard-popup" class="aoc-hidden aoc-discard-popup whiteblock">
+            <a id="aoc-artists-discard-close" class="aoc-discard-popup-close" href="#">
+                <i class="aoc-icon-size fa6 fa6-solid fa6-square-xmark fa6-2x aria-hidden=" true"></i>
+            </a>
+            <div id="aoc-artists-discard-popup-header">
+                <div id="aoc-artists-discard-popup-header-text" class="aoc-header-text aoc-squada">{ARTIST_DISCARDS}
+                </div>
+            </div>
+        </div>
+        <div id="aoc-writers-discard-popup" class="aoc-hidden aoc-discard-popup whiteblock">
+            <a id="aoc-writers-discard-close" class="aoc-discard-popup-close" href="#">
+                <i class="aoc-icon-size fa6 fa6-solid fa6-square-xmark fa6-2x aria-hidden=" true"></i>
+            </a>
+            <div id="aoc-writers-discard-popup-header">
+                <div id="aoc-writers-discard-popup-header-text" class="aoc-header-text aoc-squada">{WRITER_DISCARDS}
+                </div>
+            </div>
+        </div>
+        <div id="aoc-comics-discard-popup" class="aoc-hidden aoc-discard-popup whiteblock">
+            <a id="aoc-comics-discard-close" class="aoc-discard-popup-close" href="#">
+                <i class="aoc-icon-size fa6 fa6-solid fa6-square-xmark fa6-2x aria-hidden=" true"></i>
+            </a>
+            <div id="aoc-comics-discard-popup-header">
+                <div id="aoc-comics-discard-popup-header-text" class="aoc-header-text aoc-squada">{COMIC_DISCARDS}</div>
+            </div>
+        </div>
+        <div id=" aoc-print-menu" class="aoc-hidden whiteblock">
             <div id="aoc-print-comics-header">
                 <div id="aoc-print-comics-header-text" class="aoc-header-text aoc-squada">{SELECT_COMIC_TO_PRINT}</div>
             </div>
