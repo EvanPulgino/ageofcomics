@@ -25,6 +25,7 @@
                 <div id="aoc-artists-discard-popup-header-text" class="aoc-header-text aoc-squada">{ARTIST_DISCARDS}
                 </div>
             </div>
+            <div id="aoc-discarded-artist-cards" class="aoc-discarded-cards"></div>
         </div>
         <div id="aoc-writers-discard-popup" class="aoc-hidden aoc-discard-popup whiteblock">
             <a id="aoc-writers-discard-close" class="aoc-discard-popup-close" href="#">
@@ -34,18 +35,22 @@
                 <div id="aoc-writers-discard-popup-header-text" class="aoc-header-text aoc-squada">{WRITER_DISCARDS}
                 </div>
             </div>
+            <div id="aoc-discarded-writer-cards" class="aoc-discarded-cards"></div>
         </div>
         <div id="aoc-comics-discard-popup" class="aoc-hidden aoc-discard-popup whiteblock">
             <a id="aoc-comics-discard-close" class="aoc-discard-popup-close" href="#">
                 <i class="aoc-icon-size fa6 fa6-solid fa6-square-xmark fa6-2x aria-hidden=" true"></i>
             </a>
             <div id="aoc-comics-discard-popup-header">
-                <div id="aoc-comics-discard-popup-header-text" class="aoc-header-text aoc-squada">{COMIC_DISCARDS}</div>
+                <div id="aoc-comics-discard-popup-header-text" class="aoc-header-text aoc-squada">{COMIC_DISCARDS}
+                </div>
             </div>
+            <div id="aoc-discarded-comic-cards" class="aoc-discarded-cards"></div>
         </div>
-        <div id=" aoc-print-menu" class="aoc-hidden whiteblock">
+        <div id="aoc-print-menu" class="aoc-hidden whiteblock">
             <div id="aoc-print-comics-header">
-                <div id="aoc-print-comics-header-text" class="aoc-header-text aoc-squada">{SELECT_COMIC_TO_PRINT}</div>
+                <div id="aoc-print-comics-header-text" class="aoc-header-text aoc-squada">{SELECT_COMIC_TO_PRINT}
+                </div>
             </div>
             <div id="aoc-print-comics-menu" class="aoc-print-menu"></div>
             <div id="aoc-print-writers-header">
@@ -60,7 +65,8 @@
         <div id="aoc-improve-creatives-menu" class="aoc-hidden whiteblock">
             <div id="aoc-improve-creatives-button-container"></div>
             <div id="aoc-improve-creatives-header">
-                <div id="aoc-improve-creatives-header-text" class="aoc-header-text aoc-squada">{IMPROVE_CREATIVES}</div>
+                <div id="aoc-improve-creatives-header-text" class="aoc-header-text aoc-squada">{IMPROVE_CREATIVES}
+                </div>
             </div>
             <div id="aoc-improve-creatives-comics" class="aoc-increase-menu"></div>
         </div>

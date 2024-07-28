@@ -26,6 +26,11 @@ class CardController {
    * @param cards - the cards to setup
    */
   setupCards(cards: any[]): void {
+    // Clear discard popup menus
+    dojo.empty("aoc-discarded-artist-cards");
+    dojo.empty("aoc-discarded-writer-cards");
+    dojo.empty("aoc-discarded-comic-cards");
+
     // Sort cards by locationArg
     cards.sort((a, b) => {
       return a.locationArg - b.locationArg;
@@ -60,6 +65,7 @@ class CardController {
         break;
       case globalThis.LOCATION_DISCARD:
         this.ui.createHtml(cardDiv, "aoc-" + card.type + "s-discard");
+        this.createCardCopyForDiscardPopup(card);
         break;
       case globalThis.LOCATION_HAND:
         this.ui.createHtml(cardDiv, "aoc-hand-" + card.playerId);
@@ -209,6 +215,8 @@ class CardController {
 
     // Play the animation
     animation.play();
+
+    this.createCardCopyForDiscardPopup(card);
   }
 
   /**
@@ -237,6 +245,8 @@ class CardController {
 
     // Play the animation
     animation.play();
+
+    this.createCardCopyForDiscardPopup(card);
   }
 
   discardCardFromSupply(card: any): void {
@@ -256,6 +266,18 @@ class CardController {
 
     // Play the animation
     animation.play();
+
+    this.createCardCopyForDiscardPopup(card);
+  }
+
+  createCardCopyForDiscardPopup(card: any): void {
+    // Get the card div
+    var cardDiv = dojo.byId("aoc-card-" + card.id);
+
+    var discardPopupCopy = dojo.clone(cardDiv);
+    dojo.attr(discardPopupCopy, "id", "aoc-discard-popup-" + card.id);
+    var discardPopupDivId = "aoc-discarded-" + card.type + "-cards";
+    dojo.place(discardPopupCopy, discardPopupDivId);
   }
 
   /**

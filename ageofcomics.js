@@ -942,6 +942,10 @@ var CardController = /** @class */ (function () {
      * @param cards - the cards to setup
      */
     CardController.prototype.setupCards = function (cards) {
+        // Clear discard popup menus
+        dojo.empty("aoc-discarded-artist-cards");
+        dojo.empty("aoc-discarded-writer-cards");
+        dojo.empty("aoc-discarded-comic-cards");
         // Sort cards by locationArg
         cards.sort(function (a, b) {
             return a.locationArg - b.locationArg;
@@ -973,6 +977,7 @@ var CardController = /** @class */ (function () {
                 break;
             case globalThis.LOCATION_DISCARD:
                 this.ui.createHtml(cardDiv, "aoc-" + card.type + "s-discard");
+                this.createCardCopyForDiscardPopup(card);
                 break;
             case globalThis.LOCATION_HAND:
                 this.ui.createHtml(cardDiv, "aoc-hand-" + card.playerId);
@@ -1096,6 +1101,7 @@ var CardController = /** @class */ (function () {
         });
         // Play the animation
         animation.play();
+        this.createCardCopyForDiscardPopup(card);
     };
     /**
      * Moves card from the top of a deck to the appropriate discard pile.
@@ -1119,6 +1125,7 @@ var CardController = /** @class */ (function () {
         });
         // Play the animation
         animation.play();
+        this.createCardCopyForDiscardPopup(card);
     };
     CardController.prototype.discardCardFromSupply = function (card) {
         // Get the card div
@@ -1134,6 +1141,15 @@ var CardController = /** @class */ (function () {
         });
         // Play the animation
         animation.play();
+        this.createCardCopyForDiscardPopup(card);
+    };
+    CardController.prototype.createCardCopyForDiscardPopup = function (card) {
+        // Get the card div
+        var cardDiv = dojo.byId("aoc-card-" + card.id);
+        var discardPopupCopy = dojo.clone(cardDiv);
+        dojo.attr(discardPopupCopy, "id", "aoc-discard-popup-" + card.id);
+        var discardPopupDivId = "aoc-discarded-" + card.type + "-cards";
+        dojo.place(discardPopupCopy, discardPopupDivId);
     };
     /**
      * A player gains their starting comic card
