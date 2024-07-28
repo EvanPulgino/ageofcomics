@@ -69,7 +69,7 @@ class AOCIncreaseCreativesState {
         $this->game->notifyAllPlayers(
             "improveCreativeDouble",
             clienttranslate(
-                '${player_name} pays ${paid} to use a train action on both the artist and the writer on ${comicName}, increasing each of their values to ${newValue}.'
+                '${player_name} pays ${paid} money to use a train action on both the artist and the writer on ${comicName}, increasing each of their values to ${newValue}.'
             ),
             [
                 "player_name" => $player->getName(),
@@ -116,7 +116,7 @@ class AOCIncreaseCreativesState {
         $this->game->notifyAllPlayers(
             "improveCreative",
             clienttranslate(
-                '${player_name} pays $1 to use a learn action on the ${creativeType} on ${comicName}, increasing their value to ${newValue}.'
+                '${player_name} pays 1 money to use a learn action on the ${creativeType} on ${comicName}, increasing their value to ${newValue}.'
             ),
             [
                 "player_name" => $player->getName(),
@@ -157,7 +157,7 @@ class AOCIncreaseCreativesState {
         $this->game->notifyAllPlayers(
             "improveCreative",
             clienttranslate(
-                '${player_name} pays ${paid} to use a train action on the ${creativeType} on ${comicName}, increasing their value to ${newValue}.'
+                '${player_name} pays ${paid} money to use a train action on the ${creativeType} on ${comicName}, increasing their value to ${newValue}.'
             ),
             [
                 "player_name" => $player->getName(),
