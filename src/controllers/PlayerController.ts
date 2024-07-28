@@ -434,17 +434,17 @@ class PlayerController {
    */
   createPlayerCounters(player: any): void {
     this.playerCounter[player.id] = {};
-    this.createPlayerCounter(player, "crime", player.crimeIdeas);
-    this.createPlayerCounter(player, "horror", player.horrorIdeas);
-    this.createPlayerCounter(player, "romance", player.romanceIdeas);
-    this.createPlayerCounter(player, "scifi", player.scifiIdeas);
-    this.createPlayerCounter(player, "superhero", player.superheroIdeas);
-    this.createPlayerCounter(player, "western", player.westernIdeas);
-    this.createPlayerCounter(player, "money", player.money);
-    this.createPlayerCounter(player, "point", player.score);
-    this.createPlayerCounter(player, "income", player.income);
-    this.createPlayerCounter(player, "hand", player.handSize);
-    this.createPlayerCounter(player, "ticket", player.tickets);
+    this.createPlayerCounter(player, "crime", player.crimeIdeas, true);
+    this.createPlayerCounter(player, "horror", player.horrorIdeas, true);
+    this.createPlayerCounter(player, "romance", player.romanceIdeas, true);
+    this.createPlayerCounter(player, "scifi", player.scifiIdeas, true);
+    this.createPlayerCounter(player, "superhero", player.superheroIdeas, true);
+    this.createPlayerCounter(player, "western", player.westernIdeas, true);
+    this.createPlayerCounter(player, "money", player.money, true);
+    this.createPlayerCounter(player, "point", player.score, true);
+    this.createPlayerCounter(player, "income", player.income, true);
+    this.createPlayerCounter(player, "hand", player.handSize, true);
+    this.createPlayerCounter(player, "ticket", player.tickets, true);
   }
 
   /**
@@ -453,14 +453,15 @@ class PlayerController {
    * @param player - player to create counter for
    * @param counter - counter to create
    * @param initialValue - initial value of counter
+   * @param onPanel - if true the counter is on the player panel as well as the mat (default false)
    */
   createPlayerCounter(
     player: any,
     counter: string,
-    initialValue: number
+    initialValue: number,
+    onPanel: boolean = false
   ): void {
     var counterKey = counter;
-    var counterPanel = "panel-" + counter;
 
     this.playerCounter[player.id][counterKey] = new ebg.counter();
     this.playerCounter[player.id][counterKey].create(
@@ -468,11 +469,143 @@ class PlayerController {
     );
     this.playerCounter[player.id][counterKey].setValue(initialValue);
 
-    this.playerCounter[player.id][counterPanel] = new ebg.counter();
-    this.playerCounter[player.id][counterPanel].create(
-      "aoc-player-" + counterPanel + "-count-" + player.id
+    if (onPanel) {
+      var counterPanel = "panel-" + counter;
+
+      this.playerCounter[player.id][counterPanel] = new ebg.counter();
+      this.playerCounter[player.id][counterPanel].create(
+        "aoc-player-" + counterPanel + "-count-" + player.id
+      );
+      this.playerCounter[player.id][counterPanel].setValue(initialValue);
+    }
+  }
+
+  createPrintedComicOverlays(
+    playerData: any,
+    cards: any[],
+    miniComics: any[]
+  ): void {
+    for (var key in playerData) {
+      var player = playerData[key];
+      const numberOfPrintedSlots = this.getNumberOfPrintedSlots(
+        player.id,
+        cards
+      );
+      for (var i = 1; i <= numberOfPrintedSlots; i++) {
+        this.createPrintedComicOverlay(player, i, cards, miniComics);
+      }
+    }
+  }
+
+  createPrintedComicOverlay(
+    player: any,
+    slot: number,
+    cards: any[],
+    miniComics: any[]
+  ): void {
+    const artistCard = cards.find(
+      (card) =>
+        card.playerId === player.id &&
+        card.location === globalThis.LOCATION_PLAYER_MAT &&
+        card.locationArg === slot &&
+        card.type === "artist"
     );
-    this.playerCounter[player.id][counterPanel].setValue(initialValue);
+    const writerCard = cards.find(
+      (card) =>
+        card.playerId === player.id &&
+        card.location === globalThis.LOCATION_PLAYER_MAT &&
+        card.locationArg === slot &&
+        card.type === "writer"
+    );
+    const comicCard = cards.find(
+      (card) =>
+        card.playerId === player.id &&
+        card.location === globalThis.LOCATION_PLAYER_MAT &&
+        card.locationArg === slot &&
+        (card.type === "comic" || card.type === "ripoff")
+    );
+    const miniComic = miniComics.find(
+      (miniComic) => miniComic.id === comicCard.id
+    );
+
+    // Calculate the comic value, fans, and income
+    const comicValue = artistCard.displayValue + writerCard.displayValue;
+    const comicFans = miniComic.fans;
+    const comicIncome = globalThis.CHART_INCOME_LEVELS[comicFans];
+
+    // Create the overlay div
+    const overlayDiv = `<div id="aoc-printed-comic-overlay-${player.id}-${slot}" class="aoc-printed-comic-overlay aoc-squada"></div>`;
+    this.ui.createHtml(overlayDiv, "aoc-comic-slot-" + slot + "-" + player.id);
+
+    // Create the comic value div
+    const comicValueString = this.ui.clienttranslate_string("Value") + ": ";
+    const comicValueDiv = `<div id="aoc-printed-comic-value-${player.id}-${slot}" class="aoc-printed-comic-value">${comicValueString}</div>`;
+    this.ui.createHtml(
+      comicValueDiv,
+      "aoc-printed-comic-overlay-" + player.id + "-" + slot
+    );
+
+    // Create value counter span and counter
+    const comicValueCounterSpan = `<span id="aoc-player-slot-${slot}-count-${player.id}" class="aoc-printed-comic-value-counter"></span>`;
+    this.ui.createHtml(
+      comicValueCounterSpan,
+      "aoc-printed-comic-value-" + player.id + "-" + slot
+    );
+    this.createPlayerCounter(player, "slot-" + slot, comicValue);
+
+    // Create the comic fans div
+    const comicFansString = this.ui.clienttranslate_string("Fans") + ": ";
+    const comicFansDiv = `<div id="aoc-printed-comic-fans-${player.id}-${slot}" class="aoc-printed-comic-fans">${comicFansString}</div>`;
+    this.ui.createHtml(
+      comicFansDiv,
+      "aoc-printed-comic-overlay-" + player.id + "-" + slot
+    );
+
+    // Create fans counter span and counter
+    const comicFansCounterSpan = `<span id="aoc-player-fans-${slot}-count-${player.id}" class="aoc-printed-comic-fans-counter"></span>`;
+    this.ui.createHtml(
+      comicFansCounterSpan,
+      "aoc-printed-comic-fans-" + player.id + "-" + slot
+    );
+    this.createPlayerCounter(player, "fans-" + slot, comicFans);
+
+    // Create the comic income div
+    const comicIncomeString = this.ui.clienttranslate_string("Income") + ": ";
+    const comicIncomeDiv = `<div id="aoc-printed-comic-income-${player.id}-${slot}" class="aoc-printed-comic-income">${comicIncomeString}</div>`;
+    this.ui.createHtml(
+      comicIncomeDiv,
+      "aoc-printed-comic-overlay-" + player.id + "-" + slot
+    );
+
+    // Create income counter span and counter
+    const comicIncomeCounterSpan = `<span id="aoc-player-income-${slot}-count-${player.id}" class="aoc-printed-comic-income-counter"></span>`;
+    this.ui.createHtml(
+      comicIncomeCounterSpan,
+      "aoc-printed-comic-income-" + player.id + "-" + slot
+    );
+    this.createPlayerCounter(player, "income-" + slot, comicIncome);
+  }
+
+  /**
+   * Get the number of printed slots for a player
+   *
+   * @param playerId
+   * @param cards
+   * @returns
+   */
+  getNumberOfPrintedSlots(playerId: number, cards: any[]): number {
+    const printedCards = cards.filter(
+      (card) =>
+        card.playerId === playerId &&
+        card.location == globalThis.LOCATION_PLAYER_MAT
+    );
+    var maxLocationArg = 0;
+    printedCards.forEach((card) => {
+      if (card.locationArg > maxLocationArg) {
+        maxLocationArg = card.locationArg;
+      }
+    });
+    return maxLocationArg;
   }
 
   /**

@@ -2458,6 +2458,26 @@ html {
   gap: 5px;
 }
 
+.aoc-printed-comic-overlay {
+  position: absolute;
+  width: 172px;
+  height: 100px;
+  z-index: 100;
+  background-color: rgba(132, 136, 132, 0.5843137255);
+  bottom: 0;
+  color: whitesmoke;
+  font-size: x-large;
+  text-shadow: 1px 1px 1px black;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-around;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  gap: 5px;
+  border-radius: 5px;
+}
+
 /**
  *
  * Styles for the player order components

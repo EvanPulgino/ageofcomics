@@ -57,6 +57,11 @@ class GameBody extends GameBasics {
     super.setup(gamedata);
     this.gameController.setup(gamedata);
     this.playerController.setupPlayers(gamedata.playerInfo);
+    this.playerController.createPrintedComicOverlays(
+      gamedata.playerInfo,
+      gamedata.cards,
+      gamedata.miniComics
+    );
     this.calendarController.setupCalendar(gamedata.calendarTiles);
     this.cardController.setupCards(gamedata.cards);
     this.editorController.setupEditors(gamedata.editors);
