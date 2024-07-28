@@ -52,6 +52,9 @@ class AOCRoundEndSubtractFansState {
 
     private function subtractFanFromMiniComic($miniComic) {
         if ($miniComic->getFans() > 1) {
+            $comic = $this->game->cardManager->getComicCardMatchingMiniComic(
+                $miniComic
+            );
             $incomeChange = $this->game->miniComicManager->adjustMiniComicFansFromSelf(
                 $miniComic,
                 -1
@@ -64,7 +67,7 @@ class AOCRoundEndSubtractFansState {
                 $incomeChange
             );
             $this->game->notifyAllPlayers(
-                "adjustMiniComic",
+                "moveMiniComic",
                 clienttranslate('${comicName} loses a fan'),
                 [
                     "player" => $player->getUiData(),
@@ -77,6 +80,8 @@ class AOCRoundEndSubtractFansState {
                         $miniComic->getId()
                     ),
                     "incomeChange" => $incomeChange,
+                    "fansChange" => -1,
+                    "slot" => $comic->getLocationArg(),
                 ]
             );
         }

@@ -82,6 +82,7 @@ class AOCIncreaseCreativesState {
                 ),
                 "newValue" => $artist->getDisplayValue(),
                 "paid" => $costToTrain,
+                "slot" => $comicCard->getLocationArg(),
             ]
         );
 
@@ -129,6 +130,7 @@ class AOCIncreaseCreativesState {
                 ),
                 "newValue" => $card->getDisplayValue(),
                 "paid" => 1,
+                "slot" => $comicCard->getLocationArg(),
             ]
         );
 
@@ -170,6 +172,7 @@ class AOCIncreaseCreativesState {
                 ),
                 "newValue" => $card->getDisplayValue(),
                 "paid" => $costToTrain,
+                "slot" => $comicCard->getLocationArg(),
             ]
         );
 
@@ -258,6 +261,7 @@ class AOCIncreaseCreativesState {
                             $salesOrder->getFans() == 1 ? "fan" : "fans",
                         "incomeChange" => $incomeChange,
                         "miniComic" => $miniComic->getUiData(),
+                        "slot" => $improvedComic->getLocationArg(),
                     ]
                 );
             }

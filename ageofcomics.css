@@ -2465,9 +2465,9 @@ html {
   z-index: 100;
   background-color: rgba(132, 136, 132, 0.5843137255);
   bottom: 0;
-  color: whitesmoke;
+  color: #fef8d8;
   font-size: x-large;
-  text-shadow: 1px 1px 1px black;
+  text-shadow: 1px 1px 1px #d75b37;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;

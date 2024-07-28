@@ -399,10 +399,6 @@ var GameBody = /** @class */ (function (_super) {
     GameBody.prototype.notif_adjustIdeas = function (notif) {
         this.playerController.adjustIdeas(notif.args.player, notif.args.genre, notif.args.numOfIdeas);
     };
-    GameBody.prototype.notif_adjustMiniComic = function (notif) {
-        this.miniComicController.moveMiniComic(notif.args.miniComic);
-        this.playerController.adjustIncome(notif.args.player, notif.args.incomeChange);
-    };
     /**
      * Handle 'adjustMoney' notification
      *
@@ -446,6 +442,9 @@ var GameBody = /** @class */ (function (_super) {
         this.cardController.setupCards(notif.args.artistCards.supply);
         this.cardController.setupCards(notif.args.writerCards.supply);
         this.cardController.setupCards(notif.args.comicCards.supply);
+    };
+    GameBody.prototype.notif_createPrintedComicOverlay = function (notif) {
+        this.playerController.createPrintedComicOverlay(notif.args.player, notif.args.slot, notif.args.cards, notif.args.miniComic);
     };
     GameBody.prototype.notif_dealCardToSupply = function (notif) {
         this.cardController.dealCardToSupply(notif.args.card);
@@ -647,11 +646,13 @@ var GameBody = /** @class */ (function (_super) {
     GameBody.prototype.notif_improveCreative = function (notif) {
         this.cardController.addImproveToken(notif.args.card);
         this.playerController.adjustMoney(notif.args.player, notif.args.paid * -1);
+        this.playerController.updatePrintedComicOverlayValue(notif.args.player, notif.args.slot, 1);
     };
     GameBody.prototype.notif_improveCreativeDouble = function (notif) {
         this.cardController.addImproveToken(notif.args.artistCard);
         this.cardController.addImproveToken(notif.args.writerCard);
         this.playerController.adjustMoney(notif.args.player, notif.args.paid * -1);
+        this.playerController.updatePrintedComicOverlayValue(notif.args.player, notif.args.slot, 2);
     };
     /**
      * Handle 'moveMiniComic' notification
@@ -666,6 +667,8 @@ var GameBody = /** @class */ (function (_super) {
     GameBody.prototype.notif_moveMiniComic = function (notif) {
         this.miniComicController.moveMiniComic(notif.args.miniComic);
         this.playerController.adjustIncome(notif.args.player, notif.args.incomeChange);
+        this.playerController.updatePrintedComicOverlayFans(notif.args.player, notif.args.slot, notif.args.fansChange);
+        this.playerController.updatePrintedComicOverlayIncome(notif.args.player, notif.args.slot, notif.args.incomeChange);
     };
     GameBody.prototype.notif_masteryTokenClaimed = function (notif) {
         this.masteryController.moveMasteryToken(notif.args.masteryToken);
@@ -756,6 +759,8 @@ var GameBody = /** @class */ (function (_super) {
     GameBody.prototype.notif_salesOrderFulfilled = function (notif) {
         this.miniComicController.moveMiniComic(notif.args.miniComic);
         this.playerController.adjustIncome(notif.args.player, notif.args.incomeChange);
+        this.playerController.updatePrintedComicOverlayIncome(notif.args.player, notif.args.slot, notif.args.incomeChange);
+        this.playerController.updatePrintedComicOverlayFans(notif.args.player, notif.args.slot, notif.args.fans);
         this.salesOrderController.discardSalesOrder(notif.args.salesOrder);
     };
     /**
@@ -1967,7 +1972,7 @@ var PlayerController = /** @class */ (function () {
      * @param amount - amount to adjust hand counter by
      */
     PlayerController.prototype.adjustHand = function (player, amount) {
-        this.updatePlayerCounter(player.id, "hand", amount);
+        this.updatePlayerCounter(player.id, "hand", amount, true);
     };
     /**
      * Adjust a player's idea counters by a given amount
@@ -1977,7 +1982,7 @@ var PlayerController = /** @class */ (function () {
      * @param amount - amount to adjust idea counter by
      */
     PlayerController.prototype.adjustIdeas = function (player, genre, amount) {
-        this.updatePlayerCounter(player.id, genre, amount);
+        this.updatePlayerCounter(player.id, genre, amount, true);
     };
     /**
      * Adjust a player's money counter by a given amount
@@ -1986,7 +1991,7 @@ var PlayerController = /** @class */ (function () {
      * @param amount - amount to adjust money counter by
      */
     PlayerController.prototype.adjustMoney = function (player, amount) {
-        this.updatePlayerCounter(player.id, "money", amount);
+        this.updatePlayerCounter(player.id, "money", amount, true);
     };
     /**
      * Adjust a player's income counter by a given amount
@@ -1995,7 +2000,7 @@ var PlayerController = /** @class */ (function () {
      * @param amount - amount to adjust income counter by
      */
     PlayerController.prototype.adjustIncome = function (player, amount) {
-        this.updatePlayerCounter(player.id, "income", amount);
+        this.updatePlayerCounter(player.id, "income", amount, true);
     };
     /**
      * Adjust a player's point counter by a given amount
@@ -2004,7 +2009,7 @@ var PlayerController = /** @class */ (function () {
      * @param amount - amount to adjust point counter by
      */
     PlayerController.prototype.adjustPoints = function (player, amount) {
-        this.updatePlayerCounter(player.id, "point", amount);
+        this.updatePlayerCounter(player.id, "point", amount, true);
         this.ui.scoreCtrl[player.id].incValue(amount);
     };
     /**
@@ -2014,7 +2019,7 @@ var PlayerController = /** @class */ (function () {
      * @param amount - amount to adjust ticket counter by
      */
     PlayerController.prototype.adjustTickets = function (player, amount) {
-        this.updatePlayerCounter(player.id, "ticket", amount);
+        this.updatePlayerCounter(player.id, "ticket", amount, true);
     };
     /**
      * Show floating player hand when hovering over hand icon
@@ -2343,7 +2348,13 @@ var PlayerController = /** @class */ (function () {
                 card.locationArg === slot &&
                 (card.type === "comic" || card.type === "ripoff");
         });
-        var miniComic = miniComics.find(function (miniComic) { return miniComic.id === comicCard.id; });
+        var typeArg = comicCard.type === "comic" ? comicCard.bonus : comicCard.ripoffKey;
+        var miniComic = miniComics.find(function (miniComic) {
+            return miniComic.type === comicCard.type &&
+                miniComic.comicKey === typeArg &&
+                miniComic.genre === comicCard.genre &&
+                miniComic.playerId === player.id;
+        });
         // Calculate the comic value, fans, and income
         var comicValue = artistCard.displayValue + writerCard.displayValue;
         var comicFans = miniComic.fans;
@@ -2479,11 +2490,14 @@ var PlayerController = /** @class */ (function () {
      * @param counter - counter to update
      * @param value - value to adjust counter by
      */
-    PlayerController.prototype.updatePlayerCounter = function (playerId, counter, value) {
+    PlayerController.prototype.updatePlayerCounter = function (playerId, counter, value, onPanel) {
+        if (onPanel === void 0) { onPanel = false; }
         var counterKey = counter;
-        var counterPanel = "panel-" + counter;
         this.playerCounter[playerId][counterKey].incValue(value);
-        this.playerCounter[playerId][counterPanel].incValue(value);
+        if (onPanel) {
+            var counterPanel = "panel-" + counter;
+            this.playerCounter[playerId][counterPanel].incValue(value);
+        }
     };
     /**
      * Moves a player's order token to a new turn order space
@@ -2499,6 +2513,15 @@ var PlayerController = /** @class */ (function () {
             dojo.place(playerOrderTokenDiv, turnOrderSpaceDiv);
         });
         animation.play();
+    };
+    PlayerController.prototype.updatePrintedComicOverlayFans = function (player, slot, fans) {
+        this.updatePlayerCounter(player.id, "fans-" + slot, fans);
+    };
+    PlayerController.prototype.updatePrintedComicOverlayIncome = function (player, slot, income) {
+        this.updatePlayerCounter(player.id, "income-" + slot, income);
+    };
+    PlayerController.prototype.updatePrintedComicOverlayValue = function (player, slot, value) {
+        this.updatePlayerCounter(player.id, "slot-" + slot, value);
     };
     return PlayerController;
 }());

@@ -137,14 +137,6 @@ class GameBody extends GameBasics {
     );
   }
 
-  notif_adjustMiniComic(notif: any): void {
-    this.miniComicController.moveMiniComic(notif.args.miniComic);
-    this.playerController.adjustIncome(
-      notif.args.player,
-      notif.args.incomeChange
-    );
-  }
-
   /**
    * Handle 'adjustMoney' notification
    *
@@ -210,6 +202,15 @@ class GameBody extends GameBasics {
     this.cardController.setupCards(notif.args.artistCards.supply);
     this.cardController.setupCards(notif.args.writerCards.supply);
     this.cardController.setupCards(notif.args.comicCards.supply);
+  }
+
+  notif_createPrintedComicOverlay(notif: any): void {
+    this.playerController.createPrintedComicOverlay(
+      notif.args.player,
+      notif.args.slot,
+      notif.args.cards,
+      notif.args.miniComic
+    );
   }
 
   notif_dealCardToSupply(notif: any): void {
@@ -447,12 +448,22 @@ class GameBody extends GameBasics {
   notif_improveCreative(notif: any): void {
     this.cardController.addImproveToken(notif.args.card);
     this.playerController.adjustMoney(notif.args.player, notif.args.paid * -1);
+    this.playerController.updatePrintedComicOverlayValue(
+      notif.args.player,
+      notif.args.slot,
+      1
+    );
   }
 
   notif_improveCreativeDouble(notif: any): void {
     this.cardController.addImproveToken(notif.args.artistCard);
     this.cardController.addImproveToken(notif.args.writerCard);
     this.playerController.adjustMoney(notif.args.player, notif.args.paid * -1);
+    this.playerController.updatePrintedComicOverlayValue(
+      notif.args.player,
+      notif.args.slot,
+      2
+    );
   }
 
   /**
@@ -469,6 +480,16 @@ class GameBody extends GameBasics {
     this.miniComicController.moveMiniComic(notif.args.miniComic);
     this.playerController.adjustIncome(
       notif.args.player,
+      notif.args.incomeChange
+    );
+    this.playerController.updatePrintedComicOverlayFans(
+      notif.args.player,
+      notif.args.slot,
+      notif.args.fansChange
+    );
+    this.playerController.updatePrintedComicOverlayIncome(
+      notif.args.player,
+      notif.args.slot,
       notif.args.incomeChange
     );
   }
@@ -604,6 +625,16 @@ class GameBody extends GameBasics {
     this.playerController.adjustIncome(
       notif.args.player,
       notif.args.incomeChange
+    );
+    this.playerController.updatePrintedComicOverlayIncome(
+      notif.args.player,
+      notif.args.slot,
+      notif.args.incomeChange
+    );
+    this.playerController.updatePrintedComicOverlayFans(
+      notif.args.player,
+      notif.args.slot,
+      notif.args.fans
     );
     this.salesOrderController.discardSalesOrder(notif.args.salesOrder);
   }

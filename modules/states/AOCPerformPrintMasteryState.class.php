@@ -154,7 +154,7 @@ class AOCPerformPrintMasteryState {
                 $incomeChange
             );
             $this->game->notifyAllPlayers(
-                "adjustMiniComic",
+                "moveMiniComic",
                 clienttranslate(
                     '${comicName} gains 1 fan from gain of ${genre} mastery token'
                 ),
@@ -173,6 +173,8 @@ class AOCPerformPrintMasteryState {
                         $miniComic->getId()
                     ),
                     "incomeChange" => $incomeChange,
+                    "fansChange" => 1,
+                    "slot" => $comic->getLocationArg(),
                 ]
             );
         }

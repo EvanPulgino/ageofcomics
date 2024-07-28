@@ -139,7 +139,7 @@ class AOCPerformPrintBonusState {
             $comic
         );
         $miniComic->setCssClass();
-        
+
         $this->game->playerManager->adjustPlayerIncome($player, $incomeChange);
         $this->game->notifyAllPlayers(
             "moveMiniComic",
@@ -153,6 +153,8 @@ class AOCPerformPrintBonusState {
                 ),
                 "miniComic" => $miniComic->getUiData(),
                 "incomeChange" => $incomeChange,
+                "fansChange" => 1,
+                "slot" => $comic->getLocationArg(),
             ]
         );
     }

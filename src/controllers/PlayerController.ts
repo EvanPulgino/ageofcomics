@@ -53,7 +53,7 @@ class PlayerController {
    * @param amount - amount to adjust hand counter by
    */
   adjustHand(player: any, amount: number): void {
-    this.updatePlayerCounter(player.id, "hand", amount);
+    this.updatePlayerCounter(player.id, "hand", amount, true);
   }
 
   /**
@@ -64,7 +64,7 @@ class PlayerController {
    * @param amount - amount to adjust idea counter by
    */
   adjustIdeas(player: any, genre: string, amount: number): void {
-    this.updatePlayerCounter(player.id, genre, amount);
+    this.updatePlayerCounter(player.id, genre, amount, true);
   }
 
   /**
@@ -74,7 +74,7 @@ class PlayerController {
    * @param amount - amount to adjust money counter by
    */
   adjustMoney(player: any, amount: number): void {
-    this.updatePlayerCounter(player.id, "money", amount);
+    this.updatePlayerCounter(player.id, "money", amount, true);
   }
 
   /**
@@ -84,7 +84,7 @@ class PlayerController {
    * @param amount - amount to adjust income counter by
    */
   adjustIncome(player: any, amount: number): void {
-    this.updatePlayerCounter(player.id, "income", amount);
+    this.updatePlayerCounter(player.id, "income", amount, true);
   }
 
   /**
@@ -94,7 +94,7 @@ class PlayerController {
    * @param amount - amount to adjust point counter by
    */
   adjustPoints(player: any, amount: number): void {
-    this.updatePlayerCounter(player.id, "point", amount);
+    this.updatePlayerCounter(player.id, "point", amount, true);
     this.ui.scoreCtrl[player.id].incValue(amount);
   }
 
@@ -105,7 +105,7 @@ class PlayerController {
    * @param amount - amount to adjust ticket counter by
    */
   adjustTickets(player: any, amount: number): void {
-    this.updatePlayerCounter(player.id, "ticket", amount);
+    this.updatePlayerCounter(player.id, "ticket", amount, true);
   }
 
   /**
@@ -524,8 +524,14 @@ class PlayerController {
         card.locationArg === slot &&
         (card.type === "comic" || card.type === "ripoff")
     );
+    const typeArg =
+      comicCard.type === "comic" ? comicCard.bonus : comicCard.ripoffKey;
     const miniComic = miniComics.find(
-      (miniComic) => miniComic.id === comicCard.id
+      (miniComic) =>
+        miniComic.type === comicCard.type &&
+        miniComic.comicKey === typeArg &&
+        miniComic.genre === comicCard.genre &&
+        miniComic.playerId === player.id
     );
 
     // Calculate the comic value, fans, and income
@@ -698,11 +704,19 @@ class PlayerController {
    * @param counter - counter to update
    * @param value - value to adjust counter by
    */
-  updatePlayerCounter(playerId: any, counter: string, value: number): void {
+  updatePlayerCounter(
+    playerId: any,
+    counter: string,
+    value: number,
+    onPanel: boolean = false
+  ): void {
     var counterKey = counter;
-    var counterPanel = "panel-" + counter;
     this.playerCounter[playerId][counterKey].incValue(value);
-    this.playerCounter[playerId][counterPanel].incValue(value);
+
+    if (onPanel) {
+      var counterPanel = "panel-" + counter;
+      this.playerCounter[playerId][counterPanel].incValue(value);
+    }
   }
 
   /**
@@ -723,5 +737,17 @@ class PlayerController {
       dojo.place(playerOrderTokenDiv, turnOrderSpaceDiv);
     });
     animation.play();
+  }
+
+  updatePrintedComicOverlayFans(player: any, slot: number, fans: number) {
+    this.updatePlayerCounter(player.id, "fans-" + slot, fans);
+  }
+
+  updatePrintedComicOverlayIncome(player: any, slot: number, income: number) {
+    this.updatePlayerCounter(player.id, "income-" + slot, income);
+  }
+
+  updatePrintedComicOverlayValue(player: any, slot: number, value: number) {
+    this.updatePlayerCounter(player.id, "slot-" + slot, value);
   }
 }

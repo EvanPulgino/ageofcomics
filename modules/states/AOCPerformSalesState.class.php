@@ -172,6 +172,7 @@ class AOCPerformSalesState {
                                 : "fans",
                         "incomeChange" => $incomeChange,
                         "miniComic" => $miniComic->getUiData(),
+                        "slot" => $comic->getLocationArg(),
                     ]
                 );
             }

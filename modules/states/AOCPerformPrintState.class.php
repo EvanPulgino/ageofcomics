@@ -102,6 +102,19 @@ class AOCPerformPrintState {
         // Add mini comic to chart
         $this->addMiniComicToChart($activePlayer, $comicCard, $initialFans);
 
+        $this->createPrintedComicOverlay(
+            $activePlayer,
+            $numberComicsPrinted + 1,
+            [
+                $comicCard->getUiData(0),
+                $artistCard->getUiData(0),
+                $writerCard->getUiData(0),
+            ],
+            $this->game->miniComicManager
+                ->getCorrespondingMiniComic($comicCard)
+                ->getUiData()
+        );
+
         // Save printed comic id for later states
         $this->game->setGameStateValue(PRINTED_COMIC, $comicCard->getId());
 
@@ -167,7 +180,6 @@ class AOCPerformPrintState {
                 );
             }
         }
-
 
         $this->game->gamestate->nextState("awardPrintBonus");
     }
@@ -390,6 +402,24 @@ class AOCPerformPrintState {
             }
         }
         return false;
+    }
+
+    /**
+     * Collect data need to create the printed comic overlay and send it to the client
+     * @return void
+     */
+    private function createPrintedComicOverlay(
+        $player,
+        $slot,
+        $cards,
+        $miniComic
+    ) {
+        $this->game->notifyAllPlayers("createPrintedComicOverlay", "", [
+            "player" => $player->getUiData(),
+            "slot" => $slot,
+            "cards" => $cards,
+            "miniComic" => [$miniComic],
+        ]);
     }
 
     /**

@@ -102,6 +102,7 @@ class AOCPerformSalesFulfillOrderState {
                 "fanPlural" => $salesOrder->getFans() == 1 ? "fan" : "fans",
                 "incomeChange" => $incomeChange,
                 "miniComic" => $miniComic->getUiData(),
+                "slot" => $comicCard->getLocationArg(),
             ]
         );
 
