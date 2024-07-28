@@ -227,6 +227,7 @@ class CardController {
   discardCardFromDeck(card: any): void {
     // Get the card div
     var cardDiv = dojo.byId("aoc-card-" + card.id);
+    dojo.removeAttr(cardDiv, "style");
 
     // Flip the card face-up
     cardDiv.classList.remove(card.facedownClass);
