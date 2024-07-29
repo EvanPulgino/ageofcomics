@@ -18,6 +18,8 @@
 define("GAME_ACTION_COMPLETE_SETUP", "stCompleteSetup");
 define("GAME_ACTION_END_START_NEW_ROUND", "stEndStartNewRound");
 define("GAME_ACTION_ENTER_INCREASE_CREATIVES", "stEnterIncreaseCreatives");
+define("GAME_ACTION_GAIN_BETTER_COLOR_TOKEN", "stGainBetterColorToken");
+define("GAME_ACTION_GAIN_EXTRA_EDITOR", "stGainExtraEditor");
 define("GAME_ACTION_GAIN_ROYALITES", "stGainRoyalties");
 define("GAME_ACTION_GAME_END", "stGameEnd");
 define("GAME_ACTION_GAME_SETUP", "stGameSetup");

@@ -364,7 +364,7 @@ $machinestates = [
         "description" => "",
         "type" => STATE_TYPE_GAME,
         "args" => STATE_ARGS_PERFORM_BETTER_COLORS,
-        "possibleactions" => [],
+        "action" => GAME_ACTION_GAIN_BETTER_COLOR_TOKEN,
         "transitions" => ["checkUpgrade" => ST_PERFORM_PRINT_GET_UPGRADE_CUBE],
     ],
 
@@ -449,7 +449,7 @@ $machinestates = [
         "description" => "",
         "type" => STATE_TYPE_GAME,
         "args" => STATE_ARGS_PERFORM_EXTRA_EDITOR,
-        "possibleactions" => [],
+        "action" => GAME_ACTION_GAIN_EXTRA_EDITOR,
         "transitions" => [
             "nextPlayerTurn" => ST_NEXT_PLAYER,
         ],

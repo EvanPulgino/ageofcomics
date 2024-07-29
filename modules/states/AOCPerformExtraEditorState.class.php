@@ -33,4 +33,8 @@ class AOCPerformExtraEditorState {
     public function getArgs($playerId = null) {
         return [];
     }
+
+    public function stGainExtraEditor() {
+        // Gain the extra editor
+    }
 }

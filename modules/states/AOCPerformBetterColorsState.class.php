@@ -33,4 +33,8 @@ class AOCPerformBetterColorsState {
     public function getArgs($playerId = null) {
         return [];
     }
+
+    public function stGainBetterColorToken() {
+        // Gain the better color token
+    }
 }
