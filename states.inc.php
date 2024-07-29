@@ -217,8 +217,23 @@ $machinestates = [
         ],
         "transitions" => [
             "discardCards" => ST_CHECK_HAND_SIZE,
+            "performHype" => ST_PERFORM_HYPE,
             "nextPlayerTurn" => ST_NEXT_PLAYER,
         ],
+    ],
+
+    ST_PERFORM_HYPE => [
+        "name" => PERFORM_HYPE,
+        "description" => clienttranslate(
+            '${actplayer} may select a comic in their hand to hype'
+        ),
+        "descriptionmyturn" => clienttranslate(
+            '${you} may select a comic in their hand to hype'
+        ),
+        "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "args" => STATE_ARGS_PERFORM_HYPE,
+        "possibleactions" => [],
+        "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
     ],
 
     ST_PERFORM_IDEAS => [
@@ -393,7 +408,11 @@ $machinestates = [
         "type" => STATE_TYPE_ACTIVE_PLAYER,
         "args" => STATE_ARGS_CHECK_HAND_SIZE,
         "possibleactions" => [PLAYER_ACTION_CONFIRM_DISCARD],
-        "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
+        "transitions" => [
+            "performReassign" => ST_PERFORM_REASSIGN,
+            "performHype" => ST_PERFORM_HYPE,
+            "nextPlayerTurn" => ST_NEXT_PLAYER,
+        ],
     ],
 
     ST_NEXT_PLAYER => [
