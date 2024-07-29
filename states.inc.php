@@ -414,6 +414,7 @@ $machinestates = [
         "transitions" => [
             "fulfillSalesOrder" => ST_PERFORM_SALES_FULFILL_ORDER,
             "continueSales" => ST_PERFORM_SALES_CONTINUE,
+            "extraEditor" => ST_PERFORM_EXTRA_EDITOR,
             "nextPlayerTurn" => ST_NEXT_PLAYER,
         ],
     ],
@@ -441,6 +442,17 @@ $machinestates = [
         "args" => STATE_ARGS_PERFORM_SALES_CONTINUE,
         "action" => GAME_ACTION_PERFORM_SALES_CONTINUE,
         "transitions" => ["continueSales" => ST_PERFORM_SALES],
+    ],
+
+    ST_PERFORM_EXTRA_EDITOR => [
+        "name" => PERFORM_EXTRA_EDITOR,
+        "description" => "",
+        "type" => STATE_TYPE_GAME,
+        "args" => STATE_ARGS_PERFORM_EXTRA_EDITOR,
+        "possibleactions" => [],
+        "transitions" => [
+            "nextPlayerTurn" => ST_NEXT_PLAYER,
+        ],
     ],
 
     ST_CHECK_HAND_SIZE => [

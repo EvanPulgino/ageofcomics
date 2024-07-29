@@ -817,6 +817,7 @@ var GameState = /** @class */ (function () {
         this.performBetterColors = new PerformBetterColors(game);
         this.performConvertIdeas = new PerformConvertIdeas(game);
         this.performDevelop = new PerformDevelop(game);
+        this.performExtraEditor = new PerformExtraEditor(game);
         this.performHire = new PerformHire(game);
         this.performHype = new PerformHype(game);
         this.performIdeas = new PerformIdeas(game);
@@ -3720,6 +3721,32 @@ var PerformDevelop = /** @class */ (function () {
         });
     };
     return PerformDevelop;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * PerformHype.ts
+ *
+ * Age of Comic perform extra editor state
+ *
+ * State vars:
+ *  game: game object reference
+ *
+ */
+var PerformExtraEditor = /** @class */ (function () {
+    function PerformExtraEditor(game) {
+        this.game = game;
+    }
+    PerformExtraEditor.prototype.onEnteringState = function (stateArgs) { };
+    PerformExtraEditor.prototype.onLeavingState = function () { };
+    PerformExtraEditor.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return PerformExtraEditor;
 }());
 /**
  *------

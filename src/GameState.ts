@@ -26,6 +26,7 @@ class GameState {
   performBetterColors: State;
   performConvertIdeas: State;
   performDevelop: State;
+  performExtraEditor: State;
   performHire: State;
   performHype: State;
   performIdeas: State;
@@ -63,6 +64,7 @@ class GameState {
     this.performBetterColors = new PerformBetterColors(game);
     this.performConvertIdeas = new PerformConvertIdeas(game);
     this.performDevelop = new PerformDevelop(game);
+    this.performExtraEditor = new PerformExtraEditor(game);
     this.performHire = new PerformHire(game);
     this.performHype = new PerformHype(game);
     this.performIdeas = new PerformIdeas(game);
