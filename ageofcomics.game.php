@@ -97,6 +97,7 @@ class AgeOfComics extends Table {
         $this->states[PERFORM_PRINT_UPGRADE] = new AOCPerformPrintUpgradeState(
             $this
         );
+        $this->states[PERFORM_REASSIGN] = new AOCPerformReassignState($this);
         $this->states[PERFORM_ROYALTIES] = new AOCPerformRoyaltiesState($this);
         $this->states[PERFORM_SALES] = new AOCPerformSalesState($this);
         $this->states[
@@ -344,6 +345,9 @@ class AgeOfComics extends Table {
     }
     function argsPerformPrintUpgrade() {
         return $this->states[PERFORM_PRINT_UPGRADE]->getArgs();
+    }
+    function argsPerformReassign() {
+        return $this->states[PERFORM_REASSIGN]->getArgs();
     }
     function argsPerformRoyalties() {
         return $this->states[PERFORM_ROYALTIES]->getArgs();

@@ -182,8 +182,23 @@ $machinestates = [
         "transitions" => [
             "performNextHire" => ST_PERFORM_HIRE,
             "discardCards" => ST_CHECK_HAND_SIZE,
+            "performReassign" => ST_PERFORM_REASSIGN,
             "nextPlayerTurn" => ST_NEXT_PLAYER,
         ],
+    ],
+
+    ST_PERFORM_REASSIGN => [
+        "name" => PERFORM_REASSIGN,
+        "description" => clienttranslate(
+            '${actplayer} may reassign one artist and one writer'
+        ),
+        "descriptionmyturn" => clienttranslate(
+            '${you} may reassign one artist and one writer'
+        ),
+        "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "args" => STATE_ARGS_PERFORM_REASSIGN,
+        "possibleactions" => [],
+        "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
     ],
 
     ST_PERFORM_DEVELOP => [

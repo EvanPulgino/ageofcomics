@@ -823,6 +823,7 @@ var GameState = /** @class */ (function () {
         this.performPrintGetUpgradeCube = new PerformPrintGetUpgradeCube(game);
         this.performPrintMastery = new PerformPrintMastery(game);
         this.performPrintUpgrade = new PerformPrintUpgrade(game);
+        this.performReassign = new PerformReassign(game);
         this.performRoyalties = new PerformRoyalties(game);
         this.performSales = new PerformSales(game);
         this.performSalesContinue = new PerformSalesContinue(game);
@@ -4759,6 +4760,32 @@ var PerformPrintUpgrade = /** @class */ (function () {
         });
     };
     return PerformPrintUpgrade;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * PerformReassign.ts
+ *
+ * Age of Comic perform reassign state
+ *
+ * State vars:
+ *  game: game object reference
+ *
+ */
+var PerformReassign = /** @class */ (function () {
+    function PerformReassign(game) {
+        this.game = game;
+    }
+    PerformReassign.prototype.onEnteringState = function (stateArgs) { };
+    PerformReassign.prototype.onLeavingState = function () { };
+    PerformReassign.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return PerformReassign;
 }());
 /**
  *------
