@@ -814,6 +814,7 @@ var GameState = /** @class */ (function () {
         this.increaseCreatives = new IncreaseCreatives(game);
         this.nextPlayer = new NextPlayer(game);
         this.nextPlayerSetup = new NextPlayerSetup(game);
+        this.performBetterColors = new PerformBetterColors(game);
         this.performConvertIdeas = new PerformConvertIdeas(game);
         this.performDevelop = new PerformDevelop(game);
         this.performHire = new PerformHire(game);
@@ -3522,6 +3523,32 @@ var NextPlayerSetup = /** @class */ (function () {
     NextPlayerSetup.prototype.onLeavingState = function () { };
     NextPlayerSetup.prototype.onUpdateActionButtons = function (stateArgs) { };
     return NextPlayerSetup;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * PerformHype.ts
+ *
+ * Age of Comic perform better colors state
+ *
+ * State vars:
+ *  game: game object reference
+ *
+ */
+var PerformBetterColors = /** @class */ (function () {
+    function PerformBetterColors(game) {
+        this.game = game;
+    }
+    PerformBetterColors.prototype.onEnteringState = function (stateArgs) { };
+    PerformBetterColors.prototype.onLeavingState = function () { };
+    PerformBetterColors.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return PerformBetterColors;
 }());
 /**
  *------

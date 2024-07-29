@@ -78,6 +78,9 @@ class AgeOfComics extends Table {
         );
         $this->states[NEXT_PLAYER] = new AOCNextPlayerState($this);
         $this->states[NEXT_PLAYER_SETUP] = new AOCNextPlayerSetupState($this);
+        $this->states[PERFORM_BETTER_COLORS] = new AOCPerformBetterColorsState(
+            $this
+        );
         $this->states[PERFORM_CONVERT_IDEAS] = new AOCPerformConvertIdeasState(
             $this
         );
@@ -322,6 +325,9 @@ class AgeOfComics extends Table {
     }
     function argsNextPlayerSetup() {
         return $this->states[NEXT_PLAYER_SETUP]->getArgs();
+    }
+    function argsPerformBetterColors() {
+        return $this->states[PERFORM_BETTER_COLORS]->getArgs();
     }
     function argsPerformConvertIdeas() {
         return $this->states[PERFORM_CONVERT_IDEAS]->getArgs();

@@ -23,6 +23,7 @@ class GameState {
   increaseCreatives: State;
   nextPlayer: State;
   nextPlayerSetup: State;
+  performBetterColors: State;
   performConvertIdeas: State;
   performDevelop: State;
   performHire: State;
@@ -58,6 +59,7 @@ class GameState {
     this.increaseCreatives = new IncreaseCreatives(game);
     this.nextPlayer = new NextPlayer(game);
     this.nextPlayerSetup = new NextPlayerSetup(game);
+    this.performBetterColors = new PerformBetterColors(game);
     this.performConvertIdeas = new PerformConvertIdeas(game);
     this.performDevelop = new PerformDevelop(game);
     this.performHire = new PerformHire(game);

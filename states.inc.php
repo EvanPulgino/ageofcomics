@@ -249,7 +249,7 @@ $machinestates = [
         "possibleactions" => [PLAYER_ACTION_CONFIRM_GAIN_IDEAS],
         "transitions" => [
             "convertIdeas" => ST_PERFORM_CONVERT_IDEAS,
-            "nextPlayerTurn" => ST_NEXT_PLAYER
+            "nextPlayerTurn" => ST_NEXT_PLAYER,
         ],
     ],
 
@@ -304,7 +304,10 @@ $machinestates = [
         "type" => STATE_TYPE_GAME,
         "args" => STATE_ARGS_PERFORM_PRINT_MASTERY,
         "action" => GAME_ACTION_PERFORM_PRINT_MASTERY,
-        "transitions" => ["checkUpgrade" => ST_PERFORM_PRINT_GET_UPGRADE_CUBE],
+        "transitions" => [
+            "performBetterColoers" => ST_PERFORM_BETTER_COLORS,
+            "checkUpgrade" => ST_PERFORM_PRINT_GET_UPGRADE_CUBE,
+        ],
     ],
 
     ST_PERFORM_PRINT_GET_UPGRADE_CUBE => [
@@ -354,6 +357,15 @@ $machinestates = [
             "doublePrint" => ST_PERFORM_PRINT,
             "nextPlayerTurn" => ST_NEXT_PLAYER,
         ],
+    ],
+
+    ST_PERFORM_BETTER_COLORS => [
+        "name" => PERFORM_BETTER_COLORS,
+        "description" => "",
+        "type" => STATE_TYPE_GAME,
+        "args" => STATE_ARGS_PERFORM_BETTER_COLORS,
+        "possibleactions" => [],
+        "transitions" => ["checkUpgrade" => ST_PERFORM_PRINT_GET_UPGRADE_CUBE],
     ],
 
     ST_PERFORM_ROYALTIES => [
