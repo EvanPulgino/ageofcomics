@@ -247,6 +247,23 @@ $machinestates = [
         "type" => STATE_TYPE_ACTIVE_PLAYER,
         "args" => STATE_ARGS_PERFORM_IDEAS,
         "possibleactions" => [PLAYER_ACTION_CONFIRM_GAIN_IDEAS],
+        "transitions" => [
+            "convertIdeas" => ST_PERFORM_CONVERT_IDEAS,
+            "nextPlayerTurn" => ST_NEXT_PLAYER
+        ],
+    ],
+
+    ST_PERFORM_CONVERT_IDEAS => [
+        "name" => PERFORM_CONVERT_IDEAS,
+        "description" => clienttranslate(
+            '${actplayer} may spend ideas to add fans to comics'
+        ),
+        "descriptionmyturn" => clienttranslate(
+            '${you} may spend ideas to add fans to comics'
+        ),
+        "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "args" => STATE_ARGS_PERFORM_CONVERT_IDEAS,
+        "possibleactions" => [],
         "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
     ],
 
