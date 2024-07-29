@@ -188,8 +188,8 @@ class AOCCardManager extends APP_GameClass {
     public function getComicCardMatchingMiniComic($miniComic) {
         $sql =
             "SELECT card_id id, card_type type, card_type_arg typeArg, card_genre genre, card_location location, card_location_arg locationArg, card_owner playerId, card_display_value displayValue FROM card WHERE card_type = " .
-            $miniComic->getType() .
-            "AND card_type_arg = " .
+            $miniComic->getTypeId() .
+            " AND card_type_arg = " .
             $miniComic->getComicKey() .
             " AND card_genre = " .
             $miniComic->getGenreId() .

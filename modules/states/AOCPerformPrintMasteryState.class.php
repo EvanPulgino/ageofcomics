@@ -87,7 +87,7 @@ class AOCPerformPrintMasteryState {
             );
 
             // Increase fans for all mini comics of genre of the new owner
-            $this->updateComicsOfNewOwner($activePlayer, $genreId, $comic);
+            $this->updateComicsOfNewOwner($activePlayer, $genreId);
         }
 
         $this->game->gamestate->nextState("checkUpgrade");
@@ -138,15 +138,18 @@ class AOCPerformPrintMasteryState {
         return count($printedOriginals) + count($printedRipoffs);
     }
 
-    private function updateComicsOfNewOwner($player, $genreId, $comic) {
+    private function updateComicsOfNewOwner($player, $genreId) {
         $miniComics = $this->game->miniComicManager->getMiniComicsByPlayerAndGenre(
             $player->getId(),
             $genreId
         );
 
         foreach ($miniComics as $miniComic) {
+            $matchingComic = $this->game->cardManager->getComicCardMatchingMiniComic(
+                $miniComic
+            );
             $incomeChange = $this->game->miniComicManager->adjustMiniComicFans(
-                $comic,
+                $matchingComic,
                 1
             );
             $this->game->playerManager->adjustPlayerIncome(
@@ -162,8 +165,8 @@ class AOCPerformPrintMasteryState {
                     "player" => $player->getUiData(),
                     "player_name" => $player->getName(),
                     "comicName" => $this->game->formatNotificationString(
-                        $comic->getName(),
-                        $comic->getGenreId()
+                        $matchingComic->getName(),
+                        $matchingComic->getGenreId()
                     ),
                     "genre" => $this->game->formatNotificationString(
                         $miniComic->getGenre(),
@@ -174,7 +177,7 @@ class AOCPerformPrintMasteryState {
                     ),
                     "incomeChange" => $incomeChange,
                     "fansChange" => 1,
-                    "slot" => $comic->getLocationArg(),
+                    "slot" => $matchingComic->getLocationArg(),
                 ]
             );
         }
