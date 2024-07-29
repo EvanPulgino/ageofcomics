@@ -820,6 +820,7 @@ var GameState = /** @class */ (function () {
         this.performHire = new PerformHire(game);
         this.performHype = new PerformHype(game);
         this.performIdeas = new PerformIdeas(game);
+        this.performMarketing = new PerformMarketing(game);
         this.performPrint = new PerformPrint(game);
         this.performPrintBonus = new PerformPrintBonus(game);
         this.performPrintContinue = new PerformPrintContinue(game);
@@ -4165,6 +4166,32 @@ var PerformIdeas = /** @class */ (function () {
         }
     };
     return PerformIdeas;
+}());
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * AgeOfComics implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * PerformHype.ts
+ *
+ * Age of Comic perform marketing state
+ *
+ * State vars:
+ *  game: game object reference
+ *
+ */
+var PerformMarketing = /** @class */ (function () {
+    function PerformMarketing(game) {
+        this.game = game;
+    }
+    PerformMarketing.prototype.onEnteringState = function (stateArgs) { };
+    PerformMarketing.prototype.onLeavingState = function () { };
+    PerformMarketing.prototype.onUpdateActionButtons = function (stateArgs) { };
+    return PerformMarketing;
 }());
 /**
  *------

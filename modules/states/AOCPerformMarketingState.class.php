@@ -9,14 +9,14 @@
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * Backend functions used by the performBetterColors State
+ * Backend functions used by the performMarketing State
  *
- * During this state, the player gains a better color token on their newly printed comic
- * 
+ * During this state, the player may spend money to gain fains for comics
+ *
  * @EvanPulgino
  */
 
-class AOCPerformBetterColorsState {
+class AOCPerformMarketingState {
     private $game;
 
     public function __construct($game) {
@@ -24,11 +24,11 @@ class AOCPerformBetterColorsState {
     }
 
     /**
-     * Gets the list of args used by the PerformBetterColors state
+     * Gets the list of args used by the PerformMarketing state
      *
      * Args:
      *
-     * @return array The list of args used by the PerformBetterColors state
+     * @return array The list of args used by the PerformMarketing state
      */
     public function getArgs($playerId = null) {
         return [];

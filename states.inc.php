@@ -374,6 +374,23 @@ $machinestates = [
         "type" => STATE_TYPE_GAME,
         "args" => STATE_ARGS_PERFORM_ROYALTIES,
         "action" => GAME_ACTION_GAIN_ROYALITES,
+        "transitions" => [
+            "performMarketing" => ST_PERFORM_MARKETING,
+            "nextPlayerTurn" => ST_NEXT_PLAYER,
+        ],
+    ],
+
+    ST_PERFORM_MARKETING => [
+        "name" => PERFORM_MARKETING,
+        "description" => clienttranslate(
+            '${actplayer} may spend money to gain fans'
+        ),
+        "descriptionmyturn" => clienttranslate(
+            '${you} may spend money to gain fans'
+        ),
+        "type" => STATE_TYPE_ACTIVE_PLAYER,
+        "args" => STATE_ARGS_PERFORM_MARKETING,
+        "possibleactions" => [],
         "transitions" => ["nextPlayerTurn" => ST_NEXT_PLAYER],
     ],
 

@@ -29,6 +29,7 @@ class GameState {
   performHire: State;
   performHype: State;
   performIdeas: State;
+  performMarketing: State;
   performPrint: State;
   performPrintBonus: State;
   performPrintContinue: State;
@@ -65,6 +66,7 @@ class GameState {
     this.performHire = new PerformHire(game);
     this.performHype = new PerformHype(game);
     this.performIdeas = new PerformIdeas(game);
+    this.performMarketing = new PerformMarketing(game);
     this.performPrint = new PerformPrint(game);
     this.performPrintBonus = new PerformPrintBonus(game);
     this.performPrintContinue = new PerformPrintContinue(game);
