@@ -133,6 +133,44 @@ class AOCPerformDevelopState {
             ]
         );
 
+        // If the deck is empty after player develops, reshuffle the discard pile (this is only possible if the player developed from the top of the deck)
+        if ($topOfDeck) {
+            $deck = $this->game->cardManager->getCards(
+                CARD_TYPE_COMIC,
+                null,
+                LOCATION_DECK,
+                null,
+                CARD_LOCATION_ARG_DESC
+            );
+            if (count($deck) === 0) {
+                $this->game->cardManager->shuffleDiscardPile(CARD_TYPE_COMIC);
+                $deck = $this->game->cardManager->getCards(
+                    CARD_TYPE_COMIC,
+                    null,
+                    LOCATION_DECK,
+                    null,
+                    CARD_LOCATION_ARG_DESC
+                );
+                $this->game->notifyAllPlayers(
+                    "reshuffleDiscardPile",
+                    clienttranslate(
+                        '${player_name} reshuffles the comic discard pile'
+                    ),
+                    [
+                        "player" => $activePlayer->getUiData(),
+                        "player_name" => $activePlayer->getName(),
+                        "deck" => $this->game->cardManager->getCardsUiData(
+                            $activePlayer->getId(),
+                            CARD_TYPE_COMIC,
+                            null,
+                            LOCATION_DECK
+                        ),
+                    ]
+                );
+            }
+        }
+
+
         // If the player has more than 6 cards in hand, transition to the discardCards state
         // Otherwise, transition to the nextPlayerTurn state
         if (

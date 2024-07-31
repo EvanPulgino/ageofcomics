@@ -172,7 +172,10 @@ class GameBody extends GameBasics {
       );
     }
 
-    this.playerController.adjustHand(notif.args.player, -1);
+    // Decrease count of cards in hand if printed comic and not ripoff
+    if (notif.args.card.card.typeId == 1) {
+      this.playerController.adjustHand(notif.args.player, -1);
+    }
   }
 
   notif_assignCreative(notif: any): void {

@@ -26,10 +26,10 @@ class CardController {
    * @param cards - the cards to setup
    */
   setupCards(cards: any[]): void {
-    // Clear discard popup menus
-    dojo.empty("aoc-discarded-artist-cards");
-    dojo.empty("aoc-discarded-writer-cards");
-    dojo.empty("aoc-discarded-comic-cards");
+    // Clear discards
+    this.emptyDiscards("artist");
+    this.emptyDiscards("writer");
+    this.emptyDiscards("comic");
 
     // Sort cards by locationArg
     cards.sort((a, b) => {
@@ -279,6 +279,20 @@ class CardController {
     dojo.attr(discardPopupCopy, "id", "aoc-discard-popup-" + card.id);
     var discardPopupDivId = "aoc-discarded-" + card.type + "-cards";
     dojo.place(discardPopupCopy, discardPopupDivId);
+  }
+
+  emptyDiscards(cardType: string): void {
+    // Empty the discard popup menu
+    dojo.empty(`aoc-discarded-${cardType}-cards`);
+
+    // Get discard pile cover
+    const discardCover = dojo.byId(`aoc-${cardType}s-discard-cover`);
+
+    // Empty the discard pile
+    dojo.empty(`aoc-${cardType}s-discard`);
+
+    // Add the cover back to the discard pile
+    dojo.place(discardCover, `aoc-${cardType}s-discard`);
   }
 
   /**

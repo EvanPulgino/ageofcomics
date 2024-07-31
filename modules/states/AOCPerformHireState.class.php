@@ -110,6 +110,33 @@ class AOCPerformHireState {
             ]
         );
 
+        // If after player hires, the draw pile is empty, reshuffle the discard pile
+        $deck = $this->game->cardManager->getCards(
+            $cardTypeId,
+            null,
+            LOCATION_DECK,
+            null,
+            CARD_LOCATION_ARG_DESC
+        );
+        if (count($deck) === 0) {
+            $this->game->cardManager->shuffleDiscardPile($cardTypeId);
+            $deck = $this->game->cardManager->getCards(
+                $cardTypeId,
+                null,
+                LOCATION_DECK,
+                null,
+                CARD_LOCATION_ARG_DESC
+            );
+            $this->game->notifyAllPlayers("reshuffleDiscardPile", "", [
+                "deck" => $this->game->cardManager->getCardsUiData(
+                    0,
+                    $cardTypeId,
+                    null,
+                    LOCATION_DECK
+                ),
+            ]);
+        }
+
         // If the player hired an artist, set the CAN_HIRE_ARTIST game state value to 0
         if ($creativeType == "artist") {
             $this->game->setGameStateValue(CAN_HIRE_ARTIST, 0);

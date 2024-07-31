@@ -111,5 +111,25 @@ class AOCRoundEndRefillCardsState {
                 "card" => $drawnCard->getUiData(0),
             ]);
         }
+
+        // If after refilling the supply, there are no cards of the given type in the deck, shuffle the discard pile
+        if (count($deck) === 0) {
+            $this->game->cardManager->shuffleDiscardPile($cardType);
+            $deck = $this->game->cardManager->getCards(
+                $cardType,
+                null,
+                LOCATION_DECK,
+                null,
+                CARD_LOCATION_ARG_DESC
+            );
+            $this->game->notifyAllPlayers("reshuffleDiscardPile", "", [
+                "deck" => $this->game->cardManager->getCardsUiData(
+                    0,
+                    $cardType,
+                    null,
+                    LOCATION_DECK
+                ),
+            ]);
+        }
     }
 }

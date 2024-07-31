@@ -419,7 +419,10 @@ var GameBody = /** @class */ (function (_super) {
         if (notif.args.spentIdeas > 0) {
             this.playerController.adjustIdeas(notif.args.player, notif.args.card.genre, -notif.args.spentIdeas);
         }
-        this.playerController.adjustHand(notif.args.player, -1);
+        // Decrease count of cards in hand if printed comic and not ripoff
+        if (notif.args.card.card.typeId == 1) {
+            this.playerController.adjustHand(notif.args.player, -1);
+        }
     };
     GameBody.prototype.notif_assignCreative = function (notif) {
         this.cardController.slideCardToPlayerMat(notif.args.player, notif.args.card, notif.args.slot);
@@ -954,10 +957,10 @@ var CardController = /** @class */ (function () {
      * @param cards - the cards to setup
      */
     CardController.prototype.setupCards = function (cards) {
-        // Clear discard popup menus
-        dojo.empty("aoc-discarded-artist-cards");
-        dojo.empty("aoc-discarded-writer-cards");
-        dojo.empty("aoc-discarded-comic-cards");
+        // Clear discards
+        this.emptyDiscards("artist");
+        this.emptyDiscards("writer");
+        this.emptyDiscards("comic");
         // Sort cards by locationArg
         cards.sort(function (a, b) {
             return a.locationArg - b.locationArg;
@@ -1163,6 +1166,16 @@ var CardController = /** @class */ (function () {
         dojo.attr(discardPopupCopy, "id", "aoc-discard-popup-" + card.id);
         var discardPopupDivId = "aoc-discarded-" + card.type + "-cards";
         dojo.place(discardPopupCopy, discardPopupDivId);
+    };
+    CardController.prototype.emptyDiscards = function (cardType) {
+        // Empty the discard popup menu
+        dojo.empty("aoc-discarded-".concat(cardType, "-cards"));
+        // Get discard pile cover
+        var discardCover = dojo.byId("aoc-".concat(cardType, "s-discard-cover"));
+        // Empty the discard pile
+        dojo.empty("aoc-".concat(cardType, "s-discard"));
+        // Add the cover back to the discard pile
+        dojo.place(discardCover, "aoc-".concat(cardType, "s-discard"));
     };
     /**
      * A player gains their starting comic card

@@ -493,12 +493,7 @@ class AOCCardManager extends APP_GameClass {
      * @return void
      */
     public function shuffleDiscardPile($cardType) {
-        $rows = $this->getCards($cardType, null, LOCATION_DISCARD);
-
-        $cards = [];
-        foreach ($rows as $row) {
-            $cards[] = new AOCCard($row);
-        }
+        $cards = $this->getCards($cardType, null, LOCATION_DISCARD);
 
         shuffle($cards);
 
