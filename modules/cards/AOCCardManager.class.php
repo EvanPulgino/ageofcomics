@@ -196,7 +196,12 @@ class AOCCardManager extends APP_GameClass {
             " AND card_owner = " .
             $miniComic->getPlayerId();
         $row = self::getObjectFromDB($sql);
-        return new AOCComicCard($row);
+
+        if ($row["type"] == CARD_TYPE_COMIC) {
+            return new AOCComicCard($row);
+        } else {
+            return new AOCRipoffCard($row);
+        }
     }
 
     /**
